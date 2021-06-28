@@ -65,9 +65,11 @@ git push
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;之後有新 post 要部屬上 github 時
 就執行 script 檔就行了 !
 &lt;br&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;. deploy.sh &amp;lt;你要留的 commit message&amp;gt;&lt;/code&gt;
+&lt;pre&gt;&lt;code class=&#34;language-script&#34; data-lang=&#34;script&#34;&gt;
+. deploy.sh &amp;lt;你要留的 commit message&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;br&gt;
 &lt;br&gt;
-&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;昨天電腦關機後想到的，之後看可不可以再改進腳本，讓他更方便&lt;/p&gt;
 </description>
       
