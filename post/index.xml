@@ -36,7 +36,7 @@
 &lt;p&gt;先 touch 一個 &lt;strong&gt;deploy.sh&lt;/strong&gt;
 上述其實就三個步驟，把它的 command line 都填入 &lt;strong&gt;deploy.sh&lt;/strong&gt;
 &lt;br&gt;&lt;/p&gt;
-&lt;p&gt;接著我想要執行這個**deploy.sh這個時順便填寫 git commit 的 message
+&lt;p&gt;接著我想要執行這個 &lt;strong&gt;deploy.sh&lt;/strong&gt; 這個時順便填寫 git commit 的 message
 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;先宣告一個變數吧 &amp;lt;&lt;strong&gt;commit_message&lt;/strong&gt;&amp;gt;  =&amp;gt;
 &lt;code&gt;commit_message = &amp;quot;$1&amp;quot;&lt;/code&gt;
@@ -64,7 +64,8 @@ git push
 
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;之後有新 post 要部屬上 github 時
 就執行 script 檔就行了 !
-&lt;code&gt;. deploy.sh &amp;lt;你要留的 commit message&amp;gt;&lt;/code&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;. deploy.sh &amp;lt;你要留的 commit message&amp;gt;&lt;/code&gt;
 &lt;br&gt;
 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;昨天電腦關機後想到的，之後看可不可以再改進腳本，讓他更方便&lt;/p&gt;
