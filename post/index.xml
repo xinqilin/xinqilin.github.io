@@ -32,7 +32,8 @@
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Sort&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; array&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; workArray&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; start&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; end&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
         &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;start &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; end&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 			
-		&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; mid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; start &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;end &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; start&lt;span style=&#34;color:#f92672&#34;&gt;)/&lt;/span&gt;2&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;//避免溢位 start + end 可能超出去
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; mid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; start &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;end &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; start&lt;span style=&#34;color:#f92672&#34;&gt;)/&lt;/span&gt;2&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
         Sort&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; workArray&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; start&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; mid&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
         Sort&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; workArray&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; mid&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;1&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; end&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
@@ -76,7 +77,7 @@
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
-![MergeSortResult](/static/images/Algorithm/mergeSort/mergeSortResult.png)
+![MergeSortResult](images/Algorithm/mergeSort/mergeSortResult.png)
 &lt;br&gt;
 &lt;br&gt;
 &lt;p&gt;演算法序列，會用來記錄算法，再用自己或其他人寫的 code 我能吸收的做紀錄，目的是讓自己能多看，然後背起來&lt;/p&gt;

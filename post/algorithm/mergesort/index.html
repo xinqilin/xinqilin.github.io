@@ -5,7 +5,7 @@
   data-theme="dark"
 ><head>
   <title>
-    Bill.Lin 成長之路 @
+    Bill.Lin の 成長之路 ©
       |
       MergeSort
 
@@ -172,7 +172,7 @@
     <div class="logo-title">
       <div class="title">
         <img src="/images/profile.jpg" alt="profile picture" />
-        <h3 title=""><a href="/">Bill.Lin 成長之路</a></h3>
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
         <div class="description">
           <p><br />後端工程師 Java, Kotlin<br /><br />成長路上有你有我<br /><br />很高興認識你 Pleased to meet you!<br /></p>
         </div>
@@ -215,7 +215,7 @@
       <li class="footer__item">
         &copy;
         
-          Bill.Lin 成長之路 @
+          Bill.Lin の 成長之路 ©
           2021
 
 
@@ -281,7 +281,8 @@
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Sort</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> array<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> workArray<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> start<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> end<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>start <span style="color:#f92672">&gt;=</span> end<span style="color:#f92672">)</span> <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
 			
-		<span style="color:#66d9ef">int</span> mid <span style="color:#f92672">=</span> start <span style="color:#f92672">+</span> <span style="color:#f92672">(</span>end <span style="color:#f92672">-</span> start<span style="color:#f92672">)/</span>2<span style="color:#f92672">;</span>
+        <span style="color:#75715e">//避免溢位 start + end 可能超出去
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">int</span> mid <span style="color:#f92672">=</span> start <span style="color:#f92672">+</span> <span style="color:#f92672">(</span>end <span style="color:#f92672">-</span> start<span style="color:#f92672">)/</span>2<span style="color:#f92672">;</span>
 
         Sort<span style="color:#f92672">(</span>array<span style="color:#f92672">,</span> workArray<span style="color:#f92672">,</span> start<span style="color:#f92672">,</span> mid<span style="color:#f92672">);</span>
         Sort<span style="color:#f92672">(</span>array<span style="color:#f92672">,</span> workArray<span style="color:#f92672">,</span> mid<span style="color:#f92672">+</span>1<span style="color:#f92672">,</span> end<span style="color:#f92672">);</span>
@@ -325,7 +326,7 @@
 <span style="color:#f92672">}</span>
 
 </code></pre></div><br>
-![MergeSortResult](/static/images/Algorithm/mergeSort/mergeSortResult.png)
+![MergeSortResult](images/Algorithm/mergeSort/mergeSortResult.png)
 <br>
 <br>
 <p>演算法序列，會用來記錄算法，再用自己或其他人寫的 code 我能吸收的做紀錄，目的是讓自己能多看，然後背起來</p>
@@ -363,7 +364,7 @@
       <li class="footer__item">
         &copy;
         
-          Bill.Lin 成長之路 @
+          Bill.Lin の 成長之路 ©
           2021
 
 
