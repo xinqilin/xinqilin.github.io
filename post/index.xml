@@ -8,13 +8,13 @@
     <language>zh-tw</language>
     <lastBuildDate>Mon, 28 Jun 2021 15:10:59 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>TreeMap Sort by Value</title>
-      <link>https://xinqilin.github.io/post/java/treemap-sort-by-value/</link>
+      <title>Map Sort by Value</title>
+      <link>https://xinqilin.github.io/post/java/map-sort-by-value/</link>
       <pubDate>Mon, 28 Jun 2021 15:10:59 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/java/treemap-sort-by-value/</guid>
+      <guid>https://xinqilin.github.io/post/java/map-sort-by-value/</guid>
       
-        <description>&lt;h1 id=&#34;treemap-sort-by-value&#34;&gt;TreeMap Sort by value&lt;/h1&gt;
+        <description>&lt;h1 id=&#34;map-sort-by-value&#34;&gt;Map Sort by value&lt;/h1&gt;
 &lt;p&gt;有鑑於 Bill 上上週在刷 LC 時 &lt;a href=&#34;https://leetcode.com/problems/top-k-frequent-words/&#34;&gt;&lt;b&gt;題目點我!&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;很簡單的排序問題，那時我的想法是先掃過一次，存 Map&amp;lt;String 字，Integer 字的長度&amp;gt; 然後在排序 Map Value 後 得到答案
 但那時我心中想到的 map value 排序蠻麻煩的，這邊先記錄一下後來比較乾淨一點的寫法，以防之後忘記&lt;/p&gt;
