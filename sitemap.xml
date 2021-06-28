@@ -3,10 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://xinqilin.github.io/</loc>
-    <lastmod>2021-06-28T12:36:19+08:00</lastmod>
+    <lastmod>2021-06-28T15:10:59+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/</loc>
-    <lastmod>2021-06-28T12:36:19+08:00</lastmod>
+    <lastmod>2021-06-28T15:10:59+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/java/</loc>
+    <lastmod>2021-06-28T15:10:59+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/categories/java/</loc>
+    <lastmod>2021-06-28T15:10:59+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/</loc>
+    <lastmod>2021-06-28T15:10:59+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/</loc>
+    <lastmod>2021-06-28T15:10:59+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/java/treemap-sort-by-value/</loc>
+    <lastmod>2021-06-28T15:10:59+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/script/deploy-hugo/</loc>
     <lastmod>2021-06-28T12:36:19+08:00</lastmod>
@@ -14,16 +29,10 @@
     <loc>https://xinqilin.github.io/categories/hugo/</loc>
     <lastmod>2021-06-28T12:36:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/</loc>
-    <lastmod>2021-06-28T12:36:19+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/script/</loc>
     <lastmod>2021-06-28T12:36:19+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/script/</loc>
-    <lastmod>2021-06-28T12:36:19+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/</loc>
     <lastmod>2021-06-28T12:36:19+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/bill-murmur/</loc>
