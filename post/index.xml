@@ -19,8 +19,8 @@
 設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html
 &lt;/p&gt;
 &lt;br&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;hugo -t &amp;lt;你的theme&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;hugo -t &amp;lt;你的theme&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
 再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
 &lt;/p&gt;
 &lt;br&gt;
