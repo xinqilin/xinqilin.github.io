@@ -16,9 +16,9 @@
       
         <description>&lt;h1 id=&#34;mergesort&#34;&gt;MergeSort&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;Time complexity = log n * O(n) = O(n logn)&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;MergeSort 套一句柯P 講的話，小問題解決了，就沒有大問題了
-將 n 個個數的陣列，先左右各切一半，一直切，切到最小單位後，開始拿兩條被切的單位做排序、合併 !
-&lt;del&gt;合久必分，分久必合&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;MergeSort 套一句柯P 講的話，&lt;strong&gt;小問題解決了，就沒有大問題了&lt;/strong&gt;&lt;br&gt;
+將 n 個個數的陣列，先左右各切一半，一直切，切到最小單位後，開始拿兩條被切的單位做排序、合併 ! &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;合久必分，分久必合&lt;/del&gt; &lt;br&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; java.util.*&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
@@ -76,6 +76,8 @@
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
+![MergeSortResult](/static/images/Algorithm/mergeSort/mergeSortResult.png)
+&lt;br&gt;
 &lt;br&gt;
 &lt;p&gt;演算法序列，會用來記錄算法，再用自己或其他人寫的 code 我能吸收的做紀錄，目的是讓自己能多看，然後背起來&lt;/p&gt;
 </description>
