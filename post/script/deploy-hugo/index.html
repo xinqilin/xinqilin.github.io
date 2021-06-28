@@ -7,7 +7,7 @@
   <title>
     Bill.Lin 成長之路 @
       |
-      Categories
+      Deploy Hugo
 
 
     
@@ -61,7 +61,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/categories/" />
+  <link rel="canonical" href="/post/script/deploy-hugo/" />
 
   
   
@@ -86,13 +86,8 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Categories"/>
-<meta name="twitter:description" content="後端工程師 Java, Kotlin
-
-成長路上有你有我
-
-很高興認識你 Pleased to meet you!
-"/>
+<meta name="twitter:title" content="Deploy Hugo"/>
+<meta name="twitter:description" content="Deploy Hugo  設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html hugo -t &lt;你的theme&gt;  再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !"/>
 
 
 
@@ -241,73 +236,108 @@
         <div class="autopagerize_page_element">
           <div class="content">
   <div
-    class="archive 
+    class="post 
       animated fadeInDown
 
     "
   >
-    <ul class="list-with-title">
+    <div class="post-content">
       
-        <div class="listing-title">2021</div>
+      <div class="post-title">
+        <h1>Deploy Hugo</h1>
         
-          <ul class="listing">
-            <div class="listing-item">
-              <div class="listing-post">
-                <a href="/categories/script/" title="Script">Script</a>
-                <div class="post-time">
-                  <span class="date"
-                    >
-                      Jun 28
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Mon, Jun 28, 2021
 
 
-                    </span
-                  >
-                </div>
-              </div>
-            </div>
-          </ul>
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
+          </div>
 
         
-          <ul class="listing">
-            <div class="listing-item">
-              <div class="listing-post">
-                <a href="/categories/hugo/" title="hugo">hugo</a>
-                <div class="post-time">
-                  <span class="date"
-                    >
-                      Jun 28
+      </div>
+
+      <h1 id="deploy-hugo">Deploy Hugo</h1>
+<p>
+設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html
+</p>
+<br>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hugo -t &lt;你的theme&gt;
+</code></pre></div><p>
+再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
+</p>
+<br>
+<h1 id="flow">Flow</h1>
+<p>先確定一次流程</p>
+<ol>
+<li>build 出 public 檔</li>
+<li>add-commit-push  -&gt; static website repository</li>
+<li>add-commit-push -&gt; backup repository</li>
+</ol>
+<br>
+<h1 id="製作-script">製作 Script</h1>
+<p>先 touch 一個 <strong>deploy.sh</strong>
+上述其實就三個步驟，把它的 command line 都填入 <strong>deploy.sh</strong>
+<br></p>
+<p>接著我想要執行這個**deploy.sh這個時順便填寫 git commit 的 message
+<br></p>
+<p>先宣告一個變數吧 &lt;<strong>commit_message</strong>&gt;  =&gt;
+<code>commit_message = &quot;$param1&quot;</code>
+接著在需要用的變數的地方就可以直接使用 <code>commit_message</code> 來操縱
+<br>
+<br></p>
+<p>完成版:</p>
+<pre><code class="language-script" data-lang="script">
+# build public/
+hugo -t &lt;你的theme&gt;
+
+commit_message = &quot;$1&quot;
+
+# push public website
+cd public/
+git add . -A
+git commit -m &quot;$commit_message&quot;
+git push
+cd ..
+
+# push github backup
+git add . -A
+git commit -m &quot;$commit_message&quot;
+git push
+
+</code></pre><p>之後有新 post 要部屬上 github 時
+就執行 script 檔就行了 !
+<code>. deploy.sh &lt;你要留的 commit message&gt;</code>
+<br>
+<br></p>
+<p>昨天電腦關機後想到的，之後看可不可以再改進腳本，讓他更方便</p>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/script/">Script</a><a class="category" href="/categories/hugo/">hugo</a></span>
 
 
-                    </span
-                  >
-                </div>
-              </div>
-            </div>
-          </ul>
+
 
         
-          <ul class="listing">
-            <div class="listing-item">
-              <div class="listing-post">
-                <a href="/categories/bill-murmur/" title="Bill murmur">Bill murmur</a>
-                <div class="post-time">
-                  <span class="date"
-                    >
-                      Jun 28
-
-
-                    </span
-                  >
-                </div>
-              </div>
-            </div>
-          </ul>
 
         
+          <span class="separator"><a class="tag" href="/tags/script/">Script</a></span>
 
 
-      
-    </ul>
+
+
+        
+      </div>
+    </div>
+
+    
   </div>
 
 
