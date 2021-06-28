@@ -39,7 +39,7 @@
 &lt;p&gt;接著我想要執行這個**deploy.sh這個時順便填寫 git commit 的 message
 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;先宣告一個變數吧 &amp;lt;&lt;strong&gt;commit_message&lt;/strong&gt;&amp;gt;  =&amp;gt;
-&lt;code&gt;commit_message = &amp;quot;$param1&amp;quot;&lt;/code&gt;
+&lt;code&gt;commit_message = &amp;quot;$1&amp;quot;&lt;/code&gt;
 接著在需要用的變數的地方就可以直接使用 &lt;code&gt;commit_message&lt;/code&gt; 來操縱
 &lt;br&gt;
 &lt;br&gt;&lt;/p&gt;
