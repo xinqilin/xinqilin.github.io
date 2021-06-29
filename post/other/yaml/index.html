@@ -6,6 +6,11 @@
 ><head>
   <title>
     Bill.Lin の 成長之路 ©
+      |
+      Yaml
+
+
+    
 
   </title>
 
@@ -57,7 +62,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/" />
+  <link rel="canonical" href="/post/other/yaml/" />
 
   
   
@@ -82,14 +87,8 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="
-後端工程師 Java, Kotlin
-
-成長路上有你有我
-
-很高興認識你 Pleased to meet you!
-"/>
+<meta name="twitter:title" content="Yaml"/>
+<meta name="twitter:description" content="前情提要 在 Java 常用的 framework spring boot 中 (Spring MVC 沒有 它還是用一大狗票 Xml&hellip;)，常可以看到 ."/>
 
 
 
@@ -115,9 +114,6 @@
           
           <li>
             <a
-              
-                class="current"
-
               
               href="/"
               
@@ -246,42 +242,11 @@
 
     "
   >
-    <div class="post-title post-content">
-      
-    </div>
-
-    
-  </div>
-
-  
-
-  
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
+    <div class="post-content">
       
       <div class="post-title">
-        <h3><a href="/post/other/yaml/">Yaml</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              前情提要 在 Java 常用的 framework spring boot 中 (Spring MVC 沒有 它還是用一大狗票 Xml&hellip;)，常可以看到 .
-
-
-            
-          </p>
-          <a href="/post/other/yaml/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
+        <h1>Yaml</h1>
+        
           <div class="info">
             <em class="fas fa-calendar-day"></em>
             <span class="date"
@@ -291,239 +256,92 @@
 
               </span
             >
-            
-
-            
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
           </div>
-        </div>
+
+        
+      </div>
+
+      <h1 id="前情提要">前情提要</h1>
+<p>在 Java 常用的 framework spring boot 中 (<del>Spring MVC 沒有 它還是用一大狗票 Xml&hellip;</del>)，常可以看到 .properties 與 .yml 檔案做設定，連現在使用的 hugo 也可以使用 yaml 與 toml 設定，並不是唯一，但如果今天要去配置 K8S 的話， yaml 就不得不學了</p>
+<h3 id="yaml">Yaml</h3>
+<p>Basic</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># 註解</span>
+---  <span style="color:#ae81ff">開始符號</span>
+</code></pre></div><p>接著就是有點像 JSON 的 key-value 表示</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</code></pre></div><p>階層關西的話 =&gt; 換行加縮排 <br>
+以下等於  spring.datasource.username = root</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">spring</span>:
+  <span style="color:#f92672">datasource</span>:
+    <span style="color:#f92672">username</span>: <span style="color:#ae81ff">root</span>
+</code></pre></div><p>常見陣列 =&gt; 換行 縮排並在開頭加上 &ldquo;-&rdquo; 並空一格<br>
+內容可用來包 複雜物件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">args</span>:
+ - <span style="color:#e6db74">&#34;parameter1&#34;</span>
+ - <span style="color:#e6db74">&#34;parameter2&#34;</span>
+
+</code></pre></div><p>但陣列好像也可以這樣 (簡單模式)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">items</span>: [ <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span> ]
+<span style="color:#f92672">args</span>: [ <span style="color:#e6db74">&#34;parameter1&#34;</span>, <span style="color:#e6db74">&#34;parameter2&#34;</span> ]
+</code></pre></div><br>
+<p>以下範例 參考 <a href="https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started"> CloudBee YAML Tutorial</a></p>
+<br>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+ <span style="color:#f92672">doe</span>: <span style="color:#e6db74">&#34;a deer, a female deer&#34;</span>
+ <span style="color:#f92672">ray</span>: <span style="color:#e6db74">&#34;a drop of golden sun&#34;</span>
+ <span style="color:#f92672">pi</span>: <span style="color:#ae81ff">3.14159</span>
+ <span style="color:#f92672">xmas</span>: <span style="color:#66d9ef">true</span>
+ <span style="color:#f92672">french-hens</span>: <span style="color:#ae81ff">3</span>
+ <span style="color:#f92672">calling-birds</span>:
+   - <span style="color:#ae81ff">huey</span>
+   - <span style="color:#ae81ff">dewey</span>
+   - <span style="color:#ae81ff">louie</span>
+   - <span style="color:#ae81ff">fred</span>
+ <span style="color:#f92672">xmas-fifth-day</span>:
+   <span style="color:#f92672">calling-birds</span>: <span style="color:#ae81ff">four</span>
+   <span style="color:#f92672">french-hens</span>: <span style="color:#ae81ff">3</span>
+   <span style="color:#f92672">golden-rings</span>: <span style="color:#ae81ff">5</span>
+   <span style="color:#f92672">partridges</span>:
+     <span style="color:#f92672">count</span>: <span style="color:#ae81ff">1</span>
+     <span style="color:#f92672">location</span>: <span style="color:#e6db74">&#34;a pear tree&#34;</span>
+   <span style="color:#f92672">turtle-doves</span>: <span style="color:#ae81ff">two</span>
+
+</code></pre></div><p>相等於 JSON</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;doe&#34;</span>: <span style="color:#e6db74">&#34;a deer, a female deer&#34;</span>,
+  <span style="color:#f92672">&#34;ray&#34;</span>: <span style="color:#e6db74">&#34;a drop of golden sun&#34;</span>,
+  <span style="color:#f92672">&#34;pi&#34;</span>: <span style="color:#ae81ff">3.14159</span>,
+  <span style="color:#f92672">&#34;xmas&#34;</span>: <span style="color:#66d9ef">true</span>,
+  <span style="color:#f92672">&#34;french-hens&#34;</span>: <span style="color:#ae81ff">3</span>,
+  <span style="color:#f92672">&#34;calling-birds&#34;</span>: [
+     <span style="color:#e6db74">&#34;huey&#34;</span>,
+     <span style="color:#e6db74">&#34;dewey&#34;</span>,
+     <span style="color:#e6db74">&#34;louie&#34;</span>,
+     <span style="color:#e6db74">&#34;fred&#34;</span>
+  ],
+  <span style="color:#f92672">&#34;xmas-fifth-day&#34;</span>: {
+  <span style="color:#f92672">&#34;calling-birds&#34;</span>: <span style="color:#e6db74">&#34;four&#34;</span>,
+  <span style="color:#f92672">&#34;french-hens&#34;</span>: <span style="color:#ae81ff">3</span>,
+  <span style="color:#f92672">&#34;golden-rings&#34;</span>: <span style="color:#ae81ff">5</span>,
+  <span style="color:#f92672">&#34;partridges&#34;</span>: {
+    <span style="color:#f92672">&#34;count&#34;</span>: <span style="color:#ae81ff">1</span>,
+    <span style="color:#f92672">&#34;location&#34;</span>: <span style="color:#e6db74">&#34;a pear tree&#34;</span>
+  },
+  <span style="color:#f92672">&#34;turtle-doves&#34;</span>: <span style="color:#e6db74">&#34;two&#34;</span>
+  }
+}
+</code></pre></div></div>
+    <div class="post-footer">
+      <div class="info">
+        
+
+        
       </div>
     </div>
 
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/algorithm/mergesort/">MergeSort</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              MergeSort Time complexity = log n * O(n) = O(n logn)
-
-
-            
-          </p>
-          <a href="/post/algorithm/mergesort/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Jun 28, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/java/">Java</a><a class="category" href="/categories/algorithm/">Algorithm</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/java/">Java</a><a class="tag" href="/tags/algorithm/">Algorithm</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/java/map-sort-by-value/">Map Sort by Value</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Map Sort by value 有鑑於 Bill 上上週在刷 LC 時 題目點我!
-
-
-            
-          </p>
-          <a href="/post/java/map-sort-by-value/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Jun 28, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/java/">Java</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/java/">Java</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/script/deploy-hugo/">Deploy Hugo</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Deploy Hugo  設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html hugo -t &lt;你的theme&gt;  再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
-
-
-            
-          </p>
-          <a href="/post/script/deploy-hugo/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Jun 28, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/script/">Script</a><a class="category" href="/categories/hugo/">hugo</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/script/">Script</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/murmur/first-post/">First Post</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              第一篇 近日對於一些之前寫過的演算法，或code 會突然忘記，然後不知道可以去哪裡找，近日 reset 了 github page (之前的文都亂po hugo theme 也不是我喜歡的，這次直接大刀闊斧重來)
-
-
-            
-          </p>
-          <a href="/post/murmur/first-post/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Jun 28, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/bill-murmur/">Bill murmur</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/murmur/">murmur</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-  <div class="pagination">
     
-
-
   </div>
 
 
