@@ -88,7 +88,7 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="RestTemplate"/>
-<meta name="twitter:description" content="RestTemplate 一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來藥用時能直接隨開隨用。 //config  @Configuration public class RestTemplateConfig { @Bean public RestTemplate restTemplate(ClientHttpRequestFactory factory) { return new RestTemplate(factory); } @Bean public ClientHttpRequestFactory simpleClientHttpRequestFactory() { SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory(); factory."/>
+<meta name="twitter:description" content="RestTemplate 一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來要用時能直接隨開隨用。 //config  @Configuration public class RestTemplateConfig { @Bean public RestTemplate restTemplate(ClientHttpRequestFactory factory) { return new RestTemplate(factory); } @Bean public ClientHttpRequestFactory simpleClientHttpRequestFactory() { SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory(); factory."/>
 
 
 
@@ -264,7 +264,7 @@
       </div>
 
       <h1 id="resttemplate">RestTemplate</h1>
-<p>一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來藥用時能直接隨開隨用。
+<p>一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來要用時能直接隨開隨用。
 <br></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
 <span style="color:#75715e">//config
