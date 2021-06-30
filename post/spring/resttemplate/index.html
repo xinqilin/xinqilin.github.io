@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    Bill.Lin の 成長之路 ©
+      |
+      RestTemplate
+
+
+    
+
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.83.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      
+後端工程師 Java, Kotlin
+
+成長路上有你有我
+
+很高興認識你 Pleased to meet you!
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.5b25a1723ef4d5cfc7cf3c9a49349da6ba775c245c3b7c94948347e8370e244b.css"
+    integrity="sha256-WyWhcj701c/HzzyaSTSdprp3XCRcO3yUlINH6DcOJEs="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.f798cbda9aaa38f89eb38be6414bd082cfd71a6780375cbf67b6d2fb2b96491e.css"
+    integrity="sha256-95jL2pqqOPies4vmQUvQgs/XGmeAN1y/Z7bS&#43;yuWSR4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="/post/spring/resttemplate/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
+    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
+      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="RestTemplate"/>
+<meta name="twitter:description" content="RestTemplate 一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來藥用時能直接隨開隨用。 //config  @Configuration public class RestTemplateConfig { @Bean public RestTemplate restTemplate(ClientHttpRequestFactory factory) { return new RestTemplate(factory); } @Bean public ClientHttpRequestFactory simpleClientHttpRequestFactory() { SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory(); factory."/>
+
+
+
+  
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+        
+      </div>
+      <li>
+        
+          <a class="theme-switch" title="Switch Theme">
+            <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+          </a>
+
+        
+      </li>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/profile.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p><br />後端工程師 Java, Kotlin<br /><br />成長路上有你有我<br /><br />很高興認識你 Pleased to meet you!<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+        <li>
+          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub">
+            <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail">
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress">
+            <i class="fab fa-wordpress-simple fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2021
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>RestTemplate</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Wed, Jun 30, 2021
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 3 分鐘</span>
+          </div>
+
+        
+      </div>
+
+      <h1 id="resttemplate">RestTemplate</h1>
+<p>一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來藥用時能直接隨開隨用。
+<br></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#75715e">//config
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">@Configuration</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RestTemplateConfig</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> RestTemplate <span style="color:#a6e22e">restTemplate</span><span style="color:#f92672">(</span>ClientHttpRequestFactory factory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RestTemplate<span style="color:#f92672">(</span>factory<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> ClientHttpRequestFactory <span style="color:#a6e22e">simpleClientHttpRequestFactory</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        SimpleClientHttpRequestFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleClientHttpRequestFactory<span style="color:#f92672">();</span>
+        factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setReadTimeout</span><span style="color:#f92672">(</span>3000<span style="color:#f92672">);</span>
+        factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setConnectTimeout</span><span style="color:#f92672">(</span>3000<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> factory<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+</code></pre></div><h3 id="注入">注入</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> RestTemplate restTemplate<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">XXService</span><span style="color:#f92672">(</span>RestTemplate restTemplate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">restTemplate</span> <span style="color:#f92672">=</span> restTemplate<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">//==============我是分隔線================
+</span><span style="color:#75715e"></span>
+    <span style="color:#a6e22e">@AuroWired</span>
+    RestTemplate restTemplate<span style="color:#f92672">;</span>
+
+</code></pre></div><h3 id="使用-exchange">使用 exchange</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#75715e">// 第一個直接開門見山，最常用的 exchange，先點進去看 override 有甚麼不同的參數
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ResponseEntity</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">String</span> url<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpMethod</span> method<span style="color:#f92672">,</span> <span style="color:#a6e22e">@org.springframework.lang.Nullable</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpEntity</span><span style="color:#f92672">&lt;?&gt;</span> requestEntity<span style="color:#f92672">,</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Class</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Object</span><span style="color:#f92672">...</span> uriVariables<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">web</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RestClientException</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* compiled code */</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ResponseEntity</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">String</span> url<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpMethod</span> method<span style="color:#f92672">,</span> <span style="color:#a6e22e">@org.springframework.lang.Nullable</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpEntity</span><span style="color:#f92672">&lt;?&gt;</span> requestEntity<span style="color:#f92672">,</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Class</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Map</span><span style="color:#f92672">&lt;</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">,?&gt;</span> uriVariables<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">web</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RestClientException</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* compiled code */</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ResponseEntity</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">net</span><span style="color:#f92672">.</span><span style="color:#a6e22e">URI</span> url<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpMethod</span> method<span style="color:#f92672">,</span> <span style="color:#a6e22e">@org.springframework.lang.Nullable</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpEntity</span><span style="color:#f92672">&lt;?&gt;</span> requestEntity<span style="color:#f92672">,</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Class</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">web</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RestClientException</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* compiled code */</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ResponseEntity</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">String</span> url<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpMethod</span> method<span style="color:#f92672">,</span> <span style="color:#a6e22e">@org.springframework.lang.Nullable</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpEntity</span><span style="color:#f92672">&lt;?&gt;</span> requestEntity<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">core</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ParameterizedTypeReference</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Object</span><span style="color:#f92672">...</span> uriVariables<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">web</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RestClientException</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* compiled code */</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ResponseEntity</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">String</span> url<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpMethod</span> method<span style="color:#f92672">,</span> <span style="color:#a6e22e">@org.springframework.lang.Nullable</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpEntity</span><span style="color:#f92672">&lt;?&gt;</span> requestEntity<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">core</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ParameterizedTypeReference</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Map</span><span style="color:#f92672">&lt;</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">String</span><span style="color:#f92672">,?&gt;</span> uriVariables<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">web</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RestClientException</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* compiled code */</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ResponseEntity</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">net</span><span style="color:#f92672">.</span><span style="color:#a6e22e">URI</span> url<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpMethod</span> method<span style="color:#f92672">,</span> <span style="color:#a6e22e">@org.springframework.lang.Nullable</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HttpEntity</span><span style="color:#f92672">&lt;?&gt;</span> requestEntity<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">core</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ParameterizedTypeReference</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">web</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RestClientException</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* compiled code */</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ResponseEntity</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RequestEntity</span><span style="color:#f92672">&lt;?&gt;</span> entity<span style="color:#f92672">,</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Class</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">web</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RestClientException</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* compiled code */</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ResponseEntity</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">http</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RequestEntity</span><span style="color:#f92672">&lt;?&gt;</span> entity<span style="color:#f92672">,</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">core</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ParameterizedTypeReference</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">web</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RestClientException</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* compiled code */</span> <span style="color:#f92672">}</span>
+
+
+
+<span style="color:#75715e">//大致上來說，其實我自己最常用的是
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">//回來的是一個 mapperObject
+</span><span style="color:#75715e"></span><span style="color:#f92672">(</span>String url<span style="color:#f92672">,</span> HttpMethod method<span style="color:#f92672">,</span> HttpEntity<span style="color:#f92672">&lt;?&gt;</span> requestEntity<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">)</span>
+
+<span style="color:#75715e">//回來的是一個 List&lt;mapperObject&gt;
+</span><span style="color:#75715e"></span><span style="color:#f92672">(</span>String url<span style="color:#f92672">,</span> HttpMethod method<span style="color:#f92672">,</span> HttpEntity<span style="color:#f92672">&lt;?&gt;</span> requestEntity<span style="color:#f92672">,</span> ParameterizedTypeReference<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">new</span> ParameterizedTypeReference<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>東西<span style="color:#f92672">&gt;&gt;&gt;()</span> <span style="color:#f92672">{})</span>
+
+
+<span style="color:#75715e">//這兩個
+</span><span style="color:#75715e"></span>
+
+<span style="color:#75715e">// exchange 偷懶法
+</span><span style="color:#75715e">//沒用特定 POJO 使用 JSONObject
+</span><span style="color:#75715e"></span>JSONObject jsonObj <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject<span style="color:#f92672">();</span>
+jsonObj<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">,</span>1<span style="color:#f92672">);</span>
+jsonObj<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;page&#34;</span><span style="color:#f92672">,</span>5<span style="color:#f92672">);</span>
+
+HttpEntity<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> entity <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HttpEntity<span style="color:#f92672">&lt;&gt;(</span>jsonObj<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(),</span> headers<span style="color:#f92672">);</span>
+ResponseEntity<span style="color:#f92672">&lt;</span>JSONObject<span style="color:#f92672">&gt;</span> exchange <span style="color:#f92672">=</span> restTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">exchange</span><span style="color:#f92672">(</span>url<span style="color:#f92672">,</span> 
+HttpMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">GET</span><span style="color:#f92672">,</span> entity<span style="color:#f92672">,</span> JSONObject<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>exchange<span style="color:#f92672">.</span><span style="color:#a6e22e">getBody</span><span style="color:#f92672">());</span>
+</code></pre></div><br>
+<h3 id="get">get</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#75715e">// 在來是 Get 請求 中 最常用的 ( 如果不用 exchange 的話)
+</span><span style="color:#75715e">// getForObject() 在裡面做 反序列化，所以不再自己處理 HTTP 回來的 ResponseEntity objectMapper to JavaObject的動作   而 getForEntity() 則要自己處理
+</span><span style="color:#75715e"></span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">getForObject</span><span style="color:#f92672">(</span>String url<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> Object<span style="color:#f92672">...</span> uriVariables<span style="color:#f92672">){}</span>
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">getForObject</span><span style="color:#f92672">(</span>String url<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> <span style="color:#f92672">?&gt;</span> uriVariables<span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">getForObject</span><span style="color:#f92672">(</span>URI url<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">)</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> ResponseEntity<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getForEntity</span><span style="color:#f92672">(</span>String url<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> Object<span style="color:#f92672">...</span> uriVariables<span style="color:#f92672">){}</span>
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> ResponseEntity<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getForEntity</span><span style="color:#f92672">(</span>String url<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> <span style="color:#f92672">?&gt;</span> uriVariables<span style="color:#f92672">){}</span>
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> ResponseEntity<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getForEntity</span><span style="color:#f92672">(</span>URI url<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">){}</span>
+
+
+<span style="color:#75715e">//uriVariables 是用來帶在url上的參數用的
+</span><span style="color:#75715e"></span>restTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">getForEntity</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://bill_domain/{1}/{2}&#34;</span><span style="color:#f92672">,</span> BillResponse<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span>1<span style="color:#f92672">,</span>5<span style="color:#f92672">);</span>
+
+<span style="color:#75715e">// Map&lt;String, ?&gt; uriVariables 使用
+</span><span style="color:#75715e"></span>
+Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span>String<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">();</span>
+map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">);</span>
+map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;page&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;5&#34;</span><span style="color:#f92672">);</span>
+restTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">getForObject</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://bill_domain/{1}/{2}&#34;</span><span style="color:#f92672">,</span> BillResponse<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> map<span style="color:#f92672">);</span>
+
+</code></pre></div><br>
+<h3 id="post">post</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">postForObject</span><span style="color:#f92672">(</span>String url<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object request<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> Object<span style="color:#f92672">...</span> uriVariables<span style="color:#f92672">)</span>
+<span style="color:#66d9ef">throws</span> RestClientException <span style="color:#f92672">{}</span>
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">postForObject</span><span style="color:#f92672">(</span>String url<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object request<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">,</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> <span style="color:#f92672">?&gt;</span> uriVariables<span style="color:#f92672">)</span>
+<span style="color:#66d9ef">throws</span> RestClientException <span style="color:#f92672">{}</span>
+<span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">postForObject</span><span style="color:#f92672">(</span>URI url<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object request<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> responseType<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> RestClientException <span style="color:#f92672">{}</span>
+
+<span style="color:#75715e">//這邊沒問題跟上面一樣
+</span><span style="color:#75715e"></span>HttpHeaders headers <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HttpHeaders<span style="color:#f92672">();</span>
+headers<span style="color:#f92672">.</span><span style="color:#a6e22e">setContentType</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_FORM_URLENCODED</span><span style="color:#f92672">);</span>
+
+
+<span style="color:#75715e">//重點來了 MultiValueMap  ???
+</span><span style="color:#75715e"></span>MultiValueMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> map<span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedMultiValueMap<span style="color:#f92672">&lt;&gt;();</span>
+map<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;email&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;bill@gmail.com&#34;</span><span style="color:#f92672">);</span>
+
+HttpEntity<span style="color:#f92672">&lt;</span>MultiValueMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;&gt;</span> request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HttpEntity<span style="color:#f92672">&lt;&gt;(</span>map<span style="color:#f92672">,</span> headers<span style="color:#f92672">);</span>
+restTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">postForEntity</span><span style="color:#f92672">(</span> url<span style="color:#f92672">,</span> request <span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">);</span>
+
+</code></pre></div></div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/java/">Java</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2021
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></body>
+</html>
