@@ -15,17 +15,64 @@
       <guid>https://xinqilin.github.io/post/vue/vue-intro/</guid>
       
         <description>&lt;h1 id=&#34;筆記-vue-未整理-version&#34;&gt;筆記 Vue 未整理 version&lt;/h1&gt;
+&lt;h3 id=&#34;套件&#34;&gt;套件&lt;/h3&gt;
 &lt;p&gt;vetur
 vue2 snippets
+webpack  -&amp;gt; npm install webpack -g
+vue -&amp;gt; npm install -g @vue/cli-init
 chrome: vue plugin&lt;/p&gt;
-&lt;p&gt;單向綁定
-v-text v-html
+&lt;h3 id=&#34;快速開始&#34;&gt;快速開始&lt;/h3&gt;
+&lt;p&gt;vue init webpack &amp;lt;你的app名字&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;npm run dev&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;main.js -&amp;gt; 路由 index.js  在 [router 內]&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Router&lt;/span&gt;({
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;routes&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;[
+        {
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;,
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;HelloWorld&amp;#39;&lt;/span&gt;,
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;component&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HelloWorld&lt;/span&gt;
+        }
+    ]
+})
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;HelloWorld.vue 內容 在 [components內]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;template&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;div&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/div&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/template&amp;gt;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;script&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt; {
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;(){
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Bill&amp;#39;&lt;/span&gt;
+        }
+    }
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/script&amp;gt;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;style&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/style&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;跳頁&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;template&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;div&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;router&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/HelloWorld&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hello&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;world&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/router-link&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/div&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/template&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;單向綁定&#34;&gt;單向綁定&lt;/h3&gt;
+&lt;p&gt;v-text v-html
 v-bind:href=&amp;ldquo;link&amp;rdquo;   vue instance 內的 method 的 data:{link}
 (v-bind:href 可縮寫:href)&lt;/p&gt;
-&lt;p&gt;雙向綁定
-v-model&lt;/p&gt;
-&lt;p&gt;綁定事件
-v-on:click=&amp;ldquo;num++&amp;rdquo;   =   @click&lt;/p&gt;
+&lt;h3 id=&#34;雙向綁定&#34;&gt;雙向綁定&lt;/h3&gt;
+&lt;p&gt;v-model&lt;/p&gt;
+&lt;h3 id=&#34;綁定事件&#34;&gt;綁定事件&lt;/h3&gt;
+&lt;p&gt;v-on:click=&amp;ldquo;num++&amp;rdquo;   =   @click&lt;/p&gt;
 &lt;p&gt;v-on 防止事件冒泡{
 &lt;code&gt;.stop&lt;/code&gt;: 阻止事件冒泡倒父層
 &lt;code&gt;.prevent&lt;/code&gt;: 阻止默認(預設) 事件發生
@@ -33,8 +80,8 @@ v-on:click=&amp;ldquo;num++&amp;rdquo;   =   @click&lt;/p&gt;
 &lt;code&gt;.self&lt;/code&gt;: 只有自身觸發事件才執行
 &lt;code&gt;.once&lt;/code&gt;: 只執行一次
 }&lt;/p&gt;
-&lt;p&gt;按鍵修飾符 v-on:keyup.13
-13 是鍵碼
+&lt;h3 id=&#34;按鍵修飾符-v-onkeyup13&#34;&gt;按鍵修飾符 v-on:keyup.13&lt;/h3&gt;
+&lt;p&gt;13 是鍵碼
 v-on 按鍵修飾符 懶人包{
 &lt;code&gt;.enter&lt;/code&gt;
 &lt;code&gt;.tab&lt;/code&gt;
@@ -46,7 +93,7 @@ v-on 按鍵修飾符 懶人包{
 &lt;code&gt;.left&lt;/code&gt;
 &lt;code&gt;.right&lt;/code&gt;
 }&lt;/p&gt;
-&lt;p&gt;v-for&lt;/p&gt;
+&lt;h3 id=&#34;v-for&#34;&gt;v-for&lt;/h3&gt;
 &lt;p&gt;v-for=&amp;ldquo;user in users&amp;rdquo;  或 v-for=&amp;quot;(user, index) in users&amp;quot;
 v-for=&amp;quot;(value, key, index) in users&amp;quot;  {{value}} {{key}} {{index}}&lt;/p&gt;
 &lt;p&gt;v-for 增加 :key = &amp;quot;&amp;quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫&lt;/p&gt;
@@ -123,6 +170,18 @@ filter 過濾屬性  -&amp;gt; 使用 {{user.gender | genderFilter}}&lt;/p&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	```&lt;/span&gt;
 	
 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/script&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;lifecycle&#34;&gt;lifeCycle&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Vue&lt;/span&gt;(){
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;el&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt;,
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; {
+
+    },
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;beforeCreate&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(){
+        
+    }
+};
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
       

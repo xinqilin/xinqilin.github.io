@@ -88,7 +88,7 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Vue Intro"/>
-<meta name="twitter:description" content="筆記 Vue 未整理 version vetur vue2 snippets chrome: vue plugin"/>
+<meta name="twitter:description" content="筆記 Vue 未整理 version 套件 vetur vue2 snippets webpack -&gt; npm install webpack -g vue -&gt; npm install -g @vue/cli-init chrome: vue plugin"/>
 
 
 
@@ -257,24 +257,71 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 1 分鐘</span>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
           </div>
 
         
       </div>
 
       <h1 id="筆記-vue-未整理-version">筆記 Vue 未整理 version</h1>
+<h3 id="套件">套件</h3>
 <p>vetur
 vue2 snippets
+webpack  -&gt; npm install webpack -g
+vue -&gt; npm install -g @vue/cli-init
 chrome: vue plugin</p>
-<p>單向綁定
-v-text v-html
+<h3 id="快速開始">快速開始</h3>
+<p>vue init webpack &lt;你的app名字&gt;</p>
+<p><code>npm run dev</code></p>
+<p>main.js -&gt; 路由 index.js  在 [router 內]</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Router</span>({
+    <span style="color:#a6e22e">routes</span><span style="color:#f92672">:</span>[
+        {
+            <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/&#39;</span>,
+            <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;HelloWorld&#39;</span>,
+            <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">HelloWorld</span>
+        }
+    ]
+})
+
+</code></pre></div><blockquote>
+<p>HelloWorld.vue 內容 在 [components內]</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">template</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+    
+    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/template&gt;</span>
+
+<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> {
+        <span style="color:#a6e22e">data</span>(){
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Bill&#39;</span>
+        }
+    }
+<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+
+<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">style</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/style&gt;</span>
+</code></pre></div><blockquote>
+<p>跳頁</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">template</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">router</span><span style="color:#f92672">-</span><span style="color:#a6e22e">link</span> <span style="color:#a6e22e">to</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/HelloWorld&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">go</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">hello</span> <span style="color:#a6e22e">world</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-link&gt;</span>
+    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/template&gt;</span>
+
+</code></pre></div><h3 id="單向綁定">單向綁定</h3>
+<p>v-text v-html
 v-bind:href=&ldquo;link&rdquo;   vue instance 內的 method 的 data:{link}
 (v-bind:href 可縮寫:href)</p>
-<p>雙向綁定
-v-model</p>
-<p>綁定事件
-v-on:click=&ldquo;num++&rdquo;   =   @click</p>
+<h3 id="雙向綁定">雙向綁定</h3>
+<p>v-model</p>
+<h3 id="綁定事件">綁定事件</h3>
+<p>v-on:click=&ldquo;num++&rdquo;   =   @click</p>
 <p>v-on 防止事件冒泡{
 <code>.stop</code>: 阻止事件冒泡倒父層
 <code>.prevent</code>: 阻止默認(預設) 事件發生
@@ -282,8 +329,8 @@ v-on:click=&ldquo;num++&rdquo;   =   @click</p>
 <code>.self</code>: 只有自身觸發事件才執行
 <code>.once</code>: 只執行一次
 }</p>
-<p>按鍵修飾符 v-on:keyup.13
-13 是鍵碼
+<h3 id="按鍵修飾符-v-onkeyup13">按鍵修飾符 v-on:keyup.13</h3>
+<p>13 是鍵碼
 v-on 按鍵修飾符 懶人包{
 <code>.enter</code>
 <code>.tab</code>
@@ -295,7 +342,7 @@ v-on 按鍵修飾符 懶人包{
 <code>.left</code>
 <code>.right</code>
 }</p>
-<p>v-for</p>
+<h3 id="v-for">v-for</h3>
 <p>v-for=&ldquo;user in users&rdquo;  或 v-for=&quot;(user, index) in users&quot;
 v-for=&quot;(value, key, index) in users&quot;  {{value}} {{key}} {{index}}</p>
 <p>v-for 增加 :key = &quot;&quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫</p>
@@ -372,6 +419,18 @@ filter 過濾屬性  -&gt; 使用 {{user.gender | genderFilter}}</p>
 </span><span style="color:#e6db74">	```</span>
 	
 <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+
+</code></pre></div><h3 id="lifecycle">lifeCycle</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Vue</span>(){
+    <span style="color:#a6e22e">el</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">app</span>,
+    <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> {
+
+    },
+    <span style="color:#a6e22e">beforeCreate</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(){
+        
+    }
+};
 
 </code></pre></div></div>
     <div class="post-footer">
