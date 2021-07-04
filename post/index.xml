@@ -6,7 +6,128 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Thu, 01 Jul 2021 23:39:52 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 04 Jul 2021 22:27:03 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue Intro</title>
+      <link>https://xinqilin.github.io/post/vue/vue-intro/</link>
+      <pubDate>Sun, 04 Jul 2021 22:27:03 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/vue/vue-intro/</guid>
+      
+        <description>&lt;h1 id=&#34;筆記-vue-未整理-version&#34;&gt;筆記 Vue 未整理 version&lt;/h1&gt;
+&lt;p&gt;vetur
+vue2 snippets
+chrome: vue plugin&lt;/p&gt;
+&lt;p&gt;單向綁定
+v-text v-html
+v-bind:href=&amp;ldquo;link&amp;rdquo;   vue instance 內的 method 的 data:{link}
+(v-bind:href 可縮寫:href)&lt;/p&gt;
+&lt;p&gt;雙向綁定
+v-model&lt;/p&gt;
+&lt;p&gt;綁定事件
+v-on:click=&amp;ldquo;num++&amp;rdquo;   =   @click&lt;/p&gt;
+&lt;p&gt;v-on 防止事件冒泡{
+&lt;code&gt;.stop&lt;/code&gt;: 阻止事件冒泡倒父層
+&lt;code&gt;.prevent&lt;/code&gt;: 阻止默認(預設) 事件發生
+&lt;code&gt;.capture&lt;/code&gt;: 阻止事件捕獲模式
+&lt;code&gt;.self&lt;/code&gt;: 只有自身觸發事件才執行
+&lt;code&gt;.once&lt;/code&gt;: 只執行一次
+}&lt;/p&gt;
+&lt;p&gt;按鍵修飾符 v-on:keyup.13
+13 是鍵碼
+v-on 按鍵修飾符 懶人包{
+&lt;code&gt;.enter&lt;/code&gt;
+&lt;code&gt;.tab&lt;/code&gt;
+&lt;code&gt;.delete&lt;/code&gt;
+&lt;code&gt;.esc&lt;/code&gt;
+&lt;code&gt;.space&lt;/code&gt;
+&lt;code&gt;.up&lt;/code&gt;
+&lt;code&gt;.down&lt;/code&gt;
+&lt;code&gt;.left&lt;/code&gt;
+&lt;code&gt;.right&lt;/code&gt;
+}&lt;/p&gt;
+&lt;p&gt;v-for&lt;/p&gt;
+&lt;p&gt;v-for=&amp;ldquo;user in users&amp;rdquo;  或 v-for=&amp;quot;(user, index) in users&amp;quot;
+v-for=&amp;quot;(value, key, index) in users&amp;quot;  {{value}} {{key}} {{index}}&lt;/p&gt;
+&lt;p&gt;v-for 增加 :key = &amp;quot;&amp;quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫&lt;/p&gt;
+&lt;p&gt;v-if  裡面都填boolean
+整個標籤不見
+v-show  裡面都填boolean
+是用 display:none&lt;/p&gt;
+&lt;p&gt;常跟 v-if 一起用
+v-else-if
+v-else&lt;/p&gt;
+&lt;p&gt;computed 計算屬性
+watch 監控屬性
+filter 過濾屬性  -&amp;gt; 使用 {{user.gender | genderFilter}}&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Vue&lt;/span&gt;({
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;el&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#app&amp;#34;&lt;/span&gt;,
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;
+	},
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;computed&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;total&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(){
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt;
+		}
+	},
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;watch&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;newValue&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;oldValue&lt;/span&gt;){
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;new: &amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;newValue&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; , old: &amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;oldValue&lt;/span&gt;)
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;){
+				&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;太多&amp;#34;&lt;/span&gt;
+			}
+		}
+	},
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;filters&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;genderFilter&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;val&lt;/span&gt;){
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;male&amp;#34;&lt;/span&gt;
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;female&amp;#34;&lt;/span&gt;
+		}
+	}
+	
+})
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;組件:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;script&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Global&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;組件&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Vue&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;component&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;counter&amp;#34;&lt;/span&gt;,{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;template&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`&amp;lt;button v-on:click = &amp;#34;count++&amp;#34;&amp;gt; {{count}}&amp;lt;/button&amp;gt;`&lt;/span&gt;
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;(){
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; {
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;count&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+			}
+		}
+	});
+	
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;區域組件&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;buttonCounter&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;template&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`&amp;lt;button v-on:click = &amp;#34;count++&amp;#34;&amp;gt; {{count}}&amp;lt;/button&amp;gt;`&lt;/span&gt;
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;(){
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; {
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;count&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+			}
+		}
+	}
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;後&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;放入&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;vue&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;instance&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;components&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;{}&lt;span style=&#34;color:#a6e22e&#34;&gt;中&lt;/span&gt;
+	
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;components&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;{
+		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;button-counter 名字&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;buttonCounter&lt;/span&gt;
+	}
+	
+	&lt;span style=&#34;color:#e6db74&#34;&gt;```
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	&amp;lt;button-counter&amp;gt;&amp;lt;/button-counter&amp;gt; 使用
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;	```&lt;/span&gt;
+	
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/script&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
     <item>
       <title>JWT</title>
       <link>https://xinqilin.github.io/post/spring/jwt/</link>
