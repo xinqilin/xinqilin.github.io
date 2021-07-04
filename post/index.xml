@@ -39,75 +39,90 @@ chrome: vue plugin&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;HelloWorld.vue 內容 在 [components內]&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;template&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;div&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;template&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
     
-    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/div&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/template&amp;gt;&lt;/span&gt;
+    &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;template&lt;/span&gt;&amp;gt;
 
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;script&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt; {
         &lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;(){
             &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Bill&amp;#39;&lt;/span&gt;
         }
     }
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/script&amp;gt;&lt;/span&gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
 
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;style&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/style&amp;gt;&lt;/span&gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;style&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;style&lt;/span&gt;&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;跳頁&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;template&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;div&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;router&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/HelloWorld&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hello&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;world&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/router-link&amp;gt;&lt;/span&gt;
-    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/div&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/template&amp;gt;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;template&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;router-link&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/HelloWorld&amp;#34;&lt;/span&gt;&amp;gt;go to hello world&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;router-link&lt;/span&gt;&amp;gt;
+    &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;template&lt;/span&gt;&amp;gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;單向綁定&#34;&gt;單向綁定&lt;/h3&gt;
-&lt;p&gt;v-text v-html
-v-bind:href=&amp;ldquo;link&amp;rdquo;   vue instance 內的 method 的 data:{link}
-(v-bind:href 可縮寫:href)&lt;/p&gt;
-&lt;h3 id=&#34;雙向綁定&#34;&gt;雙向綁定&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+v-text v-html
+v-bind:href=&amp;quot;link&amp;quot;   vue instance 內的 method 的 data:{link}
+(v-bind:href 可縮寫:href)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;雙向綁定&#34;&gt;雙向綁定&lt;/h3&gt;
 &lt;p&gt;v-model&lt;/p&gt;
 &lt;h3 id=&#34;綁定事件&#34;&gt;綁定事件&lt;/h3&gt;
-&lt;p&gt;v-on:click=&amp;ldquo;num++&amp;rdquo;   =   @click&lt;/p&gt;
-&lt;p&gt;v-on 防止事件冒泡{
-&lt;code&gt;.stop&lt;/code&gt;: 阻止事件冒泡倒父層
-&lt;code&gt;.prevent&lt;/code&gt;: 阻止默認(預設) 事件發生
-&lt;code&gt;.capture&lt;/code&gt;: 阻止事件捕獲模式
-&lt;code&gt;.self&lt;/code&gt;: 只有自身觸發事件才執行
-&lt;code&gt;.once&lt;/code&gt;: 只執行一次
-}&lt;/p&gt;
-&lt;h3 id=&#34;按鍵修飾符-v-onkeyup13&#34;&gt;按鍵修飾符 v-on:keyup.13&lt;/h3&gt;
-&lt;p&gt;13 是鍵碼
+&lt;pre&gt;&lt;code&gt;
+v-on:click=&amp;quot;num++&amp;quot;   =   @click
+
+v-on 防止事件冒泡{
+`.stop`: 阻止事件冒泡倒父層 
+`.prevent`: 阻止默認(預設) 事件發生
+`.capture`: 阻止事件捕獲模式
+`.self`: 只有自身觸發事件才執行
+`.once`: 只執行一次
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;按鍵修飾符-v-onkeyup13&#34;&gt;按鍵修飾符 v-on:keyup.13&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+13 是鍵碼
 v-on 按鍵修飾符 懶人包{
-&lt;code&gt;.enter&lt;/code&gt;
-&lt;code&gt;.tab&lt;/code&gt;
-&lt;code&gt;.delete&lt;/code&gt;
-&lt;code&gt;.esc&lt;/code&gt;
-&lt;code&gt;.space&lt;/code&gt;
-&lt;code&gt;.up&lt;/code&gt;
-&lt;code&gt;.down&lt;/code&gt;
-&lt;code&gt;.left&lt;/code&gt;
-&lt;code&gt;.right&lt;/code&gt;
-}&lt;/p&gt;
-&lt;h3 id=&#34;v-for&#34;&gt;v-for&lt;/h3&gt;
-&lt;p&gt;v-for=&amp;ldquo;user in users&amp;rdquo;  或 v-for=&amp;quot;(user, index) in users&amp;quot;
-v-for=&amp;quot;(value, key, index) in users&amp;quot;  {{value}} {{key}} {{index}}&lt;/p&gt;
-&lt;p&gt;v-for 增加 :key = &amp;quot;&amp;quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫&lt;/p&gt;
-&lt;p&gt;v-if  裡面都填boolean
+`.enter`
+`.tab`
+`.delete`
+`.esc`
+`.space`
+`.up`
+`.down`
+`.left`
+`.right`
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;v-for&#34;&gt;v-for&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;v-for = &amp;quot;user in users&amp;quot;  或 v-for=&amp;quot;(user, index) in users&amp;quot;
+v-for = &amp;quot;(value, key, index) in users&amp;quot;  {{value}} {{key}} {{index}}
+ 
+v-for 增加 :key = &amp;quot;&amp;quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫
+
+v-if  裡面都填boolean
 整個標籤不見
 v-show  裡面都填boolean
-是用 display:none&lt;/p&gt;
-&lt;p&gt;常跟 v-if 一起用
+是用 display:none
+
+
+常跟 v-if 一起用
 v-else-if
-v-else&lt;/p&gt;
-&lt;p&gt;computed 計算屬性
-watch 監控屬性
-filter 過濾屬性  -&amp;gt; 使用 {{user.gender | genderFilter}}&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+v-else 
+
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;// computed 計算屬性
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// watch 監控屬性
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// filter 過濾屬性  -&amp;gt; 使用 {{user.gender | genderFilter}}
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+
+
 &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Vue&lt;/span&gt;({
 	&lt;span style=&#34;color:#a6e22e&#34;&gt;el&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#app&amp;#34;&lt;/span&gt;,
 	&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;{
@@ -181,7 +196,8 @@ filter 過濾屬性  -&amp;gt; 使用 {{user.gender | genderFilter}}&lt;/p&gt;
     &lt;span style=&#34;color:#a6e22e&#34;&gt;beforeCreate&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(){
         
     }
-};
+    &lt;span style=&#34;color:#75715e&#34;&gt;// 放一些生命週期的東西
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;};
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
       

@@ -288,75 +288,90 @@ chrome: vue plugin</p>
 </code></pre></div><blockquote>
 <p>HelloWorld.vue 內容 在 [components內]</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
-<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">template</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">
+&lt;<span style="color:#f92672">template</span>&gt;
+    &lt;<span style="color:#f92672">div</span>&gt;
     
-    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
-<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/template&gt;</span>
+    &lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">template</span>&gt;
 
-<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span>
+&lt;<span style="color:#f92672">script</span>&gt;
     <span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> {
         <span style="color:#a6e22e">data</span>(){
             <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Bill&#39;</span>
         }
     }
-<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+&lt;/<span style="color:#f92672">script</span>&gt;
 
-<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">style</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/style&gt;</span>
+&lt;<span style="color:#f92672">style</span>&gt;&lt;/<span style="color:#f92672">style</span>&gt;
 </code></pre></div><blockquote>
 <p>跳頁</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
-<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">template</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">router</span><span style="color:#f92672">-</span><span style="color:#a6e22e">link</span> <span style="color:#a6e22e">to</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/HelloWorld&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">go</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">hello</span> <span style="color:#a6e22e">world</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-link&gt;</span>
-    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
-<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/template&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">
+&lt;<span style="color:#f92672">template</span>&gt;
+    &lt;<span style="color:#f92672">div</span>&gt;
+        &lt;<span style="color:#f92672">router-link</span> <span style="color:#a6e22e">to</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/HelloWorld&#34;</span>&gt;go to hello world&lt;/<span style="color:#f92672">router-link</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">template</span>&gt;
 
 </code></pre></div><h3 id="單向綁定">單向綁定</h3>
-<p>v-text v-html
-v-bind:href=&ldquo;link&rdquo;   vue instance 內的 method 的 data:{link}
-(v-bind:href 可縮寫:href)</p>
-<h3 id="雙向綁定">雙向綁定</h3>
+<pre><code>
+v-text v-html
+v-bind:href=&quot;link&quot;   vue instance 內的 method 的 data:{link}
+(v-bind:href 可縮寫:href)
+
+</code></pre><h3 id="雙向綁定">雙向綁定</h3>
 <p>v-model</p>
 <h3 id="綁定事件">綁定事件</h3>
-<p>v-on:click=&ldquo;num++&rdquo;   =   @click</p>
-<p>v-on 防止事件冒泡{
-<code>.stop</code>: 阻止事件冒泡倒父層
-<code>.prevent</code>: 阻止默認(預設) 事件發生
-<code>.capture</code>: 阻止事件捕獲模式
-<code>.self</code>: 只有自身觸發事件才執行
-<code>.once</code>: 只執行一次
-}</p>
-<h3 id="按鍵修飾符-v-onkeyup13">按鍵修飾符 v-on:keyup.13</h3>
-<p>13 是鍵碼
+<pre><code>
+v-on:click=&quot;num++&quot;   =   @click
+
+v-on 防止事件冒泡{
+`.stop`: 阻止事件冒泡倒父層 
+`.prevent`: 阻止默認(預設) 事件發生
+`.capture`: 阻止事件捕獲模式
+`.self`: 只有自身觸發事件才執行
+`.once`: 只執行一次
+}
+
+</code></pre><h3 id="按鍵修飾符-v-onkeyup13">按鍵修飾符 v-on:keyup.13</h3>
+<pre><code>
+13 是鍵碼
 v-on 按鍵修飾符 懶人包{
-<code>.enter</code>
-<code>.tab</code>
-<code>.delete</code>
-<code>.esc</code>
-<code>.space</code>
-<code>.up</code>
-<code>.down</code>
-<code>.left</code>
-<code>.right</code>
-}</p>
-<h3 id="v-for">v-for</h3>
-<p>v-for=&ldquo;user in users&rdquo;  或 v-for=&quot;(user, index) in users&quot;
-v-for=&quot;(value, key, index) in users&quot;  {{value}} {{key}} {{index}}</p>
-<p>v-for 增加 :key = &quot;&quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫</p>
-<p>v-if  裡面都填boolean
+`.enter`
+`.tab`
+`.delete`
+`.esc`
+`.space`
+`.up`
+`.down`
+`.left`
+`.right`
+}
+
+</code></pre><h3 id="v-for">v-for</h3>
+<pre><code>v-for = &quot;user in users&quot;  或 v-for=&quot;(user, index) in users&quot;
+v-for = &quot;(value, key, index) in users&quot;  {{value}} {{key}} {{index}}
+ 
+v-for 增加 :key = &quot;&quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫
+
+v-if  裡面都填boolean
 整個標籤不見
 v-show  裡面都填boolean
-是用 display:none</p>
-<p>常跟 v-if 一起用
+是用 display:none
+
+
+常跟 v-if 一起用
 v-else-if
-v-else</p>
-<p>computed 計算屬性
-watch 監控屬性
-filter 過濾屬性  -&gt; 使用 {{user.gender | genderFilter}}</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+v-else 
+
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+<span style="color:#75715e">// computed 計算屬性
+</span><span style="color:#75715e">// watch 監控屬性
+</span><span style="color:#75715e">// filter 過濾屬性  -&gt; 使用 {{user.gender | genderFilter}}
+</span><span style="color:#75715e"></span>
+
+
 <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Vue</span>({
 	<span style="color:#a6e22e">el</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#app&#34;</span>,
 	<span style="color:#a6e22e">data</span><span style="color:#f92672">:</span>{
@@ -430,7 +445,8 @@ filter 過濾屬性  -&gt; 使用 {{user.gender | genderFilter}}</p>
     <span style="color:#a6e22e">beforeCreate</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(){
         
     }
-};
+    <span style="color:#75715e">// 放一些生命週期的東西
+</span><span style="color:#75715e"></span>};
 
 </code></pre></div></div>
     <div class="post-footer">
