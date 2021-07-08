@@ -6,7 +6,97 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 04 Jul 2021 22:27:03 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 Jul 2021 21:20:39 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SOLID</title>
+      <link>https://xinqilin.github.io/post/designpattern/solid/</link>
+      <pubDate>Thu, 08 Jul 2021 21:20:39 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/solid/</guid>
+      
+        <description>&lt;h1 id=&#34;solid&#34;&gt;SOLID&lt;/h1&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;   首字母   &lt;/th&gt;
+        &lt;th&gt;   代表   &lt;/th&gt;
+        &lt;th&gt;     概念     &lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;   S   &lt;/td&gt;
+        &lt;td&gt;單一職責原則:   &lt;/td&gt;
+        &lt;td&gt;「物件應該僅具有一種單一功能」的概念。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;   O   &lt;/td&gt;
+        &lt;td&gt;開閉原則:   &lt;/td&gt;
+        &lt;td&gt;「軟體體應該是對於擴充開放的，但是對於修改封閉的」的概念&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;   L   &lt;/td&gt;
+        &lt;td&gt;里氏替換原則:   &lt;/td&gt;
+        &lt;td&gt;「程式中的物件應該是可以在不改變程式正確性的前提下被它的子類所替換的」&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;   I   &lt;/td&gt;
+        &lt;td&gt;介面隔離原則:   &lt;/td&gt;
+        &lt;td&gt;「多個特定客戶端介面要好於一個寬泛用途的介面」&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;   D   &lt;/td&gt;
+        &lt;td&gt;依賴反轉原則   &lt;/td&gt;
+        &lt;td&gt;一個方法應該遵從「依賴於抽象而不是一個實例」的概念。依賴注入是該原則的一種實現方式。&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;srp-single-responsibility-principle&#34;&gt;SRP Single Responsibility Principle&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+A class should have only reason to change it
+只能有一個理由去改變它，若有多個邏輯寫在一個method 中 不符合
+
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;複雜度降低&lt;/li&gt;
+&lt;li&gt;可讀性高&lt;/li&gt;
+&lt;li&gt;可維護姓提升&lt;/li&gt;
+&lt;li&gt;只有改這個才有影響
+&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;dependency-inversion-principle-依賴反轉&#34;&gt;Dependency inversion principle 依賴反轉&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+high-level should not depend on low-level module.
+Both should depend on abstraction
+中間應該以介面做連結
+
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;並行開發的穩定性&lt;/li&gt;
+&lt;li&gt;增加單元測試的可能 有interface 就能mock
+&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;liskov-substitution-principle-李式替換&#34;&gt;Liskov substitution principle 李式替換&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+sub-class should change super-class on no reason
+子類可無條件更換父類
+
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;增加強健性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;interface-segregation-principle-介面隔離原則&#34;&gt;Interface segregation principle 介面隔離原則&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+不同的事，應該用不同介面區隔，不應用一大包介面
+
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;介面越少，對系統的影響風險也少&lt;/li&gt;
+&lt;li&gt;當需求變更時，有更多靈活性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;open-close-principle-開關原則&#34;&gt;Open-Close principle 開關原則&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+code should be open for extension , but close for modification
+
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;code 比較不容易壞掉，因為沒去更改到&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+      
+    </item>
+    
     <item>
       <title>Vue Intro</title>
       <link>https://xinqilin.github.io/post/vue/vue-intro/</link>
