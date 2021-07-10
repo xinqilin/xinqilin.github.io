@@ -7,7 +7,7 @@
   <title>
     Bill.Lin の 成長之路 ©
       |
-      @Autowired
+      @Autowired is not recommended
 
 
     
@@ -87,8 +87,9 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="@Autowired"/>
-<meta name="twitter:description" content="@Autowired is not recommended intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)"/>
+<meta name="twitter:title" content="@Autowired is not recommended"/>
+<meta name="twitter:description" content="intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)
+ Field injection is not recommended Inspection info: Spring Team recommends: &quot;Always use constructor based dependency injection in your beans."/>
 
 
 
@@ -245,7 +246,7 @@
     <div class="post-content">
       
       <div class="post-title">
-        <h1>@Autowired</h1>
+        <h1>@Autowired is not recommended</h1>
         
           <div class="info">
             <em class="fas fa-calendar-day"></em>
@@ -263,11 +264,12 @@
         
       </div>
 
-      <h1 id="autowired-is-not-recommended">@Autowired is not recommended</h1>
-<p>intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)</p>
+      <p><code>intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)</code></p>
 <pre><code>
 Field injection is not recommended 
-Inspection info: Spring Team recommends: &quot;Always use constructor based dependency injection in your beans. Always use assertions for mandatory dependencies&quot;.
+Inspection info: Spring Team recommends: 
+&quot;Always use constructor based dependency injection in your beans. 
+ Always use assertions for mandatory dependencies&quot;.
  
 </code></pre><br>
 <p>這與 Spring 注入的方法有關</p>
@@ -317,7 +319,7 @@ Inspection info: Spring Team recommends: &quot;Always use constructor based depe
     <span style="color:#75715e">// 完了!  掛了  BillService 這時還沒有被建出來，沒有 becomeRich 直接吃 NPE
 </span><span style="color:#75715e"></span>
 </code></pre></div><br>
-<p>Setter 跟 Constructor injection 差在 Setter 可以在沒有提供依賴時 ，順利執行，但 Constructor injection則會要求要強制依賴才能正常運轉</p>
+<p><code>Setter 跟 Constructor injection 差在 Setter 可以在沒有提供依賴時 ，順利執行，但 Constructor injection則會要求要強制依賴才能正常運轉</code></p>
 <h3 id="setter">Setter</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
     <span style="color:#66d9ef">private</span> BillService billService<span style="color:#f92672">;</span>

@@ -8,17 +8,18 @@
     <language>zh-tw</language>
     <lastBuildDate>Sat, 10 Jul 2021 20:27:20 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>@Autowired</title>
+      <title>@Autowired is not recommended</title>
       <link>https://xinqilin.github.io/post/spring/autowired/</link>
       <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
       
       <guid>https://xinqilin.github.io/post/spring/autowired/</guid>
       
-        <description>&lt;h1 id=&#34;autowired-is-not-recommended&#34;&gt;@Autowired is not recommended&lt;/h1&gt;
-&lt;p&gt;intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)&lt;/p&gt;
+        <description>&lt;p&gt;&lt;code&gt;intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)&lt;/code&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;
 Field injection is not recommended 
-Inspection info: Spring Team recommends: &amp;quot;Always use constructor based dependency injection in your beans. Always use assertions for mandatory dependencies&amp;quot;.
+Inspection info: Spring Team recommends: 
+&amp;quot;Always use constructor based dependency injection in your beans. 
+ Always use assertions for mandatory dependencies&amp;quot;.
  
 &lt;/code&gt;&lt;/pre&gt;&lt;br&gt;
 &lt;p&gt;這與 Spring 注入的方法有關&lt;/p&gt;
@@ -68,7 +69,7 @@ Inspection info: Spring Team recommends: &amp;quot;Always use constructor based 
     &lt;span style=&#34;color:#75715e&#34;&gt;// 完了!  掛了  BillService 這時還沒有被建出來，沒有 becomeRich 直接吃 NPE
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
-&lt;p&gt;Setter 跟 Constructor injection 差在 Setter 可以在沒有提供依賴時 ，順利執行，但 Constructor injection則會要求要強制依賴才能正常運轉&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Setter 跟 Constructor injection 差在 Setter 可以在沒有提供依賴時 ，順利執行，但 Constructor injection則會要求要強制依賴才能正常運轉&lt;/code&gt;&lt;/p&gt;
 &lt;h3 id=&#34;setter&#34;&gt;Setter&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; BillService billService&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
