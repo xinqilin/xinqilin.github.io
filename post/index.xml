@@ -6,7 +6,19 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sat, 10 Jul 2021 20:27:20 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 12 Jul 2021 23:33:14 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>UML</title>
+      <link>https://xinqilin.github.io/post/designpattern/uml/</link>
+      <pubDate>Mon, 12 Jul 2021 23:33:14 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/uml/</guid>
+      
+        <description>&lt;h1 id=&#34;to-be-continued&#34;&gt;to be continued&amp;hellip;&lt;/h1&gt;
+</description>
+      
+    </item>
+    
     <item>
       <title>@Autowired is not recommended</title>
       <link>https://xinqilin.github.io/post/spring/autowired/</link>
