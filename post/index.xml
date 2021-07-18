@@ -14,7 +14,45 @@
       
       <guid>https://xinqilin.github.io/post/designpattern/uml/</guid>
       
-        <description>&lt;h1 id=&#34;to-be-continued&#34;&gt;to be continued&amp;hellip;&lt;/h1&gt;
+        <description>&lt;h2 id=&#34;instance-level&#34;&gt;Instance Level&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Dependency 依賴&lt;/li&gt;
+&lt;li&gt;Association 關聯&lt;/li&gt;
+&lt;li&gt;Aggregation 聚合&lt;/li&gt;
+&lt;li&gt;Composition 組合&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;class-level&#34;&gt;Class Level&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Implementation 實作&lt;/li&gt;
+&lt;li&gt;Inheritance 繼承&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;dependency&#34;&gt;Dependency&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+虛線，箭頭指向 被使用者
+
+A ---&amp;gt; B
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;association&#34;&gt;Association&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+實線，箭頭指向 被擁有者 ， 可在箭頭上增加 1-many 1-1 關西
+
+A -&amp;gt; B
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;aggregation&#34;&gt;Aggregation&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+空心菱形屁股箭頭，箭頭指向 整體
+
+
+A &amp;lt;&amp;gt;-&amp;gt; B
+  &amp;lt;&amp;gt;-&amp;gt; C  
+
+  要有A 必須要有B，C
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;composition&#34;&gt;Composition&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+實心菱形屁股箭頭，箭頭指向 整體
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;to be continued&amp;hellip;.&lt;/p&gt;
 </description>
       
     </item>
