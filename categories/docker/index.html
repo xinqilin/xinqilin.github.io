@@ -7,7 +7,7 @@
   <title>
     Bill.Lin の 成長之路 ©
       |
-      Dockerfile
+      Docker
 
 
     
@@ -62,7 +62,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/post/docker/docker-file/" />
+  <link rel="canonical" href="/categories/docker/" />
 
   
   
@@ -87,8 +87,14 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Dockerfile"/>
-<meta name="twitter:description" content="build image mvn / gradle 後 clean package (或直接install) build 出 jar"/>
+<meta name="twitter:title" content="Docker"/>
+<meta name="twitter:description" content="
+後端工程師 Java, Kotlin
+
+成長路上有你有我
+
+很高興認識你 Pleased to meet you!
+"/>
 
 
 
@@ -237,62 +243,37 @@
         <div class="autopagerize_page_element">
           <div class="content">
   <div
-    class="post 
+    class="archive 
       animated fadeInDown
 
     "
   >
-    <div class="post-content">
+    <ul class="list-with-title">
       
-      <div class="post-title">
-        <h1>Dockerfile</h1>
+        <div class="listing-title">2021</div>
         
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Sun, Jul 25, 2021
+          <ul class="listing">
+            <div class="listing-item">
+              <div class="listing-post">
+                <a href="/post/docker/docker-file/" title="Dockerfile">Dockerfile</a>
+                <div class="post-time">
+                  <span class="date"
+                    >
+                      Jul 25
 
 
-              </span
-            >
-            <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 1 分鐘</span>
-          </div>
-
-        
-      </div>
-
-      <h3 id="build-image">build image</h3>
-<p>mvn / gradle 後 clean package (或直接install) build 出 jar</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> openjdk:11</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> ./target/*.jar C:/ideaProjects/docker-workspace/xxx.jar<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> C:/ideaProjects/docker-workspace</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> sh -c <span style="color:#e6db74">&#39;touch xxx.jar&#39;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;java&#34;</span>,<span style="color:#e6db74">&#34;-jar&#34;</span>,<span style="color:#e6db74">&#34;xxx.jar&#34;</span>]<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span></code></pre></div><h3 id="build-image-1">build image</h3>
-<p>cd 到 Dockerfile 目錄</p>
-<p><code>docker build -t &lt;自訂 image 名字&gt; . </code></p>
-<p>.代表docker build時使用當下目錄的Dockerfile。</p>
-<h3 id="打開-docker-完成">打開 docker 完成</h3>
-</div>
-    <div class="post-footer">
-      <div class="info">
-        
-          <span class="separator"><a class="category" href="/categories/docker/">Docker</a></span>
-
-
-
+                    </span
+                  >
+                </div>
+              </div>
+            </div>
+          </ul>
 
         
 
-        
-      </div>
-    </div>
 
-    
+      
+    </ul>
   </div>
 
 
