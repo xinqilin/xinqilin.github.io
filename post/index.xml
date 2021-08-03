@@ -6,7 +6,35 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 25 Jul 2021 02:21:13 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Aug 2021 10:23:31 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Curl</title>
+      <link>https://xinqilin.github.io/post/other/curl/</link>
+      <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/other/curl/</guid>
+      
+        <description>&lt;h3 id=&#34;參數&#34;&gt;參數&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;    -X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request
+    -H/--header                           設定 request 裡所攜帶的 header
+    -i/--include                          在 output 顯示 response 的 header
+    -d/--data                             攜帶 HTTP POST Data 
+    -v/--verbose                          輸出更多的訊息方便 debug / 顯示接收及發送的訊息
+    - trace-ascii [fileName] [URL]        顯示更多詳細訊息
+    -u/--user                             攜帶使用者帳號、密碼
+    -b/--cookie                           攜帶 cookie（可以是參數或是檔案位置）
+    -o [fileName] [URL]                   下載若沒填 [fileName] 會直接用 source 原名
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;常用&#34;&gt;常用&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;curl [URL]
+curl -X POST/PUT [URL] -H &amp;quot;Content-Type: application/json&amp;quot; -d &#39;{&amp;quot;key&amp;quot; : &amp;quot;value&amp;quot; }&#39;
+curl -u [URL] &amp;lt;Account&amp;gt;:&amp;lt;Password&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;reference: &lt;br&gt;
+&lt;a href=&#34;https://blog.techbridge.cc/2019/02/01/linux-curl-command-tutorial/&#34;&gt;Linux Curl Command 指令與基本操作入門教學&lt;/a&gt;
+&lt;a href=&#34;https://miahsuwork.medium.com/curl-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E8%88%87%E6%8C%87%E4%BB%A4-%E6%90%AD%E9%85%8D-lidemy-http-challenge-%E5%AF%A6%E4%BD%9C-39b79511eb9e&#34;&gt;[curl] 基本操作與指令 — 搭配 Lidemy HTTP Challenge 實作&lt;/a&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
     <item>
       <title>Dockerfile</title>
       <link>https://xinqilin.github.io/post/docker/docker-file/</link>

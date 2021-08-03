@@ -6,6 +6,11 @@
 ><head>
   <title>
     Bill.Lin の 成長之路 ©
+      |
+      Curl
+
+
+    
 
   </title>
 
@@ -57,7 +62,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/" />
+  <link rel="canonical" href="/post/other/curl/" />
 
   
   
@@ -82,14 +87,8 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="
-後端工程師 Java, Kotlin
-
-成長路上有你有我
-
-很高興認識你 Pleased to meet you!
-"/>
+<meta name="twitter:title" content="Curl"/>
+<meta name="twitter:description" content="參數  -X/--request [GET|POST|PUT|DELETE|PATCH] 使用指定的 http method 來發出 http request -H/--header 設定 request 裡所攜帶的 header -i/--include 在 output 顯示 response 的 header -d/--data 攜帶 HTTP POST Data -v/--verbose 輸出更多的訊息方便 debug / 顯示接收及發送的訊息 - trace-ascii [fileName] [URL] 顯示更多詳細訊息 -u/--user 攜帶使用者帳號、密碼 -b/--cookie 攜帶 cookie（可以是參數或是檔案位置） -o [fileName] [URL] 下載若沒填 [fileName] 會直接用 source 原名 常用 curl [URL] curl -X POST/PUT [URL] -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;key&quot; : &quot;value&quot; }&#39; curl -u [URL] &lt;Account&gt;:&lt;Password&gt; reference: Linux Curl Command 指令與基本操作入門教學 [curl] 基本操作與指令 — 搭配 Lidemy HTTP Challenge 實作"/>
 
 
 
@@ -115,9 +114,6 @@
           
           <li>
             <a
-              
-                class="current"
-
               
               href="/"
               
@@ -246,261 +242,54 @@
 
     "
   >
-    <div class="post-title post-content">
+    <div class="post-content">
       
+      <div class="post-title">
+        <h1>Curl</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Aug 3, 2021
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
+          </div>
+
+        
+      </div>
+
+      <h3 id="參數">參數</h3>
+<pre><code>    -X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request
+    -H/--header                           設定 request 裡所攜帶的 header
+    -i/--include                          在 output 顯示 response 的 header
+    -d/--data                             攜帶 HTTP POST Data 
+    -v/--verbose                          輸出更多的訊息方便 debug / 顯示接收及發送的訊息
+    - trace-ascii [fileName] [URL]        顯示更多詳細訊息
+    -u/--user                             攜帶使用者帳號、密碼
+    -b/--cookie                           攜帶 cookie（可以是參數或是檔案位置）
+    -o [fileName] [URL]                   下載若沒填 [fileName] 會直接用 source 原名
+</code></pre><h3 id="常用">常用</h3>
+<pre><code>curl [URL]
+curl -X POST/PUT [URL] -H &quot;Content-Type: application/json&quot; -d '{&quot;key&quot; : &quot;value&quot; }'
+curl -u [URL] &lt;Account&gt;:&lt;Password&gt;
+</code></pre><p>reference: <br>
+<a href="https://blog.techbridge.cc/2019/02/01/linux-curl-command-tutorial/">Linux Curl Command 指令與基本操作入門教學</a>
+<a href="https://miahsuwork.medium.com/curl-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E8%88%87%E6%8C%87%E4%BB%A4-%E6%90%AD%E9%85%8D-lidemy-http-challenge-%E5%AF%A6%E4%BD%9C-39b79511eb9e">[curl] 基本操作與指令 — 搭配 Lidemy HTTP Challenge 實作</a></p>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+
+        
+      </div>
     </div>
 
     
-  </div>
-
-  
-
-  
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/algorithm/mergesort/">MergeSort</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              MergeSort Time complexity = log n * O(n) = O(n logn)
-
-
-            
-          </p>
-          <a href="/post/algorithm/mergesort/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Jun 28, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/java/">Java</a><a class="category" href="/categories/algorithm/">Algorithm</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/java/">Java</a><a class="tag" href="/tags/algorithm/">Algorithm</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/java/map-sort-by-value/">Map Sort by Value</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Map Sort by value 有鑑於 Bill 上上週在刷 LC 時 題目點我!
-
-
-            
-          </p>
-          <a href="/post/java/map-sort-by-value/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Sun, Mar 28, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/java/">Java</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/java/">Java</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/script/deploy-hugo/">Deploy Hugo</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Deploy Hugo  設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html hugo -t &lt;你的theme&gt;  再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
-
-
-            
-          </p>
-          <a href="/post/script/deploy-hugo/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Sun, Jun 28, 2020
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/script/">Script</a><a class="category" href="/categories/hugo/">hugo</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/script/">Script</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/murmur/first-post/">First Post</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              第一篇 近日對於一些之前寫過的演算法，或code 會突然忘記，然後不知道可以去哪裡找，近日 reset 了 github page (之前的文都亂po hugo theme 也不是我喜歡的，這次直接大刀闊斧重來)
-
-
-            
-          </p>
-          <a href="/post/murmur/first-post/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Sun, Jun 28, 2020
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/bill-murmur/">Bill murmur</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/murmur/">murmur</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-  <div class="pagination">
-    
-<ul class="pagination">
-  <li class="page-item">
-    <a href="/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a href="/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a class="page-link" href="/">1</a>
-  </li>
-  <li class="page-item active">
-    <a class="page-link" href="/page/2/">2</a>
-  </li>
-  <li class="page-item disabled">
-    <a  class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a href="/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-  </li>
-</ul>
-
-
   </div>
 
 
