@@ -25,12 +25,13 @@
     -b/--cookie                           攜帶 cookie（可以是參數或是檔案位置）
     -o [fileName] [URL]                   下載若沒填 [fileName] 會直接用 source 原名
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;常用&#34;&gt;常用&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;curl [URL]
-curl -X POST/PUT [URL] -H &amp;quot;Content-Type: application/json&amp;quot; -d &#39;{&amp;quot;key&amp;quot; : &amp;quot;value&amp;quot; }&#39;
-curl -u [URL] &amp;lt;Account&amp;gt;:&amp;lt;Password&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;reference: &lt;br&gt;
-&lt;a href=&#34;https://blog.techbridge.cc/2019/02/01/linux-curl-command-tutorial/&#34;&gt;Linux Curl Command 指令與基本操作入門教學&lt;/a&gt;
-&lt;a href=&#34;https://miahsuwork.medium.com/curl-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E8%88%87%E6%8C%87%E4%BB%A4-%E6%90%AD%E9%85%8D-lidemy-http-challenge-%E5%AF%A6%E4%BD%9C-39b79511eb9e&#34;&gt;[curl] 基本操作與指令 — 搭配 Lidemy HTTP Challenge 實作&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    curl [URL]
+    curl -X POST/PUT [URL] -H &amp;quot;Content-Type: application/json&amp;quot; -d &#39;{&amp;quot;key&amp;quot; : &amp;quot;value&amp;quot; }&#39;
+    curl -u [URL] &amp;lt;Account&amp;gt;:&amp;lt;Password&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;reference:
+&lt;br&gt;
+&lt;a href=&#34;https://blog.techbridge.cc/2019/02/01/linux-curl-command-tutorial/&#34;&gt;Linux Curl Command 指令與基本操作入門教學&lt;/a&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://miahsuwork.medium.com/curl-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E8%88%87%E6%8C%87%E4%BB%A4-%E6%90%AD%E9%85%8D-lidemy-http-challenge-%E5%AF%A6%E4%BD%9C-39b79511eb9e&#34;&gt;[curl] 基本操作與指令 — 搭配 Lidemy HTTP Challenge 實作&lt;/a&gt;&lt;/p&gt;
 </description>
       
     </item>
