@@ -6,7 +6,28 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Tue, 03 Aug 2021 10:23:31 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 05 Aug 2021 21:07:54 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lateinit</title>
+      <link>https://xinqilin.github.io/post/kotlin/lateinit/</link>
+      <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/kotlin/lateinit/</guid>
+      
+        <description>&lt;h3 id=&#34;lateinit延遲初始化&#34;&gt;lateinit：延遲初始化&lt;/h3&gt;
+&lt;p&gt;當不想設定 init value 又不想加上 &lt;code&gt;!!&lt;/code&gt; ， &lt;code&gt;?.&lt;/code&gt; ， &lt;code&gt;貓王運算&lt;/code&gt; 時 可以使用&lt;/p&gt;
+&lt;p&gt;ex: DI 時可以使用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; adminUserRepository: AdminUserRepository
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;lateinit-with-val&#34;&gt;lateinit with val&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;    lateinit modifier is allowed only on mutable properties
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;lateinit 算有點語法糖，強制不初始化，繞過compiler，但要小心 之後一定要給值，不然就踩到自己埋的地雷
+&lt;br&gt;
+檢查 lateinit 是否已給值:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    xxx.isInitialized
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
     <item>
       <title>Curl</title>
       <link>https://xinqilin.github.io/post/other/curl/</link>
