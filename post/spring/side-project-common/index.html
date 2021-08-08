@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    Bill.Lin の 成長之路 ©
+      |
+      Side-Project-Common
+
+
+    
+
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.83.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      
+後端工程師 Java, Kotlin
+
+成長路上有你有我
+
+很高興認識你 Pleased to meet you!
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.5b25a1723ef4d5cfc7cf3c9a49349da6ba775c245c3b7c94948347e8370e244b.css"
+    integrity="sha256-WyWhcj701c/HzzyaSTSdprp3XCRcO3yUlINH6DcOJEs="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.f798cbda9aaa38f89eb38be6414bd082cfd71a6780375cbf67b6d2fb2b96491e.css"
+    integrity="sha256-95jL2pqqOPies4vmQUvQgs/XGmeAN1y/Z7bS&#43;yuWSR4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="/post/spring/side-project-common/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
+    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
+      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Side-Project-Common"/>
+<meta name="twitter:description" content="Side Project 常用功能，紀錄，方便以後快速 setup 環境 DI &lt;!-- Lombok--&gt; &lt;dependency&gt; &lt;groupId&gt;org.projectlombok&lt;/groupId&gt; &lt;artifactId&gt;lombok&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; &lt;!"/>
+
+
+
+  
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+        
+      </div>
+      <li>
+        
+          <a class="theme-switch" title="Switch Theme">
+            <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+          </a>
+
+        
+      </li>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/profile.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p><br />後端工程師 Java, Kotlin<br /><br />成長路上有你有我<br /><br />很高興認識你 Pleased to meet you!<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+        <li>
+          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub">
+            <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail">
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress">
+            <i class="fab fa-wordpress-simple fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2021
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>Side-Project-Common</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Wed, Jan 1, 2020
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
+          </div>
+
+        
+      </div>
+
+      <h1 id="side-project-常用功能紀錄方便以後快速-setup-環境">Side Project 常用功能，紀錄，方便以後快速 setup 環境</h1>
+<h3 id="di">DI</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">
+        <span style="color:#75715e">&lt;!--  Lombok--&gt;</span>
+        <span style="color:#f92672">&lt;dependency&gt;</span>
+            <span style="color:#f92672">&lt;groupId&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;optional&gt;</span>true<span style="color:#f92672">&lt;/optional&gt;</span>
+        <span style="color:#f92672">&lt;/dependency&gt;</span>
+
+        <span style="color:#75715e">&lt;!--    Test Swagger with GraphQL --&gt;</span>
+        <span style="color:#f92672">&lt;dependency&gt;</span>
+            <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger2<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;version&gt;</span>2.9.2<span style="color:#f92672">&lt;/version&gt;</span>
+        <span style="color:#f92672">&lt;/dependency&gt;</span>
+
+        <span style="color:#f92672">&lt;dependency&gt;</span>
+            <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger-ui<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;version&gt;</span>2.9.2<span style="color:#f92672">&lt;/version&gt;</span>
+        <span style="color:#f92672">&lt;/dependency&gt;</span>
+
+        <span style="color:#75715e">&lt;!--        StringUtil--&gt;</span>
+        <span style="color:#f92672">&lt;dependency&gt;</span>
+            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.commons<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId&gt;</span>commons-lang3<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;version&gt;</span>3.11<span style="color:#f92672">&lt;/version&gt;</span>
+        <span style="color:#f92672">&lt;/dependency&gt;</span>
+
+        <span style="color:#75715e">&lt;!--        Validate--&gt;</span>
+        <span style="color:#f92672">&lt;dependency&gt;</span>
+            <span style="color:#f92672">&lt;groupId&gt;</span>javax.validation<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId&gt;</span>validation-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;version&gt;</span>2.0.1.Final<span style="color:#f92672">&lt;/version&gt;</span>
+        <span style="color:#f92672">&lt;/dependency&gt;</span>
+
+        <span style="color:#75715e">&lt;!-- JSON --&gt;</span>
+        <span style="color:#f92672">&lt;dependency&gt;</span>
+			<span style="color:#f92672">&lt;groupId&gt;</span>com.fasterxml.jackson.core<span style="color:#f92672">&lt;/groupId&gt;</span>
+			<span style="color:#f92672">&lt;artifactId&gt;</span>jackson-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
+			<span style="color:#f92672">&lt;version&gt;</span>2.9.8<span style="color:#f92672">&lt;/version&gt;</span>
+		<span style="color:#f92672">&lt;/dependency&gt;</span>
+
+        <span style="color:#f92672">&lt;dependency&gt;</span>
+			<span style="color:#f92672">&lt;groupId&gt;</span>com.fasterxml.jackson.core<span style="color:#f92672">&lt;/groupId&gt;</span>
+			<span style="color:#f92672">&lt;artifactId&gt;</span>jackson-databind<span style="color:#f92672">&lt;/artifactId&gt;</span>
+			<span style="color:#f92672">&lt;version&gt;</span>2.10.0<span style="color:#f92672">&lt;/version&gt;</span>
+		<span style="color:#f92672">&lt;/dependency&gt;</span>
+
+</code></pre></div><h3 id="properties-or-yaml">Properties or Yaml</h3>
+<pre><code class="language-properties" data-lang="properties">
+    server.port = 808x
+    server.servlet.context-path = /name
+
+    #mysql-8 
+    spring.datasource.username = root
+    spring.datasource.password = mysql
+    spring.datasource.url = jdbc:mysql://localhost:3306/&lt;name&gt;?serverTimezone=Asia/Taipei&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false
+    spring.datasource.driver-class-name = com.mysql.cj.jdbc.Driver
+
+    #JPA
+    spring.jpa.hibernate.ddl-auto = update
+    spring.jpa.show-sql = true
+
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">server</span>:
+  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">808x</span>
+  <span style="color:#f92672">servlet</span>:
+    <span style="color:#f92672">context-path</span>: <span style="color:#ae81ff">/name</span>
+<span style="color:#f92672">spring</span>:
+  <span style="color:#f92672">thymeleaf</span>:
+    <span style="color:#f92672">cache</span>: <span style="color:#66d9ef">false</span>
+
+<span style="color:#75715e">#mysql-8 </span>
+  <span style="color:#f92672">datasource</span>:
+    <span style="color:#f92672">driver-class-name</span>: <span style="color:#ae81ff">com.mysql.cj.jdbc.Driver</span>
+    <span style="color:#f92672">url</span>: <span style="color:#ae81ff">jdbc:mysql://localhost:3306/&lt;name&gt;?characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=Asia/Taipei</span>
+    <span style="color:#f92672">username</span>: <span style="color:#ae81ff">root</span>
+    <span style="color:#f92672">password</span>: <span style="color:#ae81ff">mysql</span>
+    <span style="color:#f92672">hikari</span>:
+      <span style="color:#f92672">minimum-idle</span>: <span style="color:#ae81ff">5</span>
+      <span style="color:#f92672">maximum-pool-size</span>: <span style="color:#ae81ff">15</span>
+      <span style="color:#f92672">idle-timeout</span>: <span style="color:#ae81ff">30000</span>
+      <span style="color:#f92672">pool-name</span>: <span style="color:#ae81ff">hikariCP</span>
+      <span style="color:#f92672">connection-timeout</span>: <span style="color:#ae81ff">30000</span>
+      <span style="color:#f92672">max-lifetime</span>: <span style="color:#ae81ff">1800000</span>
+
+
+  <span style="color:#f92672">jpa</span>:
+    <span style="color:#f92672">hibernate</span>:
+      <span style="color:#f92672">ddl-auto</span>: <span style="color:#ae81ff">update</span>
+    <span style="color:#f92672">show-sql</span>: <span style="color:#66d9ef">true</span>
+</code></pre></div><h3 id="config">Config</h3>
+<p>Swagger2Config</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * @author Bill.Lin 
+</span><span style="color:#75715e">    */</span>
+
+    <span style="color:#a6e22e">@Configuration</span>
+    <span style="color:#a6e22e">@EnableSwagger2</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Swagger2Config</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Bean</span>
+    <span style="color:#66d9ef">public</span> Docket <span style="color:#a6e22e">api</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Docket<span style="color:#f92672">(</span>DocumentationType<span style="color:#f92672">.</span><span style="color:#a6e22e">SWAGGER_2</span><span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">select</span><span style="color:#f92672">()</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">apis</span><span style="color:#f92672">(</span>RequestHandlerSelectors<span style="color:#f92672">.</span><span style="color:#a6e22e">any</span><span style="color:#f92672">())</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">paths</span><span style="color:#f92672">(</span>PathSelectors<span style="color:#f92672">.</span><span style="color:#a6e22e">any</span><span style="color:#f92672">())</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><p>RestTemplateConfig</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Configuration</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RestTemplateConfig</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#a6e22e">@Bean</span>
+        <span style="color:#66d9ef">public</span> RestTemplate <span style="color:#a6e22e">restTemplate</span><span style="color:#f92672">(</span>ClientHttpRequestFactory factory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RestTemplate<span style="color:#f92672">(</span>factory<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#a6e22e">@Bean</span>
+        <span style="color:#66d9ef">public</span> ClientHttpRequestFactory <span style="color:#a6e22e">simpleClientHttpRequestFactory</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            SimpleClientHttpRequestFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleClientHttpRequestFactory<span style="color:#f92672">();</span>
+            factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setReadTimeout</span><span style="color:#f92672">(</span>3000<span style="color:#f92672">);</span>
+            factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setConnectTimeout</span><span style="color:#f92672">(</span>3000<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> factory<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><h3 id="docker-compose">docker-compose</h3>
+<p>kafka</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">
+<span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3&#39;</span>
+
+<span style="color:#f92672">services</span>:
+    <span style="color:#f92672">zookeeper1</span>:
+        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">wurstmeister/zookeeper</span>
+        <span style="color:#f92672">ports</span>:
+        - <span style="color:#ae81ff">2181</span>:<span style="color:#ae81ff">2181</span>
+        <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">zookeeper</span>
+
+    <span style="color:#f92672">kafka1</span>:
+        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">wurstmeister/kafka</span>
+        <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">kafka</span>
+        <span style="color:#f92672">ports</span>:
+        - <span style="color:#ae81ff">9092</span>:<span style="color:#ae81ff">9092</span>
+        <span style="color:#f92672">environment</span>:
+        <span style="color:#f92672">KAFKA_ADVERTISED_HOST_NAME</span>: <span style="color:#ae81ff">192.168.99.100</span>
+        <span style="color:#f92672">KAFKA_ZOOKEEPER_CONNECT</span>: <span style="color:#ae81ff">zookeeper:2181</span>
+        <span style="color:#f92672">KAFKA_CREATE_TOPIC</span>: <span style="color:#e6db74">&#34;bill:1:3&#34;</span>
+
+  <span style="color:#f92672">redis</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">redis:&lt;tag&gt;</span>
+    <span style="color:#f92672">expose</span>:
+      - <span style="color:#ae81ff">6379</span>
+    <span style="color:#f92672">ports</span>:
+      - <span style="color:#e6db74">&#34;6379:6379&#34;</span>
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">default</span>
+
+  <span style="color:#f92672">rabbitmq</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">rabbitmq:3-management</span>
+    <span style="color:#f92672">environment</span>:
+      - <span style="color:#ae81ff">RABBITMQ_DEFAULT_USER=rabbitmq</span>
+      - <span style="color:#ae81ff">RABBITMQ_DEFAULT_PASS=rabbitmq</span>
+    <span style="color:#f92672">ports</span>:
+      - <span style="color:#e6db74">&#34;15672:15672&#34;</span>
+      - <span style="color:#e6db74">&#34;5672:5672&#34;</span>
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">default</span>
+
+  <span style="color:#f92672">mysql</span>: 
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mysql:5.7</span> <span style="color:#75715e"># 或 8</span>
+    <span style="color:#f92672">environment</span>:
+      - <span style="color:#ae81ff">MYSQL_ROOT_PASSWORD=mysql</span>
+    <span style="color:#f92672">expose</span>:
+      - <span style="color:#ae81ff">3306</span>
+    <span style="color:#f92672">ports</span>:
+      - <span style="color:#e6db74">&#34;3306:3306&#34;</span>
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">default</span>
+ 
+  <span style="color:#f92672">mongo</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mongo:4.1</span>
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+    <span style="color:#f92672">expose</span>:
+      - <span style="color:#ae81ff">27017</span>
+    <span style="color:#f92672">ports</span>:
+      - <span style="color:#ae81ff">27017</span>:<span style="color:#ae81ff">27017</span>
+    <span style="color:#f92672">environment</span>:
+      <span style="color:#f92672">MONGO_INITDB_DATABASE</span>: <span style="color:#ae81ff">db</span>
+      <span style="color:#f92672">MONGO_INITDB_ROOT_USERNAME</span>: <span style="color:#ae81ff">root</span>
+      <span style="color:#f92672">MONGO_INITDB_ROOT_PASSWORD</span>: <span style="color:#ae81ff">mongo</span>
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">default</span>
+  <span style="color:#f92672">mongo-express</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mongo-express</span>
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+    <span style="color:#f92672">ports</span>:
+      - <span style="color:#ae81ff">8081</span>:<span style="color:#ae81ff">8081</span>
+    <span style="color:#f92672">environment</span>:
+      <span style="color:#f92672">ME_CONFIG_MONGODB_SERVER</span>: <span style="color:#ae81ff">mongo</span>
+      <span style="color:#f92672">ME_CONFIG_MONGODB_ADMINUSERNAME</span>: <span style="color:#ae81ff">root</span>
+      <span style="color:#f92672">ME_CONFIG_MONGODB_ADMINPASSWORD</span>: <span style="color:#ae81ff">mongo</span>
+    <span style="color:#f92672">depends_on</span>:
+      - <span style="color:#ae81ff">mongo</span>
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">default</span>
+
+</code></pre></div></div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/common/">Common</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2021
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

@@ -1473,5 +1473,225 @@ git push
       
     </item>
     
+    <item>
+      <title>Side-Project-Common</title>
+      <link>https://xinqilin.github.io/post/spring/side-project-common/</link>
+      <pubDate>Wed, 01 Jan 2020 20:31:25 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/spring/side-project-common/</guid>
+      
+        <description>&lt;h1 id=&#34;side-project-常用功能紀錄方便以後快速-setup-環境&#34;&gt;Side Project 常用功能，紀錄，方便以後快速 setup 環境&lt;/h1&gt;
+&lt;h3 id=&#34;di&#34;&gt;DI&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!--  Lombok--&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.projectlombok&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;lombok&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;optional&amp;gt;&lt;/span&gt;true&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/optional&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!--    Test Swagger with GraphQL --&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;io.springfox&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;springfox-swagger2&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.9.2&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;io.springfox&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;springfox-swagger-ui&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.9.2&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!--        StringUtil--&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.commons&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;commons-lang3&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;3.11&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!--        Validate--&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;javax.validation&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;validation-api&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.0.1.Final&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!-- JSON --&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+			&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.fasterxml.jackson.core&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+			&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;jackson-core&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+			&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.9.8&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+			&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.fasterxml.jackson.core&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+			&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;jackson-databind&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+			&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.10.0&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;properties-or-yaml&#34;&gt;Properties or Yaml&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-properties&#34; data-lang=&#34;properties&#34;&gt;
+    server.port = 808x
+    server.servlet.context-path = /name
+
+    #mysql-8 
+    spring.datasource.username = root
+    spring.datasource.password = mysql
+    spring.datasource.url = jdbc:mysql://localhost:3306/&amp;lt;name&amp;gt;?serverTimezone=Asia/Taipei&amp;amp;useUnicode=true&amp;amp;characterEncoding=utf8&amp;amp;useSSL=false
+    spring.datasource.driver-class-name = com.mysql.cj.jdbc.Driver
+
+    #JPA
+    spring.jpa.hibernate.ddl-auto = update
+    spring.jpa.show-sql = true
+
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;server&lt;/span&gt;:
+  &lt;span style=&#34;color:#f92672&#34;&gt;port&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;808x&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;servlet&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;context-path&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;/name&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;spring&lt;/span&gt;:
+  &lt;span style=&#34;color:#f92672&#34;&gt;thymeleaf&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;cache&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#mysql-8 &lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;datasource&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;driver-class-name&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;com.mysql.cj.jdbc.Driver&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;url&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;jdbc:mysql://localhost:3306/&amp;lt;name&amp;gt;?characterEncoding=utf-8&amp;amp;useSSL=false&amp;amp;serverTimezone=Asia/Taipei&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;username&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;root&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;password&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;mysql&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;hikari&lt;/span&gt;:
+      &lt;span style=&#34;color:#f92672&#34;&gt;minimum-idle&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;maximum-pool-size&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;15&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;idle-timeout&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;30000&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;pool-name&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;hikariCP&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;connection-timeout&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;30000&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;max-lifetime&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1800000&lt;/span&gt;
+
+
+  &lt;span style=&#34;color:#f92672&#34;&gt;jpa&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;hibernate&lt;/span&gt;:
+      &lt;span style=&#34;color:#f92672&#34;&gt;ddl-auto&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;update&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;show-sql&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;config&#34;&gt;Config&lt;/h3&gt;
+&lt;p&gt;Swagger2Config&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;    * @author Bill.Lin 
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;    */&lt;/span&gt;
+
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Configuration&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@EnableSwagger2&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Swagger2Config&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Bean&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Docket &lt;span style=&#34;color:#a6e22e&#34;&gt;api&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Docket&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;DocumentationType&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;SWAGGER_2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;apis&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;RequestHandlerSelectors&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;any&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;())&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;paths&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;PathSelectors&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;any&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;())&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;RestTemplateConfig&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Configuration&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;RestTemplateConfig&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;@Bean&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; RestTemplate &lt;span style=&#34;color:#a6e22e&#34;&gt;restTemplate&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;ClientHttpRequestFactory factory&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; RestTemplate&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;factory&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;@Bean&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; ClientHttpRequestFactory &lt;span style=&#34;color:#a6e22e&#34;&gt;simpleClientHttpRequestFactory&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            SimpleClientHttpRequestFactory factory &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; SimpleClientHttpRequestFactory&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+            factory&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setReadTimeout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;3000&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+            factory&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setConnectTimeout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;3000&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; factory&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;docker-compose&#34;&gt;docker-compose&lt;/h3&gt;
+&lt;p&gt;kafka&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;3&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;services&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;zookeeper1&lt;/span&gt;:
+        &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;wurstmeister/zookeeper&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+        - &lt;span style=&#34;color:#ae81ff&#34;&gt;2181&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;2181&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;container_name&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;zookeeper&lt;/span&gt;
+
+    &lt;span style=&#34;color:#f92672&#34;&gt;kafka1&lt;/span&gt;:
+        &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;wurstmeister/kafka&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;container_name&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;kafka&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+        - &lt;span style=&#34;color:#ae81ff&#34;&gt;9092&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;9092&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;environment&lt;/span&gt;:
+        &lt;span style=&#34;color:#f92672&#34;&gt;KAFKA_ADVERTISED_HOST_NAME&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;192.168.99.100&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;KAFKA_ZOOKEEPER_CONNECT&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;zookeeper:2181&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;KAFKA_CREATE_TOPIC&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bill:1:3&amp;#34;&lt;/span&gt;
+
+  &lt;span style=&#34;color:#f92672&#34;&gt;redis&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;redis:&amp;lt;tag&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;expose&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;6379&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+      - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;6379:6379&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;default&lt;/span&gt;
+
+  &lt;span style=&#34;color:#f92672&#34;&gt;rabbitmq&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;rabbitmq:3-management&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;environment&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;RABBITMQ_DEFAULT_USER=rabbitmq&lt;/span&gt;
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;RABBITMQ_DEFAULT_PASS=rabbitmq&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+      - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;15672:15672&amp;#34;&lt;/span&gt;
+      - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;5672:5672&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;default&lt;/span&gt;
+
+  &lt;span style=&#34;color:#f92672&#34;&gt;mysql&lt;/span&gt;: 
+    &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;mysql:5.7&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# 或 8&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;environment&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;MYSQL_ROOT_PASSWORD=mysql&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;expose&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+      - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3306:3306&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;default&lt;/span&gt;
+ 
+  &lt;span style=&#34;color:#f92672&#34;&gt;mongo&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;mongo:4.1&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;restart&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;always&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;expose&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;27017&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;27017&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;27017&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;environment&lt;/span&gt;:
+      &lt;span style=&#34;color:#f92672&#34;&gt;MONGO_INITDB_DATABASE&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;db&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;MONGO_INITDB_ROOT_USERNAME&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;root&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;MONGO_INITDB_ROOT_PASSWORD&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;mongo&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;default&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;mongo-express&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;mongo-express&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;restart&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;always&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;8081&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;8081&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;environment&lt;/span&gt;:
+      &lt;span style=&#34;color:#f92672&#34;&gt;ME_CONFIG_MONGODB_SERVER&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;mongo&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;ME_CONFIG_MONGODB_ADMINUSERNAME&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;root&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;ME_CONFIG_MONGODB_ADMINPASSWORD&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;mongo&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;depends_on&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;mongo&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;default&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
   </channel>
 </rss>
