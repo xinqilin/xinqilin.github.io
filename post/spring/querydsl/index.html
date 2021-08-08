@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    Bill.Lin の 成長之路 ©
+      |
+      QueryDSL
+
+
+    
+
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.83.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      
+後端工程師 Java, Kotlin
+
+成長路上有你有我
+
+很高興認識你 Pleased to meet you!
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.5b25a1723ef4d5cfc7cf3c9a49349da6ba775c245c3b7c94948347e8370e244b.css"
+    integrity="sha256-WyWhcj701c/HzzyaSTSdprp3XCRcO3yUlINH6DcOJEs="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.f798cbda9aaa38f89eb38be6414bd082cfd71a6780375cbf67b6d2fb2b96491e.css"
+    integrity="sha256-95jL2pqqOPies4vmQUvQgs/XGmeAN1y/Z7bS&#43;yuWSR4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="/post/spring/querydsl/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
+    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
+      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="QueryDSL"/>
+<meta name="twitter:description" content="Maven integration &lt;dependency&gt; &lt;groupId&gt;com.querydsl&lt;/groupId&gt; &lt;artifactId&gt;querydsl-apt&lt;/artifactId&gt; &lt;version&gt;${querydsl.version}&lt;/version&gt; &lt;!-- //可不寫，由 spring 自動判斷 --&gt; &lt;scope&gt;provided&lt;/scope&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com."/>
+
+
+
+  
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+        
+      </div>
+      <li>
+        
+          <a class="theme-switch" title="Switch Theme">
+            <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+          </a>
+
+        
+      </li>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/profile.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p><br />後端工程師 Java, Kotlin<br /><br />成長路上有你有我<br /><br />很高興認識你 Pleased to meet you!<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+        <li>
+          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub">
+            <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail">
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress">
+            <i class="fab fa-wordpress-simple fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2021
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>QueryDSL</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sun, Aug 8, 2021
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
+          </div>
+
+        
+      </div>
+
+      <h3 id="maven-integration">Maven integration</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>com.querydsl<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>querydsl-apt<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>${querydsl.version}<span style="color:#f92672">&lt;/version&gt;</span>  <span style="color:#75715e">&lt;!-- //可不寫，由 spring 自動判斷 --&gt;</span> 
+    <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>com.querydsl<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>querydsl-jpa<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>${querydsl.version}<span style="color:#f92672">&lt;/version&gt;</span>   <span style="color:#75715e">&lt;!-- //可不寫，由 spring 自動判斷 --&gt;</span> 
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+
+
+    <span style="color:#75715e">&lt;!-- 會在 target/generated-sources/kotlin 生成 @Entity 的 Q類別 --&gt;</span>
+    <span style="color:#f92672">&lt;project&gt;</span>
+        <span style="color:#f92672">&lt;build&gt;</span>
+            <span style="color:#f92672">&lt;plugins&gt;</span>
+                ...
+                <span style="color:#f92672">&lt;plugin&gt;</span>
+                <span style="color:#f92672">&lt;groupId&gt;</span>com.mysema.maven<span style="color:#f92672">&lt;/groupId&gt;</span>
+                <span style="color:#f92672">&lt;artifactId&gt;</span>apt-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+                <span style="color:#f92672">&lt;version&gt;</span>1.1.3<span style="color:#f92672">&lt;/version&gt;</span>
+                <span style="color:#f92672">&lt;executions&gt;</span>
+                    <span style="color:#f92672">&lt;execution&gt;</span>
+                    <span style="color:#f92672">&lt;goals&gt;</span>
+                        <span style="color:#f92672">&lt;goal&gt;</span>process<span style="color:#f92672">&lt;/goal&gt;</span>
+                    <span style="color:#f92672">&lt;/goals&gt;</span>
+                    <span style="color:#f92672">&lt;configuration&gt;</span>
+                        <span style="color:#f92672">&lt;outputDirectory&gt;</span>target/generated-sources/kotlin<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+                        <span style="color:#f92672">&lt;processor&gt;</span>com.querydsl.apt.jpa.JPAAnnotationProcessor<span style="color:#f92672">&lt;/processor&gt;</span>
+                    <span style="color:#f92672">&lt;/configuration&gt;</span>
+                    <span style="color:#f92672">&lt;/execution&gt;</span>
+                <span style="color:#f92672">&lt;/executions&gt;</span>
+                <span style="color:#f92672">&lt;/plugin&gt;</span>
+                ...
+            <span style="color:#f92672">&lt;/plugins&gt;</span>
+        <span style="color:#f92672">&lt;/build&gt;</span>
+    <span style="color:#f92672">&lt;/project&gt;</span>
+
+
+</code></pre></div><h3 id="產生-q-類">產生 Q 類</h3>
+<pre><code>    mvn clean compile
+</code></pre><h2 id="使用">使用</h2>
+<h3 id="select">select</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> queryFactory: JPAQueryFactory
+
+    <span style="color:#66d9ef">val</span> qadmin: QAdmin.admin
+
+    bill = queryFactory.selectFrom(qadmin)
+    .<span style="color:#66d9ef">where</span>(qadmin.account.eq(<span style="color:#e6db74">&#34;Bill&#34;</span>))
+    .and(qadmin.password.ed(<span style="color:#e6db74">&#34;password&#34;</span>))
+    .fetchOne();
+
+</code></pre></div><h3 id="join">join</h3>
+<p>===== 以下 官網 java 範例 =====</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#a6e22e">@Autowired</span>
+    <span style="color:#66d9ef">private</span> JPAQueryFactory queryFactory<span style="color:#f92672">;</span>
+
+    QCat cat <span style="color:#f92672">=</span> QCat<span style="color:#f92672">.</span><span style="color:#a6e22e">cat</span><span style="color:#f92672">;</span>
+    QCat mate <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QCat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mate&#34;</span><span style="color:#f92672">);</span>
+    QCat kitten <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QCat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;kitten&#34;</span><span style="color:#f92672">);</span>
+    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">selectFrom</span><span style="color:#f92672">(</span>cat<span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">innerJoin</span><span style="color:#f92672">(</span>cat<span style="color:#f92672">.</span><span style="color:#a6e22e">mate</span><span style="color:#f92672">,</span> mate<span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">leftJoin</span><span style="color:#f92672">(</span>cat<span style="color:#f92672">.</span><span style="color:#a6e22e">kittens</span><span style="color:#f92672">,</span> kitten<span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">fetch</span><span style="color:#f92672">();</span>
+
+
+    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">selectFrom</span><span style="color:#f92672">(</span>cat<span style="color:#f92672">)</span>
+    <span style="color:#f92672">.</span><span style="color:#a6e22e">leftJoin</span><span style="color:#f92672">(</span>cat<span style="color:#f92672">.</span><span style="color:#a6e22e">kittens</span><span style="color:#f92672">,</span> kitten<span style="color:#f92672">)</span>
+    <span style="color:#f92672">.</span><span style="color:#a6e22e">on</span><span style="color:#f92672">(</span>kitten<span style="color:#f92672">.</span><span style="color:#a6e22e">bodyWeight</span><span style="color:#f92672">.</span><span style="color:#a6e22e">gt</span><span style="color:#f92672">(</span>10<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">))</span>
+    <span style="color:#f92672">.</span><span style="color:#a6e22e">fetch</span><span style="color:#f92672">();</span>
+
+</code></pre></div><h3 id="update">update</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    QCustomer customer <span style="color:#f92672">=</span> QCustomer<span style="color:#f92672">.</span><span style="color:#a6e22e">customer</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// rename customers named Bob to Bobby
+</span><span style="color:#75715e"></span>    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">).</span><span style="color:#a6e22e">where</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">.</span><span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Bob&#34;</span><span style="color:#f92672">))</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Bobby&#34;</span><span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="delete">delete</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    QCustomer customer <span style="color:#f92672">=</span> QCustomer<span style="color:#f92672">.</span><span style="color:#a6e22e">customer</span><span style="color:#f92672">;</span>
+    <span style="color:#75715e">// delete all customers
+</span><span style="color:#75715e"></span>    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">).</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">();</span>
+    <span style="color:#75715e">// delete all customers with a level less than 3
+</span><span style="color:#75715e"></span>    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">).</span><span style="color:#a6e22e">where</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">.</span><span style="color:#a6e22e">level</span><span style="color:#f92672">.</span><span style="color:#a6e22e">lt</span><span style="color:#f92672">(</span>3<span style="color:#f92672">)).</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="子查詢">子查詢</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    QDepartment department <span style="color:#f92672">=</span> QDepartment<span style="color:#f92672">.</span><span style="color:#a6e22e">department</span><span style="color:#f92672">;</span>
+    QDepartment d <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QDepartment<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d&#34;</span><span style="color:#f92672">);</span>
+    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">selectFrom</span><span style="color:#f92672">(</span>department<span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">where</span><span style="color:#f92672">(</span>department<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">.</span><span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span>JPAExpressions<span style="color:#f92672">.</span><span style="color:#a6e22e">select</span><span style="color:#f92672">(</span>d<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">from</span><span style="color:#f92672">(</span>d<span style="color:#f92672">)))</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">fetch</span><span style="color:#f92672">();</span>
+
+
+
+     <span style="color:#75715e">//----------
+</span><span style="color:#75715e"></span>
+    QEmployee employee <span style="color:#f92672">=</span> QEmployee<span style="color:#f92672">.</span><span style="color:#a6e22e">employee</span><span style="color:#f92672">;</span>
+    QEmployee e <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QEmployee<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;e&#34;</span><span style="color:#f92672">);</span>
+    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">selectFrom</span><span style="color:#f92672">(</span>employee<span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">where</span><span style="color:#f92672">(</span>employee<span style="color:#f92672">.</span><span style="color:#a6e22e">weeklyhours</span><span style="color:#f92672">.</span><span style="color:#a6e22e">gt</span><span style="color:#f92672">(</span>
+            JPAExpressions<span style="color:#f92672">.</span><span style="color:#a6e22e">select</span><span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">weeklyhours</span><span style="color:#f92672">.</span><span style="color:#a6e22e">avg</span><span style="color:#f92672">())</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">from</span><span style="color:#f92672">(</span>employee<span style="color:#f92672">.</span><span style="color:#a6e22e">department</span><span style="color:#f92672">.</span><span style="color:#a6e22e">employees</span><span style="color:#f92672">,</span> e<span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">where</span><span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">manager</span><span style="color:#f92672">.</span><span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span>employee<span style="color:#f92672">.</span><span style="color:#a6e22e">manager</span><span style="color:#f92672">))))</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">fetch</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="order-by">order by</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    QCustomer customer <span style="color:#f92672">=</span> QCustomer<span style="color:#f92672">.</span><span style="color:#a6e22e">customer</span><span style="color:#f92672">;</span>
+    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">selectFrom</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">orderBy</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">.</span><span style="color:#a6e22e">lastName</span><span style="color:#f92672">.</span><span style="color:#a6e22e">asc</span><span style="color:#f92672">(),</span> customer<span style="color:#f92672">.</span><span style="color:#a6e22e">firstName</span><span style="color:#f92672">.</span><span style="color:#a6e22e">desc</span><span style="color:#f92672">())</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">fetch</span><span style="color:#f92672">();</span>
+
+</code></pre></div><h3 id="group-by">group by</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    QCustomer customer <span style="color:#f92672">=</span> QCustomer<span style="color:#f92672">.</span><span style="color:#a6e22e">customer</span><span style="color:#f92672">;</span>
+    queryFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">select</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">.</span><span style="color:#a6e22e">lastName</span><span style="color:#f92672">).</span><span style="color:#a6e22e">from</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">groupBy</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">.</span><span style="color:#a6e22e">lastName</span><span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">fetch</span><span style="color:#f92672">();</span>
+</code></pre></div><p>Reference : <br>
+<a href="https://querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration">官網範例 請點我!</a></p>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/querydsl/">QueryDSL</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2021
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></body>
+</html>
