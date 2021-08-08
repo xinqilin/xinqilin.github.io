@@ -257,7 +257,7 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 2 分鐘</span>
+            <span class="reading-time">閱讀時間 3 分鐘</span>
           </div>
 
         
@@ -266,52 +266,59 @@
       <h1 id="side-project-常用功能紀錄方便以後快速-setup-環境">Side Project 常用功能，紀錄，方便以後快速 setup 環境</h1>
 <h3 id="di">DI</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">
-        <span style="color:#75715e">&lt;!--  Lombok--&gt;</span>
-        <span style="color:#f92672">&lt;dependency&gt;</span>
-            <span style="color:#f92672">&lt;groupId&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;optional&gt;</span>true<span style="color:#f92672">&lt;/optional&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--  Lombok--&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;optional&gt;</span>true<span style="color:#f92672">&lt;/optional&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
 
-        <span style="color:#75715e">&lt;!--    Test Swagger with GraphQL --&gt;</span>
-        <span style="color:#f92672">&lt;dependency&gt;</span>
-            <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger2<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;version&gt;</span>2.9.2<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--    Test Swagger with GraphQL --&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger2<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>2.9.2<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
 
-        <span style="color:#f92672">&lt;dependency&gt;</span>
-            <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger-ui<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;version&gt;</span>2.9.2<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger-ui<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>2.9.2<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
 
-        <span style="color:#75715e">&lt;!--        StringUtil--&gt;</span>
-        <span style="color:#f92672">&lt;dependency&gt;</span>
-            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.commons<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId&gt;</span>commons-lang3<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;version&gt;</span>3.11<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--        StringUtil--&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.commons<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>commons-lang3<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>3.11<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
 
-        <span style="color:#75715e">&lt;!--        Validate--&gt;</span>
-        <span style="color:#f92672">&lt;dependency&gt;</span>
-            <span style="color:#f92672">&lt;groupId&gt;</span>javax.validation<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId&gt;</span>validation-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;version&gt;</span>2.0.1.Final<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#75715e">&lt;!--        Validate--&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>javax.validation<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>validation-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>2.0.1.Final<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
 
         <span style="color:#75715e">&lt;!-- JSON --&gt;</span>
-        <span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
 			<span style="color:#f92672">&lt;groupId&gt;</span>com.fasterxml.jackson.core<span style="color:#f92672">&lt;/groupId&gt;</span>
 			<span style="color:#f92672">&lt;artifactId&gt;</span>jackson-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
 			<span style="color:#f92672">&lt;version&gt;</span>2.9.8<span style="color:#f92672">&lt;/version&gt;</span>
 		<span style="color:#f92672">&lt;/dependency&gt;</span>
 
-        <span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
 			<span style="color:#f92672">&lt;groupId&gt;</span>com.fasterxml.jackson.core<span style="color:#f92672">&lt;/groupId&gt;</span>
 			<span style="color:#f92672">&lt;artifactId&gt;</span>jackson-databind<span style="color:#f92672">&lt;/artifactId&gt;</span>
 			<span style="color:#f92672">&lt;version&gt;</span>2.10.0<span style="color:#f92672">&lt;/version&gt;</span>
 		<span style="color:#f92672">&lt;/dependency&gt;</span>
+
+    <span style="color:#75715e">&lt;!-- logstash --&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>net.logstash.logback<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>logstash-logback-encoder<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>5.2<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
 
 </code></pre></div><h3 id="properties-or-yaml">Properties or Yaml</h3>
 <pre><code class="language-properties" data-lang="properties">
@@ -471,6 +478,68 @@
       - <span style="color:#ae81ff">mongo</span>
     <span style="color:#f92672">networks</span>:
       - <span style="color:#ae81ff">default</span>
+
+</code></pre></div><h3 id="logstash-config-resource">logstash config (resource)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;configuration&gt;</span>
+    <span style="color:#f92672">&lt;conversionRule</span> <span style="color:#a6e22e">conversionWord=</span><span style="color:#e6db74">&#34;clr&#34;</span> <span style="color:#a6e22e">converterClass=</span><span style="color:#e6db74">&#34;org.springframework.boot.logging.logback.ColorConverter&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;conversionRule</span> <span style="color:#a6e22e">conversionWord=</span><span style="color:#e6db74">&#34;wex&#34;</span> <span style="color:#a6e22e">converterClass=</span><span style="color:#e6db74">&#34;org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;conversionRule</span> <span style="color:#a6e22e">conversionWord=</span><span style="color:#e6db74">&#34;wEx&#34;</span> <span style="color:#a6e22e">converterClass=</span><span style="color:#e6db74">&#34;org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;CONSOLE_LOG_PATTERN&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}&#34;</span><span style="color:#f92672">/&gt;</span>
+
+    <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;layout</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.classic.PatternLayout&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;pattern&gt;</span>${CONSOLE_LOG_PATTERN}<span style="color:#f92672">&lt;/pattern&gt;</span>
+        <span style="color:#f92672">&lt;/layout&gt;</span>
+    <span style="color:#f92672">&lt;/appender&gt;</span>
+
+    <span style="color:#f92672">&lt;logger</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;com.bill.xx&#34;</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;info&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+    <span style="color:#f92672">&lt;root</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;info&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/root&gt;</span>
+
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;LOGS&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;./logs&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+    <span style="color:#f92672">&lt;springProfile</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;indev, staging&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;LOGS&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;IDC 目錄&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+        <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;RollingFile&#34;</span>
+            <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.rolling.RollingFileAppender&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;file&gt;</span>${LOGS}/ma-pos.log<span style="color:#f92672">&lt;/file&gt;</span>
+            <span style="color:#f92672">&lt;encoder</span>
+                <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.classic.encoder.PatternLayoutEncoder&#34;</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;Pattern&gt;</span>%d %p %C{1.} [%t] %m%n<span style="color:#f92672">&lt;/Pattern&gt;</span>
+            <span style="color:#f92672">&lt;/encoder&gt;</span>
+
+            <span style="color:#f92672">&lt;rollingPolicy</span>
+                <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&#34;</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#75715e">&lt;!-- rollover daily and when the file reaches 10 MegaBytes --&gt;</span>
+                <span style="color:#f92672">&lt;fileNamePattern&gt;</span>${LOGS}/archived/ma-pos-%d{yyyy-MM-dd}.%i.log
+                <span style="color:#f92672">&lt;/fileNamePattern&gt;</span>
+                <span style="color:#f92672">&lt;timeBasedFileNamingAndTriggeringPolicy</span>
+                    <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP&#34;</span><span style="color:#f92672">&gt;</span>
+                    <span style="color:#f92672">&lt;maxFileSize&gt;</span>10MB<span style="color:#f92672">&lt;/maxFileSize&gt;</span>
+                <span style="color:#f92672">&lt;/timeBasedFileNamingAndTriggeringPolicy&gt;</span>
+            <span style="color:#f92672">&lt;/rollingPolicy&gt;</span>
+        <span style="color:#f92672">&lt;/appender&gt;</span>
+
+        <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;LogstashFile&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.rolling.RollingFileAppender&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;file&gt;</span>${LOGS}/logstash/logstash.log<span style="color:#f92672">&lt;/file&gt;</span>
+            <span style="color:#f92672">&lt;rollingPolicy</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&#34;</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;fileNamePattern&gt;</span>${LOGS}/logstash/logstash.%d{yyyy-MM-dd}.log<span style="color:#f92672">&lt;/fileNamePattern&gt;</span>
+                <span style="color:#f92672">&lt;maxHistory&gt;</span>7<span style="color:#f92672">&lt;/maxHistory&gt;</span>
+            <span style="color:#f92672">&lt;/rollingPolicy&gt;</span>
+            <span style="color:#f92672">&lt;encoder</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;net.logstash.logback.encoder.LogstashEncoder&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/appender&gt;</span>
+
+        <span style="color:#f92672">&lt;root</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;info&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;RollingFile&#34;</span> <span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;LogstashFile&#34;</span> <span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/root&gt;</span>
+    <span style="color:#f92672">&lt;/springProfile&gt;</span>
+
+<span style="color:#f92672">&lt;/configuration&gt;</span>
 
 </code></pre></div><h3 id="other">Other</h3>
 <p>banner.txt</p>
