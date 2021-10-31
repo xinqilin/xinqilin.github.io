@@ -3,13 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://xinqilin.github.io/</loc>
-    <lastmod>2021-08-08T13:07:45+08:00</lastmod>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/</loc>
-    <lastmod>2021-08-08T13:07:45+08:00</lastmod>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/java/</loc>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/categories/java/</loc>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/map/</loc>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/</loc>
-    <lastmod>2021-08-08T13:07:45+08:00</lastmod>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/</loc>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/treemap/</loc>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/java/treemap/</loc>
+    <lastmod>2021-10-31T19:16:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/querydsl/</loc>
     <lastmod>2021-08-08T13:07:45+08:00</lastmod>
@@ -33,9 +51,6 @@
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/other/</loc>
-    <lastmod>2021-08-03T10:23:31+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/docker/</loc>
@@ -65,9 +80,6 @@
     <loc>https://xinqilin.github.io/post/vue/vue-intro/</loc>
     <lastmod>2021-07-04T22:27:03+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/java/</loc>
-    <lastmod>2021-07-01T23:39:52+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/post/spring/jwt/</loc>
     <lastmod>2021-07-01T23:39:52+08:00</lastmod>
   </url><url>
@@ -93,9 +105,6 @@
     <lastmod>2021-06-28T19:57:24+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/algorithm/</loc>
-    <lastmod>2021-06-28T19:57:24+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/java/</loc>
     <lastmod>2021-06-28T19:57:24+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/algorithm/mergesort/</loc>
