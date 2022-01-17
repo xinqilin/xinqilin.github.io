@@ -5,22 +5,24 @@
   data-theme="dark"
 ><head>
   <title>
-    Bill.Lin の 成長之路 ©
-      |
-      UML
+    
+      Bill.Lin の 成長之路 ©
+        |
+        UML
+
+
+      
 
 
     
-
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.83.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta
     name="description"
     content="
-      
-後端工程師 Java, Kotlin 
+      後端工程師 Java, Kotlin 
 
 我的線上筆記
 
@@ -35,8 +37,8 @@
   
   <link
     rel="stylesheet"
-    href="/css/main.min.5b25a1723ef4d5cfc7cf3c9a49349da6ba775c245c3b7c94948347e8370e244b.css"
-    integrity="sha256-WyWhcj701c/HzzyaSTSdprp3XCRcO3yUlINH6DcOJEs="
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
     crossorigin="anonymous"
     type="text/css"
   />
@@ -44,8 +46,8 @@
   
   <link
     rel="stylesheet"
-    href="/css/markupHighlight.min.f798cbda9aaa38f89eb38be6414bd082cfd71a6780375cbf67b6d2fb2b96491e.css"
-    integrity="sha256-95jL2pqqOPies4vmQUvQgs/XGmeAN1y/Z7bS&#43;yuWSR4="
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
     crossorigin="anonymous"
     type="text/css"
   />
@@ -62,7 +64,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/post/designpattern/uml/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/uml/" />
 
   
   
@@ -93,6 +95,84 @@
 
 
   
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "UML",
+        "headline": "UML",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Instance Level  Dependency 依賴 Association 關聯 Aggregation 聚合 Composition 組合  Class Level  Implementation 實作 Inheritance 繼承  Dependency  虛線，箭頭指向 被使用者 A ---\u0026gt; B Association  實線，箭頭指向 被擁有者 ， 可在箭頭上增加 1-many 1-1 關西 A -\u0026gt; B Aggregation  空心菱形屁股箭頭，箭頭指向 整體 A \u0026lt;\u0026gt;-\u0026gt; B \u0026lt;\u0026gt;-\u0026gt; C 要有A 必須要有B，C Composition  實心菱形屁股箭頭，箭頭指向 整體 to be continued\u0026hellip;.
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/uml\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-07-12T23:33:14.00Z",
+        "datePublished": "2021-07-12T23:33:14.00Z",
+        "dateModified": "2021-07-12T23:33:14.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/uml\/",
+        "wordCount" : "49",
+        "genre" : [ 
+      
+      "UML"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
 </head>
 <body>
     <header><div
@@ -147,16 +227,18 @@
           </li>
 
         
-        
       </div>
-      <li>
+      <ul>
         
-          <a class="theme-switch" title="Switch Theme">
-            <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
-          </a>
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
 
         
-      </li>
+      </ul>
     </ul>
   </nav>
 </div>
@@ -174,42 +256,42 @@
         <img src="/images/profile.jpg" alt="profile picture" />
         <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
         <div class="description">
-          <p><br />後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
         </div>
       </div>
     </div>
     <ul class="social-links">
       
         <li>
-          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin">
+          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin" title="Linkedin">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub">
+          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub" title="GitHub">
             <i class="fab fa-github fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode">
+          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode" title="LeetCode">
             <i class="fas fa-laptop-code fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail">
+          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail" title="e-mail">
             <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress">
+          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress" title="WordPress">
             <i class="fab fa-wordpress-simple fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -223,7 +305,7 @@
         &copy;
         
           Bill.Lin の 成長之路 ©
-          2021
+          2022
 
 
         
@@ -268,9 +350,7 @@
           </div>
 
         
-      </div>
-
-      <h2 id="instance-level">Instance Level</h2>
+      </div><h2 id="instance-level">Instance Level</h2>
 <ul>
 <li>Dependency 依賴</li>
 <li>Association 關聯</li>
@@ -283,19 +363,19 @@
 <li>Inheritance 繼承</li>
 </ul>
 <h3 id="dependency">Dependency</h3>
-<pre><code>
+<pre tabindex="0"><code>
 虛線，箭頭指向 被使用者
 
 A ---&gt; B
 
 </code></pre><h3 id="association">Association</h3>
-<pre><code>
+<pre tabindex="0"><code>
 實線，箭頭指向 被擁有者 ， 可在箭頭上增加 1-many 1-1 關西
 
 A -&gt; B
 
 </code></pre><h3 id="aggregation">Aggregation</h3>
-<pre><code>
+<pre tabindex="0"><code>
 空心菱形屁股箭頭，箭頭指向 整體
 
 
@@ -305,7 +385,7 @@ A &lt;&gt;-&gt; B
   要有A 必須要有B，C
 
 </code></pre><h3 id="composition">Composition</h3>
-<pre><code>
+<pre tabindex="0"><code>
 實心菱形屁股箭頭，箭頭指向 整體
 
 </code></pre><p>to be continued&hellip;.</p>
@@ -338,7 +418,7 @@ A &lt;&gt;-&gt; B
         &copy;
         
           Bill.Lin の 成長之路 ©
-          2021
+          2022
 
 
         

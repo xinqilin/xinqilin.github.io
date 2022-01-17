@@ -5,22 +5,24 @@
   data-theme="dark"
 ><head>
   <title>
-    Bill.Lin の 成長之路 ©
-      |
-      GraphAccountMerge
+    
+      Bill.Lin の 成長之路 ©
+        |
+        GraphAccountMerge
+
+
+      
 
 
     
-
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.83.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta
     name="description"
     content="
-      
-後端工程師 Java, Kotlin 
+      後端工程師 Java, Kotlin 
 
 我的線上筆記
 
@@ -35,8 +37,8 @@
   
   <link
     rel="stylesheet"
-    href="/css/main.min.5b25a1723ef4d5cfc7cf3c9a49349da6ba775c245c3b7c94948347e8370e244b.css"
-    integrity="sha256-WyWhcj701c/HzzyaSTSdprp3XCRcO3yUlINH6DcOJEs="
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
     crossorigin="anonymous"
     type="text/css"
   />
@@ -44,8 +46,8 @@
   
   <link
     rel="stylesheet"
-    href="/css/markupHighlight.min.f798cbda9aaa38f89eb38be6414bd082cfd71a6780375cbf67b6d2fb2b96491e.css"
-    integrity="sha256-95jL2pqqOPies4vmQUvQgs/XGmeAN1y/Z7bS&#43;yuWSR4="
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
     crossorigin="anonymous"
     type="text/css"
   />
@@ -62,7 +64,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/post/algorithm/graphaccountmerge/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/algorithm/graphaccountmerge/" />
 
   
   
@@ -93,6 +95,88 @@
 
 
   
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "GraphAccountMerge",
+        "headline": "GraphAccountMerge",
+        "alternativeHeadline": "",
+        "description": "
+      
+        #721 Input: accounts = [ [\u0026quot;John\u0026quot;,\u0026quot;johnsmith@mail.com\u0026quot;,\u0026quot;john_newyork@mail.com\u0026quot;], [\u0026quot;John\u0026quot;,\u0026quot;johnsmith@mail.com\u0026quot;,\u0026quot;john00@mail.com\u0026quot;], [\u0026quot;Mary\u0026quot;,\u0026quot;mary@mail.com\u0026quot;], [\u0026quot;John\u0026quot;,\u0026quot;johnnybravo@mail.com\u0026quot;] ] Output: [ [\u0026quot;John\u0026quot;,\u0026quot;john00@mail.
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/algorithm\/graphaccountmerge\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-11-29T22:24:03.00Z",
+        "datePublished": "2021-11-29T22:24:03.00Z",
+        "dateModified": "2021-11-29T22:24:03.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/algorithm\/graphaccountmerge\/",
+        "wordCount" : "451",
+        "genre" : [ 
+      
+      "Algorithm"
+
+    ],
+        "keywords" : [ 
+      
+      "Algorithm"
+
+    ]
+    }
+  </script>
+
+
+
 </head>
 <body>
     <header><div
@@ -147,16 +231,18 @@
           </li>
 
         
-        
       </div>
-      <li>
+      <ul>
         
-          <a class="theme-switch" title="Switch Theme">
-            <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
-          </a>
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
 
         
-      </li>
+      </ul>
     </ul>
   </nav>
 </div>
@@ -174,42 +260,42 @@
         <img src="/images/profile.jpg" alt="profile picture" />
         <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
         <div class="description">
-          <p><br />後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
         </div>
       </div>
     </div>
     <ul class="social-links">
       
         <li>
-          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin">
+          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin" title="Linkedin">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub">
+          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub" title="GitHub">
             <i class="fab fa-github fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode">
+          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode" title="LeetCode">
             <i class="fas fa-laptop-code fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail">
+          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail" title="e-mail">
             <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress">
+          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress" title="WordPress">
             <i class="fab fa-wordpress-simple fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -223,7 +309,7 @@
         &copy;
         
           Bill.Lin の 成長之路 ©
-          2021
+          2022
 
 
         
@@ -268,10 +354,8 @@
           </div>
 
         
-      </div>
-
-      <h3 id="721"><code>#721</code></h3>
-<pre><code>Input: accounts = 
+      </div><h3 id="721"><code>#721</code></h3>
+<pre tabindex="0"><code>Input: accounts = 
 [
     [&quot;John&quot;,&quot;johnsmith@mail.com&quot;,&quot;john_newyork@mail.com&quot;],
     [&quot;John&quot;,&quot;johnsmith@mail.com&quot;,&quot;john00@mail.com&quot;],
@@ -294,7 +378,7 @@ We could return these lists in any order, for example the answer [['Mary', 'mary
 </code></pre><h3 id="sol">Sol:</h3>
 <p>Graph + DFS
 ref: <a href="https://leetcode.com/problems/accounts-merge/discuss/109158/Java-Solution-(Build-graph-%2B-DFS-search)">click me!</a></p>
-<pre><code>Use these edges to build some components. Common email addresses are like the intersections that connect each single component for each account.
+<pre tabindex="0"><code>Use these edges to build some components. Common email addresses are like the intersections that connect each single component for each account.
 Because each component represents a merged account, do DFS search for each components and add into a list. Before add the name into this list, sort the emails. Then add name string into it.
 Examples: Assume we have three accounts, we connect them like this in order to use DFS.
 {Name, 1, 2, 3} =&gt; Name -- 1 -- 2 -- 3
@@ -302,7 +386,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 {Name, 6, 7, 8} =&gt; Name -- 6 -- 7 -- 8
 (Where numbers represent email addresses).
 
-</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">accountsMerge</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> accounts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
          List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
         <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>accounts<span style="color:#f92672">==</span><span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> accounts<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()==</span>0<span style="color:#f92672">)</span>
@@ -354,7 +438,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 <span style="color:#f92672">}</span>
 
 </code></pre></div><h3 id="bfs">BFS</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">accountsMerge</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> accounts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">accountsMerge</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> accounts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span>String<span style="color:#f92672">&gt;</span> emailName <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
         HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> graph <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
         <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> account<span style="color:#f92672">:</span> accounts<span style="color:#f92672">){</span>
@@ -430,7 +514,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
         &copy;
         
           Bill.Lin の 成長之路 ©
-          2021
+          2022
 
 
         

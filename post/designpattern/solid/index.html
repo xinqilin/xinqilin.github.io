@@ -5,22 +5,24 @@
   data-theme="dark"
 ><head>
   <title>
-    Bill.Lin の 成長之路 ©
-      |
-      SOLID
+    
+      Bill.Lin の 成長之路 ©
+        |
+        SOLID
+
+
+      
 
 
     
-
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.83.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta
     name="description"
     content="
-      
-後端工程師 Java, Kotlin 
+      後端工程師 Java, Kotlin 
 
 我的線上筆記
 
@@ -35,8 +37,8 @@
   
   <link
     rel="stylesheet"
-    href="/css/main.min.5b25a1723ef4d5cfc7cf3c9a49349da6ba775c245c3b7c94948347e8370e244b.css"
-    integrity="sha256-WyWhcj701c/HzzyaSTSdprp3XCRcO3yUlINH6DcOJEs="
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
     crossorigin="anonymous"
     type="text/css"
   />
@@ -44,8 +46,8 @@
   
   <link
     rel="stylesheet"
-    href="/css/markupHighlight.min.f798cbda9aaa38f89eb38be6414bd082cfd71a6780375cbf67b6d2fb2b96491e.css"
-    integrity="sha256-95jL2pqqOPies4vmQUvQgs/XGmeAN1y/Z7bS&#43;yuWSR4="
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
     crossorigin="anonymous"
     type="text/css"
   />
@@ -62,7 +64,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/post/designpattern/solid/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/solid/" />
 
   
   
@@ -93,6 +95,84 @@
 
 
   
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "SOLID",
+        "headline": "SOLID",
+        "alternativeHeadline": "",
+        "description": "
+      
+        SOLID    首字母   代表   概念     S  單一職責原則:  「物件應該僅具有一種單一功能」的概念。    O  開閉原則:  「軟體體應該是對於擴充開放的，但是對於修改封閉的」的概念    L  里氏替換原則:  「程式中的物件應該是可以在不改變程式正確性的前提下被它的子類所替換的」    I  介面隔離原則:  「多個特定客戶端介面要好於一個寬泛用途的介面」    D  依賴反轉原則  一個方法應該遵從「依賴於抽象而不是一個實例」的概念。依賴注入是該原則的一種實現方式。   SRP Single Responsibility Principle  A class should have only reason to change it 只能有一個理由去改變它，若有多個邏輯寫在一個method 中 不符合  複雜度降低 可讀性高 可維護姓提升 只有改這個才有影響   Dependency inversion principle 依賴反轉  high-level should not depend on low-level module.
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/solid\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-07-08T21:20:39.00Z",
+        "datePublished": "2021-07-08T21:20:39.00Z",
+        "dateModified": "2021-07-08T21:20:39.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/solid\/",
+        "wordCount" : "96",
+        "genre" : [ 
+      
+      "DesignPattern"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
 </head>
 <body>
     <header><div
@@ -147,16 +227,18 @@
           </li>
 
         
-        
       </div>
-      <li>
+      <ul>
         
-          <a class="theme-switch" title="Switch Theme">
-            <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
-          </a>
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
 
         
-      </li>
+      </ul>
     </ul>
   </nav>
 </div>
@@ -174,42 +256,42 @@
         <img src="/images/profile.jpg" alt="profile picture" />
         <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
         <div class="description">
-          <p><br />後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
         </div>
       </div>
     </div>
     <ul class="social-links">
       
         <li>
-          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin">
+          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin" title="Linkedin">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub">
+          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub" title="GitHub">
             <i class="fab fa-github fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode">
+          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode" title="LeetCode">
             <i class="fas fa-laptop-code fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail">
+          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail" title="e-mail">
             <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress">
+          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress" title="WordPress">
             <i class="fab fa-wordpress-simple fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -223,7 +305,7 @@
         &copy;
         
           Bill.Lin の 成長之路 ©
-          2021
+          2022
 
 
         
@@ -268,9 +350,7 @@
           </div>
 
         
-      </div>
-
-      <h1 id="solid">SOLID</h1>
+      </div><h1 id="solid">SOLID</h1>
 <table>
     <tr>
         <th>   首字母   </th>
@@ -304,7 +384,7 @@
     </tr>
 </table>
 <h3 id="srp-single-responsibility-principle">SRP Single Responsibility Principle</h3>
-<pre><code>
+<pre tabindex="0"><code>
 A class should have only reason to change it
 只能有一個理由去改變它，若有多個邏輯寫在一個method 中 不符合
 
@@ -316,7 +396,7 @@ A class should have only reason to change it
 <br></li>
 </ul>
 <h3 id="dependency-inversion-principle-依賴反轉">Dependency inversion principle 依賴反轉</h3>
-<pre><code>
+<pre tabindex="0"><code>
 high-level should not depend on low-level module.
 Both should depend on abstraction
 中間應該以介面做連結
@@ -327,7 +407,7 @@ Both should depend on abstraction
 <br></li>
 </ul>
 <h3 id="liskov-substitution-principle-李式替換">Liskov substitution principle 李式替換</h3>
-<pre><code>
+<pre tabindex="0"><code>
 sub-class should change super-class on no reason
 子類可無條件更換父類
 
@@ -335,7 +415,7 @@ sub-class should change super-class on no reason
 <li>增加強健性</li>
 </ul>
 <h3 id="interface-segregation-principle-介面隔離原則">Interface segregation principle 介面隔離原則</h3>
-<pre><code>
+<pre tabindex="0"><code>
 不同的事，應該用不同介面區隔，不應用一大包介面
 
 </code></pre><ul>
@@ -343,7 +423,7 @@ sub-class should change super-class on no reason
 <li>當需求變更時，有更多靈活性</li>
 </ul>
 <h3 id="open-close-principle-開關原則">Open-Close principle 開關原則</h3>
-<pre><code>
+<pre tabindex="0"><code>
 code should be open for extension , but close for modification
 
 </code></pre><ul>
@@ -378,7 +458,7 @@ code should be open for extension , but close for modification
         &copy;
         
           Bill.Lin の 成長之路 ©
-          2021
+          2022
 
 
         

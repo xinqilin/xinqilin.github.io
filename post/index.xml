@@ -6,7 +6,155 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 26 Dec 2021 12:53:14 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Jan 2022 22:35:54 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Env</title>
+      <link>https://xinqilin.github.io/post/other/env/</link>
+      <pubDate>Sun, 16 Jan 2022 22:35:54 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/other/env/</guid>
+      
+        <description>&lt;h3 id=&#34;basic&#34;&gt;Basic&lt;/h3&gt;
+&lt;p&gt;u: All Users
++: add permission
+x: execute
+chmod u+x *.sh&lt;/p&gt;
+&lt;h3 id=&#34;homebrew&#34;&gt;Homebrew&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;quot;&lt;/code&gt;
+&lt;code&gt;brew install cask&lt;/code&gt;
+&lt;code&gt;brew install wget&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;sdkman&#34;&gt;SDKMAN&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;curl -s &amp;quot;https://get.sdkman.io&amp;quot; | bash&lt;/code&gt;
+&lt;code&gt;source &amp;quot;$HOME/.sdkman/bin/sdkman-init.sh&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;openjdk&#34;&gt;OPENJDK&lt;/h3&gt;
+&lt;p&gt;/Library/Java/JavaVirtualMachines/  下面
+&lt;code&gt;/usr/libexec/java_home --verbose&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;remove&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-s&#34; data-lang=&#34;s&#34;&gt;    cd &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;Library&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;Java&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;JavaVirtualMachines&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;
+    sudo rm &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;rf amazon&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;corretto&lt;span style=&#34;color:#ae81ff&#34;&gt;-11&lt;/span&gt;.jdk
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;maven--gradle&#34;&gt;MAVEN &amp;amp; GRADLE&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-s&#34; data-lang=&#34;s&#34;&gt;    sdk list java
+    sdk current java
+    sdk list java
+    sdk list gradle
+    sdk install gradle &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;version&amp;#39;&lt;/span&gt;
+    sdk list maven
+    sdk list java
+    history&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; grep sdk
+    sdk list maven
+    sdk install maven &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;version&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;nvm&#34;&gt;NVM&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;cheatsheet&#34;&gt;CheatSheet&lt;/h3&gt;
+&lt;h3 id=&#34;fig&#34;&gt;Fig&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;brew install --cask fig&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;zsh&#34;&gt;zsh&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    # JDK
+    JAVA_HOME=/Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home
+    PATH=$JAVA_HOME/bin:$PATH:.
+    CLASSPATH=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:.
+    export JAVA_HOME
+    export PATH
+    export CLASSPATH
+    #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+    export SDKMAN_DIR=&amp;quot;$HOME/.sdkman&amp;quot;
+    [[ -s &amp;quot;$HOME/.sdkman/bin/sdkman-init.sh&amp;quot; ]] &amp;amp;&amp;amp; source &amp;quot;$HOME/.sdkman/bin/sdkman-init.sh&amp;quot;
+    # homebrew
+    # x86_64 version brew path
+    # 這邊會把舊版本取為 brow (o for old)
+    export PATH=/opt/homebrew/bin:$PATH
+    alias brow=&#39;arch --x86_64 /usr/local/Homebrew/bin/brew&#39;
+    # nvm
+    export NVM_DIR=&amp;quot;$([ -z &amp;quot;${XDG_CONFIG_HOME-}&amp;quot; ] &amp;amp;&amp;amp; printf %s &amp;quot;${HOME}/.nvm&amp;quot; || printf %s &amp;quot;${XDG_CONFIG_HOME}/nvm&amp;quot;)&amp;quot;
+    [ -s &amp;quot;$NVM_DIR/nvm.sh&amp;quot; ] &amp;amp;&amp;amp; \. &amp;quot;$NVM_DIR/nvm.sh&amp;quot; # This loads nvm
+    # If you come from bash you might have to change your $PATH.
+    # export PATH=$HOME/bin:/usr/local/bin:$PATH
+    # Path to your oh-my-zsh installation.
+    export ZSH=&amp;quot;$HOME/.oh-my-zsh&amp;quot;
+    # Set name of the theme to load --- if set to &amp;quot;random&amp;quot;, it will
+    # load a random theme each time oh-my-zsh is loaded, in which case,
+    # to know which specific one was loaded, run: echo $RANDOM_THEME
+    # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+    ZSH_THEME=&amp;quot;agnoster&amp;quot;
+    # Set list of themes to pick from when loading at random
+    # Setting this variable when ZSH_THEME=random will cause zsh to load
+    # a theme from this variable instead of looking in $ZSH/themes/
+    # If set to an empty array, this variable will have no effect.
+    # ZSH_THEME_RANDOM_CANDIDATES=( &amp;quot;robbyrussell&amp;quot; &amp;quot;agnoster&amp;quot; )
+    # Uncomment the following line to use case-sensitive completion.
+    # CASE_SENSITIVE=&amp;quot;true&amp;quot;
+    # Uncomment the following line to use hyphen-insensitive completion.
+    # Case-sensitive completion must be off. _ and - will be interchangeable.
+    # HYPHEN_INSENSITIVE=&amp;quot;true&amp;quot;
+    # Uncomment one of the following lines to change the auto-update behavior
+    # zstyle &#39;:omz:update&#39; mode disabled  # disable automatic updates
+    # zstyle &#39;:omz:update&#39; mode auto      # update automatically without asking
+    # zstyle &#39;:omz:update&#39; mode reminder  # just remind me to update when it&#39;s time
+    # Uncomment the following line to change how often to auto-update (in days).
+    # zstyle &#39;:omz:update&#39; frequency 13
+    # Uncomment the following line if pasting URLs and other text is messed up.
+    # DISABLE_MAGIC_FUNCTIONS=&amp;quot;true&amp;quot;
+    # Uncomment the following line to disable colors in ls.
+    # DISABLE_LS_COLORS=&amp;quot;true&amp;quot;
+    # Uncomment the following line to disable auto-setting terminal title.
+    # DISABLE_AUTO_TITLE=&amp;quot;true&amp;quot;
+    # Uncomment the following line to enable command auto-correction.
+    # ENABLE_CORRECTION=&amp;quot;true&amp;quot;
+    # Uncomment the following line to display red dots whilst waiting for completion.
+    # You can also set it to another string to have that shown instead of the default red dots.
+    # e.g. COMPLETION_WAITING_DOTS=&amp;quot;%F{yellow}waiting...%f&amp;quot;
+    # Caution: this setting can cause issues with multiline prompts in zsh &amp;lt; 5.7.1 (see #5765)
+    # COMPLETION_WAITING_DOTS=&amp;quot;true&amp;quot;
+    # Uncomment the following line if you want to disable marking untracked files
+    # under VCS as dirty. This makes repository status check for large repositories
+    # much, much faster.
+    # DISABLE_UNTRACKED_FILES_DIRTY=&amp;quot;true&amp;quot;
+    # Uncomment the following line if you want to change the command execution time
+    # stamp shown in the history command output.
+    # You can set one of the optional three formats:
+    # &amp;quot;mm/dd/yyyy&amp;quot;|&amp;quot;dd.mm.yyyy&amp;quot;|&amp;quot;yyyy-mm-dd&amp;quot;
+    # or set a custom format using the strftime function format specifications,
+    # see &#39;man strftime&#39; for details.
+    # HIST_STAMPS=&amp;quot;mm/dd/yyyy&amp;quot;
+    # Would you like to use another custom folder than $ZSH/custom?
+    # ZSH_CUSTOM=/path/to/new-custom-folder
+    # Which plugins would you like to load?
+    # Standard plugins can be found in $ZSH/plugins/
+    # Custom plugins may be added to $ZSH_CUSTOM/plugins/
+    # Example format: plugins=(rails git textmate ruby lighthouse)
+    # Add wisely, as too many plugins slow down shell startup.
+    plugins=(git)
+    source $ZSH/oh-my-zsh.sh
+    # User configuration
+    # export MANPATH=&amp;quot;/usr/local/man:$MANPATH&amp;quot;
+    # You may need to manually set your language environment
+    # export LANG=en_US.UTF-8
+    # Preferred editor for local and remote sessions
+    # if [[ -n $SSH_CONNECTION ]]; then
+    #   export EDITOR=&#39;vim&#39;
+    # else
+    #   export EDITOR=&#39;mvim&#39;
+    # fi
+    # Compilation flags
+    # export ARCHFLAGS=&amp;quot;-arch x86_64&amp;quot;
+    # Set personal aliases, overriding those provided by oh-my-zsh libs,
+    # plugins, and themes. Aliases can be placed here, though oh-my-zsh
+    # users are encouraged to define aliases within the ZSH_CUSTOM folder.
+    # For a full list of active aliases, run `alias`.
+    #
+    # Example aliases
+    # alias zshconfig=&amp;quot;mate ~/.zshrc&amp;quot;
+    # alias ohmyzsh=&amp;quot;mate ~/.oh-my-zsh&amp;quot;
+    code () { VSCODE_CWD=&amp;quot;$PWD&amp;quot; open -n -b &amp;quot;com.microsoft.VSCode&amp;quot; --args $* ;}
+    plugins=(
+    git
+    zsh-syntax-highlighting
+    zsh-autosuggestions
+    )
+&lt;/code&gt;&lt;/pre&gt;</description>
+      
+    </item>
+    
     <item>
       <title>TopologicalSort</title>
       <link>https://xinqilin.github.io/post/algorithm/topologicalsort/</link>
@@ -17,24 +165,24 @@
         <description>&lt;h3 id=&#34;2115-find-all-possible-recipes-from-given-supplies&#34;&gt;2115. Find All Possible Recipes from Given Supplies&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/&#34;&gt;Link Click Me&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;Input: recipes = [&amp;quot;bread&amp;quot;], ingredients = [[&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;]], supplies = [&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;,&amp;quot;corn&amp;quot;]
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Input: recipes = [&amp;quot;bread&amp;quot;], ingredients = [[&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;]], supplies = [&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;,&amp;quot;corn&amp;quot;]
 Output: [&amp;quot;bread&amp;quot;]
 Explanation:
 We can create &amp;quot;bread&amp;quot; since we have the ingredients &amp;quot;yeast&amp;quot; and &amp;quot;flour&amp;quot;.
 
-&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;Input: recipes = [&amp;quot;bread&amp;quot;,&amp;quot;sandwich&amp;quot;], ingredients = [[&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;],[&amp;quot;bread&amp;quot;,&amp;quot;meat&amp;quot;]], supplies = [&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;,&amp;quot;meat&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Input: recipes = [&amp;quot;bread&amp;quot;,&amp;quot;sandwich&amp;quot;], ingredients = [[&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;],[&amp;quot;bread&amp;quot;,&amp;quot;meat&amp;quot;]], supplies = [&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;,&amp;quot;meat&amp;quot;]
 Output: [&amp;quot;bread&amp;quot;,&amp;quot;sandwich&amp;quot;]
 Explanation:
 We can create &amp;quot;bread&amp;quot; since we have the ingredients &amp;quot;yeast&amp;quot; and &amp;quot;flour&amp;quot;.
 We can create &amp;quot;sandwich&amp;quot; since we have the ingredient &amp;quot;meat&amp;quot; and can create the ingredient &amp;quot;bread&amp;quot;.
-&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;Input: recipes = [&amp;quot;bread&amp;quot;,&amp;quot;sandwich&amp;quot;,&amp;quot;burger&amp;quot;], ingredients = [[&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;],[&amp;quot;bread&amp;quot;,&amp;quot;meat&amp;quot;],[&amp;quot;sandwich&amp;quot;,&amp;quot;meat&amp;quot;,&amp;quot;bread&amp;quot;]], supplies = [&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;,&amp;quot;meat&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Input: recipes = [&amp;quot;bread&amp;quot;,&amp;quot;sandwich&amp;quot;,&amp;quot;burger&amp;quot;], ingredients = [[&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;],[&amp;quot;bread&amp;quot;,&amp;quot;meat&amp;quot;],[&amp;quot;sandwich&amp;quot;,&amp;quot;meat&amp;quot;,&amp;quot;bread&amp;quot;]], supplies = [&amp;quot;yeast&amp;quot;,&amp;quot;flour&amp;quot;,&amp;quot;meat&amp;quot;]
 Output: [&amp;quot;bread&amp;quot;,&amp;quot;sandwich&amp;quot;,&amp;quot;burger&amp;quot;]
 Explanation:
 We can create &amp;quot;bread&amp;quot; since we have the ingredients &amp;quot;yeast&amp;quot; and &amp;quot;flour&amp;quot;.
 We can create &amp;quot;sandwich&amp;quot; since we have the ingredient &amp;quot;meat&amp;quot; and can create the ingredient &amp;quot;bread&amp;quot;.
 We can create &amp;quot;burger&amp;quot; since we have the ingredient &amp;quot;meat&amp;quot; and can create the ingredients &amp;quot;bread&amp;quot; and &amp;quot;sandwich&amp;quot;.
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;solution&#34;&gt;Solution&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; NOT_VISITED &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 0&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; NOT_VISITED &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 0&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; VISITING &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 1&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; VISITED &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 2&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     
@@ -95,7 +243,7 @@ We can create &amp;quot;burger&amp;quot; since we have the ingredient &amp;quot;
       <guid>https://xinqilin.github.io/post/spring/reactivejava/</guid>
       
         <description>&lt;h3 id=&#34;init&#34;&gt;init&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;Flux&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; seq1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flux&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;just&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bill&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Is&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Good&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;Flux&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; seq1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flux&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;just&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bill&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Is&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Good&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
 Flux&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; seq2 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flux&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fromIterable&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Arrays&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;asList&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bill&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Is&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Good&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;));&lt;/span&gt;
 Flux&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Integer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; intFrom5To6 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flux&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;range&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;5&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; 2&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt; 
 Mono&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; mono &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Mono&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;just&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bill&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
@@ -103,7 +251,7 @@ Mono&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;spa
 Mono&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; mono2 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Mono&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;justOrEmpty&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Robert&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt; 
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;onerror-oncomplete-onnext&#34;&gt;onError, onComplete, onNext&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;Flux&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Integer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; intList &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flux&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;range&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;1&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; 10&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;Flux&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Integer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; intList &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flux&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;range&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;1&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; 10&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
 intList&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;subscribe&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;
     n &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;n&lt;span style=&#34;color:#f92672&#34;&gt;),&lt;/span&gt;
     error &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; error&lt;span style=&#34;color:#f92672&#34;&gt;),&lt;/span&gt;
@@ -129,7 +277,7 @@ intList&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#
 &lt;/table&gt;
 &lt;h3 id=&#34;mergewith&#34;&gt;mergeWith&lt;/h3&gt;
 &lt;h3 id=&#34;zip&#34;&gt;Zip&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;	
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;	
 	
 	
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
@@ -144,7 +292,7 @@ intList&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#
       <guid>https://xinqilin.github.io/post/algorithm/graphaccountmerge/</guid>
       
         <description>&lt;h3 id=&#34;721&#34;&gt;&lt;code&gt;#721&lt;/code&gt;&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;Input: accounts = 
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Input: accounts = 
 [
     [&amp;quot;John&amp;quot;,&amp;quot;johnsmith@mail.com&amp;quot;,&amp;quot;john_newyork@mail.com&amp;quot;],
     [&amp;quot;John&amp;quot;,&amp;quot;johnsmith@mail.com&amp;quot;,&amp;quot;john00@mail.com&amp;quot;],
@@ -167,7 +315,7 @@ We could return these lists in any order, for example the answer [[&#39;Mary&#39
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;sol&#34;&gt;Sol:&lt;/h3&gt;
 &lt;p&gt;Graph + DFS
 ref: &lt;a href=&#34;https://leetcode.com/problems/accounts-merge/discuss/109158/Java-Solution-(Build-graph-%2B-DFS-search)&#34;&gt;click me!&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Use these edges to build some components. Common email addresses are like the intersections that connect each single component for each account.
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Use these edges to build some components. Common email addresses are like the intersections that connect each single component for each account.
 Because each component represents a merged account, do DFS search for each components and add into a list. Before add the name into this list, sort the emails. Then add name string into it.
 Examples: Assume we have three accounts, we connect them like this in order to use DFS.
 {Name, 1, 2, 3} =&amp;gt; Name -- 1 -- 2 -- 3
@@ -175,7 +323,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 {Name, 6, 7, 8} =&amp;gt; Name -- 6 -- 7 -- 8
 (Where numbers represent email addresses).
 
-&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Solution&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Solution&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;accountsMerge&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; accounts&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
          List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; result &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArrayList&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
         &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;accounts&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; accounts&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;size&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()==&lt;/span&gt;0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
@@ -227,7 +375,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;bfs&#34;&gt;BFS&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;accountsMerge&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; accounts&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;accountsMerge&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; accounts&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
         HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; emailName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
         HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; graph &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
         &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; account&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; accounts&lt;span style=&#34;color:#f92672&#34;&gt;){&lt;/span&gt;
@@ -279,7 +427,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
       
       <guid>https://xinqilin.github.io/post/algorithm/treetraversal/</guid>
       
-        <description>&lt;pre&gt;&lt;code&gt;
+        <description>&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
     4
    / \
   2   6
@@ -291,7 +439,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 &lt;h3 id=&#34;postorder&#34;&gt;PostOrder&lt;/h3&gt;
 &lt;p&gt;左 -&amp;gt; 右 -&amp;gt; 中
 1 -&amp;gt; 3 -&amp;gt; 2 -&amp;gt; 5 -&amp;gt; 7 -&amp;gt; 6 -&amp;gt; 4&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Solution&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Solution&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; TreeNode &lt;span style=&#34;color:#a6e22e&#34;&gt;buildTree&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; in&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; post&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
         &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;in &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; in&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; 0 &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; post &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; post&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; 0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
         &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; helper&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;post&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; post&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; 1&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; in&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; 0&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; in&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; 1&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
@@ -314,7 +462,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;preorder&#34;&gt;PreOrder&lt;/h3&gt;
 &lt;p&gt;中 -&amp;gt; 左 -&amp;gt; 右
 4 -&amp;gt; 2 -&amp;gt; 1 -&amp;gt; 3 -&amp;gt; 6 -&amp;gt; 5 -&amp;gt; 7&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; TreeNode &lt;span style=&#34;color:#a6e22e&#34;&gt;buildTree&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; preorder&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; inorder&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; TreeNode &lt;span style=&#34;color:#a6e22e&#34;&gt;buildTree&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; preorder&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; inorder&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
       &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; helper&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;preorder&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; inorder&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; 0&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; 0&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; inorder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; 1&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;    
     &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
     
@@ -343,7 +491,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
         <description>&lt;h1 id=&#34;treemap-method&#34;&gt;TreeMap Method&lt;/h1&gt;
 &lt;p&gt;Map &amp;lt;-繼承 SortedMap &amp;lt;-繼承 NavigableMap &amp;lt;-實作 TreeMap&lt;/p&gt;
 &lt;h3 id=&#34;sortedmap&#34;&gt;SortedMap&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SortedMap&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;K&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;V&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;K&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;V&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
     
     &lt;span style=&#34;color:#75715e&#34;&gt;//return 元素comparator。如果是 ASC，则返回null；
@@ -376,7 +524,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
 &lt;h3 id=&#34;navigablemap&#34;&gt;NavigableMap&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;NavigableMap&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;K&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;V&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; SortedMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;K&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;V&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
     &lt;span style=&#34;color:#75715e&#34;&gt;//返回 &amp;lt; key的第一個元素：
@@ -461,7 +609,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
       <guid>https://xinqilin.github.io/post/spring/querydsl/</guid>
       
         <description>&lt;h3 id=&#34;maven-integration&#34;&gt;Maven integration&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.querydsl&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;querydsl-apt&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${querydsl.version}&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!-- //可不寫，由 spring 自動判斷 --&amp;gt;&lt;/span&gt; 
@@ -503,10 +651,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;產生-q-類&#34;&gt;產生 Q 類&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;    mvn clean compile
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    mvn clean compile
 &lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;使用&#34;&gt;使用&lt;/h2&gt;
 &lt;h3 id=&#34;select&#34;&gt;select&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;
     &lt;span style=&#34;color:#a6e22e&#34;&gt;@Autowired&lt;/span&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; queryFactory: JPAQueryFactory
 
@@ -519,7 +667,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;join&#34;&gt;join&lt;/h3&gt;
 &lt;p&gt;===== 以下 官網 java 範例 =====&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
     &lt;span style=&#34;color:#a6e22e&#34;&gt;@Autowired&lt;/span&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; JPAQueryFactory queryFactory&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
@@ -538,19 +686,19 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fetch&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;update&#34;&gt;update&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QCustomer customer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QCustomer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;customer&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QCustomer customer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QCustomer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;customer&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     &lt;span style=&#34;color:#75715e&#34;&gt;// rename customers named Bob to Bobby
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    queryFactory&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;where&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;eq&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bob&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;))&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;set&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bobby&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;delete&#34;&gt;delete&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QCustomer customer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QCustomer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;customer&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QCustomer customer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QCustomer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;customer&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     &lt;span style=&#34;color:#75715e&#34;&gt;// delete all customers
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    queryFactory&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
     &lt;span style=&#34;color:#75715e&#34;&gt;// delete all customers with a level less than 3
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    queryFactory&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;where&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;level&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lt&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;3&lt;span style=&#34;color:#f92672&#34;&gt;)).&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;子查詢&#34;&gt;子查詢&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QDepartment department &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QDepartment&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;department&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QDepartment department &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QDepartment&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;department&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     QDepartment d &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; QDepartment&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;d&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
     queryFactory&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;selectFrom&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;department&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;where&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;department&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;size&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;eq&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;JPAExpressions&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;d&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;size&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;max&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()).&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;from&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;d&lt;span style=&#34;color:#f92672&#34;&gt;)))&lt;/span&gt;
@@ -569,13 +717,13 @@ Examples: Assume we have three accounts, we connect them like this in order to u
                 &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;where&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;e&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;manager&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;eq&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;employee&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;manager&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;))))&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fetch&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;order-by&#34;&gt;order by&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QCustomer customer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QCustomer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;customer&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QCustomer customer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QCustomer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;customer&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     queryFactory&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;selectFrom&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;orderBy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lastName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;asc&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(),&lt;/span&gt; customer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;firstName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;desc&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;())&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fetch&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;group-by&#34;&gt;group by&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QCustomer customer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QCustomer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;customer&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    QCustomer customer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QCustomer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;customer&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     queryFactory&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lastName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;from&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;groupBy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;customer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lastName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fetch&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
@@ -595,13 +743,13 @@ Examples: Assume we have three accounts, we connect them like this in order to u
         <description>&lt;h3 id=&#34;lateinit延遲初始化&#34;&gt;lateinit：延遲初始化&lt;/h3&gt;
 &lt;p&gt;當不想設定 init value 又不想加上 &lt;code&gt;!!&lt;/code&gt; ， &lt;code&gt;?.&lt;/code&gt; ， &lt;code&gt;貓王運算&lt;/code&gt; 時 可以使用&lt;/p&gt;
 &lt;p&gt;ex: DI 時可以使用&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; adminUserRepository: AdminUserRepository
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; adminUserRepository: AdminUserRepository
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;lateinit-with-val&#34;&gt;lateinit with val&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;    lateinit modifier is allowed only on mutable properties
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    lateinit modifier is allowed only on mutable properties
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;lateinit 算有點語法糖，強制不初始化，繞過compiler，但要小心 之後一定要給值，不然就踩到自己埋的地雷
 &lt;br&gt;
 檢查 lateinit 是否已給值:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    xxx.isInitialized
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;    xxx.isInitialized
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
       
     </item>
@@ -614,7 +762,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
       <guid>https://xinqilin.github.io/post/other/curl/</guid>
       
         <description>&lt;h3 id=&#34;參數&#34;&gt;參數&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;    -X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    -X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request
     -H/--header                           設定 request 裡所攜帶的 header
     -i/--include                          在 output 顯示 response 的 header
     -d/--data                             攜帶 HTTP POST Data 
@@ -624,7 +772,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     -b/--cookie                           攜帶 cookie（可以是參數或是檔案位置）
     -o [fileName] [URL]                   下載若沒填 [fileName] 會直接用 source 原名
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;常用&#34;&gt;常用&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;    curl [URL]
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    curl [URL]
     curl -X POST/PUT [URL] -H &amp;quot;Content-Type: application/json&amp;quot; -d &#39;{&amp;quot;key&amp;quot; : &amp;quot;value&amp;quot; }&#39;
     curl -u [URL] &amp;lt;Account&amp;gt;:&amp;lt;Password&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;reference:
@@ -644,7 +792,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
       
         <description>&lt;h3 id=&#34;build-image&#34;&gt;build image&lt;/h3&gt;
 &lt;p&gt;mvn / gradle 後 clean package (或直接install) build 出 jar&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-dockerfile&#34; data-lang=&#34;dockerfile&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-dockerfile&#34; data-lang=&#34;dockerfile&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; openjdk:11&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;COPY&lt;/span&gt; ./target/*.jar C:/ideaProjects/docker-workspace/xxx.jar&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WORKDIR&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; C:/ideaProjects/docker-workspace&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
@@ -680,19 +828,19 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 &lt;li&gt;Inheritance 繼承&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;dependency&#34;&gt;Dependency&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 虛線，箭頭指向 被使用者
 
 A ---&amp;gt; B
 
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;association&#34;&gt;Association&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 實線，箭頭指向 被擁有者 ， 可在箭頭上增加 1-many 1-1 關西
 
 A -&amp;gt; B
 
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;aggregation&#34;&gt;Aggregation&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 空心菱形屁股箭頭，箭頭指向 整體
 
 
@@ -702,7 +850,7 @@ A &amp;lt;&amp;gt;-&amp;gt; B
   要有A 必須要有B，C
 
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;composition&#34;&gt;Composition&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 實心菱形屁股箭頭，箭頭指向 整體
 
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;to be continued&amp;hellip;.&lt;/p&gt;
@@ -718,7 +866,7 @@ A &amp;lt;&amp;gt;-&amp;gt; B
       <guid>https://xinqilin.github.io/post/spring/autowired/</guid>
       
         <description>&lt;p&gt;&lt;code&gt;intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)&lt;/code&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 Field injection is not recommended 
 Inspection info: Spring Team recommends: 
 &amp;quot;Always use constructor based dependency injection in your beans. 
@@ -732,7 +880,7 @@ Inspection info: Spring Team recommends:
 &lt;li&gt;Constructor injection&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;field-injection&#34;&gt;Field injection&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
     &lt;span style=&#34;color:#a6e22e&#34;&gt;@Autowired&lt;/span&gt;
     BillService billService&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
@@ -774,7 +922,7 @@ Inspection info: Spring Team recommends:
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
 &lt;p&gt;&lt;code&gt;Setter 跟 Constructor injection 差在 Setter 可以在沒有提供依賴時 ，順利執行，但 Constructor injection則會要求要強制依賴才能正常運轉&lt;/code&gt;&lt;/p&gt;
 &lt;h3 id=&#34;setter&#34;&gt;Setter&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; BillService billService&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
     &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;setBillService&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;BillService billService&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
@@ -782,7 +930,7 @@ Inspection info: Spring Team recommends:
     &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;constructor-injection&#34;&gt;Constructor injection&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; BillService billService&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
     
     &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;BillController&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;BillService billService&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
@@ -834,7 +982,7 @@ Inspection info: Spring Team recommends:
     &lt;/tr&gt;
 &lt;/table&gt;
 &lt;h3 id=&#34;srp-single-responsibility-principle&#34;&gt;SRP Single Responsibility Principle&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 A class should have only reason to change it
 只能有一個理由去改變它，若有多個邏輯寫在一個method 中 不符合
 
@@ -846,7 +994,7 @@ A class should have only reason to change it
 &lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;dependency-inversion-principle-依賴反轉&#34;&gt;Dependency inversion principle 依賴反轉&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 high-level should not depend on low-level module.
 Both should depend on abstraction
 中間應該以介面做連結
@@ -857,7 +1005,7 @@ Both should depend on abstraction
 &lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;liskov-substitution-principle-李式替換&#34;&gt;Liskov substitution principle 李式替換&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 sub-class should change super-class on no reason
 子類可無條件更換父類
 
@@ -865,7 +1013,7 @@ sub-class should change super-class on no reason
 &lt;li&gt;增加強健性&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;interface-segregation-principle-介面隔離原則&#34;&gt;Interface segregation principle 介面隔離原則&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 不同的事，應該用不同介面區隔，不應用一大包介面
 
 &lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
@@ -873,7 +1021,7 @@ sub-class should change super-class on no reason
 &lt;li&gt;當需求變更時，有更多靈活性&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;open-close-principle-開關原則&#34;&gt;Open-Close principle 開關原則&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 code should be open for extension , but close for modification
 
 &lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
@@ -901,7 +1049,7 @@ chrome: vue plugin&lt;/p&gt;
 &lt;p&gt;vue init webpack &amp;lt;你的app名字&amp;gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;npm run dev&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;main.js -&amp;gt; 路由 index.js  在 [router 內]&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Router&lt;/span&gt;({
     &lt;span style=&#34;color:#a6e22e&#34;&gt;routes&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;[
         {
@@ -915,7 +1063,7 @@ chrome: vue plugin&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;HelloWorld.vue 內容 在 [components內]&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;
 &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;template&lt;/span&gt;&amp;gt;
     &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
     
@@ -934,7 +1082,7 @@ chrome: vue plugin&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;跳頁&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;
 &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;template&lt;/span&gt;&amp;gt;
     &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
         &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;router-link&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/HelloWorld&amp;#34;&lt;/span&gt;&amp;gt;go to hello world&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;router-link&lt;/span&gt;&amp;gt;
@@ -942,7 +1090,7 @@ chrome: vue plugin&lt;/p&gt;
 &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;template&lt;/span&gt;&amp;gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;單向綁定&#34;&gt;單向綁定&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 v-text v-html
 v-bind:href=&amp;quot;link&amp;quot;   vue instance 內的 method 的 data:{link}
 (v-bind:href 可縮寫:href)
@@ -950,7 +1098,7 @@ v-bind:href=&amp;quot;link&amp;quot;   vue instance 內的 method 的 data:{link
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;雙向綁定&#34;&gt;雙向綁定&lt;/h3&gt;
 &lt;p&gt;v-model&lt;/p&gt;
 &lt;h3 id=&#34;綁定事件&#34;&gt;綁定事件&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 v-on:click=&amp;quot;num++&amp;quot;   =   @click
 
 v-on 防止事件冒泡{
@@ -962,7 +1110,7 @@ v-on 防止事件冒泡{
 }
 
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;按鍵修飾符-v-onkeyup13&#34;&gt;按鍵修飾符 v-on:keyup.13&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
 13 是鍵碼
 v-on 按鍵修飾符 懶人包{
 `.enter`
@@ -977,7 +1125,7 @@ v-on 按鍵修飾符 懶人包{
 }
 
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;v-for&#34;&gt;v-for&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;v-for = &amp;quot;user in users&amp;quot;  或 v-for=&amp;quot;(user, index) in users&amp;quot;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;v-for = &amp;quot;user in users&amp;quot;  或 v-for=&amp;quot;(user, index) in users&amp;quot;
 v-for = &amp;quot;(value, key, index) in users&amp;quot;  {{value}} {{key}} {{index}}
  
 v-for 增加 :key = &amp;quot;&amp;quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫
@@ -992,7 +1140,7 @@ v-show  裡面都填boolean
 v-else-if
 v-else 
 
-&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;// computed 計算屬性
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// watch 監控屬性
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// filter 過濾屬性  -&amp;gt; 使用 {{user.gender | genderFilter}}
@@ -1028,7 +1176,7 @@ v-else
 })
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;組件:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;script&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
 
 	&lt;span style=&#34;color:#a6e22e&#34;&gt;Global&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;組件&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
@@ -1063,7 +1211,7 @@ v-else
 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/script&amp;gt;&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;lifecycle&#34;&gt;lifeCycle&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Vue&lt;/span&gt;(){
     &lt;span style=&#34;color:#a6e22e&#34;&gt;el&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;app&lt;/span&gt;,
     &lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; {
@@ -1087,7 +1235,7 @@ v-else
       <guid>https://xinqilin.github.io/post/spring/jwt/</guid>
       
         <description>&lt;h1 id=&#34;jwt-dependency-inject&#34;&gt;JWT Dependency Inject&lt;/h1&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;
 // 兩種  引入 jjwt ， version 放 properties 內方便控管
 
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
@@ -1136,7 +1284,7 @@ v-else
 &lt;blockquote&gt;
 &lt;p&gt;Request  帳密&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AuthenticationRequest&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; Serializable &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AuthenticationRequest&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; Serializable &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; String userName&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
@@ -1170,7 +1318,7 @@ v-else
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;Response 回應 token&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AuthenticationResponse&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; Serializable &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; String jwt&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
@@ -1185,7 +1333,7 @@ v-else
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;config&#34;&gt;Config&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@EnableWebSecurity&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MySecurityConfig&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; WebSecurityConfigurerAdapter &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
@@ -1233,7 +1381,7 @@ v-else
     &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;最重要的-jwtutil&#34;&gt;最重要的 JWTUtil&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@Service&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;JwtUtil&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
@@ -1279,7 +1427,7 @@ v-else
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;jwt-filter&#34;&gt;JWT Filter&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@Component&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;JwtRequestFilter&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; OncePerRequestFilter &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
@@ -1321,7 +1469,7 @@ v-else
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;系統可以取得-user-帳密的-service&#34;&gt;系統可以取得 User 帳密的 service&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@Service&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyUserDetailsService&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; UserDetailsService &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
@@ -1333,7 +1481,7 @@ v-else
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;jwt-controller&#34;&gt;JWT Controller&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@RestController&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;JwtController&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
@@ -1386,7 +1534,7 @@ v-else
       
         <description>&lt;h1 id=&#34;swagger2&#34;&gt;Swagger2&lt;/h1&gt;
 &lt;h3 id=&#34;dependency-inject&#34;&gt;Dependency Inject&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
             &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;io.springfox&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
             &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;springfox-swagger2&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
             &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.9.2&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
@@ -1397,7 +1545,7 @@ v-else
             &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;springfox-swagger-ui&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
             &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.9.2&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;//Config
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@Configuration&lt;/span&gt;
@@ -1456,11 +1604,11 @@ v-else
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;基本&#34;&gt;基本&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@ApiOperation&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;這支API的功能&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; notes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;更詳細的功能&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; authorizations &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;@Authorization&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiKey&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;})&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;response&#34;&gt;Response&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@ApiResponses&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@ApiResponses&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
     &lt;span style=&#34;color:#a6e22e&#34;&gt;@ApiResponse&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 200&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; message &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Successfully retrieved list&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;),&lt;/span&gt;
 
@@ -1473,7 +1621,7 @@ v-else
 &lt;span style=&#34;color:#f92672&#34;&gt;})&lt;/span&gt; 
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;參數&#34;&gt;參數&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; User &lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;
                 &lt;span style=&#34;color:#a6e22e&#34;&gt;@ApiParam&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;required &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;請傳入UserObject的格式&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;@RequestBody&lt;/span&gt; UserObject dto&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
             &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; dto&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
@@ -1493,7 +1641,7 @@ v-else
         <description>&lt;h1 id=&#34;resttemplate&#34;&gt;RestTemplate&lt;/h1&gt;
 &lt;p&gt;一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來要用時能直接隨開隨用。
 &lt;br&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;//config
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@Configuration&lt;/span&gt;
@@ -1514,7 +1662,7 @@ v-else
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;注入&#34;&gt;注入&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; RestTemplate restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
     &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;XXService&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;RestTemplate restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
@@ -1527,7 +1675,7 @@ v-else
     RestTemplate restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;使用-exchange&#34;&gt;使用 exchange&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;// 第一個直接開門見山，最常用的 exchange，先點進去看 override 有甚麼不同的參數
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;springframework&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ResponseEntity&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;exchange&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lang&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt; url&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;springframework&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;HttpMethod&lt;/span&gt; method&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;@org.springframework.lang.Nullable&lt;/span&gt; org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;springframework&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;HttpEntity&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; requestEntity&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lang&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; responseType&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lang&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Object&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt; uriVariables&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;springframework&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;web&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;RestClientException&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;/* compiled code */&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
@@ -1572,7 +1720,7 @@ HttpMethod&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style
 System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;exchange&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getBody&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;());&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
 &lt;h3 id=&#34;get&#34;&gt;get&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;// 在來是 Get 請求 中 最常用的 ( 如果不用 exchange 的話)
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// getForObject() 在裡面做 反序列化，所以不再自己處理 HTTP 回來的 ResponseEntity objectMapper to JavaObject的動作   而 getForEntity() 則要自己處理
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
@@ -1598,7 +1746,7 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
 &lt;h3 id=&#34;post&#34;&gt;post&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; T &lt;span style=&#34;color:#a6e22e&#34;&gt;postForObject&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String url&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; Object request&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Class&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; responseType&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt; uriVariables&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; RestClientException &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; T &lt;span style=&#34;color:#a6e22e&#34;&gt;postForObject&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String url&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; Object request&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Class&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; responseType&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;?&amp;gt;&lt;/span&gt; uriVariables&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
@@ -1632,28 +1780,28 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
 &lt;p&gt;在 Java 常用的 framework spring boot 中 (&lt;del&gt;Spring MVC 沒有 它還是用一大狗票 Xml&amp;hellip;&lt;/del&gt;)，常可以看到 .properties 與 .yml 檔案做設定，連現在使用的 hugo 也可以使用 yaml 與 toml 設定，並不是唯一，但如果今天要去配置 K8S 的話， yaml 就不得不學了&lt;/p&gt;
 &lt;h3 id=&#34;yaml&#34;&gt;Yaml&lt;/h3&gt;
 &lt;p&gt;Basic&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 註解&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 註解&lt;/span&gt;
 ---  &lt;span style=&#34;color:#ae81ff&#34;&gt;開始符號&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;接著就是有點像 JSON 的 key-value 表示&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;apiVersion&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;v1&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;apiVersion&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;v1&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;階層關西的話 =&amp;gt; 換行加縮排 &lt;br&gt;
 以下等於  spring.datasource.username = root&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;spring&lt;/span&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;spring&lt;/span&gt;:
   &lt;span style=&#34;color:#f92672&#34;&gt;datasource&lt;/span&gt;:
     &lt;span style=&#34;color:#f92672&#34;&gt;username&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;root&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;常見陣列 =&amp;gt; 換行 縮排並在開頭加上 &amp;ldquo;-&amp;rdquo; 並空一格&lt;br&gt;
 內容可用來包 複雜物件&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;args&lt;/span&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;args&lt;/span&gt;:
  - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parameter1&amp;#34;&lt;/span&gt;
  - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parameter2&amp;#34;&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;但陣列好像也可以這樣 (簡單模式)&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;items&lt;/span&gt;: [ &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt; ]
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;items&lt;/span&gt;: [ &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt; ]
 &lt;span style=&#34;color:#f92672&#34;&gt;args&lt;/span&gt;: [ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parameter1&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parameter2&amp;#34;&lt;/span&gt; ]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
 &lt;p&gt;以下範例 參考 &lt;a href=&#34;https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started&#34;&gt; CloudBee YAML Tutorial&lt;/a&gt;&lt;/p&gt;
 &lt;br&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;---
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;---
  &lt;span style=&#34;color:#f92672&#34;&gt;doe&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;a deer, a female deer&amp;#34;&lt;/span&gt;
  &lt;span style=&#34;color:#f92672&#34;&gt;ray&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;a drop of golden sun&amp;#34;&lt;/span&gt;
  &lt;span style=&#34;color:#f92672&#34;&gt;pi&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;3.14159&lt;/span&gt;
@@ -1674,7 +1822,7 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
    &lt;span style=&#34;color:#f92672&#34;&gt;turtle-doves&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;two&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;相等於 JSON&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;doe&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;a deer, a female deer&amp;#34;&lt;/span&gt;,
   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;ray&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;a drop of golden sun&amp;#34;&lt;/span&gt;,
   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;pi&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;3.14159&lt;/span&gt;,
@@ -1713,7 +1861,7 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
 &lt;p&gt;MergeSort 套一句柯P 講的話，&lt;strong&gt;小問題解決了，就沒有大問題了&lt;/strong&gt;&lt;br&gt;
 將 n 個個數的陣列，先左右各切一半，一直切，切到最小單位後，開始拿兩條被切的單位做排序、合併 ! &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;del&gt;合久必分，分久必合&lt;/del&gt; &lt;br&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
 &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; java.util.*&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MergeSort&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
@@ -1790,7 +1938,7 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
 &lt;p&gt;有鑑於 Bill 上上週在刷 LC 時 &lt;a href=&#34;https://leetcode.com/problems/top-k-frequent-words/&#34;&gt;&lt;b&gt;題目點我!&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;很簡單的排序問題，那時我的想法是先掃過一次，存 Map&amp;lt;String 字，Integer 字的長度&amp;gt; 然後在排序 Map Value 後 得到答案
 但那時我心中想到的 map value 排序蠻麻煩的，這邊先記錄一下後來比較乾淨一點的寫法，以防之後忘記&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
         &lt;span style=&#34;color:#75715e&#34;&gt;// 掃第一次
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
         Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;Integer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; map &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
@@ -1800,7 +1948,7 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
         &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;排序方法&#34;&gt;排序方法:&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
         List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Map&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Entry&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Integer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArrayList&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;map&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;entrySet&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;());&lt;/span&gt;
 
         Collections&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;sort&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;list&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Comparator&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Map&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Entry&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Integer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
@@ -1811,7 +1959,7 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
         &lt;span style=&#34;color:#f92672&#34;&gt;});&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;這個跟上面的幾乎一樣，一個是 list 存 Map.Entry 在排序器中拿 Entry 出來比，另一個存 map key 然後每次都從 map 掃一次拿 value 出來比&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
         List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArrayList&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;map&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;keySet&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;());&lt;/span&gt;
 
         Collections&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;sort&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;list&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Comparator&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;(){&lt;/span&gt;
@@ -1824,7 +1972,7 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
 
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;最後 lambda 寫法&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
         List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; list &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArrayList&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;map&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;keySet&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;());&lt;/span&gt;
 
         Collections&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;sort&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;list&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;s1&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; s2&lt;span style=&#34;color:#f92672&#34;&gt;)-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
@@ -1847,8 +1995,8 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
 設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html
 &lt;/p&gt;
 &lt;br&gt;
-&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;hugo -t &amp;lt;你的theme&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;hugo -t &amp;lt;你的theme&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;
 再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
 &lt;/p&gt;
 &lt;br&gt;
@@ -1872,7 +2020,7 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
 &lt;br&gt;
 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;完成版:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-script&#34; data-lang=&#34;script&#34;&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-script&#34; data-lang=&#34;script&#34;&gt;
 # build public/
 hugo -t &amp;lt;你的theme&amp;gt;
 
@@ -1893,7 +2041,7 @@ git push
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;之後有新 post 要部屬上 github 時
 就執行 script 檔就行了 !
 &lt;br&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-script&#34; data-lang=&#34;script&#34;&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-script&#34; data-lang=&#34;script&#34;&gt;
 . deploy.sh &amp;lt;你要留的 commit message&amp;gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;br&gt;
@@ -1928,7 +2076,7 @@ git push
       
         <description>&lt;h1 id=&#34;side-project-常用功能紀錄方便以後快速-setup-環境&#34;&gt;Side Project 常用功能，紀錄，方便以後快速 setup 環境&lt;/h1&gt;
 &lt;h3 id=&#34;di&#34;&gt;DI&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;
     &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!--  Lombok--&amp;gt;&lt;/span&gt;
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.projectlombok&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
@@ -1992,7 +2140,7 @@ git push
 
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;properties-or-yaml&#34;&gt;Properties or Yaml&lt;/h3&gt;
-&lt;pre&gt;&lt;code class=&#34;language-properties&#34; data-lang=&#34;properties&#34;&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-properties&#34; data-lang=&#34;properties&#34;&gt;
     server.port = 808x
     server.servlet.context-path = /name
 
@@ -2006,7 +2154,7 @@ git push
     spring.jpa.hibernate.ddl-auto = update
     spring.jpa.show-sql = true
 
-&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;server&lt;/span&gt;:
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;server&lt;/span&gt;:
   &lt;span style=&#34;color:#f92672&#34;&gt;port&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;808x&lt;/span&gt;
   &lt;span style=&#34;color:#f92672&#34;&gt;servlet&lt;/span&gt;:
     &lt;span style=&#34;color:#f92672&#34;&gt;context-path&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;/name&lt;/span&gt;
@@ -2035,7 +2183,7 @@ git push
     &lt;span style=&#34;color:#f92672&#34;&gt;show-sql&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;config&#34;&gt;Config&lt;/h3&gt;
 &lt;p&gt;Swagger2Config&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
     &lt;span style=&#34;color:#75715e&#34;&gt;/**
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;    * @author Bill.Lin 
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;    */&lt;/span&gt;
@@ -2054,7 +2202,7 @@ git push
         &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
     &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;RestTemplateConfig&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Configuration&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Configuration&lt;/span&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;RestTemplateConfig&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 
         &lt;span style=&#34;color:#a6e22e&#34;&gt;@Bean&lt;/span&gt;
@@ -2072,7 +2220,7 @@ git push
     &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;docker-compose&#34;&gt;docker-compose&lt;/h3&gt;
 &lt;p&gt;kafka&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;
 &lt;span style=&#34;color:#f92672&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;3&amp;#39;&lt;/span&gt;
 
 &lt;span style=&#34;color:#f92672&#34;&gt;services&lt;/span&gt;:
@@ -2151,7 +2299,7 @@ git push
       - &lt;span style=&#34;color:#ae81ff&#34;&gt;default&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;logstash-config-resource&#34;&gt;logstash config (resource)&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;conversionRule&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;conversionWord=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;clr&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;converterClass=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;org.springframework.boot.logging.logback.ColorConverter&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;conversionRule&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;conversionWord=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wex&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;converterClass=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
@@ -2214,7 +2362,7 @@ git push
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;other&#34;&gt;Other&lt;/h3&gt;
 &lt;p&gt;banner.txt&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;
       ,.  - · - .,  &amp;#39;             ,.-·.              ,.  &amp;#39;                ,.  &amp;#39;
 ,·&amp;#39;´,.-,   ,. -.,   `&amp;#39;;,&amp;#39;         /    ;&amp;#39;\&amp;#39;          /   &amp;#39;;\              /   &amp;#39;;\
  \::\.&amp;#39;´  ;&amp;#39;\::::;:&amp;#39;  ,·&amp;#39;:\&amp;#39;      ;    ;:::\       ,&amp;#39;   ,&amp;#39;::&amp;#39;\           ,&amp;#39;   ,&amp;#39;::&amp;#39;\

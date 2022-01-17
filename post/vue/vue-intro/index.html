@@ -5,22 +5,24 @@
   data-theme="dark"
 ><head>
   <title>
-    Bill.Lin の 成長之路 ©
-      |
-      Vue Intro
+    
+      Bill.Lin の 成長之路 ©
+        |
+        Vue Intro
+
+
+      
 
 
     
-
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.83.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta
     name="description"
     content="
-      
-後端工程師 Java, Kotlin 
+      後端工程師 Java, Kotlin 
 
 我的線上筆記
 
@@ -35,8 +37,8 @@
   
   <link
     rel="stylesheet"
-    href="/css/main.min.5b25a1723ef4d5cfc7cf3c9a49349da6ba775c245c3b7c94948347e8370e244b.css"
-    integrity="sha256-WyWhcj701c/HzzyaSTSdprp3XCRcO3yUlINH6DcOJEs="
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
     crossorigin="anonymous"
     type="text/css"
   />
@@ -44,8 +46,8 @@
   
   <link
     rel="stylesheet"
-    href="/css/markupHighlight.min.f798cbda9aaa38f89eb38be6414bd082cfd71a6780375cbf67b6d2fb2b96491e.css"
-    integrity="sha256-95jL2pqqOPies4vmQUvQgs/XGmeAN1y/Z7bS&#43;yuWSR4="
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
     crossorigin="anonymous"
     type="text/css"
   />
@@ -62,7 +64,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/post/vue/vue-intro/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/vue/vue-intro/" />
 
   
   
@@ -93,6 +95,84 @@
 
 
   
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "Vue Intro",
+        "headline": "Vue Intro",
+        "alternativeHeadline": "",
+        "description": "
+      
+        筆記 Vue 未整理 version 套件 vetur vue2 snippets webpack -\u0026gt; npm install webpack -g vue -\u0026gt; npm install -g @vue\/cli-init chrome: vue plugin
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/vue\/vue-intro\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-07-04T22:27:03.00Z",
+        "datePublished": "2021-07-04T22:27:03.00Z",
+        "dateModified": "2021-07-04T22:27:03.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/vue\/vue-intro\/",
+        "wordCount" : "304",
+        "genre" : [ 
+      
+      "Vue"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
 </head>
 <body>
     <header><div
@@ -147,16 +227,18 @@
           </li>
 
         
-        
       </div>
-      <li>
+      <ul>
         
-          <a class="theme-switch" title="Switch Theme">
-            <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
-          </a>
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
 
         
-      </li>
+      </ul>
     </ul>
   </nav>
 </div>
@@ -174,42 +256,42 @@
         <img src="/images/profile.jpg" alt="profile picture" />
         <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
         <div class="description">
-          <p><br />後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
         </div>
       </div>
     </div>
     <ul class="social-links">
       
         <li>
-          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin">
+          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin" title="Linkedin">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub">
+          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub" title="GitHub">
             <i class="fab fa-github fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode">
+          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode" title="LeetCode">
             <i class="fas fa-laptop-code fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail">
+          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail" title="e-mail">
             <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
           </a>
         </li>
 
       
         <li>
-          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress">
+          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress" title="WordPress">
             <i class="fab fa-wordpress-simple fa-2x" aria-hidden="true"></i>
           </a>
         </li>
@@ -223,7 +305,7 @@
         &copy;
         
           Bill.Lin の 成長之路 ©
-          2021
+          2022
 
 
         
@@ -268,9 +350,7 @@
           </div>
 
         
-      </div>
-
-      <h1 id="筆記-vue-未整理-version">筆記 Vue 未整理 version</h1>
+      </div><h1 id="筆記-vue-未整理-version">筆記 Vue 未整理 version</h1>
 <h3 id="套件">套件</h3>
 <p>vetur
 vue2 snippets
@@ -281,7 +361,7 @@ chrome: vue plugin</p>
 <p>vue init webpack &lt;你的app名字&gt;</p>
 <p><code>npm run dev</code></p>
 <p>main.js -&gt; 路由 index.js  在 [router 內]</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
 <span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Router</span>({
     <span style="color:#a6e22e">routes</span><span style="color:#f92672">:</span>[
         {
@@ -295,7 +375,7 @@ chrome: vue plugin</p>
 </code></pre></div><blockquote>
 <p>HelloWorld.vue 內容 在 [components內]</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">
 &lt;<span style="color:#f92672">template</span>&gt;
     &lt;<span style="color:#f92672">div</span>&gt;
     
@@ -314,7 +394,7 @@ chrome: vue plugin</p>
 </code></pre></div><blockquote>
 <p>跳頁</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">
 &lt;<span style="color:#f92672">template</span>&gt;
     &lt;<span style="color:#f92672">div</span>&gt;
         &lt;<span style="color:#f92672">router-link</span> <span style="color:#a6e22e">to</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/HelloWorld&#34;</span>&gt;go to hello world&lt;/<span style="color:#f92672">router-link</span>&gt;
@@ -322,7 +402,7 @@ chrome: vue plugin</p>
 &lt;/<span style="color:#f92672">template</span>&gt;
 
 </code></pre></div><h3 id="單向綁定">單向綁定</h3>
-<pre><code>
+<pre tabindex="0"><code>
 v-text v-html
 v-bind:href=&quot;link&quot;   vue instance 內的 method 的 data:{link}
 (v-bind:href 可縮寫:href)
@@ -330,7 +410,7 @@ v-bind:href=&quot;link&quot;   vue instance 內的 method 的 data:{link}
 </code></pre><h3 id="雙向綁定">雙向綁定</h3>
 <p>v-model</p>
 <h3 id="綁定事件">綁定事件</h3>
-<pre><code>
+<pre tabindex="0"><code>
 v-on:click=&quot;num++&quot;   =   @click
 
 v-on 防止事件冒泡{
@@ -342,7 +422,7 @@ v-on 防止事件冒泡{
 }
 
 </code></pre><h3 id="按鍵修飾符-v-onkeyup13">按鍵修飾符 v-on:keyup.13</h3>
-<pre><code>
+<pre tabindex="0"><code>
 13 是鍵碼
 v-on 按鍵修飾符 懶人包{
 `.enter`
@@ -357,7 +437,7 @@ v-on 按鍵修飾符 懶人包{
 }
 
 </code></pre><h3 id="v-for">v-for</h3>
-<pre><code>v-for = &quot;user in users&quot;  或 v-for=&quot;(user, index) in users&quot;
+<pre tabindex="0"><code>v-for = &quot;user in users&quot;  或 v-for=&quot;(user, index) in users&quot;
 v-for = &quot;(value, key, index) in users&quot;  {{value}} {{key}} {{index}}
  
 v-for 增加 :key = &quot;&quot;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫
@@ -372,7 +452,7 @@ v-show  裡面都填boolean
 v-else-if
 v-else 
 
-</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
 <span style="color:#75715e">// computed 計算屬性
 </span><span style="color:#75715e">// watch 監控屬性
 </span><span style="color:#75715e">// filter 過濾屬性  -&gt; 使用 {{user.gender | genderFilter}}
@@ -408,7 +488,7 @@ v-else
 })
 
 </code></pre></div><p>組件:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
 <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span>
 
 	<span style="color:#a6e22e">Global</span> <span style="color:#a6e22e">組件</span><span style="color:#f92672">:</span>
@@ -443,7 +523,7 @@ v-else
 <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
 
 </code></pre></div><h3 id="lifecycle">lifeCycle</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">
 <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Vue</span>(){
     <span style="color:#a6e22e">el</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">app</span>,
     <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> {
@@ -484,7 +564,7 @@ v-else
         &copy;
         
           Bill.Lin の 成長之路 ©
-          2021
+          2022
 
 
         
