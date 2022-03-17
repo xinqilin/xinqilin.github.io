@@ -8,7 +8,7 @@
     
       Bill.Lin の 成長之路 ©
         |
-        SOLID
+        BadSmell
 
 
       
@@ -64,7 +64,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/solid/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/badsmell/" />
 
   
   
@@ -89,8 +89,9 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="SOLID"/>
-<meta name="twitter:description" content="SOLID    首字母   代表   概念     S  單一職責原則:  「物件應該僅具有一種單一功能」的概念。    O  開閉原則:  「軟體體應該是對於擴充開放的，但是對於修改封閉的」的概念    L  里氏替換原則:  「程式中的物件應該是可以在不改變程式正確性的前提下被它的子類所替換的」    I  介面隔離原則:  「多個特定客戶端介面要好於一個寬泛用途的介面」    D  依賴反轉原則  一個方法應該遵從「依賴於抽象而不是一個實例」的概念。依賴注入是該原則的一種實現方式。   SRP Single Responsibility Principle  A class should have only reason to change it 只能有一個理由去改變它，若有多個邏輯寫在一個method 中 不符合  複雜度降低 可讀性高 可維護姓提升 只有改這個才有影響 這個類別只做這件事 一個一個 component 不是他的事 他別碰   Dependency inversion principle 依賴反轉  high-level should not depend on low-level module."/>
+<meta name="twitter:title" content="BadSmell"/>
+<meta name="twitter:description" content="Rigidity, 難以變更 任何變更, 都需要去改其他的東西, 造成一個小小的需求就要去更改另個很大的東西
+Fragility, 容易壞掉 任何變更都會導致其他有相依或無相依的東西超出想象的破壞, 改一個小東西, 結果其他重要的東西壞掉"/>
 
 
 
@@ -106,12 +107,12 @@
         "@context": "http://schema.org",
         "@type": "BlogPosting",
         "articleSection": "post",
-        "name": "SOLID",
-        "headline": "SOLID",
+        "name": "BadSmell",
+        "headline": "BadSmell",
         "alternativeHeadline": "",
         "description": "
       
-        SOLID    首字母   代表   概念     S  單一職責原則:  「物件應該僅具有一種單一功能」的概念。    O  開閉原則:  「軟體體應該是對於擴充開放的，但是對於修改封閉的」的概念    L  里氏替換原則:  「程式中的物件應該是可以在不改變程式正確性的前提下被它的子類所替換的」    I  介面隔離原則:  「多個特定客戶端介面要好於一個寬泛用途的介面」    D  依賴反轉原則  一個方法應該遵從「依賴於抽象而不是一個實例」的概念。依賴注入是該原則的一種實現方式。   SRP Single Responsibility Principle  A class should have only reason to change it 只能有一個理由去改變它，若有多個邏輯寫在一個method 中 不符合  複雜度降低 可讀性高 可維護姓提升 只有改這個才有影響 這個類別只做這件事 一個一個 component 不是他的事 他別碰   Dependency inversion principle 依賴反轉  high-level should not depend on low-level module.
+        Rigidity, 難以變更 任何變更, 都需要去改其他的東西, 造成一個小小的需求就要去更改另個很大的東西\nFragility, 容易壞掉 任何變更都會導致其他有相依或無相依的東西超出想象的破壞, 改一個小東西, 結果其他重要的東西壞掉
 
 
       
@@ -122,7 +123,7 @@
         "isFamilyFriendly": "true",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/solid\/"
+            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/badsmell\/"
         },
         "author" : {
             "@type": "Person",
@@ -140,10 +141,10 @@
             "@type": "Person",
             "name": "Bill.Lin"
         },
-        "copyrightYear" : "2021",
-        "dateCreated": "2021-07-08T21:20:39.00Z",
-        "datePublished": "2021-07-08T21:20:39.00Z",
-        "dateModified": "2021-07-08T21:20:39.00Z",
+        "copyrightYear" : "2022",
+        "dateCreated": "2022-03-17T22:50:11.00Z",
+        "datePublished": "2022-03-17T22:50:11.00Z",
+        "dateModified": "2022-03-17T22:50:11.00Z",
         "publisher":{
             "@type":"Organization",
             "name": "Bill.Lin",
@@ -160,11 +161,11 @@
       ]
 
     ,
-        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/solid\/",
-        "wordCount" : "101",
+        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/badsmell\/",
+        "wordCount" : "23",
         "genre" : [ 
       
-      "DesignPattern"
+      "bad smell"
 
     ],
         "keywords" : [ ]
@@ -334,13 +335,13 @@
     <div class="post-content">
       
       <div class="post-title">
-        <h1>SOLID</h1>
+        <h1>BadSmell</h1>
         
           <div class="info">
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Thu, Jul 8, 2021
+                Thu, Mar 17, 2022
 
 
               </span
@@ -350,92 +351,19 @@
           </div>
 
         
-      </div><h1 id="solid">SOLID</h1>
-<table>
-    <tr>
-        <th>   首字母   </th>
-        <th>   代表   </th>
-        <th>     概念     </th>
-    </tr>
-    <tr>
-        <td>   S   </td>
-        <td>單一職責原則:   </td>
-        <td>「物件應該僅具有一種單一功能」的概念。</td>
-    </tr>
-    <tr>
-        <td>   O   </td>
-        <td>開閉原則:   </td>
-        <td>「軟體體應該是對於擴充開放的，但是對於修改封閉的」的概念</td>
-    </tr>
-    <tr>
-        <td>   L   </td>
-        <td>里氏替換原則:   </td>
-        <td>「程式中的物件應該是可以在不改變程式正確性的前提下被它的子類所替換的」</td>
-    </tr>
-    <tr>
-        <td>   I   </td>
-        <td>介面隔離原則:   </td>
-        <td>「多個特定客戶端介面要好於一個寬泛用途的介面」</td>
-    </tr>
-    <tr>
-        <td>   D   </td>
-        <td>依賴反轉原則   </td>
-        <td>一個方法應該遵從「依賴於抽象而不是一個實例」的概念。依賴注入是該原則的一種實現方式。</td>
-    </tr>
-</table>
-<h3 id="srp-single-responsibility-principle">SRP Single Responsibility Principle</h3>
-<pre tabindex="0"><code>
-A class should have only reason to change it
-只能有一個理由去改變它，若有多個邏輯寫在一個method 中 不符合
-
-</code></pre><ul>
-<li>複雜度降低</li>
-<li>可讀性高</li>
-<li>可維護姓提升</li>
-<li>只有改這個才有影響</li>
-<li>這個類別只做這件事</li>
-<li>一個一個 component 不是他的事 他別碰
-<br></li>
-</ul>
-<h3 id="dependency-inversion-principle-依賴反轉">Dependency inversion principle 依賴反轉</h3>
-<pre tabindex="0"><code>
-high-level should not depend on low-level module.
-Both should depend on abstraction
-中間應該以介面做連結
-
-</code></pre><ul>
-<li>並行開發的穩定性</li>
-<li>增加單元測試的可能 有interface 就能mock
-<br></li>
-</ul>
-<h3 id="liskov-substitution-principle-李式替換">Liskov substitution principle 李式替換</h3>
-<pre tabindex="0"><code>
-sub-class should change super-class on no reason
-子類可無條件更換父類
-
-</code></pre><ul>
-<li>增加強健性</li>
-</ul>
-<h3 id="interface-segregation-principle-介面隔離原則">Interface segregation principle 介面隔離原則</h3>
-<pre tabindex="0"><code>
-不同的事，應該用不同介面區隔，不應用一大包介面
-
-</code></pre><ul>
-<li>介面越少，對系統的影響風險也少</li>
-<li>當需求變更時，有更多靈活性</li>
-</ul>
-<h3 id="open-close-principle-開關原則">Open-Close principle 開關原則</h3>
-<pre tabindex="0"><code>
-code should be open for extension , but close for modification
-
-</code></pre><ul>
-<li>code 比較不容易壞掉，因為沒去更改到</li>
-</ul>
+      </div><h3 id="rigidity-難以變更">Rigidity, 難以變更</h3>
+<p>任何變更, 都需要去改其他的東西, 造成一個小小的需求就要去更改另個很大的東西</p>
+<h3 id="fragility-容易壞掉">Fragility, 容易壞掉</h3>
+<p>任何變更都會導致其他有相依或無相依的東西超出想象的破壞, 改一個小東西, 結果其他重要的東西壞掉</p>
+<h3 id="immobility-難以複用">Immobility, 難以複用</h3>
+<p>系統中相依情況嚴重, 造成想要移出code 寫成 function 的成本 高於打掉重寫的成本</p>
+<h3 id="viscosity-難以正確修改">Viscosity, 難以正確修改</h3>
+<p>系統變更時, 因成本考量大多會以 治標不治本的方式改完需求,而非從源頭處修改</p>
 </div>
     <div class="post-footer">
       <div class="info">
         
-          <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+          <span class="separator"><a class="category" href="/categories/bad-smell/">bad smell</a></span>
 
 
 

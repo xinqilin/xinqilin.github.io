@@ -6,7 +6,26 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Wed, 09 Feb 2022 19:46:19 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Mar 2022 22:50:11 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BadSmell</title>
+      <link>https://xinqilin.github.io/post/designpattern/badsmell/</link>
+      <pubDate>Thu, 17 Mar 2022 22:50:11 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/badsmell/</guid>
+      
+        <description>&lt;h3 id=&#34;rigidity-難以變更&#34;&gt;Rigidity, 難以變更&lt;/h3&gt;
+&lt;p&gt;任何變更, 都需要去改其他的東西, 造成一個小小的需求就要去更改另個很大的東西&lt;/p&gt;
+&lt;h3 id=&#34;fragility-容易壞掉&#34;&gt;Fragility, 容易壞掉&lt;/h3&gt;
+&lt;p&gt;任何變更都會導致其他有相依或無相依的東西超出想象的破壞, 改一個小東西, 結果其他重要的東西壞掉&lt;/p&gt;
+&lt;h3 id=&#34;immobility-難以複用&#34;&gt;Immobility, 難以複用&lt;/h3&gt;
+&lt;p&gt;系統中相依情況嚴重, 造成想要移出code 寫成 function 的成本 高於打掉重寫的成本&lt;/p&gt;
+&lt;h3 id=&#34;viscosity-難以正確修改&#34;&gt;Viscosity, 難以正確修改&lt;/h3&gt;
+&lt;p&gt;系統變更時, 因成本考量大多會以 治標不治本的方式改完需求,而非從源頭處修改&lt;/p&gt;
+</description>
+      
+    </item>
+    
     <item>
       <title>Github Ssh</title>
       <link>https://xinqilin.github.io/post/other/github-ssh/</link>
@@ -1044,7 +1063,9 @@ A class should have only reason to change it
 &lt;li&gt;複雜度降低&lt;/li&gt;
 &lt;li&gt;可讀性高&lt;/li&gt;
 &lt;li&gt;可維護姓提升&lt;/li&gt;
-&lt;li&gt;只有改這個才有影響
+&lt;li&gt;只有改這個才有影響&lt;/li&gt;
+&lt;li&gt;這個類別只做這件事&lt;/li&gt;
+&lt;li&gt;一個一個 component 不是他的事 他別碰
 &lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;dependency-inversion-principle-依賴反轉&#34;&gt;Dependency inversion principle 依賴反轉&lt;/h3&gt;
