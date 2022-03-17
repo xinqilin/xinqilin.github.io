@@ -162,7 +162,7 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/other\/github-ssh\/",
-        "wordCount" : "47",
+        "wordCount" : "77",
         "genre" : [ 
       
       "github"
@@ -373,7 +373,12 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
     ssh -T git@github.com
     &gt;&gt; 測試連線 &gt;&gt; <span style="color:#e6db74">&#34;Hi xinqilin! You&#39;ve successfully authenticated, but GitHub does not provide shell access.&#34;</span>
 
-</code></pre></div></div>
+</code></pre></div><h3 id="重設-remote-url--https-改-ssh">重設 remote url =&gt; https 改 ssh</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">    git remote rm origin
+    git remote add origin <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span>
+</code></pre></div><h3 id="應用程式要用的-token">應用程式要用的 token</h3>
+<p>setting -&gt; developer setting -&gt; personal access token -&gt; generate new token</p>
+</div>
     <div class="post-footer">
       <div class="info">
         

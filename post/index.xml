@@ -48,7 +48,12 @@
     ssh -T git@github.com
     &amp;gt;&amp;gt; 測試連線 &amp;gt;&amp;gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hi xinqilin! You&amp;#39;ve successfully authenticated, but GitHub does not provide shell access.&amp;#34;&lt;/span&gt;
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;重設-remote-url--https-改-ssh&#34;&gt;重設 remote url =&amp;gt; https 改 ssh&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    git remote rm origin
+    git remote add origin &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;url&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;應用程式要用的-token&#34;&gt;應用程式要用的 token&lt;/h3&gt;
+&lt;p&gt;setting -&amp;gt; developer setting -&amp;gt; personal access token -&amp;gt; generate new token&lt;/p&gt;
+</description>
       
     </item>
     
