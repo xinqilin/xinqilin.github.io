@@ -292,6 +292,55 @@
     >
       
       <div class="post-title">
+        <h3><a href="/post/spring/resttemplate/">RestTemplate</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              RestTemplate 一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來要用時能直接隨開隨用。 //config  @Configuration public class RestTemplateConfig { @Bean public RestTemplate restTemplate(ClientHttpRequestFactory factory) { return new RestTemplate(factory); } @Bean public ClientHttpRequestFactory simpleClientHttpRequestFactory() { SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory(); factory.
+
+
+            
+          </p>
+          <a href="/post/spring/resttemplate/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Wed, Jun 30, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/java/">Java</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
         <h3><a href="/post/other/yaml/">Yaml</a></h3>
       </div>
       <div class="post-content">
@@ -610,20 +659,18 @@
     >
       
       <div class="post-title">
-        <h3><a href="/post/other/sed/">sed</a></h3>
+        <h3><a href="/post/java/mapcompute/">MapCompute</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Ref: TW511教學網
-sed [options] &lsquo;[地址定界] command&rsquo; file(s)
- -n：不輸出模式空間內容到螢幕，即不自動列印，只列印匹配到的行 -e：多點編輯，對每行處理時，可以有多個Script -f：把Script寫到檔案當中，在執行sed時-f 指定檔案路徑，如果是多個Script，換行寫 -r：支援擴充套件的正則表達式 -i：直接將處理的結果寫入檔案 -i.
+              init Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;(); map.put(&#34;a&#34;, 1); putIfAbsent 有了就不塞, 沒有就塞 value (不存在就塞)
 
 
             
           </p>
-          <a href="/post/other/sed/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/java/mapcompute/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -633,24 +680,18 @@ sed [options] &lsquo;[地址定界] command&rsquo; file(s)
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Mon, Jan 1, 0001
+                Wed, Mar 20, 2019
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/other/">Other</a></span>
+              <span class="separator"><a class="category" href="/categories/map/">Map</a><a class="category" href="/categories/compute/">Compute</a><a class="category" href="/categories/computeifabsent/">ComputeIfAbsent</a><a class="category" href="/categories/computeifpresent/">ComputeIfPresent</a></span>
 
 
 
 
             
-
-            
-              <span class="separator"><a class="tag" href="/tags/sed/">SED</a></span>
-
-
-
 
             
           </div>
