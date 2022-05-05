@@ -2115,6 +2115,28 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
     </item>
     
     <item>
+      <title>Git_tag</title>
+      <link>https://xinqilin.github.io/post/other/git_tag/</link>
+      <pubDate>Mon, 01 Mar 2021 21:16:29 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/other/git_tag/</guid>
+      
+        <description>&lt;h3 id=&#34;code-build-使用-tag-做驅動&#34;&gt;code build 使用 tag 做驅動&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    git tag deploy/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;env_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;feature_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    git push origin deploy/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;env_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;feature_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+    git tag -d/--delete deploy/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;env_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;feature_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    git push origin --delete deploy/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;env_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;feature_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    git push origin :&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;tagname&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+    git describe --always HEAD  
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
+    <item>
       <title>Deploy Hugo</title>
       <link>https://xinqilin.github.io/post/script/deploy-hugo/</link>
       <pubDate>Sun, 28 Jun 2020 12:36:19 +0800</pubDate>
