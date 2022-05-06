@@ -2572,7 +2572,26 @@ $0: 一整行&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用外部 script&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    ls -l | awk -f &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;sciptFileName&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;＝＝＝＝＝ advanced ＝＝＝＝＝&lt;/p&gt;
+&lt;p&gt;awk &amp;lsquo;BEGIN{statement} {main statement} END{statement}&amp;rsquo;&lt;br&gt;
+BEGIN, END 執行一次 main 可多次&lt;/p&gt;
+&lt;p&gt;String ~ /regex/[actions] =&amp;gt; String match regex, then execute actions
+String !~ /regex/[actions]  =&amp;gt; String not match regex, then execute actions
+/regex/[actions] file =&amp;gt; file match regex, then execute actions
+!/regex/[actions] file =&amp;gt; file not match regex, then execute actions&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;NF&amp;rdquo;  =&amp;gt; Number of Fields
+&amp;ldquo;NR&amp;rdquo;  =&amp;gt; Number of Records
+&amp;ldquo;ARGC&amp;rdquo; =&amp;gt; number of arguments
+&lt;code&gt;awk &#39;BEGIN {print &amp;quot;Arguments =&amp;quot;, ARGC}&#39; One Two Three Four&lt;/code&gt; =&amp;gt; Arguments = 5&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;ARGV&amp;rdquo; =&amp;gt; input arguments in vector&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BEGIN { 
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    for (i = 0; i &amp;lt; ARGC - 1; ++i) { 
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        printf &amp;#34;ARGV[%d] = %s\n&amp;#34;, i, ARGV[i] 
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    } 
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    }&amp;#39;&lt;/span&gt; one two three four
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&amp;hellip;to be continued&amp;hellip;&lt;/p&gt;
+&lt;p&gt;reference: &lt;a href=&#34;https://www.hy-star.com.tw/tech/linux/awk/awk.html#awk_basic&#34; alt=&#34;awk basic&#34; target=&#34;_blank&#34;&gt;awk basic&lt;/a&gt;&lt;/p&gt;
+</description>
       
     </item>
     

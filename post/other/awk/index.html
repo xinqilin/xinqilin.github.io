@@ -163,7 +163,7 @@ ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop #
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/other\/awk\/",
-        "wordCount" : "99",
+        "wordCount" : "219",
         "genre" : [ 
       
       "script"
@@ -355,7 +355,7 @@ ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop #
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 1 分鐘</span>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
           </div>
 
         
@@ -391,7 +391,26 @@ $0: 一整行</p>
 </code></pre></div><p>使用外部 script</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">    ls -l | awk -f <span style="color:#f92672">{</span>sciptFileName<span style="color:#f92672">}</span>
 
-</code></pre></div></div>
+</code></pre></div><p>＝＝＝＝＝ advanced ＝＝＝＝＝</p>
+<p>awk &lsquo;BEGIN{statement} {main statement} END{statement}&rsquo;<br>
+BEGIN, END 執行一次 main 可多次</p>
+<p>String ~ /regex/[actions] =&gt; String match regex, then execute actions
+String !~ /regex/[actions]  =&gt; String not match regex, then execute actions
+/regex/[actions] file =&gt; file match regex, then execute actions
+!/regex/[actions] file =&gt; file not match regex, then execute actions</p>
+<p>&ldquo;NF&rdquo;  =&gt; Number of Fields
+&ldquo;NR&rdquo;  =&gt; Number of Records
+&ldquo;ARGC&rdquo; =&gt; number of arguments
+<code>awk 'BEGIN {print &quot;Arguments =&quot;, ARGC}' One Two Three Four</code> =&gt; Arguments = 5</p>
+<p>&ldquo;ARGV&rdquo; =&gt; input arguments in vector</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">    awk <span style="color:#e6db74">&#39;BEGIN { 
+</span><span style="color:#e6db74">    for (i = 0; i &lt; ARGC - 1; ++i) { 
+</span><span style="color:#e6db74">        printf &#34;ARGV[%d] = %s\n&#34;, i, ARGV[i] 
+</span><span style="color:#e6db74">    } 
+</span><span style="color:#e6db74">    }&#39;</span> one two three four
+</code></pre></div><p>&hellip;to be continued&hellip;</p>
+<p>reference: <a href="https://www.hy-star.com.tw/tech/linux/awk/awk.html#awk_basic" alt="awk basic" target="_blank">awk basic</a></p>
+</div>
     <div class="post-footer">
       <div class="info">
         
