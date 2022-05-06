@@ -2534,6 +2534,49 @@ git push
     </item>
     
     <item>
+      <title>Awk</title>
+      <link>https://xinqilin.github.io/post/other/awk/</link>
+      <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/other/awk/</guid>
+      
+        <description>&lt;h3 id=&#34;awk&#34;&gt;Awk&lt;/h3&gt;
+&lt;p&gt;&amp;lsquo;$0&amp;rsquo;,&#39;$1&#39;~&#39;$N&#39; (N 為欄位數)
+$0: 一整行&lt;/p&gt;
+&lt;p&gt;example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    ls -l | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print $3,$9}&amp;#39;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqi Applications&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqi Desktop&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqi Documents&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqi Downloads&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, =&amp;gt; 空格&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    ls -l | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print $3 $9}&amp;#39;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqiApplications&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqiDesktop&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqiDocuments&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqiDownloads&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# linxinqiLibrary&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;自訂格式化輸出, 也可做數學運算&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    ll | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print &amp;#34;userName: &amp;#34;, $3, &amp;#34;fileName: &amp;#34;, $9}&amp;#39;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# userName:  linxinqi fileName:  Applications&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# userName:  linxinqi fileName:  Desktop&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# userName:  linxinqi fileName:  Documents&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# userName:  linxinqi fileName:  Downloads&lt;/span&gt;
+
+    awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print $1 + $2}&amp;#39;&lt;/span&gt; -    &lt;span style=&#34;color:#75715e&#34;&gt;#  &amp;#39;-&amp;#39; 叫鍵盤出來&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# 1 2&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# 3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用外部 script&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    ls -l | awk -f &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;sciptFileName&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
+    <item>
       <title>MapCompute</title>
       <link>https://xinqilin.github.io/post/java/mapcompute/</link>
       <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>

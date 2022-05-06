@@ -8,7 +8,7 @@
     
       Bill.Lin の 成長之路 ©
         |
-        script
+        Awk
 
 
       
@@ -64,7 +64,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="https://xinqilin.github.io/categories/script/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/other/awk/" />
 
   
   
@@ -89,13 +89,10 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="script"/>
-<meta name="twitter:description" content="後端工程師 Java, Kotlin 
-
-我的線上筆記
-
-很高興認識你 Pleased to meet you!
-"/>
+<meta name="twitter:title" content="Awk"/>
+<meta name="twitter:description" content="Awk &lsquo;$0&rsquo;,&#39;$1&#39;~&#39;$N&#39; (N 為欄位數) $0: 一整行
+example:
+ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop # linxinqi Documents # linxinqi Downloads , =&gt; 空格"/>
 
 
 
@@ -104,6 +101,86 @@
 
   
   
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "Awk",
+        "headline": "Awk",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Awk \u0026lsquo;$0\u0026rsquo;,\u0027$1\u0027~\u0027$N\u0027 (N 為欄位數) $0: 一整行\nexample:\nls -l | awk \u0026#39;{print $3,$9}\u0026#39; # linxinqi Applications # linxinqi Desktop # linxinqi Documents # linxinqi Downloads , =\u0026gt; 空格
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/other\/awk\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2019",
+        "dateCreated": "2019-04-06T23:18:56.00Z",
+        "datePublished": "2019-04-06T23:18:56.00Z",
+        "dateModified": "2019-04-06T23:18:56.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/other\/awk\/",
+        "wordCount" : "99",
+        "genre" : [ 
+      
+      "script"
+
+    
+      
+        ,
+
+      
+      "awk"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
 
 </head>
 <body>
@@ -258,83 +335,78 @@
         <div class="autopagerize_page_element">
           <div class="content">
   <div
-    class="archive 
+    class="post 
       animated fadeInDown
 
     "
   >
-    <ul class="list-with-title">
+    <div class="post-content">
       
-        <div class="listing-title">2021</div>
+      <div class="post-title">
+        <h1>Awk</h1>
         
-          <ul class="listing">
-            <div class="listing-item">
-              <div class="listing-post">
-                <a href="/post/other/yaml/" title="Yaml">Yaml</a>
-                <div class="post-time">
-                  <span class="date"
-                    >
-                      Jun 29
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sat, Apr 6, 2019
 
 
-                    </span
-                  >
-                </div>
-              </div>
-            </div>
-          </ul>
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
+          </div>
 
         
+      </div><h3 id="awk">Awk</h3>
+<p>&lsquo;$0&rsquo;,'$1'~'$N' (N 為欄位數)
+$0: 一整行</p>
+<p>example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">    ls -l | awk <span style="color:#e6db74">&#39;{print $3,$9}&#39;</span>
 
+    <span style="color:#75715e"># linxinqi Applications</span>
+    <span style="color:#75715e"># linxinqi Desktop</span>
+    <span style="color:#75715e"># linxinqi Documents</span>
+    <span style="color:#75715e"># linxinqi Downloads</span>
+</code></pre></div><p>, =&gt; 空格</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">    ls -l | awk <span style="color:#e6db74">&#39;{print $3 $9}&#39;</span>
 
-      
-        <div class="listing-title">2020</div>
+    <span style="color:#75715e"># linxinqiApplications</span>
+    <span style="color:#75715e"># linxinqiDesktop</span>
+    <span style="color:#75715e"># linxinqiDocuments</span>
+    <span style="color:#75715e"># linxinqiDownloads</span>
+    <span style="color:#75715e"># linxinqiLibrary</span>
+</code></pre></div><p>自訂格式化輸出, 也可做數學運算</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">    ll | awk <span style="color:#e6db74">&#39;{print &#34;userName: &#34;, $3, &#34;fileName: &#34;, $9}&#39;</span>
+
+    <span style="color:#75715e"># userName:  linxinqi fileName:  Applications</span>
+    <span style="color:#75715e"># userName:  linxinqi fileName:  Desktop</span>
+    <span style="color:#75715e"># userName:  linxinqi fileName:  Documents</span>
+    <span style="color:#75715e"># userName:  linxinqi fileName:  Downloads</span>
+
+    awk <span style="color:#e6db74">&#39;{print $1 + $2}&#39;</span> -    <span style="color:#75715e">#  &#39;-&#39; 叫鍵盤出來</span>
+    <span style="color:#75715e"># 1 2</span>
+    <span style="color:#75715e"># 3</span>
+</code></pre></div><p>使用外部 script</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">    ls -l | awk -f <span style="color:#f92672">{</span>sciptFileName<span style="color:#f92672">}</span>
+
+</code></pre></div></div>
+    <div class="post-footer">
+      <div class="info">
         
-          <ul class="listing">
-            <div class="listing-item">
-              <div class="listing-post">
-                <a href="/post/script/deploy-hugo/" title="Deploy Hugo">Deploy Hugo</a>
-                <div class="post-time">
-                  <span class="date"
-                    >
-                      Jun 28
+          <span class="separator"><a class="category" href="/categories/script/">script</a><a class="category" href="/categories/awk/">awk</a></span>
 
 
-                    </span
-                  >
-                </div>
-              </div>
-            </div>
-          </ul>
 
-        
-
-
-      
-        <div class="listing-title">2019</div>
-        
-          <ul class="listing">
-            <div class="listing-item">
-              <div class="listing-post">
-                <a href="/post/other/awk/" title="Awk">Awk</a>
-                <div class="post-time">
-                  <span class="date"
-                    >
-                      Apr 6
-
-
-                    </span
-                  >
-                </div>
-              </div>
-            </div>
-          </ul>
 
         
 
+        
+      </div>
+    </div>
 
-      
-    </ul>
+    
   </div>
 
 
