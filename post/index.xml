@@ -2589,8 +2589,14 @@ String !~ /regex/[actions]  =&amp;gt; String not match regex, then execute actio
 &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        printf &amp;#34;ARGV[%d] = %s\n&amp;#34;, i, ARGV[i] 
 &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    } 
 &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    }&amp;#39;&lt;/span&gt; one two three four
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&amp;hellip;to be continued&amp;hellip;&lt;/p&gt;
-&lt;p&gt;reference: &lt;a href=&#34;https://www.hy-star.com.tw/tech/linux/awk/awk.html#awk_basic&#34; alt=&#34;awk basic&#34; target=&#34;_blank&#34;&gt;awk basic&lt;/a&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&amp;ldquo;FNR&amp;rdquo; =&amp;gt; record number in current file
+&amp;ldquo;IGNORECASE&amp;rdquo; =&amp;gt; ignore case
+&amp;ldquo;OFMT&amp;rdquo; =&amp;gt; output format for numbers
+&amp;ldquo;RSTART&amp;rdquo; =&amp;gt; index of first character matched by match
+&amp;ldquo;RLENGTH&amp;rdquo; =&amp;gt; match length of string matched by match&lt;/p&gt;
+&lt;p&gt;reference:
+&lt;a href=&#34;https://www.hy-star.com.tw/tech/linux/awk/awk.html#awk_basic&#34; alt=&#34;awk basic&#34; target=&#34;_blank&#34;&gt;awk basic&lt;/a&gt;
+&lt;a href=&#34;https://www.tutorialspoint.com/awk/awk_built_in_variables.htm&#34; alt=&#34;awk tutorial&#34; target=&#34;_blank&#34;&gt;awk tutorial&lt;/a&gt;&lt;/p&gt;
 </description>
       
     </item>

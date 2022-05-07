@@ -163,7 +163,7 @@ ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop #
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/other\/awk\/",
-        "wordCount" : "219",
+        "wordCount" : "253",
         "genre" : [ 
       
       "script"
@@ -408,8 +408,14 @@ String !~ /regex/[actions]  =&gt; String not match regex, then execute actions
 </span><span style="color:#e6db74">        printf &#34;ARGV[%d] = %s\n&#34;, i, ARGV[i] 
 </span><span style="color:#e6db74">    } 
 </span><span style="color:#e6db74">    }&#39;</span> one two three four
-</code></pre></div><p>&hellip;to be continued&hellip;</p>
-<p>reference: <a href="https://www.hy-star.com.tw/tech/linux/awk/awk.html#awk_basic" alt="awk basic" target="_blank">awk basic</a></p>
+</code></pre></div><p>&ldquo;FNR&rdquo; =&gt; record number in current file
+&ldquo;IGNORECASE&rdquo; =&gt; ignore case
+&ldquo;OFMT&rdquo; =&gt; output format for numbers
+&ldquo;RSTART&rdquo; =&gt; index of first character matched by match
+&ldquo;RLENGTH&rdquo; =&gt; match length of string matched by match</p>
+<p>reference:
+<a href="https://www.hy-star.com.tw/tech/linux/awk/awk.html#awk_basic" alt="awk basic" target="_blank">awk basic</a>
+<a href="https://www.tutorialspoint.com/awk/awk_built_in_variables.htm" alt="awk tutorial" target="_blank">awk tutorial</a></p>
 </div>
     <div class="post-footer">
       <div class="info">
