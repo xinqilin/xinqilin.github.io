@@ -32,18 +32,6 @@
     <loc>https://xinqilin.github.io/categories/mysql/</loc>
     <lastmod>2022-01-18T23:56:44+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/other/</loc>
-    <lastmod>2022-01-18T10:23:31+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/sed/</loc>
-    <lastmod>2022-01-18T10:23:31+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/post/other/sed/</loc>
-    <lastmod>2022-01-18T10:23:31+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/</loc>
-    <lastmod>2022-01-18T10:23:31+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/post/other/env/</loc>
     <lastmod>2022-01-16T22:35:54+08:00</lastmod>
   </url><url>
@@ -78,6 +66,9 @@
     <lastmod>2021-11-29T22:24:03+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/algorithm/graphaccountmerge/</loc>
+    <lastmod>2021-11-29T22:24:03+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/</loc>
     <lastmod>2021-11-29T22:24:03+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/inorder/</loc>
@@ -123,6 +114,9 @@
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/other/curl/</loc>
+    <lastmod>2021-08-03T10:23:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/categories/other/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/docker/</loc>
@@ -235,5 +229,11 @@
   </url><url>
     <loc>https://xinqilin.github.io/post/java/mapcompute/</loc>
     <lastmod>2019-03-20T20:58:17+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/sed/</loc>
+    <lastmod>2019-01-18T10:23:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/other/sed/</loc>
+    <lastmod>2019-01-18T10:23:31+08:00</lastmod>
   </url>
 </urlset>
