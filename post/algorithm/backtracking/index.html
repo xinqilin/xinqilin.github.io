@@ -161,7 +161,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/algorithm\/backtracking\/",
-        "wordCount" : "516",
+        "wordCount" : "525",
         "genre" : [ 
       
       "Backtracking"
@@ -423,27 +423,32 @@
 
 </code></pre></div><h5 id="permutations-ii-可重複">Permutations II (可重複)</h5>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">permuteUnique</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+        var ans <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;();</span>
         Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">);</span>
-        backtrack<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(),</span> nums<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">boolean</span><span style="color:#f92672">[</span>nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">]);</span>
-        <span style="color:#66d9ef">return</span> list<span style="color:#f92672">;</span>
+        bt<span style="color:#f92672">(</span>ans<span style="color:#f92672">,</span> nums<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;(),</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">boolean</span><span style="color:#f92672">[</span>nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">]);</span>
+        <span style="color:#66d9ef">return</span> ans<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">backtrack</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> list<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> tempList<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">[]</span> nums<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> <span style="color:#f92672">[]</span> used<span style="color:#f92672">){</span>
-        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>tempList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">){</span>
-            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>tempList<span style="color:#f92672">));</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++){</span>
-                <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>used<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">||</span> i <span style="color:#f92672">&gt;</span> 0 <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">-</span>1<span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>used<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
-                used<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span> 
-                tempList<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]);</span>
-                backtrack<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> tempList<span style="color:#f92672">,</span> nums<span style="color:#f92672">,</span> used<span style="color:#f92672">);</span>
-                used<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span> 
-                tempList<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>tempList<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">);</span>
-            <span style="color:#f92672">}</span>
+    
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">bt</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> ans<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> start<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> curr<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span><span style="color:#f92672">[]</span> visited<span style="color:#f92672">){</span>
+        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>start <span style="color:#f92672">==</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">){</span>
+            ans<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>curr<span style="color:#f92672">));</span>
+            <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        
+        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>var i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++){</span>
+            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>visited<span style="color:#f92672">[</span>i<span style="color:#f92672">])</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&gt;</span> 0 <span style="color:#f92672">&amp;&amp;</span> nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> nums<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>visited<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">])</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+            
+            visited<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+            curr<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>nums<span style="color:#f92672">[</span>i<span style="color:#f92672">]);</span>
+            bt<span style="color:#f92672">(</span>ans<span style="color:#f92672">,</span> nums<span style="color:#f92672">,</span> start <span style="color:#f92672">+</span> 1<span style="color:#f92672">,</span> curr<span style="color:#f92672">,</span> visited<span style="color:#f92672">);</span>
+            visited<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+            curr<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>curr<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 1<span style="color:#f92672">);</span>
         <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 
 </code></pre></div><h5 id="combination-sum-可重複">Combination Sum (可重複)</h5>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
