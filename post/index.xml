@@ -2211,7 +2211,8 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
 CQRS: 適用於模型類別&lt;/p&gt;
 &lt;h3 id=&#34;event-sourcing&#34;&gt;Event Sourcing&lt;/h3&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    事件源（Event Sourcing）常與 CQRS 一併提及，此設計模式的用意，根據 Martin Fowler 的說法，是要讓應用程式能夠將異動資料的事件按照發生的時間順序全部記錄下來；如此一來，我們不只能夠查詢過去任意時間點的資料狀態，也能夠重現特定時間範圍之間所發生的事件過程。比如說，採用 Event Sourcing 的銀行交易系統可以讓使用者得知帳戶餘額是如何變成目前的狀態的。Event Sourcing 常與 CQRS 一起搭配運用，但採用 CQRS 模式的應用程式並不一定需要使用 Event Sourcing。
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;reference: &lt;a href=&#34;https://www.huanlintalk.com/2015/07/designing-layered-application-4-cqrs.html&#34; target=&#34;_blank&#34; alt=&#34;cqrs&#34;&gt;huanlintalk&lt;/a&gt;&lt;/p&gt;
+</description>
       
     </item>
     
