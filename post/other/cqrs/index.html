@@ -7,6 +7,11 @@
   <title>
     
       Bill.Lin の 成長之路 ©
+        |
+        CQRS
+
+
+      
 
 
     
@@ -59,7 +64,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="https://xinqilin.github.io/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/other/cqrs/" />
 
   
   
@@ -84,29 +89,92 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="後端工程師 Java, Kotlin 
-
-我的線上筆記
-
-很高興認識你 Pleased to meet you!
-"/>
+<meta name="twitter:title" content="CQRS"/>
+<meta name="twitter:description" content="CQRS (Command Query Responsibility Segregation)  Command: 命令  會對系統產生『影響』的動作 沒有『結果』回傳   Query: 查詢  不會對系統產生『影響』的動作 會回傳『結果』    CQS 原則的限制 當查詢所回傳的結果只有短暫的存在意義時便不適用 =&gt; Queue."/>
 
 
 
   
 
 
+  
+  
+  
   
   <script type="application/ld+json">
     {
-      "@context": "http://schema.org",
-      "@type": "WebSite",
-      "name": "",
-      "url": "https:\/\/xinqilin.github.io\/",
-      "description": "後端工程師 Java, Kotlin \n\n我的線上筆記\n\n很高興認識你 Pleased to meet you!\n",
-      "thumbnailUrl": "https:\/\/xinqilin.github.io\/",
-      "license": ""
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "CQRS",
+        "headline": "CQRS",
+        "alternativeHeadline": "",
+        "description": "
+      
+        CQRS (Command Query Responsibility Segregation)  Command: 命令  會對系統產生『影響』的動作 沒有『結果』回傳   Query: 查詢  不會對系統產生『影響』的動作 會回傳『結果』    CQS 原則的限制 當查詢所回傳的結果只有短暫的存在意義時便不適用 =\u0026gt; Queue.
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/other\/cqrs\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-05-16T21:18:11.00Z",
+        "datePublished": "2021-05-16T21:18:11.00Z",
+        "dateModified": "2021-05-16T21:18:11.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/other\/cqrs\/",
+        "wordCount" : "43",
+        "genre" : [ 
+      
+      "DDD"
+
+    
+      
+        ,
+
+      
+      "CQRS"
+
+    ],
+        "keywords" : [ ]
     }
   </script>
 
@@ -133,9 +201,6 @@
           
           <li>
             <a
-              
-                class="current"
-
               
               href="/"
               
@@ -273,179 +338,62 @@
 
     "
   >
-    <div class="post-title post-content">
-      
-    </div>
-
-    
-  </div>
-
-  
-
-  
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
+    <div class="post-content">
       
       <div class="post-title">
-        <h3><a href="/post/java/mapcompute/">MapCompute</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              init Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;(); map.put(&#34;a&#34;, 1); putIfAbsent 有了就不塞, 沒有就塞 value (不存在就塞)
-
-
-            
-          </p>
-          <a href="/post/java/mapcompute/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
+        <h1>CQRS</h1>
+        
           <div class="info">
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Wed, Mar 20, 2019
+                Sun, May 16, 2021
 
 
               </span
             >
-            
-              <span class="separator"><a class="category" href="/categories/map/">Map</a><a class="category" href="/categories/compute/">Compute</a><a class="category" href="/categories/computeifabsent/">ComputeIfAbsent</a><a class="category" href="/categories/computeifpresent/">ComputeIfPresent</a></span>
-
-
-
-
-            
-
-            
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
           </div>
-        </div>
-      </div>
-    </div>
 
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/other/sed/">sed</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              sed sed [options] &lsquo;[地址定界] command&rsquo; file(s) sed -e	&lsquo;1,8	s/	[Tt]he/	THE/	g&rsquo;	MyFile.
-
-
-            
-          </p>
-          <a href="/post/other/sed/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Fri, Jan 18, 2019
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/other/">Other</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/sed/">SED</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-  <div class="pagination">
-    
-  <ul class="pagination">
-    
-    
-    
-      <li class="page-item">
-        <a class="page-link" href="/page/3/">
-          <i class="fa fa-angle-left" aria-label="Previous"></i>
-        </a>
-      </li>
-
-    
-    
-      
-        <li class="page-item">
-          <a class="page-link" href="/">1</a>
-        </li>
-
-      
-
-
-    
-      
         
-          
-          <span class="page-link dots">&hellip;</span>
+      </div><h3 id="cqrs--command-query-responsibility-segregation">CQRS  (Command Query Responsibility Segregation)</h3>
+<ul>
+<li>Command: 命令
+<ul>
+<li>會對系統產生『影響』的動作</li>
+<li>沒有『結果』回傳</li>
+</ul>
+</li>
+<li>Query: 查詢
+<ul>
+<li>不會對系統產生『影響』的動作</li>
+<li>會回傳『結果』</li>
+</ul>
+</li>
+</ul>
+<h4 id="cqs-原則的限制">CQS 原則的限制</h4>
+<p>當查詢所回傳的結果只有短暫的存在意義時便不適用 =&gt; Queue.poll(), Stack.pop()</p>
+<p>CQS: 適用於方法
+CQRS: 適用於模型類別</p>
+<h3 id="event-sourcing">Event Sourcing</h3>
+<pre tabindex="0"><code>    事件源（Event Sourcing）常與 CQRS 一併提及，此設計模式的用意，根據 Martin Fowler 的說法，是要讓應用程式能夠將異動資料的事件按照發生的時間順序全部記錄下來；如此一來，我們不只能夠查詢過去任意時間點的資料狀態，也能夠重現特定時間範圍之間所發生的事件過程。比如說，採用 Event Sourcing 的銀行交易系統可以讓使用者得知帳戶餘額是如何變成目前的狀態的。Event Sourcing 常與 CQRS 一起搭配運用，但採用 CQRS 模式的應用程式並不一定需要使用 Event Sourcing。
+</code></pre></div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/ddd/">DDD</a><a class="category" href="/categories/cqrs/">CQRS</a></span>
+
+
+
 
         
 
-
-      
-
-
-    
-      
-        <li class="page-item">
-          <a class="page-link" href="/page/3/">3</a>
-        </li>
-
-      
-
+        
+      </div>
+    </div>
 
     
-      
-        <li class="page-item">
-          <span class="page-link current">4</span>
-        </li>
-
-      
-
-
-    
-    
-  </ul>
-
-
-
   </div>
 
 
