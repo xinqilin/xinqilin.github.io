@@ -90,7 +90,7 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DesignPattern - Structural - Proxy"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="Proxy Proxy pattern 為另一個對象 create a representative object that controls access to another object。 事實上，Proxy pattern 是用來創建一個代表對象來控制對另一個對象的訪問。成本高或需要保護以至於存取消費較大。"/>
 
 
 
@@ -111,7 +111,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        
+        Proxy Proxy pattern 為另一個對象 create a representative object that controls access to another object。 事實上，Proxy pattern 是用來創建一個代表對象來控制對另一個對象的訪問。成本高或需要保護以至於存取消費較大。
 
 
       
@@ -161,7 +161,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/structural\/proxy\/",
-        "wordCount" : "0",
+        "wordCount" : "168",
         "genre" : [ 
       
       "DesignPattern"
@@ -311,11 +311,84 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 0 分鐘</span>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
           </div>
 
         
-      </div></div>
+      </div><h1 id="proxy">Proxy</h1>
+<p>Proxy pattern 為另一個對象 create a representative object that controls access to another object。
+事實上，Proxy pattern 是用來創建一個代表對象來控制對另一個對象的訪問。成本高或需要保護以至於存取消費較大。</p>
+<p>控制對對象的訪問的一個原因是將其創建和初始化的全部成本推遲到我們真正需要使用它時。另一個原因可能是充當位於不同 JVM 中的對象的本地代表。此外，代理在控制對原始對象的訪問方面非常有用，尤其是當對象應該具有不同的訪問權限時。</p>
+<p>在代理設計模式中，客戶端不直接與原始對像對話，它將調用委託給代理對象，代理對象調用原始對象的方法。此外，重要的一點是客戶端不知道代理。代理充當客戶端的原始對象。但是這種方法有很多變體，我們很快就會看到。</p>
+<p>代理模式有三種主要變體：</p>
+<ol>
+<li>proxy 為不同 remote address 的對象提供 local access (跳板)。</li>
+<li>A virtual proxy creates expensive objects on demand.</li>
+<li>保護代理控制對原始對象的訪問。當對象應該具有不同的訪問權限時，保護代理很有用。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#f92672">{</span>
+
+        String userName<span style="color:#f92672">;</span>
+        String password<span style="color:#f92672">;</span>
+
+        <span style="color:#75715e">// Getter, Setter, Constructor
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IFolder</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performOperations</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Folder</span> <span style="color:#66d9ef">implements</span> IFolder <span style="color:#f92672">{</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performOperations</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 訪問 folder 並執行各種操作
+</span><span style="color:#75715e"></span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;execute sth in folder&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FolderProxy</span> <span style="color:#66d9ef">implements</span> IFolder <span style="color:#f92672">{</span>
+
+      Folder folder<span style="color:#f92672">;</span>
+      User user<span style="color:#f92672">;</span>
+
+      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">FolderProxy</span><span style="color:#f92672">(</span>User user<span style="color:#f92672">){</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> user<span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performOperations</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span><span style="color:#e6db74">&#34;dev&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>user<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserName</span><span style="color:#f92672">())</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dev&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>user<span style="color:#f92672">.</span><span style="color:#a6e22e">getPassword</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+            folder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Folder<span style="color:#f92672">();</span>
+            folder<span style="color:#f92672">.</span><span style="color:#a6e22e">performOperations</span><span style="color:#f92672">();</span>
+         <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+             System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;can&#39;t access this folder&#34;</span><span style="color:#f92672">);</span>
+         <span style="color:#f92672">}</span>
+      <span style="color:#f92672">}</span> 
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+        var user <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dev&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;dev&#34;</span><span style="color:#f92672">);</span>
+        FolderProxy folderProxy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FolderProxy<span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
+        folderProxy<span style="color:#f92672">.</span><span style="color:#a6e22e">performOperations</span><span style="color:#f92672">();</span>
+
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;------------------------------------&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#75715e">// if we give wrong userName and Password
+</span><span style="color:#75715e"></span>        var userWrong <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;staging&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;staging&#34;</span><span style="color:#f92672">);</span>
+        FolderProxy folderProxyWrong <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FolderProxy<span style="color:#f92672">(</span>userWrong<span style="color:#f92672">);</span>
+        folderProxyWrong<span style="color:#f92672">.</span><span style="color:#a6e22e">performOperations</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><ul>
+<li>有一個現有的類，它的接口與您需要的不匹配。</li>
+<li>想創建一個可重用的類，它與不相關或不可預見的類（即不一定具有兼容接口的類）協作。</li>
+<li>有幾個現有的子類可供使用，但通過對每個子類進行子類化來調整它們的接口是不切實際的。對象 adapter 可以適配其父類的接口。</li>
+</ul>
+</div>
     <div class="post-footer">
       <div class="info">
         
