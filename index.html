@@ -292,6 +292,108 @@
     >
       
       <div class="post-title">
+        <h3><a href="/post/designpattern/gof/prototype/">Prototype</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Prototype 
+
+
+            
+          </p>
+          </div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sun, Aug 7, 2022
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/designpattern/gof/builder/">Builder</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Builder 對象構造的細節，實例化和初始化構成對象的組件，都保存在對像中，通常作為其構造函數的一部分。這種類型的設計將對象構造過程與構成對象的組件緊密聯繫在一起。但是，只要構造對像簡單，對象構造過程明確，並且總是產生對象的相同表示，這種方法就適用。
+此外，當被創建的對像很複雜並且構成對象創建過程的一系列步驟可以以不同的方式實現時，這種設計可能無效。因此，產生對象的不同表示。因為構造過程的不同實現都保存在對像中，所以對象可能變得龐大（構造膨脹）並且模塊化程度較低。隨後，添加新實現或更改現有實現需要更改現有代碼。
+Builder 的目的是將復雜對象的構造與其表示分離，以便相同的構造過程可以創建不同的表示。這種類型的分離減小了對象的大小。該設計變得更加模塊化，每個實現都包含在不同的構建器對像中。因此，添加一個新的實現（即添加一個新的構建器）變得更容易了。此外，對象構造過程變得獨立於構成對象的組件。這提供了對對象構造過程的更多控制。
+它指定了一個抽象接口，用於創建 Product 對象的各個部分。構建器模式建議將構建邏輯從對像類移到一個單獨的類，稱為構建器類。但是，可以有多個這樣的構建器類，每個構建器類對於構建對象的一系列步驟都有不同的實現。此外，每個構建器實現都會導致對象的不同表示。
+ConcreteBuilder  通過實現 Builder 接口來構造和組裝產品的各個部分。 定義並跟踪它創建的表示。 提供用於檢索產品的接口。  Director 它使用 Builder 接口構造一個對象。Builder 模式建議使用稱為 Director 的專用對象，它負責調用構建最終對象所需的不同構建器方法。此外，不同的客戶端對象可以利用 Director 對象來創建所需的對象。一旦構造了對象，客戶端對象就可以直接向構造器請求完整構造的對象。為了方便這個過程，可以在公共Builder接口中聲明一個新方法getObject()，由不同的具體builder實現。
+
+
+            
+          </p>
+          <a href="/post/designpattern/gof/builder/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sun, Aug 7, 2022
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
         <h3><a href="/post/designpattern/gof/factory/">Factory</a></h3>
       </div>
       <div class="post-content">
@@ -678,110 +780,6 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
 
 
             
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/spring/reactivejava/">ReactiveJava</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              init Flux&lt;String&gt; seq1 = Flux.just(&#34;Bill&#34;, &#34;Is&#34;, &#34;Good&#34;); Flux&lt;String&gt; seq2 = Flux.
-
-
-            
-          </p>
-          <a href="/post/spring/reactivejava/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Wed, Dec 1, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/flux/">Flux</a><a class="category" href="/categories/mono/">Mono</a><a class="category" href="/categories/reactive/">Reactive</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/algorithm/graphaccountmerge/">GraphAccountMerge</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              #721 Input: accounts = [ [&quot;John&quot;,&quot;johnsmith@mail.com&quot;,&quot;john_newyork@mail.com&quot;], [&quot;John&quot;,&quot;johnsmith@mail.com&quot;,&quot;john00@mail.com&quot;], [&quot;Mary&quot;,&quot;mary@mail.com&quot;], [&quot;John&quot;,&quot;johnnybravo@mail.com&quot;] ] Output: [ [&quot;John&quot;,&quot;john00@mail.
-
-
-            
-          </p>
-          <a href="/post/algorithm/graphaccountmerge/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Nov 29, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/algorithm/">Algorithm</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/algorithm/">Algorithm</a></span>
-
-
-
 
             
           </div>

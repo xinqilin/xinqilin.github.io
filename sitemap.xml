@@ -3,18 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://xinqilin.github.io/</loc>
-    <lastmod>2022-08-07T01:07:16+08:00</lastmod>
+    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/</loc>
-    <lastmod>2022-08-07T01:07:16+08:00</lastmod>
+    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/designpattern/</loc>
-    <lastmod>2022-08-07T01:07:16+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/post/designpattern/gof/factory/</loc>
-    <lastmod>2022-08-07T01:07:16+08:00</lastmod>
+    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/</loc>
+    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/prototype/</loc>
+    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/builder/</loc>
+    <lastmod>2022-08-07T02:16:32+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/factory/</loc>
     <lastmod>2022-08-07T01:07:16+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/designpattern/gof/singleton/</loc>

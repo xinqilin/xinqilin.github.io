@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    
+      Bill.Lin の 成長之路 ©
+        |
+        Builder
+
+
+      
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      後端工程師 Java, Kotlin 
+
+我的線上筆記
+
+很高興認識你 Pleased to meet you!
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/gof/builder/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
+    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
+      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Builder"/>
+<meta name="twitter:description" content="Builder 對象構造的細節，實例化和初始化構成對象的組件，都保存在對像中，通常作為其構造函數的一部分。這種類型的設計將對象構造過程與構成對象的組件緊密聯繫在一起。但是，只要構造對像簡單，對象構造過程明確，並且總是產生對象的相同表示，這種方法就適用。
+此外，當被創建的對像很複雜並且構成對象創建過程的一系列步驟可以以不同的方式實現時，這種設計可能無效。因此，產生對象的不同表示。因為構造過程的不同實現都保存在對像中，所以對象可能變得龐大（構造膨脹）並且模塊化程度較低。隨後，添加新實現或更改現有實現需要更改現有代碼。
+Builder 的目的是將復雜對象的構造與其表示分離，以便相同的構造過程可以創建不同的表示。這種類型的分離減小了對象的大小。該設計變得更加模塊化，每個實現都包含在不同的構建器對像中。因此，添加一個新的實現（即添加一個新的構建器）變得更容易了。此外，對象構造過程變得獨立於構成對象的組件。這提供了對對象構造過程的更多控制。
+它指定了一個抽象接口，用於創建 Product 對象的各個部分。構建器模式建議將構建邏輯從對像類移到一個單獨的類，稱為構建器類。但是，可以有多個這樣的構建器類，每個構建器類對於構建對象的一系列步驟都有不同的實現。此外，每個構建器實現都會導致對象的不同表示。
+ConcreteBuilder  通過實現 Builder 接口來構造和組裝產品的各個部分。 定義並跟踪它創建的表示。 提供用於檢索產品的接口。  Director 它使用 Builder 接口構造一個對象。Builder 模式建議使用稱為 Director 的專用對象，它負責調用構建最終對象所需的不同構建器方法。此外，不同的客戶端對象可以利用 Director 對象來創建所需的對象。一旦構造了對象，客戶端對象就可以直接向構造器請求完整構造的對象。為了方便這個過程，可以在公共Builder接口中聲明一個新方法getObject()，由不同的具體builder實現。"/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "Builder",
+        "headline": "Builder",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Builder 對象構造的細節，實例化和初始化構成對象的組件，都保存在對像中，通常作為其構造函數的一部分。這種類型的設計將對象構造過程與構成對象的組件緊密聯繫在一起。但是，只要構造對像簡單，對象構造過程明確，並且總是產生對象的相同表示，這種方法就適用。\n此外，當被創建的對像很複雜並且構成對象創建過程的一系列步驟可以以不同的方式實現時，這種設計可能無效。因此，產生對象的不同表示。因為構造過程的不同實現都保存在對像中，所以對象可能變得龐大（構造膨脹）並且模塊化程度較低。隨後，添加新實現或更改現有實現需要更改現有代碼。\nBuilder 的目的是將復雜對象的構造與其表示分離，以便相同的構造過程可以創建不同的表示。這種類型的分離減小了對象的大小。該設計變得更加模塊化，每個實現都包含在不同的構建器對像中。因此，添加一個新的實現（即添加一個新的構建器）變得更容易了。此外，對象構造過程變得獨立於構成對象的組件。這提供了對對象構造過程的更多控制。\n它指定了一個抽象接口，用於創建 Product 對象的各個部分。構建器模式建議將構建邏輯從對像類移到一個單獨的類，稱為構建器類。但是，可以有多個這樣的構建器類，每個構建器類對於構建對象的一系列步驟都有不同的實現。此外，每個構建器實現都會導致對象的不同表示。\nConcreteBuilder  通過實現 Builder 接口來構造和組裝產品的各個部分。 定義並跟踪它創建的表示。 提供用於檢索產品的接口。  Director 它使用 Builder 接口構造一個對象。Builder 模式建議使用稱為 Director 的專用對象，它負責調用構建最終對象所需的不同構建器方法。此外，不同的客戶端對象可以利用 Director 對象來創建所需的對象。一旦構造了對象，客戶端對象就可以直接向構造器請求完整構造的對象。為了方便這個過程，可以在公共Builder接口中聲明一個新方法getObject()，由不同的具體builder實現。
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/builder\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2022",
+        "dateCreated": "2022-08-07T02:16:32.00Z",
+        "datePublished": "2022-08-07T02:16:32.00Z",
+        "dateModified": "2022-08-07T02:16:32.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/builder\/",
+        "wordCount" : "355",
+        "genre" : [ 
+      
+      "DesignPattern"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+      </div>
+      <ul>
+        
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
+
+        
+      </ul>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/profile.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />很高興認識你 Pleased to meet you!<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+        <li>
+          <a href="https://www.linkedin.com/in/bill-lin-47348017a/" rel="me" aria-label="Linkedin" title="Linkedin">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://github.com/xinqilin" rel="me" aria-label="GitHub" title="GitHub">
+            <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://leetcode.com/xinqilin/" rel="me" aria-label="LeetCode" title="LeetCode">
+            <i class="fas fa-laptop-code fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="mailto:zzx123bill@gmail.com" rel="me" aria-label="e-mail" title="e-mail">
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://xinqilin.wordpress.com/" rel="me" aria-label="WordPress" title="WordPress">
+            <i class="fab fa-wordpress-simple fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2022
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>Builder</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sun, Aug 7, 2022
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
+          </div>
+
+        
+      </div><h1 id="builder">Builder</h1>
+<p>對象構造的細節，實例化和初始化構成對象的組件，都保存在對像中，通常作為其構造函數的一部分。這種類型的設計將對象構造過程與構成對象的組件緊密聯繫在一起。但是，只要構造對像簡單，對象構造過程明確，並且總是產生對象的相同表示，這種方法就適用。</p>
+<p>此外，當被創建的對像很複雜並且構成對象創建過程的一系列步驟可以以不同的方式實現時，這種設計可能無效。因此，產生對象的不同表示。因為構造過程的不同實現都保存在對像中，所以對象可能變得龐大（構造膨脹）並且模塊化程度較低。隨後，添加新實現或更改現有實現需要更改現有代碼。</p>
+<p>Builder 的目的是將復雜對象的構造與其表示分離，以便相同的構造過程可以創建不同的表示。這種類型的分離減小了對象的大小。該設計變得更加模塊化，每個實現都包含在不同的構建器對像中。因此，添加一個新的實現（即添加一個新的構建器）變得更容易了。此外，對象構造過程變得獨立於構成對象的組件。這提供了對對象構造過程的更多控制。</p>
+<p>它指定了一個抽象接口，用於創建 Product 對象的各個部分。構建器模式建議將構建邏輯從對像類移到一個單獨的類，稱為構建器類。但是，可以有多個這樣的構建器類，每個構建器類對於構建對象的一系列步驟都有不同的實現。此外，每個構建器實現都會導致對象的不同表示。</p>
+<h4 id="concretebuilder">ConcreteBuilder</h4>
+<ul>
+<li>通過實現 Builder 接口來構造和組裝產品的各個部分。</li>
+<li>定義並跟踪它創建的表示。</li>
+<li>提供用於檢索產品的接口。</li>
+</ul>
+<h4 id="director">Director</h4>
+<p>它使用 Builder 接口構造一個對象。Builder 模式建議使用稱為 Director 的專用對象，它負責調用構建最終對象所需的不同構建器方法。此外，不同的客戶端對象可以利用 Director 對象來創建所需的對象。一旦構造了對象，客戶端對象就可以直接向構造器請求完整構造的對象。為了方便這個過程，可以在公共Builder接口中聲明一個新方法getObject()，由不同的具體builder實現。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">PcBuilder</span> <span style="color:#f92672">{</span>
+
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buildKeyboard</span><span style="color:#f92672">();</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buildMouse</span><span style="color:#f92672">();</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buildScreen</span><span style="color:#f92672">();</span>
+
+       <span style="color:#66d9ef">public</span> Pc <span style="color:#a6e22e">getPc</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pc</span> <span style="color:#f92672">{</span>
+
+       <span style="color:#66d9ef">private</span> String keyboard<span style="color:#f92672">;</span>
+       <span style="color:#66d9ef">private</span> String mouse<span style="color:#f92672">;</span>
+       <span style="color:#66d9ef">private</span> String screen<span style="color:#f92672">;</span>
+
+       <span style="color:#75715e">// Getter / Setter / toString method
+</span><span style="color:#75715e"></span>   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AcerPcBuilder</span> <span style="color:#66d9ef">implements</span> PcBuilder <span style="color:#f92672">{</span>
+
+     Pc pc<span style="color:#f92672">;</span>
+
+     <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">AcerPcBuilder</span><span style="color:#f92672">(){</span>
+        pc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Pc<span style="color:#f92672">();</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buildKeyboard</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        pc<span style="color:#f92672">.</span><span style="color:#a6e22e">setKeyboard</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Acer keyyyyyyyyy&#34;</span><span style="color:#f92672">);</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buildMouse</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        pc<span style="color:#f92672">.</span><span style="color:#a6e22e">setMouse</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Acer micky mouse&#34;</span><span style="color:#f92672">);</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buildScreen</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        pc<span style="color:#f92672">.</span><span style="color:#a6e22e">setScreen</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Acer 24 inch screen&#34;</span><span style="color:#f92672">);</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> Pc <span style="color:#a6e22e">getPc</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> pc<span style="color:#f92672">;</span>
+     <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>   
+
+</code></pre></div><p>Director</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PcDirector</span> <span style="color:#f92672">{</span>
+
+       <span style="color:#66d9ef">private</span> PcDirector pcDirector <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+
+       <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">PcDirector</span><span style="color:#f92672">(</span>PcBuilder pcBuilder<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+          <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">pcBuilder</span> <span style="color:#f92672">=</span> pcBuilder<span style="color:#f92672">;</span>
+       <span style="color:#f92672">}</span>
+
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">constructPc</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+          pcBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">buildKeyboard</span><span style="color:#f92672">();</span>
+          pcBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">buildMouse</span><span style="color:#f92672">();</span>
+          pcBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">buildScreen</span><span style="color:#f92672">();</span>
+       <span style="color:#f92672">}</span>
+
+       <span style="color:#66d9ef">public</span> Meal <span style="color:#a6e22e">getPc</span><span style="color:#f92672">(){</span>
+          <span style="color:#66d9ef">return</span> pcBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">getPc</span><span style="color:#f92672">();</span>
+       <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+         PcBuilder acerPcBuilder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AcerPcBuilder<span style="color:#f92672">();</span>
+         PcDirector pcDirector <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PcDirector<span style="color:#f92672">(</span>acerPcBuilder<span style="color:#f92672">);</span>
+         pcDirector<span style="color:#f92672">.</span><span style="color:#a6e22e">constructPc</span><span style="color:#f92672">();</span>
+         Pc pc <span style="color:#f92672">=</span> pcDirector<span style="color:#f92672">.</span><span style="color:#a6e22e">getPc</span><span style="color:#f92672">();</span>
+
+         log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;acer pc builder ~&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+</code></pre></div><h3 id="其他版本-builder">其他版本 Builder</h3>
+<p>有一個具有一長串屬性的對象。這些屬性中的大多數都是可選的。
+用戶不是直接創建所需的對象，而是調用具有所有必需參數的構造函數並獲取構建器對象。然後，用戶在構建器對像上調用類似 setter 的方法來設置每個感興趣的可選參數。最後，用戶調用無參數構建方法來生成對象。</p>
+<p>需要創建一個靜態類，然後將所有參數從外部類複製到 Builder 類。
+接下來，Builder 類應該有一個公共構造函數，其中包含所有必需的屬性作為參數。
+Builder 類應該具有設置可選參數的方法，並且在設置可選屬性後它應該返回相同的 Builder 對象。
+最後，我們需要在構建器類中提供一個 build() 方法，該方法將返回客戶端程序所需的 Object。
+為了做到這一點，需要在 Class 中有一個以 Builder 類作為參數的私有構造函數。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pc</span><span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String keyboard<span style="color:#f92672">;</span> 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String mouse<span style="color:#f92672">;</span> 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String screen<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> screenCount<span style="color:#f92672">;</span> 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> price<span style="color:#f92672">;</span>  <span style="color:#75715e">// in real case, you should use BigDecimal XD
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Builder</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">private</span> String keyboard<span style="color:#f92672">;</span> 
+        <span style="color:#66d9ef">private</span> String mouse<span style="color:#f92672">;</span> 
+        <span style="color:#66d9ef">private</span> String screen<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> screenCount<span style="color:#f92672">;</span> 
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> price<span style="color:#f92672">;</span>
+
+         <span style="color:#75715e">//builder methods for setter
+</span><span style="color:#75715e"></span>         <span style="color:#66d9ef">public</span> Builder <span style="color:#a6e22e">keyboard</span><span style="color:#f92672">(</span>String keyboard<span style="color:#f92672">){</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">keyboard</span> <span style="color:#f92672">=</span> keyboard<span style="color:#f92672">;</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+         <span style="color:#66d9ef">public</span> Builder <span style="color:#a6e22e">mouse</span><span style="color:#f92672">(</span>String mouse<span style="color:#f92672">){</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">butter</span> <span style="color:#f92672">=</span> cup<span style="color:#f92672">;</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+         <span style="color:#66d9ef">public</span> Builder <span style="color:#a6e22e">screen</span><span style="color:#f92672">(</span>String screen<span style="color:#f92672">){</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">eggs</span> <span style="color:#f92672">=</span> number<span style="color:#f92672">;</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+         <span style="color:#66d9ef">public</span> Builder <span style="color:#a6e22e">screenCount</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> screenCount<span style="color:#f92672">){</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">vanila</span> <span style="color:#f92672">=</span> spoon<span style="color:#f92672">;</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+         <span style="color:#66d9ef">public</span> Builder <span style="color:#a6e22e">price</span><span style="color:#f92672">(</span><span style="color:#66d9ef">double</span> price<span style="color:#f92672">){</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">flour</span> <span style="color:#f92672">=</span> cup<span style="color:#f92672">;</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+
+         <span style="color:#75715e">// already build object
+</span><span style="color:#75715e"></span>         <span style="color:#66d9ef">public</span> Pc <span style="color:#a6e22e">build</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Pc<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+         <span style="color:#f92672">}</span>
+      <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">//private constructor to enforce object creation through builder
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Pc</span><span style="color:#f92672">(</span>Builder builder<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">keyboard</span> <span style="color:#f92672">=</span> builder<span style="color:#f92672">.</span><span style="color:#a6e22e">keyboard</span><span style="color:#f92672">;</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mouse</span> <span style="color:#f92672">=</span> builder<span style="color:#f92672">.</span><span style="color:#a6e22e">mouse</span><span style="color:#f92672">;</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">screen</span> <span style="color:#f92672">=</span> builder<span style="color:#f92672">.</span><span style="color:#a6e22e">screen</span><span style="color:#f92672">;</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">screenCount</span> <span style="color:#f92672">=</span> builder<span style="color:#f92672">.</span><span style="color:#a6e22e">screenCount</span><span style="color:#f92672">;</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">price</span> <span style="color:#f92672">=</span> builder<span style="color:#f92672">.</span><span style="color:#a6e22e">price</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      
+      Pc pc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Pc<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">().</span><span style="color:#a6e22e">keyboard</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;機械鍵盤&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">mouse</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;羅技&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">screen</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Dell&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+      log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;pc: {}&#34;</span><span style="color:#f92672">,</span> pc<span style="color:#f92672">);</span>
+
+      <span style="color:#f92672">}</span>
+
+</code></pre></div><ul>
+<li>何時創建複雜對象的算法應該獨立於構成對象的部分以及它們的組裝方式。</li>
+<li>當構造過程必須允許構造對象的不同表示時。</li>
+</ul>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2022
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

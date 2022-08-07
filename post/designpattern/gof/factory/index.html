@@ -162,7 +162,7 @@ public interface ICellPhone { public void open(); public void close(); public vo
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/factory\/",
-        "wordCount" : "259",
+        "wordCount" : "262",
         "genre" : [ 
       
       "DesignPattern"
@@ -447,17 +447,18 @@ public interface ICellPhone { public void open(); public void close(); public vo
     <span style="color:#f92672">}</span>
 
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CellPhoneFactory</span> <span style="color:#66d9ef">implements</span> ICellPhoneFactory <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 抽象工廠 =&gt; 生產工廠
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CellPhoneFactory</span> <span style="color:#66d9ef">implements</span> ICellPhoneFactory <span style="color:#f92672">{</span>
 
         <span style="color:#a6e22e">@Override</span>  
-        ICellPhone <span style="color:#a6e22e">createPhone</span><span style="color:#f92672">(</span>String type<span style="color:#f92672">){</span>
-            ICellPhone cellPhone <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        ICellPhoneFactory <span style="color:#a6e22e">createPhone</span><span style="color:#f92672">(</span>String type<span style="color:#f92672">){</span>
+            ICellPhoneFactory cellPhoneFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
             <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;apple&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>type<span style="color:#f92672">)){</span>
-                cellPhone <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ApplePhone<span style="color:#f92672">();</span>
-                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;apple cell phone created&#34;</span><span style="color:#f92672">);</span>
+                cellPhoneFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AppleCellPhoneFactory<span style="color:#f92672">();</span>
+                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;apple factory created&#34;</span><span style="color:#f92672">);</span>
             <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;samsung&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>type<span style="color:#f92672">)){</span>
-                cellPhone <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SamsungPhone<span style="color:#f92672">();</span>
-                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three start cell phone created&#34;</span><span style="color:#f92672">);</span>
+                cellPhoneFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AppleCellPhoneFactory<span style="color:#f92672">();</span>
+                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three start factory created&#34;</span><span style="color:#f92672">);</span>
             <span style="color:#f92672">}</span>
             <span style="color:#66d9ef">return</span> cellPhone<span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
@@ -477,14 +478,14 @@ public interface ICellPhone { public void open(); public void close(); public vo
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             CellPhoneFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CellPhoneFactory<span style="color:#f92672">();</span>
             AppleCellPhoneFactory apple <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>AppleCellPhoneFactory<span style="color:#f92672">)</span>factory<span style="color:#f92672">.</span><span style="color:#a6e22e">createPhone</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;apple&#34;</span><span style="color:#f92672">);</span>
-            AppleCellPhone apple <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Lenovo<span style="color:#f92672">)</span>apple<span style="color:#f92672">.</span><span style="color:#a6e22e">createApplePhone</span><span style="color:#f92672">();</span>
+            AppleCellPhone apple <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>AppleCellPhone<span style="color:#f92672">)</span>apple<span style="color:#f92672">.</span><span style="color:#a6e22e">createApplePhone</span><span style="color:#f92672">();</span>
             apple<span style="color:#f92672">.</span><span style="color:#a6e22e">call</span><span style="color:#f92672">();</span>
         <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
 
 </code></pre></div><ul>
 <li>抽象工廠模式還提供了一種為接口而不是實現編寫代碼的方法。</li>
-<li>工廠模式是“工廠中的工廠”，可以輕鬆擴展以容納更多產品。例如，可以添加另一個子類 &ldquo;HTC&rdquo; 和工廠 &ldquo;TwCellPhoneFactory&rdquo;。</li>
+<li>工廠模式是 &ldquo;工廠中的工廠&rdquo;，可以輕鬆擴展以容納更多產品。例如，可以添加另一個子類 &ldquo;HTC&rdquo; 和工廠 &ldquo;TwCellPhoneFactory&rdquo;。</li>
 <li>抽象工廠模式是強大的，它消除了與工廠模式不同的條件邏輯。</li>
 </ul>
 </div>
