@@ -321,7 +321,7 @@
 組合的子節點可以是葉子或其他組合。
 葉類和復合類共享一個通用的 &ldquo;Composite&rdquo; interface，該接口定義了可以在葉和復合上執行的通用操作。當對組合執行操作時，將對組合的所有子節點執行此操作，無論它們是葉子還是組合。因此，複合模式可用於對組成樹的對象執行常見操作。</p>
 <ul>
-<li>Base Component: 基礎組件是組合中所有對象的接口。客戶端程序使用基本組件來處理組合中的對象。此外，它可以是一個 interface 或 abstract class，其中包含所有對象共有的一些方法。</li>
+<li>Base Component: 是組合中所有對象的接口。客戶端程序使用基本組件來處理組合中的對象。此外，它可以是一個 interface 或 abstract class，其中包含所有對象共有的一些方法。</li>
 <li>Leaf: 定義組合中元素的行為。它是組合的構建塊並實現基本組件。雖然，它沒有對其他組件的引用。</li>
 <li>Composite: 它由葉元素組成，並在基本組件中實現操作。</li>
 </ul>
@@ -462,7 +462,7 @@
 
        generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp3<span style="color:#f92672">);</span>
        generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>manager1<span style="color:#f92672">);</span>
-       
+
        generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
 
        <span style="color:#f92672">}</span>

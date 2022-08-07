@@ -86,7 +86,7 @@
 組合的子節點可以是葉子或其他組合。
 葉類和復合類共享一個通用的 &amp;ldquo;Composite&amp;rdquo; interface，該接口定義了可以在葉和復合上執行的通用操作。當對組合執行操作時，將對組合的所有子節點執行此操作，無論它們是葉子還是組合。因此，複合模式可用於對組成樹的對象執行常見操作。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Base Component: 基礎組件是組合中所有對象的接口。客戶端程序使用基本組件來處理組合中的對象。此外，它可以是一個 interface 或 abstract class，其中包含所有對象共有的一些方法。&lt;/li&gt;
+&lt;li&gt;Base Component: 是組合中所有對象的接口。客戶端程序使用基本組件來處理組合中的對象。此外，它可以是一個 interface 或 abstract class，其中包含所有對象共有的一些方法。&lt;/li&gt;
 &lt;li&gt;Leaf: 定義組合中元素的行為。它是組合的構建塊並實現基本組件。雖然，它沒有對其他組件的引用。&lt;/li&gt;
 &lt;li&gt;Composite: 它由葉元素組成，並在基本組件中實現操作。&lt;/li&gt;
 &lt;/ul&gt;
@@ -227,7 +227,7 @@
 
        generalManager&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;emp3&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
        generalManager&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;manager1&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
-       
+
        generalManager&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
 
        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
@@ -249,6 +249,61 @@
       <guid>https://xinqilin.github.io/post/designpattern/gof/structural/adapter/</guid>
       
         <description>&lt;h1 id=&#34;adapter&#34;&gt;Adapter&lt;/h1&gt;
+&lt;p&gt;有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。
+顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。&lt;/p&gt;
+&lt;p&gt;正如適配器一詞所暗示的那樣，適配器設計模式 是 使兩個不相關的接口協同工作的結構設計模式之一。此外，連接這些不相關接口的對象稱為適配器，就像中介一樣。&lt;/p&gt;
+&lt;p&gt;在適配器模式中，一個包裝類（adapter）用於將請求從它轉換到另一個類（adoptee）。實際上，適配器提供了與被收養者不直接提供的特定交互。&lt;/p&gt;
+&lt;p&gt;適配器模式可以採用兩種形式：繼承或組合形式。在第一種形式中，“類適配器”利用繼承。類適配器擴展了被收養類並將所需的方法添加到適配器中。
+這些方法可以在接口（即“目標”接口）中聲明。但是，在第二種形式中；&amp;ldquo;對象 adapter&amp;rdquo; 利用組合。對象 adapter 包含被收養者並實現目標接口以與被收養者交互。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Apple&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getAppleColor&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String color&lt;span style=&#34;color:#f92672&#34;&gt;){&lt;/span&gt;
+            System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Apple color is : &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;color&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Orange&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getOrangeColor&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String color&lt;span style=&#34;color:#f92672&#34;&gt;){&lt;/span&gt;
+         System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Orange color is : &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;color&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AppleAdapter&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; Apple &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+      &lt;span style=&#34;color:#75715e&#34;&gt;//The purpose of the sample problem is to adapt an orange as an apple.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; Orange orange&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+      &lt;span style=&#34;color:#75715e&#34;&gt;// This is the main logic of Adapter pattern
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AppleAdapter&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Orange orange&lt;span style=&#34;color:#f92672&#34;&gt;){&lt;/span&gt;
+         &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;orange&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; orange&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getColor&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String color&lt;span style=&#34;color:#f92672&#34;&gt;){&lt;/span&gt;
+         orange&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getOrangeColor&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;color&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AdapterPatternTest&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; args&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+            Apple apple &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Apple&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+            apple&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getAppleColor&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;green&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+            Orange orange &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Orange&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+            AppleAdapter adapter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; AppleAdapter&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;orange&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+            adapter&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getAppleColor&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;red&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;有一個現有的類，它的接口與需要的不匹配。&lt;/li&gt;
+&lt;li&gt;想要創建一個可重用的類，它與不相關或不可預見的類（即不一定具有兼容接口的類）協作。&lt;/li&gt;
+&lt;li&gt;有幾個現有的子類可供使用，但通過對每個子類進行子類化來調整它們的接口是不切實際的。對象適配器可以適配其父類的接口。&lt;/li&gt;
+&lt;/ul&gt;
 </description>
       
     </item>

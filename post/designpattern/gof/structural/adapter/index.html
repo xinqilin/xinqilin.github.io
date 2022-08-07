@@ -90,7 +90,8 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DesignPattern - Structural - Adapter"/>
-<meta name="twitter:description" content="Adapter "/>
+<meta name="twitter:description" content="Adapter 有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。 顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。
+正如適配器一詞所暗示的那樣，適配器設計模式 是 使兩個不相關的接口協同工作的結構設計模式之一。此外，連接這些不相關接口的對象稱為適配器，就像中介一樣。"/>
 
 
 
@@ -111,7 +112,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        Adapter 
+        Adapter 有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。 顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。\n正如適配器一詞所暗示的那樣，適配器設計模式 是 使兩個不相關的接口協同工作的結構設計模式之一。此外，連接這些不相關接口的對象稱為適配器，就像中介一樣。
 
 
       
@@ -161,7 +162,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/structural\/adapter\/",
-        "wordCount" : "1",
+        "wordCount" : "127",
         "genre" : [ 
       
       "DesignPattern"
@@ -316,6 +317,61 @@
 
         
       </div><h1 id="adapter">Adapter</h1>
+<p>有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。
+顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。</p>
+<p>正如適配器一詞所暗示的那樣，適配器設計模式 是 使兩個不相關的接口協同工作的結構設計模式之一。此外，連接這些不相關接口的對象稱為適配器，就像中介一樣。</p>
+<p>在適配器模式中，一個包裝類（adapter）用於將請求從它轉換到另一個類（adoptee）。實際上，適配器提供了與被收養者不直接提供的特定交互。</p>
+<p>適配器模式可以採用兩種形式：繼承或組合形式。在第一種形式中，“類適配器”利用繼承。類適配器擴展了被收養類並將所需的方法添加到適配器中。
+這些方法可以在接口（即“目標”接口）中聲明。但是，在第二種形式中；&ldquo;對象 adapter&rdquo; 利用組合。對象 adapter 包含被收養者並實現目標接口以與被收養者交互。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Apple</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getAppleColor</span><span style="color:#f92672">(</span>String color<span style="color:#f92672">){</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Apple color is : &#34;</span> <span style="color:#f92672">+</span>color<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Orange</span> <span style="color:#f92672">{</span>
+
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getOrangeColor</span><span style="color:#f92672">(</span>String color<span style="color:#f92672">){</span>
+         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Orange color is : &#34;</span> <span style="color:#f92672">+</span>color<span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppleAdapter</span> <span style="color:#66d9ef">extends</span> Apple <span style="color:#f92672">{</span>
+
+      <span style="color:#75715e">//The purpose of the sample problem is to adapt an orange as an apple.
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">private</span> Orange orange<span style="color:#f92672">;</span>
+
+      <span style="color:#75715e">// This is the main logic of Adapter pattern
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">AppleAdapter</span><span style="color:#f92672">(</span>Orange orange<span style="color:#f92672">){</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">orange</span> <span style="color:#f92672">=</span> orange<span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getColor</span><span style="color:#f92672">(</span>String color<span style="color:#f92672">){</span>
+         orange<span style="color:#f92672">.</span><span style="color:#a6e22e">getOrangeColor</span><span style="color:#f92672">(</span>color<span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AdapterPatternTest</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+            Apple apple <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Apple<span style="color:#f92672">();</span>
+            apple<span style="color:#f92672">.</span><span style="color:#a6e22e">getAppleColor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;green&#34;</span><span style="color:#f92672">);</span>
+
+            Orange orange <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Orange<span style="color:#f92672">();</span>
+            AppleAdapter adapter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AppleAdapter<span style="color:#f92672">(</span>orange<span style="color:#f92672">);</span>
+            adapter<span style="color:#f92672">.</span><span style="color:#a6e22e">getAppleColor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;red&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><ul>
+<li>有一個現有的類，它的接口與需要的不匹配。</li>
+<li>想要創建一個可重用的類，它與不相關或不可預見的類（即不一定具有兼容接口的類）協作。</li>
+<li>有幾個現有的子類可供使用，但通過對每個子類進行子類化來調整它們的接口是不切實際的。對象適配器可以適配其父類的接口。</li>
+</ul>
 </div>
     <div class="post-footer">
       <div class="info">
