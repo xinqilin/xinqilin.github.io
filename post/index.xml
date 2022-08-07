@@ -6,7 +6,117 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 07 Aug 2022 12:18:20 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Aug 2022 22:39:01 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Memento</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/memento/</link>
+      <pubDate>Sun, 07 Aug 2022 22:39:01 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/memento/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Interpreter</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/interpreter/</link>
+      <pubDate>Sun, 07 Aug 2022 22:38:42 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/interpreter/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Iterator</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/iterator/</link>
+      <pubDate>Sun, 07 Aug 2022 22:38:21 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/iterator/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Visitor</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/visitor/</link>
+      <pubDate>Sun, 07 Aug 2022 22:38:06 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/visitor/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>State</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/state/</link>
+      <pubDate>Sun, 07 Aug 2022 22:37:58 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/state/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Command</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/command/</link>
+      <pubDate>Sun, 07 Aug 2022 22:37:50 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/command/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Strategy</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/strategy/</link>
+      <pubDate>Sun, 07 Aug 2022 22:37:39 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/strategy/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Observer</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/observer/</link>
+      <pubDate>Sun, 07 Aug 2022 22:37:21 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/observer/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>ChainOfResponsibility</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/chainofresponsibility/</link>
+      <pubDate>Sun, 07 Aug 2022 22:37:08 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/chainofresponsibility/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Mediator</title>
+      <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/mediator/</link>
+      <pubDate>Sun, 07 Aug 2022 22:36:43 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/designpattern/gof/behavioral/mediator/</guid>
+      
+        <description></description>
+      
+    </item>
+    
     <item>
       <title>DesignPattern - Behavioral - TemplateMethod</title>
       <link>https://xinqilin.github.io/post/designpattern/gof/behavioral/templatemethod/</link>
