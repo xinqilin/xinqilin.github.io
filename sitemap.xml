@@ -3,27 +3,51 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://xinqilin.github.io/</loc>
-    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
+    <lastmod>2022-08-07T12:18:20+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/</loc>
-    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
+    <lastmod>2022-08-07T12:18:20+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/designpattern/</loc>
-    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
+    <lastmod>2022-08-07T12:18:20+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/designpattern/gof/prototype/</loc>
-    <lastmod>2022-08-07T02:27:13+08:00</lastmod>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/behavioral/templatemethod/</loc>
+    <lastmod>2022-08-07T12:18:20+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/</loc>
+    <lastmod>2022-08-07T12:18:20+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/structural/decorator/</loc>
+    <lastmod>2022-08-07T12:16:24+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/structural/bridge/</loc>
+    <lastmod>2022-08-07T12:16:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/structural/facade/</loc>
+    <lastmod>2022-08-07T12:16:02+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/structural/flyweight/</loc>
+    <lastmod>2022-08-07T12:15:57+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/structural/proxy/</loc>
+    <lastmod>2022-08-07T12:15:41+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/structural/composite/</loc>
+    <lastmod>2022-08-07T12:15:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/structural/adapter/</loc>
+    <lastmod>2022-08-07T12:12:36+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/basic/prototype/</loc>
     <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/designpattern/gof/builder/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/basic/builder/</loc>
     <lastmod>2022-08-07T02:16:32+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/designpattern/gof/factory/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/basic/factory/</loc>
     <lastmod>2022-08-07T01:07:16+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/designpattern/gof/singleton/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/basic/singleton/</loc>
     <lastmod>2022-08-06T23:05:44+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/algorithm/</loc>
