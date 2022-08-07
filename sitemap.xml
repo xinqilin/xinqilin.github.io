@@ -2,256 +2,256 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://xinqilin.online.notes/</loc>
+    <loc>https://xinqilin.github.io/</loc>
     <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/</loc>
+    <loc>https://xinqilin.github.io/categories/</loc>
     <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/designpattern/</loc>
+    <loc>https://xinqilin.github.io/categories/designpattern/</loc>
     <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/prototype/</loc>
     <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/designpattern/gof/prototype/</loc>
+    <loc>https://xinqilin.github.io/post/</loc>
     <lastmod>2022-08-07T02:27:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/designpattern/gof/builder/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/builder/</loc>
     <lastmod>2022-08-07T02:16:32+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/designpattern/gof/factory/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/factory/</loc>
     <lastmod>2022-08-07T01:07:16+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/designpattern/gof/singleton/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/gof/singleton/</loc>
     <lastmod>2022-08-06T23:05:44+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/tags/algorithm/</loc>
+    <loc>https://xinqilin.github.io/tags/algorithm/</loc>
     <lastmod>2022-05-10T23:34:53+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/algorithm/</loc>
+    <loc>https://xinqilin.github.io/categories/algorithm/</loc>
     <lastmod>2022-05-10T23:34:53+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/backtracking/</loc>
+    <loc>https://xinqilin.github.io/categories/backtracking/</loc>
     <lastmod>2022-05-10T23:34:53+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/algorithm/backtracking/</loc>
+    <loc>https://xinqilin.github.io/post/algorithm/backtracking/</loc>
     <lastmod>2022-05-10T23:34:53+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/tags/</loc>
+    <loc>https://xinqilin.github.io/tags/</loc>
     <lastmod>2022-05-10T23:34:53+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/bad-smell/</loc>
+    <loc>https://xinqilin.github.io/categories/bad-smell/</loc>
     <lastmod>2022-03-17T22:50:11+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/designpattern/badsmell/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/badsmell/</loc>
     <lastmod>2022-03-17T22:50:11+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/github/</loc>
+    <loc>https://xinqilin.github.io/categories/github/</loc>
     <lastmod>2022-02-09T19:46:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/other/github-ssh/</loc>
+    <loc>https://xinqilin.github.io/post/other/github-ssh/</loc>
     <lastmod>2022-02-09T19:46:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/ssh/</loc>
+    <loc>https://xinqilin.github.io/categories/ssh/</loc>
     <lastmod>2022-02-09T19:46:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/docker/mysql/</loc>
+    <loc>https://xinqilin.github.io/post/docker/mysql/</loc>
     <lastmod>2022-01-18T23:56:44+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/mysql/</loc>
+    <loc>https://xinqilin.github.io/categories/mysql/</loc>
     <lastmod>2022-01-18T23:56:44+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/other/env/</loc>
+    <loc>https://xinqilin.github.io/post/other/env/</loc>
     <lastmod>2022-01-16T22:35:54+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/mac/</loc>
+    <loc>https://xinqilin.github.io/categories/mac/</loc>
     <lastmod>2022-01-16T22:35:54+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/java/</loc>
+    <loc>https://xinqilin.github.io/categories/java/</loc>
     <lastmod>2021-12-26T12:53:14+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/topologicalsort/</loc>
+    <loc>https://xinqilin.github.io/categories/topologicalsort/</loc>
     <lastmod>2021-12-26T12:53:14+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/algorithm/topologicalsort/</loc>
+    <loc>https://xinqilin.github.io/post/algorithm/topologicalsort/</loc>
     <lastmod>2021-12-26T12:53:14+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/flux/</loc>
+    <loc>https://xinqilin.github.io/categories/flux/</loc>
     <lastmod>2021-12-01T22:13:40+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/mono/</loc>
+    <loc>https://xinqilin.github.io/categories/mono/</loc>
     <lastmod>2021-12-01T22:13:40+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/reactive/</loc>
+    <loc>https://xinqilin.github.io/categories/reactive/</loc>
     <lastmod>2021-12-01T22:13:40+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/spring/reactivejava/</loc>
+    <loc>https://xinqilin.github.io/post/spring/reactivejava/</loc>
     <lastmod>2021-12-01T22:13:40+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/algorithm/graphaccountmerge/</loc>
+    <loc>https://xinqilin.github.io/post/algorithm/graphaccountmerge/</loc>
     <lastmod>2021-11-29T22:24:03+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/inorder/</loc>
+    <loc>https://xinqilin.github.io/categories/inorder/</loc>
     <lastmod>2021-11-21T20:11:03+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/postorder/</loc>
+    <loc>https://xinqilin.github.io/categories/postorder/</loc>
     <lastmod>2021-11-21T20:11:03+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/tree/</loc>
+    <loc>https://xinqilin.github.io/categories/tree/</loc>
     <lastmod>2021-11-21T20:11:03+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/algorithm/treetraversal/</loc>
+    <loc>https://xinqilin.github.io/post/algorithm/treetraversal/</loc>
     <lastmod>2021-11-21T20:11:03+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/tags/java/</loc>
+    <loc>https://xinqilin.github.io/tags/java/</loc>
     <lastmod>2021-10-31T19:16:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/tags/map/</loc>
+    <loc>https://xinqilin.github.io/tags/map/</loc>
     <lastmod>2021-10-31T19:16:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/tags/treemap/</loc>
+    <loc>https://xinqilin.github.io/tags/treemap/</loc>
     <lastmod>2021-10-31T19:16:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/java/treemap/</loc>
+    <loc>https://xinqilin.github.io/post/java/treemap/</loc>
     <lastmod>2021-10-31T19:16:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/querydsl/</loc>
+    <loc>https://xinqilin.github.io/categories/querydsl/</loc>
     <lastmod>2021-08-08T13:07:45+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/spring/querydsl/</loc>
+    <loc>https://xinqilin.github.io/post/spring/querydsl/</loc>
     <lastmod>2021-08-08T13:07:45+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/spring/</loc>
+    <loc>https://xinqilin.github.io/categories/spring/</loc>
     <lastmod>2021-08-08T13:07:45+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/kotlin/</loc>
+    <loc>https://xinqilin.github.io/categories/kotlin/</loc>
     <lastmod>2021-08-05T21:07:54+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/kotlin/lateinit/</loc>
+    <loc>https://xinqilin.github.io/post/kotlin/lateinit/</loc>
     <lastmod>2021-08-05T21:07:54+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/tags/curl/</loc>
+    <loc>https://xinqilin.github.io/tags/curl/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/other/curl/</loc>
+    <loc>https://xinqilin.github.io/post/other/curl/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/other/</loc>
+    <loc>https://xinqilin.github.io/categories/other/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/docker/</loc>
+    <loc>https://xinqilin.github.io/categories/docker/</loc>
     <lastmod>2021-07-25T02:21:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/docker/docker-file/</loc>
+    <loc>https://xinqilin.github.io/post/docker/docker-file/</loc>
     <lastmod>2021-07-25T02:21:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/uml/</loc>
+    <loc>https://xinqilin.github.io/categories/uml/</loc>
     <lastmod>2021-07-12T23:33:14+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/designpattern/uml/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/uml/</loc>
     <lastmod>2021-07-12T23:33:14+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/spring/autowired/</loc>
+    <loc>https://xinqilin.github.io/post/spring/autowired/</loc>
     <lastmod>2021-07-10T20:27:20+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/designpattern/solid/</loc>
+    <loc>https://xinqilin.github.io/post/designpattern/solid/</loc>
     <lastmod>2021-07-08T21:20:39+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/vue/</loc>
+    <loc>https://xinqilin.github.io/categories/vue/</loc>
     <lastmod>2021-07-04T22:27:03+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/vue/vue-intro/</loc>
+    <loc>https://xinqilin.github.io/post/vue/vue-intro/</loc>
     <lastmod>2021-07-04T22:27:03+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/spring/jwt/</loc>
+    <loc>https://xinqilin.github.io/post/spring/jwt/</loc>
     <lastmod>2021-07-01T23:39:52+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/token/</loc>
+    <loc>https://xinqilin.github.io/categories/token/</loc>
     <lastmod>2021-07-01T23:39:52+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/spring/swagger2/</loc>
+    <loc>https://xinqilin.github.io/post/spring/swagger2/</loc>
     <lastmod>2021-07-01T20:47:27+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/spring/resttemplate/</loc>
+    <loc>https://xinqilin.github.io/post/spring/resttemplate/</loc>
     <lastmod>2021-06-30T19:39:44+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/script/</loc>
+    <loc>https://xinqilin.github.io/categories/script/</loc>
     <lastmod>2021-06-29T13:45:56+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/yaml/</loc>
+    <loc>https://xinqilin.github.io/categories/yaml/</loc>
     <lastmod>2021-06-29T13:45:56+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/other/yaml/</loc>
+    <loc>https://xinqilin.github.io/post/other/yaml/</loc>
     <lastmod>2021-06-29T13:45:56+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/algorithm/mergesort/</loc>
+    <loc>https://xinqilin.github.io/post/algorithm/mergesort/</loc>
     <lastmod>2021-06-28T19:57:24+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/about/</loc>
+    <loc>https://xinqilin.github.io/about/</loc>
     <lastmod>2021-06-28T00:33:59+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/cqrs/</loc>
+    <loc>https://xinqilin.github.io/categories/cqrs/</loc>
     <lastmod>2021-05-16T21:18:11+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/other/cqrs/</loc>
+    <loc>https://xinqilin.github.io/post/other/cqrs/</loc>
     <lastmod>2021-05-16T21:18:11+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/ddd/</loc>
+    <loc>https://xinqilin.github.io/categories/ddd/</loc>
     <lastmod>2021-05-16T21:18:11+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/java/map-sort-by-value/</loc>
+    <loc>https://xinqilin.github.io/post/java/map-sort-by-value/</loc>
     <lastmod>2021-03-28T15:10:59+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/git/</loc>
+    <loc>https://xinqilin.github.io/categories/git/</loc>
     <lastmod>2021-03-01T21:16:29+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/other/git_tag/</loc>
+    <loc>https://xinqilin.github.io/post/other/git_tag/</loc>
     <lastmod>2021-03-01T21:16:29+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/tag/</loc>
+    <loc>https://xinqilin.github.io/categories/tag/</loc>
     <lastmod>2021-03-01T21:16:29+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/script/deploy-hugo/</loc>
+    <loc>https://xinqilin.github.io/post/script/deploy-hugo/</loc>
     <lastmod>2020-06-28T12:36:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/hugo/</loc>
+    <loc>https://xinqilin.github.io/categories/hugo/</loc>
     <lastmod>2020-06-28T12:36:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/tags/script/</loc>
+    <loc>https://xinqilin.github.io/tags/script/</loc>
     <lastmod>2020-06-28T12:36:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/common/</loc>
+    <loc>https://xinqilin.github.io/categories/common/</loc>
     <lastmod>2020-01-01T20:31:25+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/spring/side-project-common/</loc>
+    <loc>https://xinqilin.github.io/post/spring/side-project-common/</loc>
     <lastmod>2020-01-01T20:31:25+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/other/awk/</loc>
+    <loc>https://xinqilin.github.io/post/other/awk/</loc>
     <lastmod>2019-04-06T23:18:56+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/awk/</loc>
+    <loc>https://xinqilin.github.io/categories/awk/</loc>
     <lastmod>2019-04-06T23:18:56+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/compute/</loc>
+    <loc>https://xinqilin.github.io/categories/compute/</loc>
     <lastmod>2019-03-20T20:58:17+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/computeifabsent/</loc>
+    <loc>https://xinqilin.github.io/categories/computeifabsent/</loc>
     <lastmod>2019-03-20T20:58:17+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/computeifpresent/</loc>
+    <loc>https://xinqilin.github.io/categories/computeifpresent/</loc>
     <lastmod>2019-03-20T20:58:17+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/categories/map/</loc>
+    <loc>https://xinqilin.github.io/categories/map/</loc>
     <lastmod>2019-03-20T20:58:17+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/java/mapcompute/</loc>
+    <loc>https://xinqilin.github.io/post/java/mapcompute/</loc>
     <lastmod>2019-03-20T20:58:17+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/tags/sed/</loc>
+    <loc>https://xinqilin.github.io/tags/sed/</loc>
     <lastmod>2019-01-18T10:23:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.online.notes/post/other/sed/</loc>
+    <loc>https://xinqilin.github.io/post/other/sed/</loc>
     <lastmod>2019-01-18T10:23:31+08:00</lastmod>
   </url>
 </urlset>

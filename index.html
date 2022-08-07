@@ -59,7 +59,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="https://xinqilin.online.notes/" />
+  <link rel="canonical" href="https://xinqilin.github.io/" />
 
   
   
@@ -103,9 +103,9 @@
       "@context": "http://schema.org",
       "@type": "WebSite",
       "name": "",
-      "url": "https:\/\/xinqilin.online.notes",
+      "url": "https:\/\/xinqilin.github.io\/",
       "description": "後端工程師 Java, Kotlin \n\n我的線上筆記\n\n很高興認識你 Pleased to meet you!\n",
-      "thumbnailUrl": "https:\/\/xinqilin.online.notes",
+      "thumbnailUrl": "https:\/\/xinqilin.github.io\/",
       "license": ""
     }
   </script>
@@ -257,18 +257,20 @@
     >
       
       <div class="post-title">
-        <h3><a href="/post/designpattern/gof/prototype/">Prototype</a></h3>
+        <h3><a href="/post/designpattern/gof/prototype/">DesignPattern - Prototype</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Prototype 
+              Prototype 一種對象創建機制。
+假設有一個從 DB 加載數據的對象。現在，我們需要在程序中多次修改這些數據。因此，使用 new 關鍵字創建對象並再次從數據庫中加載所有數據並不是一個好主意。因此，更好的方法是將現有對象 clone 為新對象，然後進行數據操作。
+但是，原型設計模式要求您正在復制的對象應提供複製功能。顯然，它不應該由任何其他類來完成。但是，是使用 Object 屬性的淺拷貝還是深拷貝取決於需求，這是一個設計決定。
 
 
             
           </p>
-          </div>
+          <a href="/post/designpattern/gof/prototype/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -306,7 +308,7 @@
     >
       
       <div class="post-title">
-        <h3><a href="/post/designpattern/gof/builder/">Builder</a></h3>
+        <h3><a href="/post/designpattern/gof/builder/">DesignPattern - Builder</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
@@ -359,7 +361,7 @@ ConcreteBuilder  通過實現 Builder 接口來構造和組裝產品的各個部
     >
       
       <div class="post-title">
-        <h3><a href="/post/designpattern/gof/factory/">Factory</a></h3>
+        <h3><a href="/post/designpattern/gof/factory/">DesignPattern - Factory</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
@@ -409,7 +411,7 @@ public interface ICellPhone { public void open(); public void close(); public vo
     >
       
       <div class="post-title">
-        <h3><a href="/post/designpattern/gof/singleton/">Singleton</a></h3>
+        <h3><a href="/post/designpattern/gof/singleton/">DesignPattern - Singleton</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
