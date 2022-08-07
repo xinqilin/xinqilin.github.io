@@ -90,7 +90,9 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DesignPattern - Structural - Flyweight"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="Flyweight Flyweight 中，我們重複使用對象，而不是創建大量相似的對象。我們可以使用它來減少內存需求和實例化時間以及相關成本。
+在我們應用 Flyweight 之前，我們需要考慮以下因素：
+ 如果應用程序中所需的對像數量巨大。 如果對象創建佔用大量內存並且也可能很耗時。 太多的對象會降低應用程序的性能。顯然，太多的對象可能會消耗更大的內存。此外，它們可能會降低應用程序的速度，甚至可能導致內存不足問題。 在應用程序中控制它。當我們有很多相似的對象並且池中的兩個對象之間沒有太多差異時，尤其如此。  有時，應用程序中的對象可能具有很大的相似性並且屬於相似類型（此處的相似類型意味著它們的大多數屬性具有相似的值，並且只有少數屬性值不同）。如果它們也是要創建的重物，應用程序開發人員應該控制它們。否則，它們可能會消耗大量內存並最終減慢整個應用程序的速度。"/>
 
 
 
@@ -111,7 +113,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        
+        Flyweight Flyweight 中，我們重複使用對象，而不是創建大量相似的對象。我們可以使用它來減少內存需求和實例化時間以及相關成本。\n在我們應用 Flyweight 之前，我們需要考慮以下因素：\n 如果應用程序中所需的對像數量巨大。 如果對象創建佔用大量內存並且也可能很耗時。 太多的對象會降低應用程序的性能。顯然，太多的對象可能會消耗更大的內存。此外，它們可能會降低應用程序的速度，甚至可能導致內存不足問題。 在應用程序中控制它。當我們有很多相似的對象並且池中的兩個對象之間沒有太多差異時，尤其如此。  有時，應用程序中的對象可能具有很大的相似性並且屬於相似類型（此處的相似類型意味著它們的大多數屬性具有相似的值，並且只有少數屬性值不同）。如果它們也是要創建的重物，應用程序開發人員應該控制它們。否則，它們可能會消耗大量內存並最終減慢整個應用程序的速度。
 
 
       
@@ -161,7 +163,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/structural\/flyweight\/",
-        "wordCount" : "0",
+        "wordCount" : "127",
         "genre" : [ 
       
       "DesignPattern"
@@ -311,11 +313,64 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 0 分鐘</span>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
           </div>
 
         
-      </div></div>
+      </div><h1 id="flyweight">Flyweight</h1>
+<p>Flyweight 中，我們重複使用對象，而不是創建大量相似的對象。我們可以使用它來減少內存需求和實例化時間以及相關成本。</p>
+<p>在我們應用 Flyweight 之前，我們需要考慮以下因素：</p>
+<ul>
+<li>如果應用程序中所需的對像數量巨大。</li>
+<li>如果對象創建佔用大量內存並且也可能很耗時。</li>
+<li>太多的對象會降低應用程序的性能。顯然，太多的對象可能會消耗更大的內存。此外，它們可能會降低應用程序的速度，甚至可能導致內存不足問題。</li>
+<li>在應用程序中控制它。當我們有很多相似的對象並且池中的兩個對象之間沒有太多差異時，尤其如此。</li>
+</ul>
+<p>有時，應用程序中的對象可能具有很大的相似性並且屬於相似類型（此處的相似類型意味著它們的大多數屬性具有相似的值，並且只有少數屬性值不同）。如果它們也是要創建的重物，應用程序開發人員應該控制它們。否則，它們可能會消耗大量內存並最終減慢整個應用程序的速度。</p>
+<p>Flyweight 旨在控制此類對象的創建，並為您提供基本的緩存機制。它允許您為每種類型創建一個對象（此處的類型因該對象的屬性而異），如果您請求具有相同屬性的對象（已創建），它將返回相同的對象而不是創建一個新的對象一。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Msg</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span>String msg<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmergentMsg</span> <span style="color:#66d9ef">implements</span> Msg <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">private</span> String key<span style="color:#f92672">;</span>
+        EmergentMsg<span style="color:#f92672">(</span>String key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">key</span> <span style="color:#f92672">=</span> key<span style="color:#f92672">;</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;send &#34;</span> <span style="color:#f92672">+</span> key <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; emergent msg&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span>String msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MsgFactory</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> MsgFactory FACTORY <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MsgFactory<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Msg<span style="color:#f92672">&gt;</span> msgs <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MsgFactory <span style="color:#a6e22e">getInstance</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 看要不要 double lock check
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> FACTORY<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">public</span> Msg <span style="color:#a6e22e">getMsg</span><span style="color:#f92672">(</span>String key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Msg msg <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Msg<span style="color:#f92672">)</span>msgs<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>msg <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;msg &#34;</span> <span style="color:#f92672">+</span> key <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; exist&#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                msg <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EmergentMsg<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+                msgs<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> msg<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">return</span> msg<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><p>有點像資源重複使用 maybe, service locator pattern !?</p>
+</div>
     <div class="post-footer">
       <div class="info">
         

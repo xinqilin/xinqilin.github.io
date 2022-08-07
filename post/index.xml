@@ -303,7 +303,60 @@ Facade 和 Adapter 一樣可以封裝多個類，但是 Facade 使用接口來�
       
       <guid>https://xinqilin.github.io/post/designpattern/gof/structural/flyweight/</guid>
       
-        <description></description>
+        <description>&lt;h1 id=&#34;flyweight&#34;&gt;Flyweight&lt;/h1&gt;
+&lt;p&gt;Flyweight 中，我們重複使用對象，而不是創建大量相似的對象。我們可以使用它來減少內存需求和實例化時間以及相關成本。&lt;/p&gt;
+&lt;p&gt;在我們應用 Flyweight 之前，我們需要考慮以下因素：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果應用程序中所需的對像數量巨大。&lt;/li&gt;
+&lt;li&gt;如果對象創建佔用大量內存並且也可能很耗時。&lt;/li&gt;
+&lt;li&gt;太多的對象會降低應用程序的性能。顯然，太多的對象可能會消耗更大的內存。此外，它們可能會降低應用程序的速度，甚至可能導致內存不足問題。&lt;/li&gt;
+&lt;li&gt;在應用程序中控制它。當我們有很多相似的對象並且池中的兩個對象之間沒有太多差異時，尤其如此。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有時，應用程序中的對象可能具有很大的相似性並且屬於相似類型（此處的相似類型意味著它們的大多數屬性具有相似的值，並且只有少數屬性值不同）。如果它們也是要創建的重物，應用程序開發人員應該控制它們。否則，它們可能會消耗大量內存並最終減慢整個應用程序的速度。&lt;/p&gt;
+&lt;p&gt;Flyweight 旨在控制此類對象的創建，並為您提供基本的緩存機制。它允許您為每種類型創建一個對象（此處的類型因該對象的屬性而異），如果您請求具有相同屬性的對象（已創建），它將返回相同的對象而不是創建一個新的對象一。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Msg&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;show&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String msg&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;EmergentMsg&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; Msg &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; String key&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        EmergentMsg&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String key&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;key&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; key&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+            System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;send &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; key &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; emergent msg&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;show&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String msg&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;msg&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MsgFactory&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MsgFactory FACTORY &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; MsgFactory&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Msg&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; msgs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MsgFactory &lt;span style=&#34;color:#a6e22e&#34;&gt;getInstance&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color:#75715e&#34;&gt;// 看要不要 double lock check
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; FACTORY&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Msg &lt;span style=&#34;color:#a6e22e&#34;&gt;getMsg&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String key&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            Msg msg &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Msg&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;msgs&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;key&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;msg &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+                System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;msg &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; key &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; exist&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+                msg &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; EmergentMsg&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;key&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+                msgs&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;key&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; msg&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; msg&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有點像資源重複使用 maybe, service locator pattern !?&lt;/p&gt;
+</description>
       
     </item>
     
