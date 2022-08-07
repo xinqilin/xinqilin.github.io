@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on </title>
-    <link>https://xinqilin.github.io/post/</link>
+    <link>https://xinqilin.online.notes/post/</link>
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 07 Aug 2022 02:27:13 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Aug 2022 02:27:13 +0800</lastBuildDate><atom:link href="https://xinqilin.online.notes/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Prototype</title>
-      <link>https://xinqilin.github.io/post/designpattern/gof/prototype/</link>
+      <link>https://xinqilin.online.notes/post/designpattern/gof/prototype/</link>
       <pubDate>Sun, 07 Aug 2022 02:27:13 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/designpattern/gof/prototype/</guid>
+      <guid>https://xinqilin.online.notes/post/designpattern/gof/prototype/</guid>
       
         <description>&lt;h1 id=&#34;prototype&#34;&gt;Prototype&lt;/h1&gt;
 </description>
@@ -21,10 +21,10 @@
     
     <item>
       <title>Builder</title>
-      <link>https://xinqilin.github.io/post/designpattern/gof/builder/</link>
+      <link>https://xinqilin.online.notes/post/designpattern/gof/builder/</link>
       <pubDate>Sun, 07 Aug 2022 02:16:32 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/designpattern/gof/builder/</guid>
+      <guid>https://xinqilin.online.notes/post/designpattern/gof/builder/</guid>
       
         <description>&lt;h1 id=&#34;builder&#34;&gt;Builder&lt;/h1&gt;
 &lt;p&gt;對象構造的細節，實例化和初始化構成對象的組件，都保存在對像中，通常作為其構造函數的一部分。這種類型的設計將對象構造過程與構成對象的組件緊密聯繫在一起。但是，只要構造對像簡單，對象構造過程明確，並且總是產生對象的相同表示，這種方法就適用。&lt;/p&gt;
@@ -187,10 +187,10 @@ Builder 類應該具有設置可選參數的方法，並且在設置可選屬性
     
     <item>
       <title>Factory</title>
-      <link>https://xinqilin.github.io/post/designpattern/gof/factory/</link>
+      <link>https://xinqilin.online.notes/post/designpattern/gof/factory/</link>
       <pubDate>Sun, 07 Aug 2022 01:07:16 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/designpattern/gof/factory/</guid>
+      <guid>https://xinqilin.online.notes/post/designpattern/gof/factory/</guid>
       
         <description>&lt;h1 id=&#34;factory&#34;&gt;Factory&lt;/h1&gt;
 &lt;p&gt;一個具有多個子類的父類別並且基於輸入，我們需要返回其中一個子類時，使用工廠設計模式。這種模式將類從客戶端程序實例化到工廠類的責任。
@@ -335,10 +335,10 @@ Builder 類應該具有設置可選參數的方法，並且在設置可選屬性
     
     <item>
       <title>Singleton</title>
-      <link>https://xinqilin.github.io/post/designpattern/gof/singleton/</link>
+      <link>https://xinqilin.online.notes/post/designpattern/gof/singleton/</link>
       <pubDate>Sat, 06 Aug 2022 23:05:44 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/designpattern/gof/singleton/</guid>
+      <guid>https://xinqilin.online.notes/post/designpattern/gof/singleton/</guid>
       
         <description>&lt;h1 id=&#34;singleton&#34;&gt;Singleton&lt;/h1&gt;
 &lt;p&gt;確保在 java 虛擬機中只存在該類的一個實例。單例類必須提供一個全局訪問點來獲取類的實例。&lt;/p&gt;
@@ -446,10 +446,10 @@ Builder 類應該具有設置可選參數的方法，並且在設置可選屬性
     
     <item>
       <title>Backtracking</title>
-      <link>https://xinqilin.github.io/post/algorithm/backtracking/</link>
+      <link>https://xinqilin.online.notes/post/algorithm/backtracking/</link>
       <pubDate>Tue, 10 May 2022 23:34:53 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/algorithm/backtracking/</guid>
+      <guid>https://xinqilin.online.notes/post/algorithm/backtracking/</guid>
       
         <description>&lt;h3 id=&#34;backtracking-複習大全&#34;&gt;Backtracking 複習大全&lt;/h3&gt;
 &lt;ul&gt;
@@ -622,10 +622,10 @@ Builder 類應該具有設置可選參數的方法，並且在設置可選屬性
     
     <item>
       <title>BadSmell</title>
-      <link>https://xinqilin.github.io/post/designpattern/badsmell/</link>
+      <link>https://xinqilin.online.notes/post/designpattern/badsmell/</link>
       <pubDate>Thu, 17 Mar 2022 22:50:11 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/designpattern/badsmell/</guid>
+      <guid>https://xinqilin.online.notes/post/designpattern/badsmell/</guid>
       
         <description>&lt;h3 id=&#34;rigidity-難以變更&#34;&gt;Rigidity, 難以變更&lt;/h3&gt;
 &lt;p&gt;任何變更, 都需要去改其他的東西, 造成一個小小的需求就要去更改另個很大的東西&lt;/p&gt;
@@ -641,10 +641,10 @@ Builder 類應該具有設置可選參數的方法，並且在設置可選屬性
     
     <item>
       <title>Github Ssh</title>
-      <link>https://xinqilin.github.io/post/other/github-ssh/</link>
+      <link>https://xinqilin.online.notes/post/other/github-ssh/</link>
       <pubDate>Wed, 09 Feb 2022 19:46:19 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/github-ssh/</guid>
+      <guid>https://xinqilin.online.notes/post/other/github-ssh/</guid>
       
         <description>&lt;p&gt;&lt;a href=&#34;https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent&#34; alt=&#34;GitHub 教學&#34;&gt;GitHub 教學 &lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;github-ssh-setting&#34;&gt;GitHub SSH Setting&lt;/h3&gt;
@@ -672,10 +672,10 @@ Builder 類應該具有設置可選參數的方法，並且在設置可選屬性
     
     <item>
       <title>Mysql</title>
-      <link>https://xinqilin.github.io/post/docker/mysql/</link>
+      <link>https://xinqilin.online.notes/post/docker/mysql/</link>
       <pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/docker/mysql/</guid>
+      <guid>https://xinqilin.online.notes/post/docker/mysql/</guid>
       
         <description>&lt;h3 id=&#34;mysql&#34;&gt;mysql&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    docker run --name mysql -e MYSQL_ROOT_PASSWORD&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;123456&lt;/span&gt; -dp 3306:3306 mysql/mysql-server --character-set-server&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;utf8mb4 --collation-server&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;utf8mb4_unicode_ci --skip-character-set-client-handshake
@@ -694,10 +694,10 @@ Builder 類應該具有設置可選參數的方法，並且在設置可選屬性
     
     <item>
       <title>Env</title>
-      <link>https://xinqilin.github.io/post/other/env/</link>
+      <link>https://xinqilin.online.notes/post/other/env/</link>
       <pubDate>Sun, 16 Jan 2022 22:35:54 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/env/</guid>
+      <guid>https://xinqilin.online.notes/post/other/env/</guid>
       
         <description>&lt;h3 id=&#34;basic&#34;&gt;Basic&lt;/h3&gt;
 &lt;p&gt;u: All Users
@@ -848,10 +848,10 @@ chmod u+x *.sh&lt;/p&gt;
     
     <item>
       <title>TopologicalSort</title>
-      <link>https://xinqilin.github.io/post/algorithm/topologicalsort/</link>
+      <link>https://xinqilin.online.notes/post/algorithm/topologicalsort/</link>
       <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/algorithm/topologicalsort/</guid>
+      <guid>https://xinqilin.online.notes/post/algorithm/topologicalsort/</guid>
       
         <description>&lt;h3 id=&#34;2115-find-all-possible-recipes-from-given-supplies&#34;&gt;2115. Find All Possible Recipes from Given Supplies&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&#34;https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/&#34;&gt;Link Click Me&lt;/a&gt;&lt;/p&gt;
@@ -928,10 +928,10 @@ We can create &amp;quot;burger&amp;quot; since we have the ingredient &amp;quot;
     
     <item>
       <title>ReactiveJava</title>
-      <link>https://xinqilin.github.io/post/spring/reactivejava/</link>
+      <link>https://xinqilin.online.notes/post/spring/reactivejava/</link>
       <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/spring/reactivejava/</guid>
+      <guid>https://xinqilin.online.notes/post/spring/reactivejava/</guid>
       
         <description>&lt;h3 id=&#34;init&#34;&gt;init&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;Flux&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; seq1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flux&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;just&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bill&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Is&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Good&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
@@ -977,10 +977,10 @@ intList&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#
     
     <item>
       <title>GraphAccountMerge</title>
-      <link>https://xinqilin.github.io/post/algorithm/graphaccountmerge/</link>
+      <link>https://xinqilin.online.notes/post/algorithm/graphaccountmerge/</link>
       <pubDate>Mon, 29 Nov 2021 22:24:03 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/algorithm/graphaccountmerge/</guid>
+      <guid>https://xinqilin.online.notes/post/algorithm/graphaccountmerge/</guid>
       
         <description>&lt;h3 id=&#34;721&#34;&gt;&lt;code&gt;#721&lt;/code&gt;&lt;/h3&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Input: accounts = 
@@ -1113,10 +1113,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     
     <item>
       <title>TreeTraversal</title>
-      <link>https://xinqilin.github.io/post/algorithm/treetraversal/</link>
+      <link>https://xinqilin.online.notes/post/algorithm/treetraversal/</link>
       <pubDate>Sun, 21 Nov 2021 20:11:03 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/algorithm/treetraversal/</guid>
+      <guid>https://xinqilin.online.notes/post/algorithm/treetraversal/</guid>
       
         <description>&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
     4
@@ -1174,10 +1174,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     
     <item>
       <title>TreeMap Method</title>
-      <link>https://xinqilin.github.io/post/java/treemap/</link>
+      <link>https://xinqilin.online.notes/post/java/treemap/</link>
       <pubDate>Sun, 31 Oct 2021 19:16:31 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/java/treemap/</guid>
+      <guid>https://xinqilin.online.notes/post/java/treemap/</guid>
       
         <description>&lt;h1 id=&#34;treemap-method&#34;&gt;TreeMap Method&lt;/h1&gt;
 &lt;p&gt;Map &amp;lt;-繼承 SortedMap &amp;lt;-繼承 NavigableMap &amp;lt;-實作 TreeMap&lt;/p&gt;
@@ -1294,10 +1294,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     
     <item>
       <title>QueryDSL</title>
-      <link>https://xinqilin.github.io/post/spring/querydsl/</link>
+      <link>https://xinqilin.online.notes/post/spring/querydsl/</link>
       <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/spring/querydsl/</guid>
+      <guid>https://xinqilin.online.notes/post/spring/querydsl/</guid>
       
         <description>&lt;h3 id=&#34;maven-integration&#34;&gt;Maven integration&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
@@ -1426,10 +1426,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     
     <item>
       <title>Lateinit</title>
-      <link>https://xinqilin.github.io/post/kotlin/lateinit/</link>
+      <link>https://xinqilin.online.notes/post/kotlin/lateinit/</link>
       <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/kotlin/lateinit/</guid>
+      <guid>https://xinqilin.online.notes/post/kotlin/lateinit/</guid>
       
         <description>&lt;h3 id=&#34;lateinit延遲初始化&#34;&gt;lateinit：延遲初始化&lt;/h3&gt;
 &lt;p&gt;當不想設定 init value 又不想加上 &lt;code&gt;!!&lt;/code&gt; ， &lt;code&gt;?.&lt;/code&gt; ， &lt;code&gt;貓王運算&lt;/code&gt; 時 可以使用&lt;/p&gt;
@@ -1447,10 +1447,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     
     <item>
       <title>Curl</title>
-      <link>https://xinqilin.github.io/post/other/curl/</link>
+      <link>https://xinqilin.online.notes/post/other/curl/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/curl/</guid>
+      <guid>https://xinqilin.online.notes/post/other/curl/</guid>
       
         <description>&lt;h3 id=&#34;參數&#34;&gt;參數&lt;/h3&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    -X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request
@@ -1476,10 +1476,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     
     <item>
       <title>Dockerfile</title>
-      <link>https://xinqilin.github.io/post/docker/docker-file/</link>
+      <link>https://xinqilin.online.notes/post/docker/docker-file/</link>
       <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/docker/docker-file/</guid>
+      <guid>https://xinqilin.online.notes/post/docker/docker-file/</guid>
       
         <description>&lt;h3 id=&#34;build-image&#34;&gt;build image&lt;/h3&gt;
 &lt;p&gt;mvn / gradle 後 clean package (或直接install) build 出 jar&lt;/p&gt;
@@ -1501,10 +1501,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     
     <item>
       <title>UML</title>
-      <link>https://xinqilin.github.io/post/designpattern/uml/</link>
+      <link>https://xinqilin.online.notes/post/designpattern/uml/</link>
       <pubDate>Mon, 12 Jul 2021 23:33:14 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/designpattern/uml/</guid>
+      <guid>https://xinqilin.online.notes/post/designpattern/uml/</guid>
       
         <description>&lt;h2 id=&#34;instance-level&#34;&gt;Instance Level&lt;/h2&gt;
 &lt;ul&gt;
@@ -1551,10 +1551,10 @@ A &amp;lt;&amp;gt;-&amp;gt; B
     
     <item>
       <title>@Autowired is not recommended</title>
-      <link>https://xinqilin.github.io/post/spring/autowired/</link>
+      <link>https://xinqilin.online.notes/post/spring/autowired/</link>
       <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/spring/autowired/</guid>
+      <guid>https://xinqilin.online.notes/post/spring/autowired/</guid>
       
         <description>&lt;p&gt;&lt;code&gt;intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)&lt;/code&gt;&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
@@ -1634,10 +1634,10 @@ Inspection info: Spring Team recommends:
     
     <item>
       <title>SOLID</title>
-      <link>https://xinqilin.github.io/post/designpattern/solid/</link>
+      <link>https://xinqilin.online.notes/post/designpattern/solid/</link>
       <pubDate>Thu, 08 Jul 2021 21:20:39 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/designpattern/solid/</guid>
+      <guid>https://xinqilin.online.notes/post/designpattern/solid/</guid>
       
         <description>&lt;h1 id=&#34;solid&#34;&gt;SOLID&lt;/h1&gt;
 &lt;table&gt;
@@ -1726,10 +1726,10 @@ code should be open for extension , but close for modification
     
     <item>
       <title>Vue Intro</title>
-      <link>https://xinqilin.github.io/post/vue/vue-intro/</link>
+      <link>https://xinqilin.online.notes/post/vue/vue-intro/</link>
       <pubDate>Sun, 04 Jul 2021 22:27:03 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/vue/vue-intro/</guid>
+      <guid>https://xinqilin.online.notes/post/vue/vue-intro/</guid>
       
         <description>&lt;h1 id=&#34;筆記-vue-未整理-version&#34;&gt;筆記 Vue 未整理 version&lt;/h1&gt;
 &lt;h3 id=&#34;套件&#34;&gt;套件&lt;/h3&gt;
@@ -1922,10 +1922,10 @@ v-else
     
     <item>
       <title>JWT</title>
-      <link>https://xinqilin.github.io/post/spring/jwt/</link>
+      <link>https://xinqilin.online.notes/post/spring/jwt/</link>
       <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/spring/jwt/</guid>
+      <guid>https://xinqilin.online.notes/post/spring/jwt/</guid>
       
         <description>&lt;h1 id=&#34;jwt-dependency-inject&#34;&gt;JWT Dependency Inject&lt;/h1&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;
@@ -2220,10 +2220,10 @@ v-else
     
     <item>
       <title>Swagger2</title>
-      <link>https://xinqilin.github.io/post/spring/swagger2/</link>
+      <link>https://xinqilin.online.notes/post/spring/swagger2/</link>
       <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/spring/swagger2/</guid>
+      <guid>https://xinqilin.online.notes/post/spring/swagger2/</guid>
       
         <description>&lt;h1 id=&#34;swagger2&#34;&gt;Swagger2&lt;/h1&gt;
 &lt;h3 id=&#34;dependency-inject&#34;&gt;Dependency Inject&lt;/h3&gt;
@@ -2326,10 +2326,10 @@ v-else
     
     <item>
       <title>RestTemplate</title>
-      <link>https://xinqilin.github.io/post/spring/resttemplate/</link>
+      <link>https://xinqilin.online.notes/post/spring/resttemplate/</link>
       <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/spring/resttemplate/</guid>
+      <guid>https://xinqilin.online.notes/post/spring/resttemplate/</guid>
       
         <description>&lt;h1 id=&#34;resttemplate&#34;&gt;RestTemplate&lt;/h1&gt;
 &lt;p&gt;一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來要用時能直接隨開隨用。
@@ -2464,10 +2464,10 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
     
     <item>
       <title>Yaml</title>
-      <link>https://xinqilin.github.io/post/other/yaml/</link>
+      <link>https://xinqilin.online.notes/post/other/yaml/</link>
       <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/yaml/</guid>
+      <guid>https://xinqilin.online.notes/post/other/yaml/</guid>
       
         <description>&lt;h1 id=&#34;前情提要&#34;&gt;前情提要&lt;/h1&gt;
 &lt;p&gt;在 Java 常用的 framework spring boot 中 (&lt;del&gt;Spring MVC 沒有 它還是用一大狗票 Xml&amp;hellip;&lt;/del&gt;)，常可以看到 .properties 與 .yml 檔案做設定，連現在使用的 hugo 也可以使用 yaml 與 toml 設定，並不是唯一，但如果今天要去配置 K8S 的話， yaml 就不得不學了&lt;/p&gt;
@@ -2544,10 +2544,10 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
     
     <item>
       <title>MergeSort</title>
-      <link>https://xinqilin.github.io/post/algorithm/mergesort/</link>
+      <link>https://xinqilin.online.notes/post/algorithm/mergesort/</link>
       <pubDate>Mon, 28 Jun 2021 19:57:24 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/algorithm/mergesort/</guid>
+      <guid>https://xinqilin.online.notes/post/algorithm/mergesort/</guid>
       
         <description>&lt;h1 id=&#34;mergesort&#34;&gt;MergeSort&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;Time complexity = log n * O(n) = O(n logn)&lt;/code&gt;&lt;/p&gt;
@@ -2622,10 +2622,10 @@ restTemplate&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span sty
     
     <item>
       <title>CQRS</title>
-      <link>https://xinqilin.github.io/post/other/cqrs/</link>
+      <link>https://xinqilin.online.notes/post/other/cqrs/</link>
       <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/cqrs/</guid>
+      <guid>https://xinqilin.online.notes/post/other/cqrs/</guid>
       
         <description>&lt;h3 id=&#34;cqrs--command-query-responsibility-segregation&#34;&gt;CQRS  (Command Query Responsibility Segregation)&lt;/h3&gt;
 &lt;ul&gt;
@@ -2655,10 +2655,10 @@ CQRS: 適用於模型類別&lt;/p&gt;
     
     <item>
       <title>Map Sort by Value</title>
-      <link>https://xinqilin.github.io/post/java/map-sort-by-value/</link>
+      <link>https://xinqilin.online.notes/post/java/map-sort-by-value/</link>
       <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/java/map-sort-by-value/</guid>
+      <guid>https://xinqilin.online.notes/post/java/map-sort-by-value/</guid>
       
         <description>&lt;h1 id=&#34;map-sort-by-value&#34;&gt;Map Sort by value&lt;/h1&gt;
 &lt;p&gt;有鑑於 Bill 上上週在刷 LC 時 &lt;a href=&#34;https://leetcode.com/problems/top-k-frequent-words/&#34;&gt;&lt;b&gt;題目點我!&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;
@@ -2711,10 +2711,10 @@ CQRS: 適用於模型類別&lt;/p&gt;
     
     <item>
       <title>Git_tag</title>
-      <link>https://xinqilin.github.io/post/other/git_tag/</link>
+      <link>https://xinqilin.online.notes/post/other/git_tag/</link>
       <pubDate>Mon, 01 Mar 2021 21:16:29 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/git_tag/</guid>
+      <guid>https://xinqilin.online.notes/post/other/git_tag/</guid>
       
         <description>&lt;h3 id=&#34;code-build-使用-tag-做驅動&#34;&gt;code build 使用 tag 做驅動&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
@@ -2733,10 +2733,10 @@ CQRS: 適用於模型類別&lt;/p&gt;
     
     <item>
       <title>Deploy Hugo</title>
-      <link>https://xinqilin.github.io/post/script/deploy-hugo/</link>
+      <link>https://xinqilin.online.notes/post/script/deploy-hugo/</link>
       <pubDate>Sun, 28 Jun 2020 12:36:19 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/script/deploy-hugo/</guid>
+      <guid>https://xinqilin.online.notes/post/script/deploy-hugo/</guid>
       
         <description>&lt;h1 id=&#34;deploy-hugo&#34;&gt;Deploy Hugo&lt;/h1&gt;
 &lt;p&gt;
@@ -2800,27 +2800,11 @@ git push
     </item>
     
     <item>
-      <title>First Post</title>
-      <link>https://xinqilin.github.io/post/murmur/first-post/</link>
-      <pubDate>Sun, 28 Jun 2020 01:07:21 +0800</pubDate>
-      
-      <guid>https://xinqilin.github.io/post/murmur/first-post/</guid>
-      
-        <description>&lt;h1 id=&#34;第一篇&#34;&gt;第一篇&lt;/h1&gt;
-&lt;p&gt;近日對於一些之前寫過的演算法，或code 會突然忘記，然後不知道可以去哪裡找，近日 reset 了 github page (之前的文都亂po hugo theme 也不是我喜歡的，這次直接大刀闊斧重來)&lt;/p&gt;
-&lt;p&gt; 其實之前也有認真寫blog的習慣，放在 &lt;a href=&#34;https://xinqilin.wordpress.com/&#34; alt=&#34;/&#34;&gt;Wordpress&lt;/a&gt; 上，但之後上來台北工作後，被追著跑，年久失修了，現在主要會維護在 github page 上 TAT &lt;/p&gt;
-&lt;p&gt;特此post 一篇文紀念&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;&lt;del&gt;其實是因為 post 目錄下沒放文章 我會直接吃404&lt;/del&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-      
-    </item>
-    
-    <item>
       <title>Side-Project-Common</title>
-      <link>https://xinqilin.github.io/post/spring/side-project-common/</link>
+      <link>https://xinqilin.online.notes/post/spring/side-project-common/</link>
       <pubDate>Wed, 01 Jan 2020 20:31:25 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/spring/side-project-common/</guid>
+      <guid>https://xinqilin.online.notes/post/spring/side-project-common/</guid>
       
         <description>&lt;h1 id=&#34;side-project-常用功能紀錄方便以後快速-setup-環境&#34;&gt;Side Project 常用功能，紀錄，方便以後快速 setup 環境&lt;/h1&gt;
 &lt;h3 id=&#34;di&#34;&gt;DI&lt;/h3&gt;
@@ -3130,10 +3114,10 @@ git push
     
     <item>
       <title>Awk</title>
-      <link>https://xinqilin.github.io/post/other/awk/</link>
+      <link>https://xinqilin.online.notes/post/other/awk/</link>
       <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/awk/</guid>
+      <guid>https://xinqilin.online.notes/post/other/awk/</guid>
       
         <description>&lt;h3 id=&#34;awk&#34;&gt;Awk&lt;/h3&gt;
 &lt;p&gt;&amp;lsquo;$0&amp;rsquo;,&#39;$1&#39;~&#39;$N&#39; (N 為欄位數)
@@ -3198,10 +3182,10 @@ String !~ /regex/[actions]  =&amp;gt; String not match regex, then execute actio
     
     <item>
       <title>MapCompute</title>
-      <link>https://xinqilin.github.io/post/java/mapcompute/</link>
+      <link>https://xinqilin.online.notes/post/java/mapcompute/</link>
       <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/java/mapcompute/</guid>
+      <guid>https://xinqilin.online.notes/post/java/mapcompute/</guid>
       
         <description>&lt;h3 id=&#34;init&#34;&gt;init&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;    Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Integer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; map &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Integer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;();&lt;/span&gt;
@@ -3238,10 +3222,10 @@ String !~ /regex/[actions]  =&amp;gt; String not match regex, then execute actio
     
     <item>
       <title>sed</title>
-      <link>https://xinqilin.github.io/post/other/sed/</link>
+      <link>https://xinqilin.online.notes/post/other/sed/</link>
       <pubDate>Fri, 18 Jan 2019 10:23:31 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/sed/</guid>
+      <guid>https://xinqilin.online.notes/post/other/sed/</guid>
       
         <description>&lt;h3 id=&#34;sed&#34;&gt;sed&lt;/h3&gt;
 &lt;p&gt;sed [options] &amp;lsquo;[地址定界] command&amp;rsquo; file(s)
