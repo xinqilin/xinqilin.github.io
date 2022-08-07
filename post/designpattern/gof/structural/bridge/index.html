@@ -90,7 +90,10 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DesignPattern - Structural - Bridge"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="Bridge 在接口和實現中都有接口層次結構時，使用 Bridge 設計模式將接口與實現分離，並對客戶端程序隱藏實現細節。
+根據 GoF 橋的設計模式是：將抽象與其實現分離，以便兩者可以獨立變化。
+將抽象及其實現分開，並為抽象和實現者開發單獨的繼承結構。抽像是接口或抽像類，同樣實現者是接口或抽像類。抽象包含對實現者的引用。抽象的孩子被稱為精煉抽象，實現者的孩子是具體的實現者。由於我們可以在抽像中更改對實現者的引用，因此我們可以在運行時更改抽象的實現者。但是，對實現者的更改不會影響客戶端代碼。
+Bridge 的目的是將抽象和實現放入兩個不同的類層次結構中，以便兩者都可以獨立擴展。 Bridge 幫助兩個不兼容的 類一起工作。但是 Bridge 通過創建兩個不同的層次結構來分離抽象和實現。"/>
 
 
 
@@ -111,7 +114,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        
+        Bridge 在接口和實現中都有接口層次結構時，使用 Bridge 設計模式將接口與實現分離，並對客戶端程序隱藏實現細節。\n根據 GoF 橋的設計模式是：將抽象與其實現分離，以便兩者可以獨立變化。\n將抽象及其實現分開，並為抽象和實現者開發單獨的繼承結構。抽像是接口或抽像類，同樣實現者是接口或抽像類。抽象包含對實現者的引用。抽象的孩子被稱為精煉抽象，實現者的孩子是具體的實現者。由於我們可以在抽像中更改對實現者的引用，因此我們可以在運行時更改抽象的實現者。但是，對實現者的更改不會影響客戶端代碼。\nBridge 的目的是將抽象和實現放入兩個不同的類層次結構中，以便兩者都可以獨立擴展。 Bridge 幫助兩個不兼容的 類一起工作。但是 Bridge 通過創建兩個不同的層次結構來分離抽象和實現。
 
 
       
@@ -161,7 +164,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/structural\/bridge\/",
-        "wordCount" : "0",
+        "wordCount" : "220",
         "genre" : [ 
       
       "DesignPattern"
@@ -311,11 +314,114 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 0 分鐘</span>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
           </div>
 
         
-      </div></div>
+      </div><h1 id="bridge">Bridge</h1>
+<p>在接口和實現中都有接口層次結構時，使用 Bridge 設計模式將接口與實現分離，並對客戶端程序隱藏實現細節。</p>
+<p>根據 GoF 橋的設計模式是：<code>將抽象與其實現分離，以便兩者可以獨立變化</code>。</p>
+<p>將抽象及其實現分開，並為抽象和實現者開發單獨的繼承結構。抽像是接口或抽像類，同樣實現者是接口或抽像類。抽象包含對實現者的引用。抽象的孩子被稱為精煉抽象，實現者的孩子是具體的實現者。由於我們可以在抽像中更改對實現者的引用，因此我們可以在運行時更改抽象的實現者。但是，對實現者的更改不會影響客戶端代碼。</p>
+<p>Bridge 的目的是將抽象和實現放入兩個不同的類層次結構中，以便兩者都可以獨立擴展。
+Bridge 幫助兩個不兼容的 類一起工作。但是 Bridge 通過創建兩個不同的層次結構來分離抽象和實現。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * abstraction in Bridge pattern
+</span><span style="color:#75715e">    * */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vehicle</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">protected</span> VehicleType type1<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">protected</span> VehicleType type2<span style="color:#f92672">;</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Vehicle</span><span style="color:#f92672">(</span>VehicleType type1<span style="color:#f92672">,</span> VehicleType type2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">type1</span> <span style="color:#f92672">=</span> type1<span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">type2</span> <span style="color:#f92672">=</span> type2<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">purchase</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * Implementor for Bridge pattern
+</span><span style="color:#75715e">    * */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">VehicleType</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">book</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * Refine abstraction 1 in Bridge pattern
+</span><span style="color:#75715e">    */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Car</span> <span style="color:#66d9ef">extends</span> Vehicle <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Car</span><span style="color:#f92672">(</span>VehicleType type1<span style="color:#f92672">,</span> VehicleType type2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>type1<span style="color:#f92672">,</span> type2<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">purchase</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Car&#34;</span><span style="color:#f92672">);</span>
+            type1<span style="color:#f92672">.</span><span style="color:#a6e22e">book</span><span style="color:#f92672">();</span>
+            type2<span style="color:#f92672">.</span><span style="color:#a6e22e">book</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * Refine abstraction 2 in Bridge pattern
+</span><span style="color:#75715e">    */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bike</span> <span style="color:#66d9ef">extends</span> Vehicle <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Bike</span><span style="color:#f92672">(</span>VehicleType type1<span style="color:#f92672">,</span> VehicleType type2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>type1<span style="color:#f92672">,</span> type2<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">purchase</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Bike&#34;</span><span style="color:#f92672">);</span>
+            type1<span style="color:#f92672">.</span><span style="color:#a6e22e">book</span><span style="color:#f92672">();</span>
+            type2<span style="color:#f92672">.</span><span style="color:#a6e22e">book</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * Concrete implementation 1 for Bridge pattern
+</span><span style="color:#75715e">    * */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NewVehicle</span> <span style="color:#66d9ef">implements</span> VehicleType <span style="color:#f92672">{</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">book</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; : New Vehicle&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * Concrete implementation 2 for Bridge pattern
+</span><span style="color:#75715e">    * */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OldVehicle</span> <span style="color:#66d9ef">implements</span> VehicleType <span style="color:#f92672">{</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">book</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; : Old Vehicle&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+         Vehicle vehicle1<span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Car<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> NewVehicle<span style="color:#f92672">(),</span><span style="color:#66d9ef">new</span> OldVehicle<span style="color:#f92672">());</span>
+         vehicle1<span style="color:#f92672">.</span><span style="color:#a6e22e">purchase</span><span style="color:#f92672">();</span>
+
+         Bike vehicle2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bike<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> NewVehicle<span style="color:#f92672">(),</span><span style="color:#66d9ef">new</span> OldVehicle<span style="color:#f92672">());</span>
+         vehicle2<span style="color:#f92672">.</span><span style="color:#a6e22e">purchase</span><span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+</code></pre></div><ul>
+<li>多個實現時最好使用。</li>
+<li>需要在運行時切換實現時應該使用。</li>
+<li>如果抽象的實現有修改，客戶端不應該受到影響。</li>
+<li>創建兩個不同的層次結構。一個用於抽象，另一個用於實現。</li>
+<li>通過消除抽象和實現之間的依賴關係來避免永久綁定, 創建了一個在抽象和實現之間協調的橋樑。</li>
+<li>抽象和實現可以分開擴展。</li>
+</ul>
+</div>
     <div class="post-footer">
       <div class="info">
         
