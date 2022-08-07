@@ -90,7 +90,9 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DesignPattern - Structural - Decorator"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="Decorator Decorator 的主要目的是動態地為對象附加額外的職責。Decorator 為擴展功能提供了一種靈活的替代子類的方法。
+當我們需要動態擴展對象的功能而無需更改原始類源或使用繼承時，Decorator 為我們提供了便利。這是通過在實際對象周圍創建一個稱為裝飾器的對象包裝器來實現的。
+Decorator 對象與底層對象具有相同的接口。這允許客戶端對像以與底層實際對象完全相同的方式與裝飾器對象交互。Decorator 對象包含對實際對象的引用。Decorator 對象接收來自客戶端的所有請求（調用）。反過來，它將這些調用轉發到底層對象。Decorator 對像在將請求轉發到底層對象之前或之後添加了一些附加功能。這確保了附加功能可以在運行時從外部添加到給定對象，而無需修改其結構。"/>
 
 
 
@@ -111,7 +113,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        
+        Decorator Decorator 的主要目的是動態地為對象附加額外的職責。Decorator 為擴展功能提供了一種靈活的替代子類的方法。\n當我們需要動態擴展對象的功能而無需更改原始類源或使用繼承時，Decorator 為我們提供了便利。這是通過在實際對象周圍創建一個稱為裝飾器的對象包裝器來實現的。\nDecorator 對象與底層對象具有相同的接口。這允許客戶端對像以與底層實際對象完全相同的方式與裝飾器對象交互。Decorator 對象包含對實際對象的引用。Decorator 對象接收來自客戶端的所有請求（調用）。反過來，它將這些調用轉發到底層對象。Decorator 對像在將請求轉發到底層對象之前或之後添加了一些附加功能。這確保了附加功能可以在運行時從外部添加到給定對象，而無需修改其結構。
 
 
       
@@ -161,7 +163,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/structural\/decorator\/",
-        "wordCount" : "0",
+        "wordCount" : "148",
         "genre" : [ 
       
       "DesignPattern"
@@ -311,11 +313,89 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 0 分鐘</span>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
           </div>
 
         
-      </div></div>
+      </div><h1 id="decorator">Decorator</h1>
+<p>Decorator 的主要目的是動態地為對象附加額外的職責。Decorator 為擴展功能提供了一種靈活的替代子類的方法。</p>
+<p>當我們需要動態擴展對象的功能而無需更改原始類源或使用繼承時，Decorator 為我們提供了便利。這是通過在實際對象周圍創建一個稱為裝飾器的對象包裝器來實現的。</p>
+<p>Decorator 對象與底層對象具有相同的接口。這允許客戶端對像以與底層實際對象完全相同的方式與裝飾器對象交互。Decorator 對象包含對實際對象的引用。Decorator 對象接收來自客戶端的所有請求（調用）。反過來，它將這些調用轉發到底層對象。Decorator 對像在將請求轉發到底層對象之前或之後添加了一些附加功能。這確保了附加功能可以在運行時從外部添加到給定對象，而無需修改其結構。</p>
+<p><code>使用繼承或組合來擴展對象的行為，但這是在編譯時完成的，它適用於類的所有實例。不能在運行時添加任何新功能或刪除任何現有行為——這就是裝飾器模式出現的時候。</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Pc</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">buyPc</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimplePc</span> <span style="color:#66d9ef">implements</span> Pc <span style="color:#f92672">{</span>
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">buyPc</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+          <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;spend 1000&#34;</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 裝飾器類實現了組件接口，它與組件接口具有HAS-A關係。
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 子裝飾器類應該可以訪問組件變量，因此保護這個變量。例如，下面的 IcecreamDecorator 類將在我們的例子中用作裝飾器。
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PcDecorator</span> <span style="color:#66d9ef">implements</span> Pc <span style="color:#f92672">{</span>
+
+       <span style="color:#66d9ef">protected</span> Pc specialPc<span style="color:#f92672">;</span>
+
+       <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">PcDecorator</span><span style="color:#f92672">(</span>Pc specialPc<span style="color:#f92672">){</span>
+          <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">specialPc</span> <span style="color:#f92672">=</span> specialPc<span style="color:#f92672">;</span>
+       <span style="color:#f92672">}</span>
+
+       <span style="color:#a6e22e">@Override</span>
+       <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">buyPc</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+          <span style="color:#66d9ef">return</span> specialPc<span style="color:#f92672">.</span><span style="color:#a6e22e">buyPc</span><span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UsaDecorator</span> <span style="color:#66d9ef">extends</span> PcDecorator <span style="color:#f92672">{</span>
+
+      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UsaDecorator</span><span style="color:#f92672">(</span>Pc specialPc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>specialPc<span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">buyPc</span><span style="color:#f92672">(){</span>
+         <span style="color:#66d9ef">return</span> specialPc<span style="color:#f92672">.</span><span style="color:#a6e22e">buyPc</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> addFee<span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">addFee</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34; + 2000&#34;</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 在裝飾一層
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TaiwanDecorator</span> <span style="color:#66d9ef">extends</span> PcDecorator <span style="color:#f92672">{</span>
+
+      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TaiwanDecorator</span><span style="color:#f92672">(</span>Pc specialPc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>specialPc<span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">buyPc</span><span style="color:#f92672">(){</span>
+         <span style="color:#66d9ef">return</span> specialPc<span style="color:#f92672">.</span><span style="color:#a6e22e">buyPc</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> addFee<span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">addFee</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34; + 5000&#34;</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Pc pc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TaiwanDecorator<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> UsaDecorator<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SimplePc<span style="color:#f92672">()));</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>pc<span style="color:#f92672">.</span><span style="color:#a6e22e">buyPc</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><ul>
+<li>動態且透明地向單個對象添加職責，即不影響其他對象。</li>
+<li>對於可以撤回的責任。</li>
+<li>當通過子分類擴展是不切實際的。有時大量的獨立擴展是可能的，並且會產生大量的子類來支持每種組合。或者一個類定義可能被隱藏或不能用於子分類。</li>
+<li>當選擇的數量更多時，它很容易維護和擴展。</li>
+</ul>
+</div>
     <div class="post-footer">
       <div class="info">
         
