@@ -90,7 +90,10 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DesignPattern - Behavioral - Mediator"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="Mediator Mediator 通過阻止對象顯式地相互引用來促進鬆散耦合，並且它允許您獨立地改變它們的交互。 我們使用中介者設計模式在系統中的不同對象之間提供集中的通信媒介。
+中介者模式專注於在對象之間提供一個中介者進行互動，並幫助實現對象之間的丟失耦合。對像要求中介者代表它們進行交互，而不是直接相互交互。它導致可重用性和鬆散耦合。此外，它封裝了對象之間的交互，使它們相互獨立。這也允許他們通過實現不同的中介以完全不同的方式改變與其他對象的交互。調解器有助於降低類的複雜性。此外，每個對像不再需要詳細了解如何與其他對象交互。對象之間的耦合從緊緻僵硬到鬆散優雅。 中介者設計模式在多個對象相互交互的企業應用程序中非常有用。如果對象直接相互交互，系統組件就會相互緊密耦合。它們還使可維護性成本更高，並且不能靈活地輕鬆擴展。
+例如，空中交通管制員是調解員模式的一個很好的例子，其中機場控制室充當不同航班之間通信的調解員。中介作為對象之間的路由器工作，它可以有自己的邏輯來提供通信方式。
+ Mediator: 定義一個與同事對象通信的 interface ConcreteMediator: 通過協調 Colleague 對象來實現協作行為。它還了解並維護其同事。 Colleague Classes: 每個 Colleague class 都知道它的 Mediator 對象。每位同事在本應與另一位同事溝通時都會與其調解員溝通。  public interface IMediator { public void talk(); public void fight(); public void registerA(ColleagueA a); public void registerB(ColleagueB b); } public class ConcreteMediator implements IMediator { ColleagueA talk; ColleagueB fight; @Override public void talk() { System."/>
 
 
 
@@ -111,7 +114,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        
+        Mediator Mediator 通過阻止對象顯式地相互引用來促進鬆散耦合，並且它允許您獨立地改變它們的交互。 我們使用中介者設計模式在系統中的不同對象之間提供集中的通信媒介。\n中介者模式專注於在對象之間提供一個中介者進行互動，並幫助實現對象之間的丟失耦合。對像要求中介者代表它們進行交互，而不是直接相互交互。它導致可重用性和鬆散耦合。此外，它封裝了對象之間的交互，使它們相互獨立。這也允許他們通過實現不同的中介以完全不同的方式改變與其他對象的交互。調解器有助於降低類的複雜性。此外，每個對像不再需要詳細了解如何與其他對象交互。對象之間的耦合從緊緻僵硬到鬆散優雅。 中介者設計模式在多個對象相互交互的企業應用程序中非常有用。如果對象直接相互交互，系統組件就會相互緊密耦合。它們還使可維護性成本更高，並且不能靈活地輕鬆擴展。\n例如，空中交通管制員是調解員模式的一個很好的例子，其中機場控制室充當不同航班之間通信的調解員。中介作為對象之間的路由器工作，它可以有自己的邏輯來提供通信方式。\n Mediator: 定義一個與同事對象通信的 interface ConcreteMediator: 通過協調 Colleague 對象來實現協作行為。它還了解並維護其同事。 Colleague Classes: 每個 Colleague class 都知道它的 Mediator 對象。每位同事在本應與另一位同事溝通時都會與其調解員溝通。  public interface IMediator { public void talk(); public void fight(); public void registerA(ColleagueA a); public void registerB(ColleagueB b); } public class ConcreteMediator implements IMediator { ColleagueA talk; ColleagueB fight; @Override public void talk() { System.
 
 
       
@@ -161,8 +164,12 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/mediator\/",
-        "wordCount" : "0",
-        "genre" : [ ],
+        "wordCount" : "176",
+        "genre" : [ 
+      
+      "DesignPattern"
+
+    ],
         "keywords" : [ ]
     }
   </script>
@@ -307,13 +314,114 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 0 分鐘</span>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
           </div>
 
         
-      </div></div>
+      </div><h1 id="mediator">Mediator</h1>
+<p>Mediator 通過阻止對象顯式地相互引用來促進鬆散耦合，並且它允許您獨立地改變它們的交互。
+我們使用中介者設計模式在系統中的不同對象之間提供集中的通信媒介。</p>
+<p>中介者模式專注於在對象之間提供一個中介者進行互動，並幫助實現對象之間的丟失耦合。對像要求中介者代表它們進行交互，而不是直接相互交互。它導致可重用性和鬆散耦合。此外，它封裝了對象之間的交互，使它們相互獨立。這也允許他們通過實現不同的中介以完全不同的方式改變與其他對象的交互。調解器有助於降低類的複雜性。此外，每個對像不再需要詳細了解如何與其他對象交互。對象之間的耦合從緊緻僵硬到鬆散優雅。
+中介者設計模式在多個對象相互交互的企業應用程序中非常有用。如果對象直接相互交互，系統組件就會相互緊密耦合。它們還使可維護性成本更高，並且不能靈活地輕鬆擴展。</p>
+<p>例如，空中交通管制員是調解員模式的一個很好的例子，其中機場控制室充當不同航班之間通信的調解員。中介作為對象之間的路由器工作，它可以有自己的邏輯來提供通信方式。</p>
+<ul>
+<li>Mediator: 定義一個與同事對象通信的 interface</li>
+<li>ConcreteMediator: 通過協調 Colleague 對象來實現協作行為。它還了解並維護其同事。</li>
+<li>Colleague Classes: 每個 Colleague class 都知道它的 Mediator 對象。每位同事在本應與另一位同事溝通時都會與其調解員溝通。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IMediator</span> <span style="color:#f92672">{</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">talk</span><span style="color:#f92672">();</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fight</span><span style="color:#f92672">();</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerA</span><span style="color:#f92672">(</span>ColleagueA a<span style="color:#f92672">);</span>
+       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerB</span><span style="color:#f92672">(</span>ColleagueB b<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConcreteMediator</span> <span style="color:#66d9ef">implements</span> IMediator <span style="color:#f92672">{</span>
+
+     ColleagueA talk<span style="color:#f92672">;</span>
+     ColleagueB fight<span style="color:#f92672">;</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">talk</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+       System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Mediator is talking&#34;</span><span style="color:#f92672">);</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fight</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Mediator is fighting&#34;</span><span style="color:#f92672">);</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerA</span><span style="color:#f92672">(</span>ColleagueA a<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">talk</span> <span style="color:#f92672">=</span> a<span style="color:#f92672">;</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerB</span><span style="color:#f92672">(</span>ColleagueB b<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">fight</span> <span style="color:#f92672">=</span> b<span style="color:#f92672">;</span>
+     <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#75715e">// ===========
+</span><span style="color:#75715e"></span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Colleague</span> <span style="color:#f92672">{</span>
+     IMediator mediator<span style="color:#f92672">;</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ColleagueA</span> <span style="color:#66d9ef">extends</span> Colleague <span style="color:#f92672">{</span>
+
+     <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ColleagueA</span><span style="color:#f92672">(</span>IMediator mediator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mediator</span> <span style="color:#f92672">=</span> mediator<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mediator</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registerA</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mediator</span><span style="color:#f92672">.</span><span style="color:#a6e22e">talk</span><span style="color:#f92672">();</span>
+     <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ColleagueB</span> <span style="color:#66d9ef">extends</span> Colleague <span style="color:#f92672">{</span>
+
+     <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ColleagueB</span><span style="color:#f92672">(</span>IMediator mediator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mediator</span> <span style="color:#f92672">=</span> mediator<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mediator</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registerB</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+     <span style="color:#f92672">}</span>
+
+     <span style="color:#a6e22e">@Override</span>     
+     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mediator</span><span style="color:#f92672">.</span><span style="color:#a6e22e">fight</span><span style="color:#f92672">();</span>
+     <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+       IMediator mediator <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcreteMediator<span style="color:#f92672">();</span>
+
+       ColleagueA talkColleague<span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ColleagueA<span style="color:#f92672">(</span>mediator<span style="color:#f92672">);</span>
+       talkColleague<span style="color:#f92672">.</span><span style="color:#a6e22e">doSomething</span><span style="color:#f92672">();</span>
+
+       ColleagueB fightColleague <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ColleagueB<span style="color:#f92672">(</span>mediator<span style="color:#f92672">);</span>
+       fightColleague<span style="color:#f92672">.</span><span style="color:#a6e22e">doSomething</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+
+</code></pre></div><ul>
+<li>一組對像以定義明確但複雜的方式進行互動。由此產生的相互依賴是非結構化的並且難以理解。</li>
+<li>重用一個對像很困難，因為它引用了許多其他對象並與之互動。</li>
+<li>分佈在多個類之間的行為應該是可定制的，無需大量子類化。</li>
+</ul>
+</div>
     <div class="post-footer">
       <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
         
 
         
