@@ -90,7 +90,9 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DesignPattern - Behavioral - Observer"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="Observer (pub-sub) 在觀察者設計模式中，多個觀察者對象向一個主題註冊以獲取通知中的任何更改。當主題的狀態發生變化時，它會通知觀察者。監聽或觀察變化的對象稱為觀察者，被觀察的對象稱為主體。
+主題為觀察者提供了一個接口，可以在主題中註冊和註銷自己。 主題知道它的訂閱者是誰。 多個觀察者可以訂閱通知。 主題發布通知。 主題只是發送通知說狀態已更改。它不傳遞任何狀態信息。 一旦收到來自主題的通知，觀察者就會調用主題並獲取更改的數據。
+ Subject， 註冊觀察者。對象使用此接口註冊為觀察者，也可以將自己從觀察者中移除。 Observer為對象定義了一個更新接口，這些接口應該被通知主題的變化。但是，所有的觀察者都需要實現 Observer 接口。該接口有一個方法 update()，當 Subject 的狀態發生變化時會調用該方法。 ConcreteSubject，將感興趣的狀態存儲到 ConcreteObserver 對象。當它的狀態改變時，它會向它的觀察者發送一個通知。此外，一個具體的主題總是實現主題接口。我們使用 * notifyObservers() 方法在狀態發生變化時更新所有當前的觀察者。 ConcreateObserver 維護對 ConcreteSubject 對象的引用並實現 Observer 接口。每個觀察者註冊一個具體的主題以接收更新。  public interface Subject { public void registerObserver(Observer observer); public void notifyObserver(); public void unregisterObserver(Observer observer); public Object getUpdate(); } public interface Observer { public void update(); public void setSubject(Subject sub); } //Concrete Subject  public class Blog implements Subject { List&lt;Observer&gt; observersList; private boolean stateChange; public Blog() { this."/>
 
 
 
@@ -111,7 +113,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        
+        Observer (pub-sub) 在觀察者設計模式中，多個觀察者對象向一個主題註冊以獲取通知中的任何更改。當主題的狀態發生變化時，它會通知觀察者。監聽或觀察變化的對象稱為觀察者，被觀察的對象稱為主體。\n主題為觀察者提供了一個接口，可以在主題中註冊和註銷自己。 主題知道它的訂閱者是誰。 多個觀察者可以訂閱通知。 主題發布通知。 主題只是發送通知說狀態已更改。它不傳遞任何狀態信息。 一旦收到來自主題的通知，觀察者就會調用主題並獲取更改的數據。\n Subject， 註冊觀察者。對象使用此接口註冊為觀察者，也可以將自己從觀察者中移除。 Observer為對象定義了一個更新接口，這些接口應該被通知主題的變化。但是，所有的觀察者都需要實現 Observer 接口。該接口有一個方法 update()，當 Subject 的狀態發生變化時會調用該方法。 ConcreteSubject，將感興趣的狀態存儲到 ConcreteObserver 對象。當它的狀態改變時，它會向它的觀察者發送一個通知。此外，一個具體的主題總是實現主題接口。我們使用 * notifyObservers() 方法在狀態發生變化時更新所有當前的觀察者。 ConcreateObserver 維護對 ConcreteSubject 對象的引用並實現 Observer 接口。每個觀察者註冊一個具體的主題以接收更新。  public interface Subject { public void registerObserver(Observer observer); public void notifyObserver(); public void unregisterObserver(Observer observer); public Object getUpdate(); } public interface Observer { public void update(); public void setSubject(Subject sub); } \/\/Concrete Subject  public class Blog implements Subject { List\u0026lt;Observer\u0026gt; observersList; private boolean stateChange; public Blog() { this.
 
 
       
@@ -161,7 +163,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/observer\/",
-        "wordCount" : "0",
+        "wordCount" : "249",
         "genre" : [ 
       
       "DesignPattern"
@@ -311,11 +313,136 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 0 分鐘</span>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
           </div>
 
         
-      </div></div>
+      </div><h1 id="observer-pub-sub">Observer (pub-sub)</h1>
+<p>在觀察者設計模式中，多個觀察者對象向一個主題註冊以獲取通知中的任何更改。當主題的狀態發生變化時，它會通知觀察者。監聽或觀察變化的對象稱為觀察者，被觀察的對象稱為主體。</p>
+<p>主題為觀察者提供了一個接口，可以在主題中註冊和註銷自己。
+主題知道它的訂閱者是誰。
+多個觀察者可以訂閱通知。
+主題發布通知。
+主題只是發送通知說狀態已更改。它不傳遞任何狀態信息。
+一旦收到來自主題的通知，觀察者就會調用主題並獲取更改的數據。</p>
+<ul>
+<li>Subject，  註冊觀察者。對象使用此接口註冊為觀察者，也可以將自己從觀察者中移除。</li>
+<li>Observer為對象定義了一個更新接口，這些接口應該被通知主題的變化。但是，所有的觀察者都需要實現 Observer 接口。該接口有一個方法 update()，當 Subject 的狀態發生變化時會調用該方法。</li>
+<li>ConcreteSubject，將感興趣的狀態存儲到 ConcreteObserver 對象。當它的狀態改變時，它會向它的觀察者發送一個通知。此外，一個具體的主題總是實現主題接口。我們使用  * notifyObservers() 方法在狀態發生變化時更新所有當前的觀察者。</li>
+<li>ConcreateObserver 維護對 ConcreteSubject 對象的引用並實現 Observer 接口。每個觀察者註冊一個具體的主題以接收更新。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Subject</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerObserver</span><span style="color:#f92672">(</span>Observer observer<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">notifyObserver</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unregisterObserver</span><span style="color:#f92672">(</span>Observer observer<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getUpdate</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Observer</span> <span style="color:#f92672">{</span>
+
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">();</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setSubject</span><span style="color:#f92672">(</span>Subject sub<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+
+
+    <span style="color:#75715e">//Concrete Subject
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Blog</span> <span style="color:#66d9ef">implements</span> Subject <span style="color:#f92672">{</span>
+
+      List<span style="color:#f92672">&lt;</span>Observer<span style="color:#f92672">&gt;</span> observersList<span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> stateChange<span style="color:#f92672">;</span>
+
+      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Blog</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">observersList</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">();</span>
+         stateChange <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerObserver</span><span style="color:#f92672">(</span>Observer observer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         observersList<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>observer<span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">notifyObserver</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>stateChange<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+           <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>Observer observer <span style="color:#f92672">:</span> observersList<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+              observer<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">();</span>
+              System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Observer notified !&#34;</span><span style="color:#f92672">);</span>
+           <span style="color:#f92672">}</span>
+         <span style="color:#f92672">}</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unregisterObserver</span><span style="color:#f92672">(</span>Observer observer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         observersList<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>observer<span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getUpdate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         Object changedState <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+         <span style="color:#75715e">// should have logic to send the state change to querying observer
+</span><span style="color:#75715e"></span>         <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>stateChange<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+           changedState <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Observer Design Pattern&#34;</span><span style="color:#f92672">;</span>
+         <span style="color:#f92672">}</span>
+       <span style="color:#66d9ef">return</span> changedState<span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postNewArticle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         stateChange <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+         notifyObserver<span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+
+
+    <span style="color:#75715e">//Concrete Observer
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">implements</span> Observer <span style="color:#f92672">{</span>
+
+      <span style="color:#66d9ef">private</span> String article<span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">private</span> Subject blog<span style="color:#f92672">;</span> 
+      
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;State change reported by Subject.&#34;</span><span style="color:#f92672">);</span>
+         article <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>String<span style="color:#f92672">)</span> blog<span style="color:#f92672">.</span><span style="color:#a6e22e">getUpdate</span><span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setSubject</span><span style="color:#f92672">(</span>Subject blog<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">blog</span> <span style="color:#f92672">=</span> blog<span style="color:#f92672">;</span>
+         article <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;No New Article!&#34;</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getArticle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">return</span> article<span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Blog blog <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Blog<span style="color:#f92672">();</span>
+        User user1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">();</span>
+        User user2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">();</span>
+        blog<span style="color:#f92672">.</span><span style="color:#a6e22e">registerObserver</span><span style="color:#f92672">(</span>user1<span style="color:#f92672">);</span>
+        blog<span style="color:#f92672">.</span><span style="color:#a6e22e">registerObserver</span><span style="color:#f92672">(</span>user2<span style="color:#f92672">);</span>
+        user1<span style="color:#f92672">.</span><span style="color:#a6e22e">setSubject</span><span style="color:#f92672">(</span>blog<span style="color:#f92672">);</span>
+        user2<span style="color:#f92672">.</span><span style="color:#a6e22e">setSubject</span><span style="color:#f92672">(</span>blog<span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user1<span style="color:#f92672">.</span><span style="color:#a6e22e">getArticle</span><span style="color:#f92672">());</span> 
+        blog<span style="color:#f92672">.</span><span style="color:#a6e22e">postNewArticle</span><span style="color:#f92672">();</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user1<span style="color:#f92672">.</span><span style="color:#a6e22e">getArticle</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><ul>
+<li>當一個抽像有兩個方面時，一個依賴於另一個。將這些方面封裝在單獨的對像中可以讓您獨立地改變和重用它們。</li>
+<li>當對一個對象的更改需要更改其他對象時，您不知道需要更改多少個對象？</li>
+<li>當一個對象應該能夠通知其他對象而不假設這些對像是誰。換句話說，您不希望這些對象緊密耦合。</li>
+</ul>
+<p>reference: <a href="https://javatechonline.com/behavioral-design-patterns-in-java/#Template_Method_Design_Pattern">https://javatechonline.com/behavioral-design-patterns-in-java/#Template_Method_Design_Pattern</a></p>
+</div>
     <div class="post-footer">
       <div class="info">
         
