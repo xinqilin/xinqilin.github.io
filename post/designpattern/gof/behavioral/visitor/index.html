@@ -90,7 +90,8 @@
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DesignPattern - Behavioral - Visitor"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="Visitor 當必須對一組相似類型的對象執行操作時，我們使用訪問者模式。借助 visitor pattern，我們可以將操作邏輯從對象轉移到另一個類。例如，考慮一個購物車，我們可以在其中添加不同類型的商品（元素），當我們點擊結帳按鈕時，它會計算出我們需要支付的總金額。現在，我們可以在項目類中包含計算邏輯，或者我們可以使用 visitor pattern 將此邏輯移到另一個類中。因此，使用 visitor pattern，我們可以將邏輯移到另一個類。
+visitor pattern 允許在不更改集合中任何對象的類的情況下定義操作。為此，visitor pattern 建議在稱為 visitor類的單獨類中定義操作。這將操作與其操作的對象集合分開。對於要定義的每個新操作，都會創建一個新的訪問者類。由於操作將在一組對像上執行，因此訪問者需要一種訪問這些對象的公共成員的方法。"/>
 
 
 
@@ -111,7 +112,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        
+        Visitor 當必須對一組相似類型的對象執行操作時，我們使用訪問者模式。借助 visitor pattern，我們可以將操作邏輯從對象轉移到另一個類。例如，考慮一個購物車，我們可以在其中添加不同類型的商品（元素），當我們點擊結帳按鈕時，它會計算出我們需要支付的總金額。現在，我們可以在項目類中包含計算邏輯，或者我們可以使用 visitor pattern 將此邏輯移到另一個類中。因此，使用 visitor pattern，我們可以將邏輯移到另一個類。\nvisitor pattern 允許在不更改集合中任何對象的類的情況下定義操作。為此，visitor pattern 建議在稱為 visitor類的單獨類中定義操作。這將操作與其操作的對象集合分開。對於要定義的每個新操作，都會創建一個新的訪問者類。由於操作將在一組對像上執行，因此訪問者需要一種訪問這些對象的公共成員的方法。
 
 
       
@@ -161,7 +162,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/visitor\/",
-        "wordCount" : "0",
+        "wordCount" : "261",
         "genre" : [ 
       
       "DesignPattern"
@@ -311,11 +312,125 @@
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 0 分鐘</span>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
           </div>
 
         
-      </div></div>
+      </div><h1 id="visitor">Visitor</h1>
+<p>當必須對一組相似類型的對象執行操作時，我們使用訪問者模式。借助 visitor pattern，我們可以將操作邏輯從對象轉移到另一個類。例如，考慮一個購物車，我們可以在其中添加不同類型的商品（元素），當我們點擊結帳按鈕時，它會計算出我們需要支付的總金額。現在，我們可以在項目類中包含計算邏輯，或者我們可以使用 visitor pattern 將此邏輯移到另一個類中。因此，使用 visitor pattern，我們可以將邏輯移到另一個類。</p>
+<p>visitor pattern 允許在不更改集合中任何對象的類的情況下定義操作。為此，visitor pattern 建議在稱為 visitor類的單獨類中定義操作。這將操作與其操作的對象集合分開。對於要定義的每個新操作，都會創建一個新的訪問者類。由於操作將在一組對像上執行，因此訪問者需要一種訪問這些對象的公共成員的方法。</p>
+<ul>
+<li>Visitor：為對象結構中的每個 ConcreteElement 類聲明一個訪問操作。操作的名稱和簽名標識向訪問者發送訪問請求的類。這讓訪問者可以確定被訪問元素的具體類。然後訪問者可以通過其特定的界面直接訪問該元素。</li>
+<li>ConcreteVisitor：實現訪問者聲明的每個操作。每個操作都實現了為結構中的相應對像類定義的算法片段。ConcreteVisitor 為算法提供上下文並存儲其本地狀態。這種狀態通常會在結構的遍歷過程中累積結果。</li>
+<li>Element：定義一個接受訪問者作為參數的操作。</li>
+<li>ConcreteElement：實現以訪問者為參數的 Accept 操作。</li>
+</ul>
+<p>ObjectStructure:</p>
+<ul>
+<li>可以枚舉它的元素。</li>
+<li>可以提供高級界面以允許訪問者訪問其元素。</li>
+<li>可以是組合或集合，例如列表或集合。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ShoppingCartElement</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>ShoppingCartVisitor visitor<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Beef</span> <span style="color:#66d9ef">implements</span> ShoppingCartElement <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> price<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> weight<span style="color:#f92672">;</span>
+
+        <span style="color:#75715e">// constructor , getter , setter
+</span><span style="color:#75715e"></span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#75715e">//Notice the implementation of accept() method in concrete classes, 
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//its calling visit() method of Visitor and passing itself as argument.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>ShoppingCartVisitor visitor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fruit</span> <span style="color:#66d9ef">implements</span> ShoppingCartElement <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> pricePerKg<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> weight<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+
+        <span style="color:#75715e">// constructor , getter , setter
+</span><span style="color:#75715e"></span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>ShoppingCartVisitor visitor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ShoppingCartVisitor</span> <span style="color:#f92672">{</span>
+
+      <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>Beef book<span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>Fruit fruit<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ShoppingCartVisitorImpl</span> <span style="color:#66d9ef">implements</span> ShoppingCartVisitor <span style="color:#f92672">{</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>Beef beef<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         var cost <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+         <span style="color:#75715e">//apply 5$ discount if book price is greater than 50
+</span><span style="color:#75715e"></span>         <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>beef<span style="color:#f92672">.</span><span style="color:#a6e22e">getPrice</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 50<span style="color:#f92672">){</span>
+            cost <span style="color:#f92672">=</span> beef<span style="color:#f92672">.</span><span style="color:#a6e22e">getPrice</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> 5<span style="color:#f92672">;</span>
+         <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            cost <span style="color:#f92672">=</span> beef<span style="color:#f92672">.</span><span style="color:#a6e22e">getPrice</span><span style="color:#f92672">();</span>
+         <span style="color:#f92672">}</span>
+        
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;beef: {}&#34;</span><span style="color:#f92672">,</span> beef<span style="color:#f92672">);</span>
+
+        <span style="color:#66d9ef">return</span> cost<span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>Fruit fruit<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         var cost <span style="color:#f92672">=</span> fruit<span style="color:#f92672">.</span><span style="color:#a6e22e">getPricePerKg</span><span style="color:#f92672">()</span> <span style="color:#f92672">*</span> fruit<span style="color:#f92672">.</span><span style="color:#a6e22e">getWeight</span><span style="color:#f92672">();</span>
+
+         log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cost: &#34;</span> <span style="color:#f92672">+</span> cost<span style="color:#f92672">);</span>
+
+         <span style="color:#66d9ef">return</span> cost<span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+        var items <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ShoppingCartElement<span style="color:#f92672">[]{</span>
+                <span style="color:#66d9ef">new</span> Beef<span style="color:#f92672">(</span>20<span style="color:#f92672">,</span> 2<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">),</span>
+                <span style="color:#66d9ef">new</span> Beef<span style="color:#f92672">(</span>100<span style="color:#f92672">,</span> 3<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">),</span>
+                <span style="color:#66d9ef">new</span> Fruit<span style="color:#f92672">(</span>10<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Apple&#34;</span><span style="color:#f92672">),</span> 
+                <span style="color:#66d9ef">new</span> Fruit<span style="color:#f92672">(</span>5<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Banana&#34;</span><span style="color:#f92672">)</span>
+            <span style="color:#f92672">};</span>
+
+        <span style="color:#66d9ef">int</span> total <span style="color:#f92672">=</span> calculatePrice<span style="color:#f92672">(</span>items<span style="color:#f92672">);</span>
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;total: &#34;</span> <span style="color:#f92672">+</span> total<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">calculatePrice</span><span style="color:#f92672">(</span>ShoppingCartElement<span style="color:#f92672">[]</span> items<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+        var visitor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ShoppingCartVisitorImpl<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>ShoppingCartElement item <span style="color:#f92672">:</span> items<span style="color:#f92672">){</span>
+            sum <span style="color:#f92672">+=</span> item<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>visitor<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> sum<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><ul>
+<li>一個對象結構包含許多具有不同接口的對像類，並且您希望對這些對象執行依賴於它們的具體類的操作。</li>
+<li>當我們需要對對象結構中的對象執行許多不同且不相關的操作時，我們希望避免這些操作 &ldquo;污染&rdquo; 它們的 class。訪問者允許您通過在一個類中定義相關操作來將它們保持在一起。當我們需要與許多應用程序共享對象結構時，使用訪問者將操作放在那些需要它們的應用程序中。</li>
+<li>定義對象結構的類很少更改，但您經常希望在該結構上定義新操作。但是，更改對象結構類需要重新定義所有訪問者的接口，這可能是昂貴的。如果對象結構類經常更改，那麼最好在這些類中定義操作。</li>
+</ul>
+</div>
     <div class="post-footer">
       <div class="info">
         
