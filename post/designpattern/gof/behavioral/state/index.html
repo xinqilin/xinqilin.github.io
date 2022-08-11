@@ -162,7 +162,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/state\/",
-        "wordCount" : "36",
+        "wordCount" : "125",
         "genre" : [ 
       
       "DesignPattern"
@@ -325,6 +325,57 @@
 <li>ConcreteState 子類：每個子類實現與上下文狀態相關聯的行為。</li>
 </ul>
 <p>在狀態模式中，我們有一個 Context 類，並且這個類有一個對具體狀態實例的狀態引用。State 接口聲明了表示特定狀態行為的特定方法。具體國家實施這些行為。通過改變上下文的具體狀態，我們改變了它的行為。本質上，在狀態模式中，一個類（上下文）應該根據其狀態表現得像不同的類。狀態模式避免使用 switch 和 if 語句來改變行為。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MacState</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Lighting</span> <span style="color:#66d9ef">implements</span> MacState <span style="color:#f92672">{</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getState</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mac bright!&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Close</span> <span style="color:#66d9ef">implements</span> MacState <span style="color:#f92672">{</span>
+
+      <span style="color:#a6e22e">@Override</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getState</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Mac is shut down&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MacContext</span> <span style="color:#66d9ef">implements</span> MacState <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">private</span> MacState macState<span style="color:#f92672">;</span>
+
+        <span style="color:#75715e">// constructor , setter , getter
+</span><span style="color:#75715e"></span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getState</span><span style="color:#f92672">(){</span>
+            macState<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            var ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MacContext<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Lighting<span style="color:#f92672">());</span>
+            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+            
+            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">setMacState</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Close<span style="color:#f92672">());</span>
+            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+</code></pre></div><p>狀態模式的好處之一是多態行為的實現，這是清晰可見的。因此，出錯的可能性較小。此外，很容易為其他行為添加更多狀態，使其更加健壯、易於維護和靈活。此外，在這種情況下，狀態模式有助於避免 if-else 或 switch-case 條件邏輯。</p>
+<ul>
+<li>當對象的行為取決於其狀態時，它必須在運行時根據其狀態改變其行為。</li>
+<li>當操作具有依賴於對象狀態的大型、多部分條件語句時。這種狀態通常由一個或多個枚舉常量表示。通常，多個操作將包含相同的條件結構。狀態模式將條件的每個分支放在一個單獨的類中。</li>
+<li>這讓我們可以將對象的狀態視為一個可以獨立於其他對像變化的對象。</li>
+</ul>
 </div>
     <div class="post-footer">
       <div class="info">
