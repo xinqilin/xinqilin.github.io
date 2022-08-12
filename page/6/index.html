@@ -257,20 +257,22 @@
     >
       
       <div class="post-title">
-        <h3><a href="/post/other/awk/">Awk</a></h3>
+        <h3><a href="/post/designpattern/gof/basic/builder/">DesignPattern  - Basic - Builder</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Awk &lsquo;$0&rsquo;,'$1'~'$N' (N 為欄位數) $0: 一整行
-example:
-ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop # linxinqi Documents # linxinqi Downloads , =&gt; 空格
+              Builder 對象構造的細節，實例化和初始化構成對象的組件，都保存在對像中，通常作為其構造函數的一部分。這種類型的設計將對象構造過程與構成對象的組件緊密聯繫在一起。但是，只要構造對像簡單，對象構造過程明確，並且總是產生對象的相同表示，這種方法就適用。
+此外，當被創建的對像很複雜並且構成對象創建過程的一系列步驟可以以不同的方式實現時，這種設計可能無效。因此，產生對象的不同表示。因為構造過程的不同實現都保存在對像中，所以對象可能變得龐大（構造膨脹）並且模塊化程度較低。隨後，添加新實現或更改現有實現需要更改現有代碼。
+Builder 的目的是將復雜對象的構造與其表示分離，以便相同的構造過程可以創建不同的表示。這種類型的分離減小了對象的大小。該設計變得更加模塊化，每個實現都包含在不同的構建器對像中。因此，添加一個新的實現（即添加一個新的構建器）變得更容易了。此外，對象構造過程變得獨立於構成對象的組件。這提供了對對象構造過程的更多控制。
+它指定了一個抽象接口，用於創建 Product 對象的各個部分。構建器模式建議將構建邏輯從對像類移到一個單獨的類，稱為構建器類。但是，可以有多個這樣的構建器類，每個構建器類對於構建對象的一系列步驟都有不同的實現。此外，每個構建器實現都會導致對象的不同表示。
+ConcreteBuilder  通過實現 Builder 接口來構造和組裝產品的各個部分。 定義並跟踪它創建的表示。 提供用於檢索產品的接口。  Director 它使用 Builder 接口構造一個對象。Builder 模式建議使用稱為 Director 的專用對象，它負責調用構建最終對象所需的不同構建器方法。此外，不同的客戶端對象可以利用 Director 對象來創建所需的對象。一旦構造了對象，客戶端對象就可以直接向構造器請求完整構造的對象。為了方便這個過程，可以在公共Builder接口中聲明一個新方法getObject()，由不同的具體builder實現。
 
 
             
           </p>
-          <a href="/post/other/awk/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/designpattern/gof/basic/builder/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -280,13 +282,13 @@ ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop #
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Sat, Apr 6, 2019
+                Tue, Aug 7, 2018
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/script/">script</a><a class="category" href="/categories/awk/">awk</a></span>
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
 
 
 
@@ -308,18 +310,19 @@ ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop #
     >
       
       <div class="post-title">
-        <h3><a href="/post/java/mapcompute/">MapCompute</a></h3>
+        <h3><a href="/post/designpattern/gof/basic/factory/">DesignPattern - Basic - Factory</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              init Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;(); map.put(&#34;a&#34;, 1); putIfAbsent 有了就不塞, 沒有就塞 value (不存在就塞)
+              Factory 一個具有多個子類的父類別並且基於輸入，我們需要返回其中一個子類時，使用工廠設計模式。這種模式將類從客戶端程序實例化到工廠類的責任。 工廠模式中的超類可以是 interface，也可以是 abstract class，也可以是普通的 Java class。
+public interface ICellPhone { public void open(); public void close(); public void call(); } public class ApplePhone implements ICellPhone { @Override public void open() { System.
 
 
             
           </p>
-          <a href="/post/java/mapcompute/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/designpattern/gof/basic/factory/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -329,13 +332,13 @@ ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop #
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Wed, Mar 20, 2019
+                Tue, Aug 7, 2018
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/map/">Map</a><a class="category" href="/categories/compute/">Compute</a><a class="category" href="/categories/computeifabsent/">ComputeIfAbsent</a><a class="category" href="/categories/computeifpresent/">ComputeIfPresent</a></span>
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
 
 
 
@@ -357,18 +360,19 @@ ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop #
     >
       
       <div class="post-title">
-        <h3><a href="/post/other/sed/">sed</a></h3>
+        <h3><a href="/post/designpattern/gof/basic/singleton/">DesignPattern - Basic - Singleton</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              sed sed [options] &lsquo;[地址定界] command&rsquo; file(s) sed -e	&lsquo;1,8	s/	[Tt]he/	THE/	g&rsquo;	MyFile.
+              Singleton 確保在 java 虛擬機中只存在該類的一個實例。單例類必須提供一個全局訪問點來獲取類的實例。
+ 一個類應該只允許一個實例， 應該允許全局訪問該單個實例。 用於限制從其他類實例化類的私有構造函數。 同一類的私有靜態變量，是該類的唯一實例。 公共靜態方法，返回類的實例，這是外部世界獲取單例類實例的全局訪問點。  Reflection, Clone, 序列化/反序列化 違反 Singleton public static Singleton instance= new Singleton(); private Singleton() { System.
 
 
             
           </p>
-          <a href="/post/other/sed/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/designpattern/gof/basic/singleton/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -378,24 +382,18 @@ ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop #
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Fri, Jan 18, 2019
+                Mon, Aug 6, 2018
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/other/">Other</a></span>
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
 
 
 
 
             
-
-            
-              <span class="separator"><a class="tag" href="/tags/sed/">SED</a></span>
-
-
-
 
             
           </div>

@@ -257,19 +257,18 @@
     >
       
       <div class="post-title">
-        <h3><a href="/post/designpattern/gof/basic/factory/">DesignPattern - Basic - Factory</a></h3>
+        <h3><a href="/post/spring/resttemplate/">RestTemplate</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Factory 一個具有多個子類的父類別並且基於輸入，我們需要返回其中一個子類時，使用工廠設計模式。這種模式將類從客戶端程序實例化到工廠類的責任。 工廠模式中的超類可以是 interface，也可以是 abstract class，也可以是普通的 Java class。
-public interface ICellPhone { public void open(); public void close(); public void call(); } public class ApplePhone implements ICellPhone { @Override public void open() { System.
+              RestTemplate 一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來要用時能直接隨開隨用。 //config  @Configuration public class RestTemplateConfig { @Bean public RestTemplate restTemplate(ClientHttpRequestFactory factory) { return new RestTemplate(factory); } @Bean public ClientHttpRequestFactory simpleClientHttpRequestFactory() { SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory(); factory.
 
 
             
           </p>
-          <a href="/post/designpattern/gof/basic/factory/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/spring/resttemplate/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -279,13 +278,13 @@ public interface ICellPhone { public void open(); public void close(); public vo
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Sun, Aug 7, 2022
+                Wed, Jun 30, 2021
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+              <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/java/">Java</a></span>
 
 
 
@@ -307,19 +306,18 @@ public interface ICellPhone { public void open(); public void close(); public vo
     >
       
       <div class="post-title">
-        <h3><a href="/post/designpattern/gof/basic/singleton/">DesignPattern - Basic - Singleton</a></h3>
+        <h3><a href="/post/other/yaml/">Yaml</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Singleton 確保在 java 虛擬機中只存在該類的一個實例。單例類必須提供一個全局訪問點來獲取類的實例。
- 一個類應該只允許一個實例， 應該允許全局訪問該單個實例。 用於限制從其他類實例化類的私有構造函數。 同一類的私有靜態變量，是該類的唯一實例。 公共靜態方法，返回類的實例，這是外部世界獲取單例類實例的全局訪問點。  Reflection, Clone, 序列化/反序列化 違反 Singleton public static Singleton instance= new Singleton(); private Singleton() { System.
+              前情提要 在 Java 常用的 framework spring boot 中 (Spring MVC 沒有 它還是用一大狗票 Xml&hellip;)，常可以看到 .
 
 
             
           </p>
-          <a href="/post/designpattern/gof/basic/singleton/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/other/yaml/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -329,13 +327,13 @@ public interface ICellPhone { public void open(); public void close(); public vo
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Sat, Aug 6, 2022
+                Tue, Jun 29, 2021
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+              <span class="separator"><a class="category" href="/categories/yaml/">Yaml</a><a class="category" href="/categories/script/">Script</a></span>
 
 
 
@@ -357,18 +355,18 @@ public interface ICellPhone { public void open(); public void close(); public vo
     >
       
       <div class="post-title">
-        <h3><a href="/post/algorithm/backtracking/">Backtracking</a></h3>
+        <h3><a href="/post/algorithm/mergesort/">MergeSort</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Backtracking 複習大全  choose explore un-choose  Subsets public List&lt;List&lt;Integer&gt;&gt; subsets(int[] nums) { List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;&gt;(); Arrays.
+              MergeSort Time complexity = log n * O(n) = O(n logn)
 
 
             
           </p>
-          <a href="/post/algorithm/backtracking/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/algorithm/mergesort/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -378,13 +376,13 @@ public interface ICellPhone { public void open(); public void close(); public vo
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Tue, May 10, 2022
+                Mon, Jun 28, 2021
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/backtracking/">Backtracking</a><a class="category" href="/categories/algorithm/">Algorithm</a></span>
+              <span class="separator"><a class="category" href="/categories/java/">Java</a><a class="category" href="/categories/algorithm/">Algorithm</a></span>
 
 
 
@@ -392,7 +390,7 @@ public interface ICellPhone { public void open(); public void close(); public vo
             
 
             
-              <span class="separator"><a class="tag" href="/tags/algorithm/">Algorithm</a></span>
+              <span class="separator"><a class="tag" href="/tags/java/">Java</a><a class="tag" href="/tags/algorithm/">Algorithm</a></span>
 
 
 
@@ -412,19 +410,18 @@ public interface ICellPhone { public void open(); public void close(); public vo
     >
       
       <div class="post-title">
-        <h3><a href="/post/designpattern/badsmell/">BadSmell</a></h3>
+        <h3><a href="/post/other/cqrs/">CQRS</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Rigidity, 難以變更 任何變更, 都需要去改其他的東西, 造成一個小小的需求就要去更改另個很大的東西
-Fragility, 容易壞掉 任何變更都會導致其他有相依或無相依的東西超出想象的破壞, 改一個小東西, 結果其他重要的東西壞掉
+              CQRS (Command Query Responsibility Segregation)  Command: 命令  會對系統產生『影響』的動作 沒有『結果』回傳   Query: 查詢  不會對系統產生『影響』的動作 會回傳『結果』    CQS 原則的限制 當查詢所回傳的結果只有短暫的存在意義時便不適用 =&gt; Queue.
 
 
             
           </p>
-          <a href="/post/designpattern/badsmell/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/other/cqrs/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -434,63 +431,13 @@ Fragility, 容易壞掉 任何變更都會導致其他有相依或無相依的�
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Thu, Mar 17, 2022
+                Sun, May 16, 2021
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/bad-smell/">bad smell</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/other/github-ssh/">Github Ssh</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              GitHub 教學 
-GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@example.
-
-
-            
-          </p>
-          <a href="/post/other/github-ssh/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Wed, Feb 9, 2022
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/github/">github</a><a class="category" href="/categories/ssh/">ssh</a></span>
+              <span class="separator"><a class="category" href="/categories/ddd/">DDD</a><a class="category" href="/categories/cqrs/">CQRS</a></span>
 
 
 
@@ -512,18 +459,18 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
     >
       
       <div class="post-title">
-        <h3><a href="/post/docker/mysql/">Mysql</a></h3>
+        <h3><a href="/post/java/map-sort-by-value/">Map Sort by Value</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              mysql docker run --name mysql -e MYSQL_ROOT_PASSWORD=123456 -dp 3306:3306 mysql/mysql-server --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-character-set-client-handshake 等於
+              Map Sort by value 有鑑於 Bill 上上週在刷 LC 時 題目點我!
 
 
             
           </p>
-          <a href="/post/docker/mysql/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/java/map-sort-by-value/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -533,13 +480,68 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Tue, Jan 18, 2022
+                Sun, Mar 28, 2021
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/mysql/">mysql</a></span>
+              <span class="separator"><a class="category" href="/categories/java/">Java</a></span>
+
+
+
+
+            
+
+            
+              <span class="separator"><a class="tag" href="/tags/java/">Java</a></span>
+
+
+
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/other/git_tag/">Git_tag</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              code build 使用 tag 做驅動 git tag deploy/{env_name}/{feature_name} git push origin deploy/{env_name}/{feature_name} git tag -d/--delete deploy/{env_name}/{feature_name} git push origin --delete deploy/{env_name}/{feature_name} git push origin :{tagname} git describe --always HEAD 
+
+
+            
+          </p>
+          </div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Mon, Mar 1, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/git/">git</a><a class="category" href="/categories/tag/">tag</a></span>
 
 
 
@@ -561,18 +563,18 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
     >
       
       <div class="post-title">
-        <h3><a href="/post/other/env/">Env</a></h3>
+        <h3><a href="/post/script/deploy-hugo/">Deploy Hugo</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Basic u: All Users +: add permission x: execute chmod u+x *.
+              Deploy Hugo  設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html hugo -t &lt;你的theme&gt;  再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
 
 
             
           </p>
-          <a href="/post/other/env/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/script/deploy-hugo/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -582,13 +584,68 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Sun, Jan 16, 2022
+                Sun, Jun 28, 2020
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/mac/">MAC</a></span>
+              <span class="separator"><a class="category" href="/categories/script/">Script</a><a class="category" href="/categories/hugo/">hugo</a></span>
+
+
+
+
+            
+
+            
+              <span class="separator"><a class="tag" href="/tags/script/">Script</a></span>
+
+
+
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/spring/side-project-common/">Side-Project-Common</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Side Project 常用功能，紀錄，方便以後快速 setup 環境 DI &lt;!-- Lombok--&gt; &lt;dependency&gt; &lt;groupId&gt;org.projectlombok&lt;/groupId&gt; &lt;artifactId&gt;lombok&lt;/artifactId&gt; &lt;optional&gt;true&lt;/optional&gt; &lt;/dependency&gt; &lt;!
+
+
+            
+          </p>
+          <a href="/post/spring/side-project-common/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Wed, Jan 1, 2020
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/common/">Common</a></span>
 
 
 
@@ -610,18 +667,20 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
     >
       
       <div class="post-title">
-        <h3><a href="/post/algorithm/topologicalsort/">TopologicalSort</a></h3>
+        <h3><a href="/post/other/awk/">Awk</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              2115. Find All Possible Recipes from Given Supplies Link Click Me
+              Awk &lsquo;$0&rsquo;,'$1'~'$N' (N 為欄位數) $0: 一整行
+example:
+ls -l | awk &#39;{print $3,$9}&#39; # linxinqi Applications # linxinqi Desktop # linxinqi Documents # linxinqi Downloads , =&gt; 空格
 
 
             
           </p>
-          <a href="/post/algorithm/topologicalsort/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/other/awk/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -631,13 +690,13 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Sun, Dec 26, 2021
+                Sat, Apr 6, 2019
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/topologicalsort/">TopologicalSort</a><a class="category" href="/categories/java/">Java</a></span>
+              <span class="separator"><a class="category" href="/categories/script/">script</a><a class="category" href="/categories/awk/">awk</a></span>
 
 
 
@@ -659,18 +718,18 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
     >
       
       <div class="post-title">
-        <h3><a href="/post/spring/reactivejava/">ReactiveJava</a></h3>
+        <h3><a href="/post/java/mapcompute/">MapCompute</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              init Flux&lt;String&gt; seq1 = Flux.just(&#34;Bill&#34;, &#34;Is&#34;, &#34;Good&#34;); Flux&lt;String&gt; seq2 = Flux.
+              init Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;(); map.put(&#34;a&#34;, 1); putIfAbsent 有了就不塞, 沒有就塞 value (不存在就塞)
 
 
             
           </p>
-          <a href="/post/spring/reactivejava/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/java/mapcompute/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -680,73 +739,18 @@ GitHub SSH Setting cd ~/ mkdir .ssh ssh-keygen -t ed25519 -C &#34;your_email@exa
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Wed, Dec 1, 2021
+                Wed, Mar 20, 2019
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/flux/">Flux</a><a class="category" href="/categories/mono/">Mono</a><a class="category" href="/categories/reactive/">Reactive</a></span>
+              <span class="separator"><a class="category" href="/categories/map/">Map</a><a class="category" href="/categories/compute/">Compute</a><a class="category" href="/categories/computeifabsent/">ComputeIfAbsent</a><a class="category" href="/categories/computeifpresent/">ComputeIfPresent</a></span>
 
 
 
 
             
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/algorithm/graphaccountmerge/">GraphAccountMerge</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              #721 Input: accounts = [ [&quot;John&quot;,&quot;johnsmith@mail.com&quot;,&quot;john_newyork@mail.com&quot;], [&quot;John&quot;,&quot;johnsmith@mail.com&quot;,&quot;john00@mail.com&quot;], [&quot;Mary&quot;,&quot;mary@mail.com&quot;], [&quot;John&quot;,&quot;johnnybravo@mail.com&quot;] ] Output: [ [&quot;John&quot;,&quot;john00@mail.
-
-
-            
-          </p>
-          <a href="/post/algorithm/graphaccountmerge/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Nov 29, 2021
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/algorithm/">Algorithm</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/algorithm/">Algorithm</a></span>
-
-
-
 
             
           </div>
