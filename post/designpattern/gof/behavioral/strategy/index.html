@@ -162,7 +162,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/strategy\/",
-        "wordCount" : "130",
+        "wordCount" : "136",
         "genre" : [ 
       
       "DesignPattern"
@@ -370,7 +370,8 @@
 
         var money <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BigDecimal<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;100&#34;</span><span style="color:#f92672">);</span>
 
-        Context ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Context<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> CTBC<span style="color:#f92672">());</span>
+         <span style="color:#75715e">// DI 注入 （constructor or setter）
+</span><span style="color:#75715e"></span>        Context ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Context<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> CTBC<span style="color:#f92672">());</span>
         ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">pay</span><span style="color:#f92672">(</span>money<span style="color:#f92672">);</span>
 
         <span style="color:#75715e">// change strategy
@@ -380,8 +381,7 @@
 
 </code></pre></div><ul>
 <li>為策略提供了一種使用多種行為之一配置類的方法。</li>
-<li>可以定義反映不同空間/時間權衡的算法。在這裡，當這些變體的實現作為算法的類層次結構時，我們可以使用策略。</li>
-<li>算法使用客戶不應該知道的數據。使用策略模式來避免暴露複雜的、特定於算法的數據結構。</li>
+<li>算法使用客戶不應該知道的數據。使用策略模式來避免暴露複雜的、特定於算法的數據結構。 （封裝時做的細節）</li>
 <li>一個類定義了許多行為，這些行為在其操作中表現為多個條件語句。將相關的條件分支移到它們自己的 Strategy 類中，而不是許多條件。</li>
 </ul>
 </div>

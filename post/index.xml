@@ -3280,7 +3280,8 @@ tracking the current position in the traversal of the aggregate.&lt;/p&gt;
 
         var money &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; BigDecimal&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;100&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
 
-        Context ctx &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Context&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; CTBC&lt;span style=&#34;color:#f92672&#34;&gt;());&lt;/span&gt;
+         &lt;span style=&#34;color:#75715e&#34;&gt;// DI 注入 （constructor or setter）
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        Context ctx &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Context&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; CTBC&lt;span style=&#34;color:#f92672&#34;&gt;());&lt;/span&gt;
         ctx&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;pay&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;money&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
 
         &lt;span style=&#34;color:#75715e&#34;&gt;// change strategy
@@ -3290,8 +3291,7 @@ tracking the current position in the traversal of the aggregate.&lt;/p&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
 &lt;li&gt;為策略提供了一種使用多種行為之一配置類的方法。&lt;/li&gt;
-&lt;li&gt;可以定義反映不同空間/時間權衡的算法。在這裡，當這些變體的實現作為算法的類層次結構時，我們可以使用策略。&lt;/li&gt;
-&lt;li&gt;算法使用客戶不應該知道的數據。使用策略模式來避免暴露複雜的、特定於算法的數據結構。&lt;/li&gt;
+&lt;li&gt;算法使用客戶不應該知道的數據。使用策略模式來避免暴露複雜的、特定於算法的數據結構。 （封裝時做的細節）&lt;/li&gt;
 &lt;li&gt;一個類定義了許多行為，這些行為在其操作中表現為多個條件語句。將相關的條件分支移到它們自己的 Strategy 類中，而不是許多條件。&lt;/li&gt;
 &lt;/ul&gt;
 </description>
