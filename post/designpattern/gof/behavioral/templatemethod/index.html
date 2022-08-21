@@ -161,7 +161,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/templatemethod\/",
-        "wordCount" : "179",
+        "wordCount" : "190",
         "genre" : [ 
       
       "DesignPattern"
@@ -326,22 +326,26 @@ Template Method讓子類在不改變算法結構的情況下重新定義算法�
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OrderTemplate</span> <span style="color:#f92672">{</span>
 
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> isGift<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSelect</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doPayment</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doDelivery</span><span style="color:#f92672">();</span>
+      <span style="color:#75715e">// 定義是否要覆寫
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">hook</span><span style="color:#f92672">(){</span>
+         <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 是否複寫
+</span><span style="color:#75715e"></span>      <span style="color:#f92672">}</span>
+      <span style="color:#75715e">// 只開放  overwrite 給會變的
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSelect</span><span style="color:#f92672">();</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doPayment</span><span style="color:#f92672">();</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doDelivery</span><span style="color:#f92672">();</span>
 
-        <span style="color:#75715e">// wish this not be overwrite
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doPack</span><span style="color:#f92672">(){</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Gift wrap done.&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-        
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processOrder</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            doSelect<span style="color:#f92672">();</span>
-            doPayment<span style="color:#f92672">();</span>
-            doPack<span style="color:#f92672">();</span>
-            doDelivery<span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
+      <span style="color:#75715e">// 樣板中不變的 （重複的）
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doPack</span><span style="color:#f92672">(){</span>
+         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Gift wrap done.&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+      
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processOrder</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+         doSelect<span style="color:#f92672">();</span>
+         doPayment<span style="color:#f92672">();</span>
+         doPack<span style="color:#f92672">();</span>
+         doDelivery<span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PhysicalStoreOrder</span> <span style="color:#66d9ef">extends</span> OrderTemplate <span style="color:#f92672">{</span>
@@ -392,6 +396,7 @@ Template Method讓子類在不改變算法結構的情況下重新定義算法�
       <span style="color:#f92672">}</span>
 
 </code></pre></div><ul>
+<li>減少複製貼上（寫重複code） 的機會</li>
 <li>一次實現算法的不變部分並將其留給子類來實現可以變化的行為。</li>
 <li>當子類之間的共同行為應該在一個共同的類中被分解和本地化以避免代碼重複時。應該先識別現有 code 中的差異，然後區分新操作中的差異。最後，用調用這些新操作之一的模板方法替換不同的代碼。</li>
 </ul>
