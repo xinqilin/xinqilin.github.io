@@ -92,7 +92,7 @@
 <meta name="twitter:title" content="DesignPattern - Behavioral - Chain Of Responsibility"/>
 <meta name="twitter:description" content="Chain Of Responsibility 當有多個對象可以處理或滿足客戶端請求時，責任鏈模式建議給這些對像中的每一個以某種順序處理請求的機會。在這種情況下應用該模式，這些潛在的處理程序中的每一個都可以以鏈的形式排列，每個對像都具有對鏈中下一個對象的引用。鏈中的第一個對象接收請求並決定處理請求或將其傳遞給鏈中的下一個對象。請求一個接一個地流過鏈中的所有對象，直到請求被鏈中的一個處理程序處理或請求到達鏈的末端而沒有得到處理。
 顯然，責任鏈模式用於在軟件設計中實現鬆散耦合，其中來自客戶端的請求被傳遞到對象鏈以處理它們。然後鏈中的對象將自行決定誰將處理請求以及是否需要將請求發送到鏈中的下一個對象。
-// This&#39;s the request object.  public class Number { private int number; public int getNumber() { return number; } public Number(int num){ number=num; } } // interface that acts as a chain link."/>
+ 多個類別繼承或實作抽象, 並使用, 實作中不是自己的就 next 下去, 是自己的就 action  // This&#39;s the request object."/>
 
 
 
@@ -113,7 +113,7 @@
         "alternativeHeadline": "",
         "description": "
       
-        Chain Of Responsibility 當有多個對象可以處理或滿足客戶端請求時，責任鏈模式建議給這些對像中的每一個以某種順序處理請求的機會。在這種情況下應用該模式，這些潛在的處理程序中的每一個都可以以鏈的形式排列，每個對像都具有對鏈中下一個對象的引用。鏈中的第一個對象接收請求並決定處理請求或將其傳遞給鏈中的下一個對象。請求一個接一個地流過鏈中的所有對象，直到請求被鏈中的一個處理程序處理或請求到達鏈的末端而沒有得到處理。\n顯然，責任鏈模式用於在軟件設計中實現鬆散耦合，其中來自客戶端的請求被傳遞到對象鏈以處理它們。然後鏈中的對象將自行決定誰將處理請求以及是否需要將請求發送到鏈中的下一個對象。\n\/\/ This\u0026#39;s the request object.  public class Number { private int number; public int getNumber() { return number; } public Number(int num){ number=num; } } \/\/ interface that acts as a chain link.
+        Chain Of Responsibility 當有多個對象可以處理或滿足客戶端請求時，責任鏈模式建議給這些對像中的每一個以某種順序處理請求的機會。在這種情況下應用該模式，這些潛在的處理程序中的每一個都可以以鏈的形式排列，每個對像都具有對鏈中下一個對象的引用。鏈中的第一個對象接收請求並決定處理請求或將其傳遞給鏈中的下一個對象。請求一個接一個地流過鏈中的所有對象，直到請求被鏈中的一個處理程序處理或請求到達鏈的末端而沒有得到處理。\n顯然，責任鏈模式用於在軟件設計中實現鬆散耦合，其中來自客戶端的請求被傳遞到對象鏈以處理它們。然後鏈中的對象將自行決定誰將處理請求以及是否需要將請求發送到鏈中的下一個對象。\n 多個類別繼承或實作抽象, 並使用, 實作中不是自己的就 next 下去, 是自己的就 action  \/\/ This\u0026#39;s the request object.
 
 
       
@@ -163,7 +163,7 @@
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/chainofresponsibility\/",
-        "wordCount" : "220",
+        "wordCount" : "238",
         "genre" : [ 
       
       "DesignPattern"
@@ -320,6 +320,9 @@
       </div><h1 id="chain-of-responsibility">Chain Of Responsibility</h1>
 <p>當有多個對象可以處理或滿足客戶端請求時，責任鏈模式建議給這些對像中的每一個以某種順序處理請求的機會。在這種情況下應用該模式，這些潛在的處理程序中的每一個都可以以鏈的形式排列，每個對像都具有對鏈中下一個對象的引用。鏈中的第一個對象接收請求並決定處理請求或將其傳遞給鏈中的下一個對象。請求一個接一個地流過鏈中的所有對象，直到請求被鏈中的一個處理程序處理或請求到達鏈的末端而沒有得到處理。</p>
 <p>顯然，責任鏈模式用於在軟件設計中實現鬆散耦合，其中來自客戶端的請求被傳遞到對象鏈以處理它們。然後鏈中的對象將自行決定誰將處理請求以及是否需要將請求發送到鏈中的下一個對象。</p>
+<ul>
+<li>多個類別繼承或實作抽象, 並使用, 實作中不是自己的就 next 下去, 是自己的就 action</li>
+</ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
     <span style="color:#75715e">// This&#39;s the request object.
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Number</span> <span style="color:#f92672">{</span>
@@ -404,12 +407,14 @@
 </code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
 
-        <span style="color:#75715e">//configure Chain of Responsibility
-</span><span style="color:#75715e"></span>         Chain c1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NegativeNumberProcessor<span style="color:#f92672">();</span>
-         Chain c2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ZeroProcessor<span style="color:#f92672">();</span>
-         Chain c3 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PositiveNumberProcessor<span style="color:#f92672">();</span>
-         c1<span style="color:#f92672">.</span><span style="color:#a6e22e">setNext</span><span style="color:#f92672">(</span>c2<span style="color:#f92672">);</span>
-         c2<span style="color:#f92672">.</span><span style="color:#a6e22e">setNext</span><span style="color:#f92672">(</span>c3<span style="color:#f92672">);</span>
+        <span style="color:#75715e">//  Chain c1 = new NegativeNumberProcessor();
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//  Chain c2 = new ZeroProcessor();
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//  Chain c3 = new PositiveNumberProcessor();
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//  c1.setNext(c2);
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//  c2.setNext(c3);
+</span><span style="color:#75715e"></span>
+        <span style="color:#75715e">// chain
+</span><span style="color:#75715e"></span>        Chain c <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Chain<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> NegativeNumberProcessor<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ZeroProcessor<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> PositiveNumberProcessor<span style="color:#f92672">())))</span>
 
         <span style="color:#75715e">//calling chain of responsibility
 </span><span style="color:#75715e"></span>         c1<span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Number<span style="color:#f92672">(</span>99<span style="color:#f92672">));</span>
