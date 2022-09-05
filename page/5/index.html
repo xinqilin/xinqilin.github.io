@@ -257,6 +257,57 @@
     >
       
       <div class="post-title">
+        <h3><a href="/post/designpattern/gof/behavioral/chainofresponsibility/">DesignPattern - Behavioral - Chain Of Responsibility</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Chain Of Responsibility 當有多個對象可以處理或滿足客戶端請求時，責任鏈模式建議給這些對像中的每一個以某種順序處理請求的機會。在這種情況下應用該模式，這些潛在的處理程序中的每一個都可以以鏈的形式排列，每個對像都具有對鏈中下一個對象的引用。鏈中的第一個對象接收請求並決定處理請求或將其傳遞給鏈中的下一個對象。請求一個接一個地流過鏈中的所有對象，直到請求被鏈中的一個處理程序處理或請求到達鏈的末端而沒有得到處理。
+顯然，責任鏈模式用於在軟件設計中實現鬆散耦合，其中來自客戶端的請求被傳遞到對象鏈以處理它們。然後鏈中的對象將自行決定誰將處理請求以及是否需要將請求發送到鏈中的下一個對象。
+ 多個類別繼承或實作抽象, 並使用, 實作中不是自己的就 next 下去, 是自己的就 action  // This&#39;s the request object.
+
+
+            
+          </p>
+          <a href="/post/designpattern/gof/behavioral/chainofresponsibility/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Aug 7, 2018
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
         <h3><a href="/post/designpattern/gof/behavioral/mediator/">DesignPattern - Behavioral - Mediator</a></h3>
       </div>
       <div class="post-content">
@@ -673,57 +724,6 @@ Bridge 的目的是將抽象和實現放入兩個不同的類層次結構中，�
             
           </p>
           <a href="/post/designpattern/gof/structural/adapter/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Tue, Aug 7, 2018
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/designpattern/gof/basic/prototype/">DesignPattern - Basic - Prototype</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Prototype 一種對象創建機制。
-假設有一個從 DB 加載數據的對象。現在，我們需要在程序中多次修改這些數據。因此，使用 new 關鍵字創建對象並再次從數據庫中加載所有數據並不是一個好主意。因此，更好的方法是將現有對象 clone 為新對象，然後進行數據操作。
-但是，原型設計模式要求您正在復制的對象應提供複製功能。顯然，它不應該由任何其他類來完成。但是，是使用 Object 屬性的淺拷貝還是深拷貝取決於需求，這是一個設計決定。
-
-
-            
-          </p>
-          <a href="/post/designpattern/gof/basic/prototype/" class="read_more">繼續閱讀</a></div>
       </div>
 
       

@@ -2676,6 +2676,195 @@ git push
     </item>
     
     <item>
+      <title>Spring Task</title>
+      <link>https://xinqilin.github.io/post/spring/spring-annotation/</link>
+      <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/spring/spring-annotation/</guid>
+      
+        <description>&lt;h3 id=&#34;spring-常用-annotation-筆記&#34;&gt;Spring 常用 annotation 筆記&lt;/h3&gt;
+&lt;h3 id=&#34;cron&#34;&gt;Cron&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
+@EnableScheduling
+@Scheduled
+
+cron屬性
+second、minute、hour、day of month (日)、month、day of week(星期幾)
+0 * * * * MON-FRI (周一到週五 每分鐘)
+* * * * * MON-FRI (周一到週五每秒)
+0,1,2,3,4 * * * * * MON-FRI (枚舉，０－４秒)
+0-4 * * * * * MON-FRI (直接，０－４秒)
+0/4 * * * * * MON-FRI (0秒啟動，每4秒執行一次)
+
+
+    秒：可出現”, – * /”四個字元，有效範圍為0-59的整數  
+
+    分：可出現”, – * /”四個字元，有效範圍為0-59的整數  
+
+    時：可出現”, – * /”四個字元，有效範圍為0-23的整數  
+
+    每月第幾天：可出現”, – * / ? L W C”八個字元，有效範圍為0-31的整數  
+
+    月：可出現”, – * /”四個字元，有效範圍為1-12的整數或JAN-DEC  
+
+    星期：可出現”, – * / ? L C #”四個字元，有效範圍為0-7的整數或SUN-SAT兩個範圍。0,1 都是星期日 1-6 星期一到六
+    
+    
+    * : 表示匹配該域的任意值，比如在秒*, 就表示每秒都會觸發事件。；
+
+    ? : 只能用在每月第幾天和星期兩個域。表示不指定值，當2個子表示式其中之一被指定了值以後，為了避免衝突，需要將另一個子表示式的值設為“?”；
+
+    – : 表示範圍，例如在分域使用5-20，表示從5分到20分鐘每分鐘觸發一次  
+
+    / : 表示起始時間開始觸發，然後每隔固定時間觸發一次，例如在分域使用5/20,則意味著5分，25分，45分，分別觸發一次.  
+
+    , : 表示列出列舉值。例如：在分域使用5,20，則意味著在5和20分時觸發一次。  
+
+    L : 表示最後，只能出現在星期和每月第幾天域，如果在星期域使用1L,意味著在最後的一個星期日觸發。  
+
+    W : 表示有效工作日(週一到週五),只能出現在每月第幾日域，系統將在離指定日期的最近的有效工作日觸發事件。注意一點，W的最近尋找不會跨過月份  
+
+    LW : 這兩個字元可以連用，表示在某個月最後一個工作日，即最後一個星期五。  
+
+    # : 用於確定每個月第幾個星期幾，只能出現在每月第幾天域。例如在1#3，表示某月的第三個星期一。4#2 第二個星期四
+
+   （1）cron：cron表示式，指定任務在特定時間執行；
+
+    （2）fixedDelay：表示上一次任務執行完成後多久再次執行，引數型別為long，單位ms；
+
+    （3）fixedDelayString：與fixedDelay含義一樣，只是引數型別變為String；
+
+    （4）fixedRate：表示按一定的頻率執行任務，引數型別為long，單位ms；
+
+    （5）fixedRateString: 與fixedRate的含義一樣，只是將引數型別變為String；
+
+    （6）initialDelay：表示延遲多久再第一次執行任務，引數型別為long，單位ms；
+
+    （7）initialDelayString：與initialDelay的含義一樣，只是將引數型別變為String；
+    
+  example:
+    “0 0 * * * *”                      表示每小時0分0秒執行一次
+
+    ” */10 * * * * *”                 表示每10秒執行一次
+
+    “0 0 8-10 * * *”                 表示每天8，9，10點執行
+
+    “0 0/30 8-10 * * *”            表示每天8點到10點，每半小時執行
+
+    “0 0 9-17 * * MON-FRI”     表示每週一至週五，9點到17點的0分0秒執行
+
+    “0 0 0 25 12 ?”                  表示每年聖誕節（12月25日）0時0分0秒執行
+    
+    表達式參考:
+     https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/6009/
+     https://gitee.com/jack90john/spring-boot-timmer
+
+@Scheduled(fixedDelay = 5000)        //fixedDelay = 5000表示當前方法執行完畢5000ms後，Spring scheduling會再次呼叫該方法
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;mail&#34;&gt;Mail&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;```xml
+		&amp;lt;dependency&amp;gt;
+			&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+			&amp;lt;artifactId&amp;gt;spring-boot-starter-mail&amp;lt;/artifactId&amp;gt;
+		&amp;lt;/dependency&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;properties&#34;&gt;properties&lt;/h5&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-properties&#34; data-lang=&#34;properties&#34;&gt;spring.mail.username=
+spring.mail.password=
+spring.mail.host=
+spring.mail.properties.mail.smtp.ssl.enable=true  (SSL 安全機制)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;ref-properties&#34;&gt;REF properties&lt;/h5&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-properties&#34; data-lang=&#34;properties&#34;&gt;# =================================
+# Mail
+# =================================
+spring.mail.default-encoding=UTF-8
+# Gmail SMTP
+spring.mail.host=smtp.gmail.com
+# TLS , port 587
+spring.mail.port=587
+spring.mail.username=my.account@gmail.com
+spring.mail.password=my.password
+# Other properties
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;透過config設置&#34;&gt;透過config設置&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MailConfig&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;@Bean&lt;/span&gt;
+ &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; JavaMailSender &lt;span style=&#34;color:#a6e22e&#34;&gt;getJavaMailSender&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+     JavaMailSenderImpl mailSender &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; JavaMailSenderImpl&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+     mailSender&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setHost&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;smtp.gmail.com&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+     mailSender&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setPort&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;587&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+      
+     mailSender&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setUsername&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;my.gmail@gmail.com&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+     mailSender&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setPassword&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;my.password&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+      
+     Properties props &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mailSender&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getJavaMailProperties&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+     props&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mail.transport.protocol&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;smtp&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+     props&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mail.smtp.auth&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+     props&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mail.smtp.starttls.enable&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+     props&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mail.smtp.starttls.required&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+     props&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mail.debug&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+      
+     &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; mailSender&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+ &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+ 
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;調用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@AutoWired&lt;/span&gt;
+JavaMailSenderImpl javaMail&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+XXXXX
+SimpleMailMessage msg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; SimpleMailMessage&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+
+msg&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setSubject&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;標題&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+msg&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setText&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;內容&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+msg&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setTo&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;去哪裡@gmail.com&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+msg&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setFrom&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;從哪裡@gmail.com&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+javaMail&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;send&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;msg&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;有兩步驟驗證的話&#34;&gt;有兩步驟驗證的話:&lt;/h5&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;左側導覽面板上的 [安全性]，按一下底部的 [選取應用程式]，然後選擇您使用的應用程式，或是建立一組應用程式使用用的密碼
+
+選其他 =&amp;gt; 自命名 =&amp;gt;產生16位密碼  =&amp;gt;當成正式密碼 丟在properties中
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;複雜mail&#34;&gt;複雜mail&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+MimeMessage mimeMsg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;javaMailSender&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;createMimeMessage&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+MimeMessageHelper helper&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; MimeMessageHelper&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;mimeMsg &lt;span style=&#34;color:#f92672&#34;&gt;,(&lt;/span&gt;multipart&lt;span style=&#34;color:#f92672&#34;&gt;:)&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+
+helper&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setSubject&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;標題&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+helper&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setText&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;strong&amp;gt;內容&amp;lt;/strong&amp;gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,(&lt;/span&gt;html編譯&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;可加html標籤&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;，&lt;/span&gt;後面預設是false&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+
+helper&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setTo&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;去哪裡@gmail.com&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+helper&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setFrom&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;從哪裡@gmail.com&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+helper&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addAttachement&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;檔名&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; File&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;檔案位置&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;));&lt;/span&gt;
+
+
+javaMail&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;send&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;mimeMsg&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;使用非同步--待補&#34;&gt;使用非同步  (待補&amp;hellip;)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;@EnableAsync&lt;/code&gt;
+&lt;code&gt;@Async&lt;/code&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
       <title>Awk</title>
       <link>https://xinqilin.github.io/post/other/awk/</link>
       <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
