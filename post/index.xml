@@ -2857,7 +2857,276 @@ helper&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#3
 
 javaMail&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;send&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;mimeMsg&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;使用非同步--待補&#34;&gt;使用非同步  (待補&amp;hellip;)&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;actuator&#34;&gt;Actuator&lt;/h3&gt;
+&lt;h5 id=&#34;actuator-提供了-13-個接口具體如下表所示-引用自think-powera-hrefhttpstputhinkpowercomtwtpuarticledetails954think-powera&#34;&gt;Actuator 提供了 13 個接口，具體如下表所示 (引用自think power)&lt;a href=&#34;https://tpu.thinkpower.com.tw/tpu/articleDetails/954&#34;&gt;think power&lt;/a&gt;&lt;/h5&gt;
+&lt;table cellpadding=&#34;8&#34; border=&#34;1&#34;&gt;
+	&lt;tr&gt;
+		&lt;th&gt;路徑&lt;/th&gt;
+		&lt;th&gt;描述&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/health&lt;/th&gt;
+		&lt;th&gt;展示系統的各種組件運行狀態、硬碟使用狀況&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/metrics&lt;/th&gt;
+		&lt;th&gt;統計系統當前的一些即時信息，如：該系統接收了多少個請求、cache命中率、mq中有多少條信息待處理、CPU使用率、內存占用情況等。&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/metrics/{name}&lt;/th&gt;
+		&lt;th&gt;報告指定名稱的應用進程度量值&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/dump&lt;/th&gt;
+		&lt;th&gt;當前系統中線程的詳細信息&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/env&lt;/th&gt;
+		&lt;th&gt;展示系統變量 和 springboot的應用變量&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/env/{name}&lt;/th&gt;
+		&lt;th&gt;根據名稱獲取特定的環境屬性值&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/trace&lt;/th&gt;
+		&lt;th&gt;顯示最近的http請求的request、response對（默認最多緩存100條）&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/autoconfig&lt;/th&gt;
+		&lt;th&gt;展示所有auto-configuration候選者及它們被應用或未被應用的原因&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/info&lt;/th&gt;
+		&lt;th&gt;顯示應用自定義的信息：如該應用的聯繫人、名稱、版本等&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/configprops&lt;/th&gt;
+		&lt;th&gt;顯示所有被@ConfigurationProperties mark的Bean的信息列表&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/mappings&lt;/th&gt;
+		&lt;th&gt;顯示所有@RequestMapping mark 的url list&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/shutdown&lt;/th&gt;
+		&lt;th&gt;允許以POST方式關閉應用，要求endpoints.shutdown.enabled設置為true&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th&gt;/beans&lt;/th&gt;
+		&lt;th&gt;顯示該應用中所有Spring Beans的完整信息，包括依賴了哪些bean、是singleton還是prototype&lt;/th&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;spring-boot-2參考用表&#34;&gt;spring boot 2參考用表&lt;/h2&gt;
+&lt;table cellpadding=&#34;5&#34; border=&#34;1&#34;&gt;
+&lt;tr&gt;
+	&lt;th&gt;id&lt;/th&gt;
+	&lt;th&gt;效果&lt;/th&gt;
+	&lt;th&gt;default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;auditevents&lt;/td&gt;
+	&lt;td&gt;顯示當前訊息事件&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;beans&lt;/td&gt;
+	&lt;td&gt;顯示應用Spring Beans的完整列表&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;caches&lt;/td&gt;
+	&lt;td&gt;顯示可cache訊息&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;conditions&lt;/td&gt;
+	&lt;td&gt;顯示autoconfig 的狀態與應用訊息&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;configprops&lt;/td&gt;
+	&lt;td&gt;顯示所有@ConfigurationProperties 列表&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;env&lt;/td&gt;
+	&lt;td&gt;顯示ConfigurableEnvironment 中的属性&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;flyway&lt;/td&gt;
+	&lt;td&gt;顯示Flyway 中data遷移訊息&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;health&lt;/td&gt;
+	&lt;td&gt;顯示應運的訊息(為認證只顯示status，已認證顯示全部)&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;info&lt;/td&gt;
+	&lt;td&gt;很直白&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;liquibase&lt;/td&gt;
+	&lt;td&gt;跟fly依樣，顯示liquibase&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;metrics&lt;/td&gt;
+	&lt;td&gt;顯示當前metrics訊息&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;mappings&lt;/td&gt;
+	&lt;td&gt;顯示所有@RequestMapping&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;scheduledtasks&lt;/td&gt;
+	&lt;td&gt;顯示所有scheduledtasks&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;sessions&lt;/td&gt;
+	&lt;td&gt;...&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;shutdown&lt;/td&gt;
+	&lt;td&gt;若是true時，可發/shutdown 的post req去關閉server&lt;/td&gt;
+	&lt;td style=&#34;color:red;&#34;&gt;N&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;threaddump&lt;/td&gt;
+	&lt;td&gt;執行一個thread的dump&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;httptrace&lt;/td&gt;
+	&lt;td&gt;顯示最後執行的100的http req&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;heapdump&lt;/td&gt;
+	&lt;td&gt;return gzip 的dump文件&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;prometheus&lt;/td&gt;
+	&lt;td&gt;Prometheus的格式顯示metrics訊息&lt;/td&gt;
+	&lt;td&gt;Y&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;p&gt;參考掘金https://juejin.im/post/5d78afa951882505e029c57e&lt;/p&gt;
+&lt;h3 id=&#34;配置path&#34;&gt;配置path&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  management.endpoints.web.basePath=
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;全部啟用-managementendpointsenabled-by-default&#34;&gt;全部啟用 management.endpoints.enabled-by-default&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;management.endpoints.enabled-by-default=true
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;全部停用，只啟用部分&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  management.endpoints.enabled-by-default=false
+  management.endpoint.[id].enabled=true
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;開放與封閉&#34;&gt;開放與封閉&lt;/h5&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;management.endpoints.&amp;lt;web|jmx&amp;gt;.exposure.&amp;lt;include|exclude&amp;gt;
+
+ * 開放所有所有web端點，如果暴露的是一個要用 id 並以逗號隔開 
+management.endpoints.web.exposure.include=&#39;*&#39;
+
+排除端點
+management.endpoints.web.exposure.exclude=
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;安全性&#34;&gt;安全性&lt;/h5&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  可用上面方法  或是 此方法關閉敏感端點 ex: /shutdown 或是使用Spring security 來搭配使用
+  management.server.port=-1
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;自訂義-boot-2-開始actuator支援crud模型&#34;&gt;自訂義 (boot 2 開始，Actuator支援CRUD模型)&lt;/h5&gt;
+&lt;p&gt;@Endpoint 支援JMX和http
+@JmxEndpoint 只支援JMX
+@WebEndpoint 只支援http&lt;/p&gt;
+&lt;p&gt;通過在一個端點類（必須是Spring Bean）上添加上面其中一個來表明該類是一個端點類。
+在類的方法使用
+@ReadOperation
+@WriteOperation
+@DeleteOperation，這分別會orm到Http中的GET，POST，DELETE。以下範例&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Component&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Endpoint&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;features&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;FeaturesEndpoint&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+   &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Feature&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; features &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ConcurrentHashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+
+   &lt;span style=&#34;color:#a6e22e&#34;&gt;@ReadOperation&lt;/span&gt;
+   &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Feature&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;features&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+       &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; features&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+   &lt;span style=&#34;color:#a6e22e&#34;&gt;@ReadOperation&lt;/span&gt;
+   &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Feature &lt;span style=&#34;color:#a6e22e&#34;&gt;feature&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Selector&lt;/span&gt; String name&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+       &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; features&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+   &lt;span style=&#34;color:#a6e22e&#34;&gt;@WriteOperation&lt;/span&gt;
+   &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;configureFeature&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Selector&lt;/span&gt; String name&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Feature feature&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+       features&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; feature&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+   &lt;span style=&#34;color:#a6e22e&#34;&gt;@DeleteOperation&lt;/span&gt;
+   &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;deleteFeature&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Selector&lt;/span&gt; String name&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+       features&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;remove&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+   &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Feature&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+       &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; Boolean enabled&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+       &lt;span style=&#34;color:#75715e&#34;&gt;// getters and setters ...
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;   &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;應用延伸&#34;&gt;應用延伸&lt;/h5&gt;
+&lt;p&gt;可以使用
+@EndpointExtension
+@EndpointWebExtension
+@EndpointJmxExtension
+來延伸端點行為&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Component&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@EndpointWebExtension&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;endpoint &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; InfoEndpoint&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;InfoWebEndpointExtension&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+ 
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; InfoEndpoint delegate&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+ 
+    &lt;span style=&#34;color:#75715e&#34;&gt;// standard constructor
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt; 
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@ReadOperation&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; WebEndpointResponse&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;info&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; info &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;delegate&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;info&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+        Integer status &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; getStatus&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;info&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; WebEndpointResponse&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;info&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; status&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+ 
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; Integer &lt;span style=&#34;color:#a6e22e&#34;&gt;getStatus&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; info&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;// return 5xx if this is a snapshot
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; 200&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;啟用端點 env
+management.endpoint.env.enabled=true&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;暴露端點 env 配置多個,隔開
+management.endpoints.web.exposure.include=env&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;開啟全部
+management.endpoint.&lt;em&gt;.enabled=true
+management.endpoints.web.exposure.include=&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;使用非同步--待補&#34;&gt;使用非同步  (待補&amp;hellip;)&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;@EnableAsync&lt;/code&gt;
 &lt;code&gt;@Async&lt;/code&gt;&lt;/p&gt;
 </description>
