@@ -2517,6 +2517,162 @@ CQRS: 適用於模型類別&lt;/p&gt;
     </item>
     
     <item>
+      <title>DB tuning</title>
+      <link>https://xinqilin.github.io/post/database/db-tuning/</link>
+      <pubDate>Mon, 14 Sep 2020 00:18:41 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/database/db-tuning/</guid>
+      
+        <description>&lt;h1 id=&#34;db-tune&#34;&gt;DB tune&lt;/h1&gt;
+&lt;h3 id=&#34;numeric-type&#34;&gt;Numeric Type&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;TINYInt -128 ~ 127&lt;/li&gt;
+&lt;li&gt;INT -21e~21e&lt;/li&gt;
+&lt;li&gt;BIGINT (三年內資料成長到 42e筆 ，極度耗資源)&lt;/li&gt;
+&lt;li&gt;INT(11這對 MySQL 沒意義 會把長度吃滿) SIGNED/ UNSIGNED 正(21e)/ 正負數(42e)&lt;/li&gt;
+&lt;li&gt;DECIMAL 完全精準&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;INT 比 varchar 快很多 (192.168.0.0) 存 INT 較好 在 srvice層把 &amp;ldquo;.&amp;rdquo; 轉掉&lt;/p&gt;
+&lt;h3 id=&#34;time-type&#34;&gt;Time Type&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;DATE (1000/01/01 - 9999/12/31)&lt;/li&gt;
+&lt;li&gt;DATETIME (1000/01/01 00:00:00 - 9999/12/31 23:59:59)&lt;/li&gt;
+&lt;li&gt;TIMESTAMP 不建議用 因為 只有 1970/01/01 - 2038/01/19&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;string-type&#34;&gt;String Type&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;VARCHAR 動態調整字串長度 0-65535 for latin1(英文+數字), 中文 -&amp;gt; 65535/4 = 16383 utf8mb4
+VARCHAR(255) -&amp;gt; N+1
+VARCHAR(256) -&amp;gt; N+2&lt;/li&gt;
+&lt;li&gt;TEXT (not have default)&lt;/li&gt;
+&lt;li&gt;CHAR (0-255)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;建議要寫-default&#34;&gt;建議要寫 default&lt;/h3&gt;
+&lt;p&gt;0, &amp;lsquo;&amp;rsquo;, &amp;lsquo;1000-01-01&amp;rsquo;,  不要設 NULL 假如有INDEX 會吃不到&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ENGINE: InnoDB&lt;/li&gt;
+&lt;li&gt;utf8mb4 4byte 不要用 utf8 只有 3byte -&amp;gt; 像 emoji進 utf8會亂碼&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;index&#34;&gt;Index&lt;/h3&gt;
+&lt;p&gt;MySQL 會自己 combine 數個 index
+index 是 將大table中 被標示為 index的 column 拉出來 查詢 -&amp;gt; 範圍小了 當然查詢快&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;// 迷思
+建/拆 index 容易嗎? -&amp;gt; 不容易
+index 越多 效能越好? -&amp;gt; 錯
+每個欄位都有所以會比較快? -&amp;gt; 錯
+
+結論: 看需求，有需要加快的 query 再來建 index
+
+Index Key(&#39;A&#39;,&#39;B&#39;,&#39;C&#39;)
+
+Index A, B, C 法則:
+1. A,B,C 都有用到時，不需看順序 都會吃到 index
+2. 倆的條件以下 有用到時 ，要A開頭的才會吃到 index ,&#39;AB&#39; &#39;AC&#39; &#39;A&#39;
+		- 用 like 且 % 在前面有索引也會變全掃
+		- 用這個來看欄位基數搆不夠大 SELECT COUNT(DISTINCT {field}/COUNT(*)) 夠大才下index 這個數值越接近 1，代表越有建立索引的價值
+		- 使用 != 、 &amp;lt;&amp;gt;、NOT 查詢會變全掃
+		- 索引欄位: {age}
+			SELECT * FROM user WHERE age = 18 OR name = &#39;C-Ian&#39;; ( bad 全掃 )
+		- 索引欄位: {age},{name} 
+			SELECT * FROM user WHERE age = 18 OR name = &#39;C-Ian&#39;; ( good 索引 )
+		- 在 WHERE 欄位進行運算 bad
+
+3. Group by / Order By 不會吃 index , 一個查詢只會吃一個index 若在 where下完則Group by / Order By不會吃
+4. 若 where有兩個條件 ex: where id = &#39;xx&#39; or name = &#39;oo&#39; 時 會自動找最符合/小 table的index，左或右選一個吃index
+5. 會導致 Index失效的東西 -&amp;gt; method
+ &amp;gt;&amp;gt; MAX(), MIN(), AVG(), SUM(), COUNT(), GROUP BY, BETWEEN, CAST(), CONVERT()
+6. IN 會吃 index
+7. EXISTS 只會用裡面的 index , 同3
+select * from t2 where EXISTS(select * from t1 where a=xx)
+8. 能在程式做的就不要拿來DB做，讓DB更單純
+9. MYSQL 可以 force INDEX ex: select * from t1 FORCE INDEX(name)
+10. 但 mysql很聰明 &amp;quot;QUERY Optimizer&amp;quot; 若你的 force index 太蠢 mysql 不會理你-&amp;gt; index 無效
+11. 執行順序
+from
+on
+join
+where
+group by
+having
+select
+distinct
+union
+order by
+limit
+
+12. join -&amp;gt; 小表 驅動大表原則(小資料去找大資料才會快) inner join 或 union 則沒差 mysql會自己選
+13. 若有幾千億筆資料，千萬不要 select * 會 lock table, 可以 下 limit 或 show 特定欄位，或 show create table &amp;lt;tableName&amp;gt;
+14. count 不要 select count(*) 用 select count(0)，count(*) 若欄位多 mysql 會從第一個欄位 scan完 才count++ 很慢
+15. 善用 explain
+
+explain:
+
+type：這是重要的列，顯示如何執行sql語句去表裡查詢記錄的。從最好到最差的型別為:
+(1)const  (2)eq_reg （3）ref  （4）range
+ (5）index  （6）all
+
+- system: 表中只有一条数据. 这个类型是特殊的 const 类型.
+
+- const: 针对主键或唯一索引的等值查询扫描, 最多只返回一行数据. const 查询速度非常快, 因为它仅仅读取一次即可.
+例如下面的这个查询, 它使用了主键索引, 因此 type 就是 const 类型的.
+
+- eq_ref: 此类型通常出现在多表的 join 查询, 表示对于前表的每一个结果, 都只能匹配到后表的一行结果. 并且查询的比较操作通常是 =, 查询效率较高. 例如:
+
+- ref: 此类型通常出现在多表的 join 查询, 针对于非唯一或非主键索引, 或者是使用了 最左前缀 规则索引的查询.
+
+- range: 表示使用索引范围查询, 通过索引字段范围获取表中部分数据记录. 这个类型通常出现在 =, &amp;lt;&amp;gt;, &amp;gt;, &amp;gt;=, &amp;lt;, &amp;lt;=, IS NULL, &amp;lt;=&amp;gt;, BETWEEN, IN() 操作中.
+当 type 是 range 时, 那么 EXPLAIN 输出的 ref 字段为 NULL, 并且 key_len 字段是此次查询中使用到的索引的最长的那个.
+
+- index: 表示全索引扫描(full index scan), 和 ALL 类型类似, 只不过 ALL 类型是全表扫描, 而 index 类型则仅仅扫描所有的索引, 而不扫描数据.
+
+- ALL: 表示全表扫描, 这个类型的查询是性能最差的查询之一. 通常来说, 我们的查询不应该出现 ALL 类型的查询, 因为这样的查询在数据量大的情况下, 对数据库的性能是巨大的灾难. 如一个查询是 ALL 类型查询, 那么一般来说可以对相应的字段添加索引来避免.
+
+========
+
+possible_keys 表示 MySQL 在查询时, 能够使用到的索引. 注意, 即使有些索引在 possible_keys 中出现, 但是并不表示此索引会真正地被 MySQL 使用到. MySQL 在查询时具体使用了哪些索引, 由 key 字段决定.
+
+key: 此字段是 MySQL 在当前查询时所真正使用到的索引.
+
+key_len
+表示查询优化器使用了索引的字节数. 这个字段可以评估组合索引是否完全被使用, 或只有最左部分字段被使用到.
+
+======
+rows
+rows 也是一个重要的字段. MySQL 查询优化器根据统计信息, 估算 SQL 要查找到结果集需要扫描读取的数据行数.
+
+Extra
+EXplain 中的很多额外的信息会在 Extra 字段显示, 常见的有以下几种内容:
+
+Using filesort
+当 Extra 中有 Using filesort 时, 表示 MySQL 需额外的排序操作, 不能通过索引顺序达到排序效果. 一般有 Using filesort, 都建议优化去掉, 因为这样的查询 CPU 资源消耗大.
+
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;PK&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;UNSIGNED AUTO_INCREAMENT NOT NULL
+B+ Tree (完美二元樹)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Key(INDEX)&lt;/li&gt;
+&lt;li&gt;UNIQUE KEY
+會把()內的內容當成一組來看 (1,4)(1,4)重複 不可插入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;(1,2)(1,3) 可以
+(1,4)(1,4) 不行&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;正規化&#34;&gt;正規化&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;1NF 去除 PK 重複&lt;/li&gt;
+&lt;li&gt;2NF 去除部分相依 (就&amp;hellip;增加FK 一張大Table 拆成很多小Table 並用 FK 建立連結)&lt;/li&gt;
+&lt;li&gt;3NF 去除間接相依 (就&amp;hellip;再拆更細, 小Table 還會有相依 -&amp;gt; 再拆)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+      
+    </item>
+    
+    <item>
       <title>Deploy Hugo</title>
       <link>https://xinqilin.github.io/post/script/deploy-hugo/</link>
       <pubDate>Sun, 28 Jun 2020 12:36:19 +0800</pubDate>
