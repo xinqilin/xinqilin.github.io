@@ -16,14 +16,14 @@
       
         <description>&lt;h1 id=&#34;union-find&#34;&gt;Union Find&lt;/h1&gt;
 &lt;h3 id=&#34;990&#34;&gt;990&lt;/h3&gt;
-&lt;p&gt;[LC 990](990. Satisfiability of Equality Equations)
-滿足所有等式
-ex:
-a==b, b==a return true
-ex2:
-a!=b, b==a return false
-ex3:
-a==b, a==c, b!=c return false&lt;/p&gt;
+&lt;p&gt;[LC 990](990. Satisfiability of Equality Equations) &lt;br&gt;
+滿足所有等式&lt;br&gt;
+ex: &lt;br&gt;
+  a==b, b==a return true&lt;br&gt;
+ex2: &lt;br&gt;
+  a!=b, b==a return false&lt;br&gt;
+ex3:&lt;br&gt;
+  a==b, a==c, b!=c return false&lt;br&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;
     &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Solution&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
         &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; groups &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;26&lt;span style=&#34;color:#f92672&#34;&gt;];&lt;/span&gt;
@@ -58,12 +58,12 @@ a==b, a==c, b!=c return false&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2275&#34;&gt;2275&lt;/h3&gt;
 &lt;p&gt;[LC 2275](2275. Largest Combination With Bitwise AND Greater Than Zero)&lt;/p&gt;
 &lt;h3 id=&#34;others&#34;&gt;Others&lt;/h3&gt;
-&lt;p&gt;547
-200
-684
-1319
-399
-952&lt;/p&gt;
+&lt;p&gt;547&lt;br&gt;
+200&lt;br&gt;
+684&lt;br&gt;
+1319&lt;br&gt;
+399&lt;br&gt;
+952&lt;br&gt;&lt;/p&gt;
 </description>
       
     </item>
