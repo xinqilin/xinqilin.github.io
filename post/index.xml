@@ -1463,10 +1463,10 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     
     <item>
       <title>Curl</title>
-      <link>https://xinqilin.github.io/post/other/curl/</link>
+      <link>https://xinqilin.github.io/post/script/curl/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/curl/</guid>
+      <guid>https://xinqilin.github.io/post/script/curl/</guid>
       
         <description>&lt;h3 id=&#34;參數&#34;&gt;參數&lt;/h3&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    -X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request
@@ -2898,13 +2898,16 @@ CQRS: 適用於模型類別&lt;/p&gt;
     </item>
     
     <item>
-      <title>Git_tag</title>
-      <link>https://xinqilin.github.io/post/other/git_tag/</link>
+      <title>Git</title>
+      <link>https://xinqilin.github.io/post/other/git/</link>
       <pubDate>Mon, 01 Mar 2021 21:16:29 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/git_tag/</guid>
+      <guid>https://xinqilin.github.io/post/other/git/</guid>
       
-        <description>&lt;h3 id=&#34;code-build-使用-tag-做驅動&#34;&gt;code build 使用 tag 做驅動&lt;/h3&gt;
+        <description>&lt;h3 id=&#34;git&#34;&gt;Git&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;tag&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
     git tag deploy/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;env_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;feature_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
     git push origin deploy/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;env_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;/&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;feature_name&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
@@ -2914,6 +2917,12 @@ CQRS: 適用於模型類別&lt;/p&gt;
     git push origin :&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;tagname&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
     git describe --always HEAD  
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;remote info&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    git remote show origin
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
       
@@ -3916,10 +3925,10 @@ management.endpoints.web.exposure.include=&lt;/em&gt;&lt;/p&gt;
     
     <item>
       <title>Awk</title>
-      <link>https://xinqilin.github.io/post/other/awk/</link>
+      <link>https://xinqilin.github.io/post/script/awk/</link>
       <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/awk/</guid>
+      <guid>https://xinqilin.github.io/post/script/awk/</guid>
       
         <description>&lt;h3 id=&#34;awk&#34;&gt;Awk&lt;/h3&gt;
 &lt;p&gt;&amp;lsquo;$0&amp;rsquo;,&#39;$1&#39;~&#39;$N&#39; (N 為欄位數)
@@ -4024,10 +4033,10 @@ String !~ /regex/[actions]  =&amp;gt; String not match regex, then execute actio
     
     <item>
       <title>sed</title>
-      <link>https://xinqilin.github.io/post/other/sed/</link>
+      <link>https://xinqilin.github.io/post/script/sed/</link>
       <pubDate>Fri, 18 Jan 2019 10:23:31 +0800</pubDate>
       
-      <guid>https://xinqilin.github.io/post/other/sed/</guid>
+      <guid>https://xinqilin.github.io/post/script/sed/</guid>
       
         <description>&lt;h3 id=&#34;sed&#34;&gt;sed&lt;/h3&gt;
 &lt;p&gt;sed [options] &amp;lsquo;[地址定界] command&amp;rsquo; file(s)
