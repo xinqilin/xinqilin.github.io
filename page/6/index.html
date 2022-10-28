@@ -261,6 +261,57 @@ Where time is spend, there is success.
     >
       
       <div class="post-title">
+        <h3><a href="/post/designpattern/gof/structural/decorator/">DesignPattern - Structural - Decorator</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Decorator Decorator 的主要目的是動態地為對象附加額外的職責。Decorator 為擴展功能提供了一種靈活的替代子類的方法。
+當我們需要動態擴展對象的功能而無需更改原始類源或使用繼承時，Decorator 為我們提供了便利。這是通過在實際對象周圍創建一個稱為裝飾器的對象包裝器來實現的。
+Decorator 對象與底層對象具有相同的接口。這允許客戶端對像以與底層實際對象完全相同的方式與裝飾器對象交互。Decorator 對象包含對實際對象的引用。Decorator 對象接收來自客戶端的所有請求（調用）。反過來，它將這些調用轉發到底層對象。Decorator 對像在將請求轉發到底層對象之前或之後添加了一些附加功能。這確保了附加功能可以在運行時從外部添加到給定對象，而無需修改其結構。
+
+
+            
+          </p>
+          <a href="/post/designpattern/gof/structural/decorator/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Aug 7, 2018
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
         <h3><a href="/post/designpattern/gof/structural/bridge/">DesignPattern - Structural - Bridge</a></h3>
       </div>
       <div class="post-content">
@@ -708,56 +759,6 @@ public interface ICellPhone { public void open(); public void close(); public vo
     </div>
 
   
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/designpattern/gof/basic/singleton/">DesignPattern - Basic - Singleton</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Singleton 確保在 java 虛擬機中只存在該類的一個實例。單例類必須提供一個全局訪問點來獲取類的實例。
- 一個類應該只允許一個實例， 應該允許全局訪問該單個實例。 用於限制從其他類實例化類的私有構造函數。 同一類的私有靜態變量，是該類的唯一實例。 公共靜態方法，返回類的實例，這是外部世界獲取單例類實例的全局訪問點。  Reflection, Clone, 序列化/反序列化 違反 Singleton public static Singleton instance= new Singleton(); private Singleton() { System.
-
-
-            
-          </p>
-          <a href="/post/designpattern/gof/basic/singleton/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Aug 6, 2018
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
   <div class="pagination">
     
   <ul class="pagination">
@@ -827,6 +828,22 @@ public interface ICellPhone { public void open(); public void close(); public vo
 
 
     
+      
+        <li class="page-item">
+          <a class="page-link" href="/page/7/">7</a>
+        </li>
+
+      
+
+
+    
+    
+      <li class="page-item">
+        <a class="page-link" href="/page/7/">
+          <i class="fa fa-angle-right" aria-label="Next"></i>
+        </a>
+      </li>
+
     
   </ul>
 

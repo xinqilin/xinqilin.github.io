@@ -6,7 +6,37 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 02 Oct 2022 00:48:01 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 29 Oct 2022 00:10:56 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ubuntu</title>
+      <link>https://xinqilin.github.io/post/script/ubuntu/</link>
+      <pubDate>Sat, 29 Oct 2022 00:10:56 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/script/ubuntu/</guid>
+      
+        <description>&lt;h3 id=&#34;ubuntu-env&#34;&gt;Ubuntu env&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    docker pull ubuntu
+    docker network create ubuntu-n
+    docker run -dit -p 2222:22 -p 8000:8000 --network ubuntu-n --name ubuntu-c ubuntu
+    docker exec -it ubuntu-c bash
+    yes | unminimize &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt install curl gawk git htop less lsof man-db rsync strace tmux vim ssh -y
+
+
+
+
+
+
+    docker stop ubuntu-c
+    docker rm ubuntu-c
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# restart&lt;/span&gt;
+    docker start ubuntu-c
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
     <item>
       <title>TreeSet</title>
       <link>https://xinqilin.github.io/post/java/treeset/</link>
