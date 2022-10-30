@@ -21,9 +21,8 @@
     docker run -dit -p 2222:22 -p 8000:8000 --network ubuntu-n --name ubuntu-c ubuntu
     docker exec -it ubuntu-c bash
     yes | unminimize &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt install curl gawk git htop less lsof man-db rsync strace tmux vim ssh -y
-
-
-
+    apt install jq -y
+    apt install pip -y
 
 
 
