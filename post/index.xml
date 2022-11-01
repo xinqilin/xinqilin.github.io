@@ -6,7 +6,78 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sat, 29 Oct 2022 00:10:56 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Nov 2022 21:59:56 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Find</title>
+      <link>https://xinqilin.github.io/post/script/find/</link>
+      <pubDate>Tue, 01 Nov 2022 21:59:56 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/script/find/</guid>
+      
+        <description>&lt;h1 id=&#34;find&#34;&gt;find&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    find &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;目錄path&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; -name &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;fileName&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    find . -name test.txt
+    find . -iname test.txt // 不分大小寫
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;-type&#34;&gt;-type&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;d: dir&lt;/li&gt;
+&lt;li&gt;p: pipeline&lt;/li&gt;
+&lt;li&gt;f: file&lt;/li&gt;
+&lt;li&gt;-empty (空檔案)&lt;/li&gt;
+&lt;li&gt;-user  (特定使用者)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    find / -type d -name Script
+    find . -type f -name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;*.kt&amp;#34;&lt;/span&gt;
+    find . -type d -empty
+    find . -type f -empty
+    find . -user linxinqi -name test.txt
+    find . -user root -name test.txt
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;-perm-感覺少用&#34;&gt;-perm (感覺少用)&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    find . -type f -perm &lt;span style=&#34;color:#ae81ff&#34;&gt;0755&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;-exec&#34;&gt;-exec&lt;/h3&gt;
+&lt;p&gt;find 之後可接 -exec 做其他指令
+最後接 &lt;code&gt;{} \;&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    find . -type f -name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test.txt&amp;#34;&lt;/span&gt; -exec rm -f &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;日期時間&#34;&gt;日期時間&lt;/h3&gt;
+&lt;p&gt;m: modify
+a: access
+s: last update time
+time: 天
+min: 分鐘&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;-mtime&lt;/li&gt;
+&lt;li&gt;-mmin&lt;/li&gt;
+&lt;li&gt;-atime&lt;/li&gt;
+&lt;li&gt;-amin&lt;/li&gt;
+&lt;li&gt;-ctime&lt;/li&gt;
+&lt;li&gt;-cmin&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    find . -mtime &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;  // 三天前有被改過的
+    find . -mtime -3 // 三天內有被改過的
+    find . -mtime +3 // 三天以上有被改過的
+    find . -mtime +3 -mtime -5 // 三天上, 五天以內 有被改過的
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;file-size&#34;&gt;file size&lt;/h3&gt;
+&lt;p&gt;-size&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    find . -size 50M
+    find . -size +50M -size -100M
+    find . -size +100M -exec rm -rf &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;reference--br&#34;&gt;reference:  &lt;br&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.gtwang.org/linux/unix-linux-find-command-examples/&#34;&gt;GT.Wang部落格 - Unix/Linux 的 find 指令使用教學、技巧與範例整理&lt;/a&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
     <item>
       <title>Ubuntu</title>
       <link>https://xinqilin.github.io/post/script/ubuntu/</link>
