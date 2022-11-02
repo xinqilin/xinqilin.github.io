@@ -14,7 +14,7 @@
       
       <guid>https://xinqilin.github.io/post/script/xargs/</guid>
       
-        <description>&lt;h3 id=&#34;xargs&#34;&gt;xargs&lt;/h3&gt;
+        <description>&lt;h3 id=&#34;xargs-extended-arguments&#34;&gt;xargs extended arguments&lt;/h3&gt;
 &lt;p&gt;pipeline 中間操作, 將輸入的資料切割成多個字串，並將這些字串當成指定指令&lt;/p&gt;
 &lt;p&gt;若沒給 command 則 default echo 並濾掉 換行符號\tab\空白&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
@@ -28,10 +28,17 @@
     $ echo a b c d e f | xargs
     $ a b c d e f
 
+    find / -perm +700 -name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;good.txt&amp;#39;&lt;/span&gt; | xargs ls -al
+
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;-t 先 print 再執行&lt;/li&gt;
 &lt;li&gt;-n 參數來指定每一次執行指令所使用的參數個數上限值&lt;/li&gt;
 &lt;li&gt;-p 參數，讓指令在實際執行指令之前可以先進行確認的動作 y/n (逐行確認執行 有點像 debug mode)&lt;/li&gt;
-&lt;li&gt;-r 避免空字串作為參數來執行指令&lt;/li&gt;
+&lt;li&gt;-r 避免空字串作為參數來執行指令 no-run-if-empty&lt;/li&gt;
+&lt;li&gt;-L/-l {int} 一次讀取幾行給 command&lt;/li&gt;
+&lt;li&gt;-d{string} 自訂 split 字元&lt;/li&gt;
+&lt;li&gt;-I/-i &amp;lsquo;{}&amp;rsquo; 換成下一個 command 中的 {}&lt;/li&gt;
+&lt;li&gt;-P Parallel mode: run at most maxprocs invocations of utility at once. If maxprocs is set to 0, xargs will run as many processes as possible.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
     $ echo a b c d e f | xargs -n &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
@@ -40,10 +47,27 @@
     $ e f
 
     $ echo a b c d e f | xargs -p -n &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# 逐行確認...&lt;/span&gt;
 
     $ echo a b c d e f  | xargs -t
     $ /bin/echo a b c d e f
     $ a b c d e f
+
+
+    $ echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name1name1name1name&amp;#34;&lt;/span&gt; | xargs -d1
+    $ name name name name
+
+    $ echo aaa bbb ccc | xargs -I &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt; echo $* &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt; -l 
+    $ aaa bbb ccc -l
+    
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;# 高階技巧 from Mosky&lt;/span&gt;
+    $ seq &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt; | shuf | xargs -P &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt; -I &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt; sh -c &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sleep {} &amp;amp;&amp;amp; echo {}&amp;#39;&lt;/span&gt;
+    $ &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+    $ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+    $ &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+    $ &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;
+    $ &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;常與-find-一起使用&#34;&gt;常與 find 一起使用&lt;/h4&gt;
 &lt;p&gt;若要執行的檔案中有空格 ex: &amp;ldquo;Program File.txt&amp;rdquo;&lt;/p&gt;

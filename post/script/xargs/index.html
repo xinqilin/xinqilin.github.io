@@ -92,7 +92,7 @@ Where time is spend, there is success.
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Xargs"/>
-<meta name="twitter:description" content="xargs pipeline 中間操作, 將輸入的資料切割成多個字串，並將這些字串當成指定指令
+<meta name="twitter:description" content="xargs extended arguments pipeline 中間操作, 將輸入的資料切割成多個字串，並將這些字串當成指定指令
 若沒給 command 則 default echo 並濾掉 換行符號\tab\空白"/>
 
 
@@ -114,7 +114,7 @@ Where time is spend, there is success.
         "alternativeHeadline": "",
         "description": "
       
-        xargs pipeline 中間操作, 將輸入的資料切割成多個字串，並將這些字串當成指定指令\n若沒給 command 則 default echo 並濾掉 換行符號\\tab\\空白
+        xargs extended arguments pipeline 中間操作, 將輸入的資料切割成多個字串，並將這些字串當成指定指令\n若沒給 command 則 default echo 並濾掉 換行符號\\tab\\空白
 
 
       
@@ -164,7 +164,7 @@ Where time is spend, there is success.
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/script\/xargs\/",
-        "wordCount" : "157",
+        "wordCount" : "278",
         "genre" : [ 
       
       "Script"
@@ -314,11 +314,11 @@ Where time is spend, there is success.
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 1 分鐘</span>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
           </div>
 
         
-      </div><h3 id="xargs">xargs</h3>
+      </div><h3 id="xargs-extended-arguments">xargs extended arguments</h3>
 <p>pipeline 中間操作, 將輸入的資料切割成多個字串，並將這些字串當成指定指令</p>
 <p>若沒給 command 則 default echo 並濾掉 換行符號\tab\空白</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
@@ -332,10 +332,17 @@ Where time is spend, there is success.
     $ echo a b c d e f | xargs
     $ a b c d e f
 
+    find / -perm +700 -name <span style="color:#e6db74">&#39;good.txt&#39;</span> | xargs ls -al
+
 </code></pre></div><ul>
+<li>-t 先 print 再執行</li>
 <li>-n 參數來指定每一次執行指令所使用的參數個數上限值</li>
 <li>-p 參數，讓指令在實際執行指令之前可以先進行確認的動作 y/n (逐行確認執行 有點像 debug mode)</li>
-<li>-r 避免空字串作為參數來執行指令</li>
+<li>-r 避免空字串作為參數來執行指令 no-run-if-empty</li>
+<li>-L/-l {int} 一次讀取幾行給 command</li>
+<li>-d{string} 自訂 split 字元</li>
+<li>-I/-i &lsquo;{}&rsquo; 換成下一個 command 中的 {}</li>
+<li>-P Parallel mode: run at most maxprocs invocations of utility at once. If maxprocs is set to 0, xargs will run as many processes as possible.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
     $ echo a b c d e f | xargs -n <span style="color:#ae81ff">2</span>
@@ -344,10 +351,27 @@ Where time is spend, there is success.
     $ e f
 
     $ echo a b c d e f | xargs -p -n <span style="color:#ae81ff">2</span>
+    <span style="color:#75715e"># 逐行確認...</span>
 
     $ echo a b c d e f  | xargs -t
     $ /bin/echo a b c d e f
     $ a b c d e f
+
+
+    $ echo <span style="color:#e6db74">&#34;name1name1name1name&#34;</span> | xargs -d1
+    $ name name name name
+
+    $ echo aaa bbb ccc | xargs -I <span style="color:#f92672">{}</span> echo $* <span style="color:#f92672">{}</span> -l 
+    $ aaa bbb ccc -l
+    
+
+    <span style="color:#75715e"># 高階技巧 from Mosky</span>
+    $ seq <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">5</span> | shuf | xargs -P <span style="color:#ae81ff">5</span> -I <span style="color:#f92672">{}</span> sh -c <span style="color:#e6db74">&#39;sleep {} &amp;&amp; echo {}&#39;</span>
+    $ <span style="color:#ae81ff">1</span>
+    $ <span style="color:#ae81ff">2</span>
+    $ <span style="color:#ae81ff">3</span>
+    $ <span style="color:#ae81ff">4</span>
+    $ <span style="color:#ae81ff">5</span>
 
 </code></pre></div><h4 id="常與-find-一起使用">常與 find 一起使用</h4>
 <p>若要執行的檔案中有空格 ex: &ldquo;Program File.txt&rdquo;</p>
