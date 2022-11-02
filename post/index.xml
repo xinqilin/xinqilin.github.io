@@ -6,7 +6,59 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Tue, 01 Nov 2022 21:59:56 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Nov 2022 23:05:25 +0800</lastBuildDate><atom:link href="https://xinqilin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Xargs</title>
+      <link>https://xinqilin.github.io/post/script/xargs/</link>
+      <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/script/xargs/</guid>
+      
+        <description>&lt;h3 id=&#34;xargs&#34;&gt;xargs&lt;/h3&gt;
+&lt;p&gt;pipeline 中間操作, 將輸入的資料切割成多個字串，並將這些字串當成指定指令&lt;/p&gt;
+&lt;p&gt;若沒給 command 則 default echo 並濾掉 換行符號\tab\空白&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    $ xargs a b
+    $ c
+    $ d 
+    ctrl + D
+    $ a b c d
+
+
+    $ echo a b c d e f | xargs
+    $ a b c d e f
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;-n 參數來指定每一次執行指令所使用的參數個數上限值&lt;/li&gt;
+&lt;li&gt;-p 參數，讓指令在實際執行指令之前可以先進行確認的動作 y/n (逐行確認執行 有點像 debug mode)&lt;/li&gt;
+&lt;li&gt;-r 避免空字串作為參數來執行指令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    $ echo a b c d e f | xargs -n &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+    $ a b 
+    $ c d
+    $ e f
+
+    $ echo a b c d e f | xargs -p -n &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+    $ echo a b c d e f  | xargs -t
+    $ /bin/echo a b c d e f
+    $ a b c d e f
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;常與-find-一起使用&#34;&gt;常與 find 一起使用&lt;/h4&gt;
+&lt;p&gt;若要執行的檔案中有空格 ex: &amp;ldquo;Program File.txt&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;使用 -print0 印出 full name 給 pipe
+xargs 加上 -0&lt;/p&gt;
+&lt;p&gt;find . -name &amp;ldquo;*.txt&amp;rdquo; -print0 | xargs -0 rm -rf&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+    find ~/project -name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;*.txt&amp;#34;&lt;/span&gt; | xargs rm -f
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;reference--br&#34;&gt;reference:  &lt;br&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.gtwang.org/linux/unix-linux-find-command-examples/&#34;&gt;GT.Wang部落格 - Unix/Linux 的 find 指令使用教學、技巧與範例整理&lt;/a&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
     <item>
       <title>Find</title>
       <link>https://xinqilin.github.io/post/script/find/</link>
