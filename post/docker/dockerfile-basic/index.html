@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    
+      Bill.Lin の 成長之路 ©
+        |
+        Dockerfile
+
+
+      
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      後端工程師 Java, Kotlin 
+
+我的線上筆記
+
+Pleased to meet you!
+
+Where time is spend, there is success.
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.e1138bb0495fcbc7996c80de36fb215d945679182863bf57193557f55b9cb805.css"
+    integrity="sha256-4ROLsElfy8eZbIDeNvshXZRWeRgoY79XGTVX9VucuAU="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://xinqilin.github.io/post/docker/dockerfile-basic/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
+    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
+      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dockerfile"/>
+<meta name="twitter:description" content="Dockerfile Basic FROMubuntu:22.04首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，版本18.04，若不給版本號則會是latest。MAINTAINERBill維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，注意此資訊會寫入產出映像檔的Author名稱屬性中。RUN apt-get update -y\  &amp;&amp; apt-get install nginx -y最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\來進行換行。在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。EXPOSE80設定運行時容器提供服務的通道。CMD [&#34;nginx&#34;,&#34;-g&#34;,&#34;daemon off;&#34;]最後就是當啟用指定容器時(container)預設執行的指令，格式 CMD[’’executable’’,”param1”,’’param2’’]。build 格式docker build [option]內容路徑docker build -t franktofu/first_image ."/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "Dockerfile",
+        "headline": "Dockerfile",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Dockerfile Basic FROMubuntu:22.04首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，版本18.04，若不給版本號則會是latest。MAINTAINERBill維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，注意此資訊會寫入產出映像檔的Author名稱屬性中。RUN apt-get update -y\\  \u0026amp;\u0026amp; apt-get install nginx -y最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，格式須依RUN\u0026lt;command\u0026gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\\來進行換行。在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。EXPOSE80設定運行時容器提供服務的通道。CMD [\u0026#34;nginx\u0026#34;,\u0026#34;-g\u0026#34;,\u0026#34;daemon off;\u0026#34;]最後就是當啟用指定容器時(container)預設執行的指令，格式 CMD[’’executable’’,”param1”,’’param2’’]。build 格式docker build [option]內容路徑docker build -t franktofu\/first_image .
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/docker\/dockerfile-basic\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2022",
+        "dateCreated": "2022-11-05T12:03:35.00Z",
+        "datePublished": "2022-11-05T12:03:35.00Z",
+        "dateModified": "2022-11-05T12:03:35.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/docker\/dockerfile-basic\/",
+        "wordCount" : "107",
+        "genre" : [ 
+      
+      "Dockerfile"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+      </div>
+      <ul>
+        
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
+
+        
+      </ul>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/profile.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2022
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>Dockerfile</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sat, Nov 5, 2022
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
+          </div>
+
+        
+      </div><h3 id="dockerfile-basic">Dockerfile Basic</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu:22.04</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>版本18.04，若不給版本號則會是latest。<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">MAINTAINER</span><span style="color:#e6db74"> Bill</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>注意此資訊會寫入產出映像檔的Author名稱屬性中。<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update -y<span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get install nginx -y<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用<span style="color:#ae81ff">\來</span>進行換行。<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 80</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>設定運行時容器提供服務的通道。<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;nginx&#34;</span>,<span style="color:#e6db74">&#34;-g&#34;</span>,<span style="color:#e6db74">&#34;daemon off;&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>最後就是當啟用指定容器時<span style="color:#f92672">(</span>container<span style="color:#f92672">)</span>預設執行的指令，<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>格式 CMD<span style="color:#f92672">[</span>’’executable’’,”param1”,’’param2’’<span style="color:#f92672">]</span>。<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>build 格式<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>docker build <span style="color:#f92672">[</span>option<span style="color:#f92672">]</span>內容路徑<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>docker build -t franktofu/first_image .<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>即為在使用此目錄下（注意最後的點 .）的dockerfile進行建立的動作，<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>也可以使用-f選項來指定想要建立的dockerfile路徑位置，使用-t為建置映像檔的標籤資訊，<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>此為franktofu/first_image。<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><h5 id="cmd-與-entrypoint">CMD 與 ENTRYPOINT</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
+ - ENTRYPOINT <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;docker-entrypoint.sh&#34;</span><span style="color:#f92672">]</span>
+ - CMD <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;mysqld&#34;</span><span style="color:#f92672">]</span>
+
+<span style="color:#75715e"># CMD: 直接寫執行用的語句</span>
+<span style="color:#75715e"># ENTRYPOINT:  額外的腳本執行, 常用來設置不同環境變數</span>
+<span style="color:#75715e"># 以執行 mysqld 指令優先</span>
+<span style="color:#75715e"># 準備環境、切換使用者</span>
+<span style="color:#75715e"># 初始化資料庫、使用者、資料表等任務</span>
+
+<span style="color:#75715e"># ex: </span>
+<span style="color:#75715e"># 當第一個參數看起來像 option 的話（如：-V、--help）</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>1#-<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+  set -- /sbin/tini -- composer <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>
+
+<span style="color:#75715e"># 當第一個參數就是 composer 的話</span>
+<span style="color:#66d9ef">elif</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;composer&#39;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+  set -- /sbin/tini -- <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>
+
+<span style="color:#75715e"># 當第一個參數是 composer 的子指令（如：install、update 等）</span>
+<span style="color:#66d9ef">elif</span> isCommand <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">then</span>
+  set -- /sbin/tini -- composer <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>
+<span style="color:#66d9ef">fi</span>
+
+</code></pre></div><h5 id="arg-與-env-都是給值">ARG 與 ENV 都是給值</h5>
+<pre tabindex="0"><code>
+ARG 只能活在 build image
+
+</code></pre></div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/dockerfile/">Dockerfile</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2022
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
+    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    crossorigin="anonymous"
+  ></script></body>
+</html>
