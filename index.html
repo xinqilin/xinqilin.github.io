@@ -267,7 +267,7 @@ Where time is spend, there is success.
         <div class="p_part">
           <p>
             
-              Dockerfile Basic FROMubuntu:22.04首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，版本18.04，若不給版本號則會是latest。MAINTAINERBill維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，注意此資訊會寫入產出映像檔的Author名稱屬性中。RUN apt-get update -y\  &amp;&amp; apt-get install nginx -y最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\來進行換行。在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。EXPOSE80設定運行時容器提供服務的通道。CMD [&#34;nginx&#34;,&#34;-g&#34;,&#34;daemon off;&#34;]最後就是當啟用指定容器時(container)預設執行的指令，格式 CMD[’’executable’’,”param1”,’’param2’’]。build 格式docker build [option]內容路徑docker build -t franktofu/first_image .
+              Dockerfile Basic # 首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，# 版本18.04，若不給版本號則會是latest。FROMubuntu:22.04# 維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，# 注意此資訊會寫入產出映像檔的Author名稱屬性中。MAINTAINERBill# 最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，# 格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\來進行換行。# 在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。RUN apt-get update -y\  &amp;&amp; apt-get install nginx -y# 設定運行時容器提供服務的通道。EXPOSE80# 最後就是當啟用指定容器時(container)預設執行的指令，格式 CMD[’’executable’’,”param1”,’’param2’’]。CMD [&#34;nginx&#34;,&#34;-g&#34;,&#34;daemon off;&#34;]# build 格式# docker build [option]內容路徑docker build -t bill/first_image .
 
 
             

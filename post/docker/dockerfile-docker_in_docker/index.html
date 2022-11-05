@@ -92,7 +92,7 @@ Where time is spend, there is success.
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Dockerfile"/>
-<meta name="twitter:description" content="build image mvn / gradle 後 clean package (或直接install) build 出 jar"/>
+<meta name="twitter:description" content="Docker in Docker  FROM ubuntu:22.04 AS build ENV NVM_DIR /opt/nvm ENV NODE_VERSION v16."/>
 
 
 
@@ -113,7 +113,7 @@ Where time is spend, there is success.
         "alternativeHeadline": "",
         "description": "
       
-        build image mvn \/ gradle 後 clean package (或直接install) build 出 jar
+        Docker in Docker  FROM ubuntu:22.04 AS build ENV NVM_DIR \/opt\/nvm ENV NODE_VERSION v16.
 
 
       
@@ -163,7 +163,7 @@ Where time is spend, there is success.
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/docker\/dockerfile-docker_in_docker\/",
-        "wordCount" : "537",
+        "wordCount" : "499",
         "genre" : [ 
       
       "Dockerfile"
@@ -317,18 +317,7 @@ Where time is spend, there is success.
           </div>
 
         
-      </div><h3 id="build-image">build image</h3>
-<p>mvn / gradle 後 clean package (或直接install) build 出 jar</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>    FROM openjdk:11<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>    COPY ./target/*.jar C:/ideaProjects/docker-workspace/xxx.jar<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>    WORKDIR C:/ideaProjects/docker-workspace<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>    RUN sh -c <span style="color:#e6db74">&#39;touch xxx.jar&#39;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>    ENTRYPOINT <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;java&#34;</span>,<span style="color:#e6db74">&#34;-jar&#34;</span>,<span style="color:#e6db74">&#34;xxx.jar&#34;</span><span style="color:#f92672">]</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span></code></pre></div><pre tabindex="0"><code>    docker build -t {name} {path}
-</code></pre><p>ex: docker build -t java-test:latest .</p>
-<h3 id="advanced-docker-in-docker">Advanced Docker in Docker</h3>
+      </div><h3 id="docker-in-docker">Docker in Docker</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span>    FROM ubuntu:22.04 AS build<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
