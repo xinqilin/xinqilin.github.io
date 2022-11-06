@@ -92,7 +92,7 @@ Where time is spend, there is success.
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Dockerfile"/>
-<meta name="twitter:description" content="Dockerfile Basic # 首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，# 版本18.04，若不給版本號則會是latest。FROMubuntu:22.04# 維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，# 注意此資訊會寫入產出映像檔的Author名稱屬性中。MAINTAINERBill# 最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，# 格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\來進行換行。# 在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。RUN apt-get update -y\  &amp;&amp; apt-get install nginx -y# 設定運行時容器提供服務的通道。EXPOSE80# 最後就是當啟用指定容器時(container)預設執行的指令，格式 CMD[’’executable’’,”param1”,’’param2’’]。CMD [&#34;nginx&#34;,&#34;-g&#34;,&#34;daemon off;&#34;]# build 格式# docker build [option]內容路徑docker build -t bill/first_image ."/>
+<meta name="twitter:description" content="Dockerfile Basic # 首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，# 版本18.04，若不給版本號則會是latest。FROMubuntu:18.04# 維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，# 注意此資訊會寫入產出映像檔的Author名稱屬性中。MAINTAINERBill# RUN 是在 build 階段運行# 最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，# 格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\來進行換行。# 在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。RUN apt-get update -y\  &amp;&amp; apt-get install nginx -y# Shell / exec 模式RUN [&#34;."/>
 
 
 
@@ -113,7 +113,7 @@ Where time is spend, there is success.
         "alternativeHeadline": "",
         "description": "
       
-        Dockerfile Basic # 首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，# 版本18.04，若不給版本號則會是latest。FROMubuntu:22.04# 維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，# 注意此資訊會寫入產出映像檔的Author名稱屬性中。MAINTAINERBill# 最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，# 格式須依RUN\u0026lt;command\u0026gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\\來進行換行。# 在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。RUN apt-get update -y\\  \u0026amp;\u0026amp; apt-get install nginx -y# 設定運行時容器提供服務的通道。EXPOSE80# 最後就是當啟用指定容器時(container)預設執行的指令，格式 CMD[’’executable’’,”param1”,’’param2’’]。CMD [\u0026#34;nginx\u0026#34;,\u0026#34;-g\u0026#34;,\u0026#34;daemon off;\u0026#34;]# build 格式# docker build [option]內容路徑docker build -t bill\/first_image .
+        Dockerfile Basic # 首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，# 版本18.04，若不給版本號則會是latest。FROMubuntu:18.04# 維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，# 注意此資訊會寫入產出映像檔的Author名稱屬性中。MAINTAINERBill# RUN 是在 build 階段運行# 最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，# 格式須依RUN\u0026lt;command\u0026gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\\來進行換行。# 在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。RUN apt-get update -y\\  \u0026amp;\u0026amp; apt-get install nginx -y# Shell \/ exec 模式RUN [\u0026#34;.
 
 
       
@@ -163,7 +163,7 @@ Where time is spend, there is success.
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/docker\/dockerfile-basic\/",
-        "wordCount" : "160",
+        "wordCount" : "288",
         "genre" : [ 
       
       "Dockerfile"
@@ -313,7 +313,7 @@ Where time is spend, there is success.
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 1 分鐘</span>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
           </div>
 
         
@@ -321,8 +321,7 @@ Where time is spend, there is success.
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 版本18.04，若不給版本號則會是latest。</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu:22.04</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu:18.04</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，</span><span style="color:#960050;background-color:#1e0010">
@@ -330,35 +329,73 @@ Where time is spend, there is success.
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">MAINTAINER</span><span style="color:#e6db74"> Bill</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># RUN 是在 build 階段運行</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\來進行換行。</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update -y<span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get install nginx -y<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Shell / exec 模式</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;./test.php&#34;</span>, <span style="color:#e6db74">&#34;dev&#34;</span>, <span style="color:#e6db74">&#34;offline&#34;</span><span style="color:#f92672">]</span> <span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 等於 RUN ./test.php dev offline</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 容器創建後, default 進來的地方</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># ex: ubuntu 進去是 &#39;/&#39;, tomcat 進去後是 &#39;/usr/local/tomcat&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /app</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 指定該 image 用什麼 user 去執行, default: root (一般來說用不到)</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span><span style="color:#e6db74"> </span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># -v 要 mount 出去的 外面:容器</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">VOLUME</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 只能活在 build image (ARG 與 ENV 都是給值)</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ARG</span> <span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 設一些環境變數</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> MY_TEST_PATH /usr/my_test<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> $MY_TEST_PATH</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 設定運行時容器提供服務的通道。</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 80</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 最後就是當啟用指定容器時(container)預設執行的指令，格式 CMD[’’executable’’,”param1”,’’param2’’]。</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;nginx&#34;</span>,<span style="color:#e6db74">&#34;-g&#34;</span>,<span style="color:#e6db74">&#34;daemon off;&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># docker cp, copy 文件至容器中</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>build $NVM_DIR/install.sh $NVM_DIR<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># ADD = COPY + unzip 合體 （習慣用 ADD）</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> <span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># build 格式</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># docker build [option]內容路徑</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">##### 以下 runtime</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>docker build -t bill/first_image .<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># shell &amp; exec</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 最後就是當啟用指定容器時(container)預設執行的指令，exec mode: CMD[&#34;command&#34;, ”param1”, &#34;param2&#34;]。</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 可以有多個 CMD 但只有最後一個有效 會覆蓋前面的</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># CMD 會被 docker run 之後的 參數替換 ＊＊＊ 比如 docker run -it -p 8080:8080 {image} /bin/bash 這時會蓋掉 CMD 的 command</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;nginx&#34;</span>, <span style="color:#e6db74">&#34;-g&#34;</span>, <span style="color:#e6db74">&#34;daemon off;&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> ./catalina/start.sh<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 即為在使用此目錄下（注意最後的點 .）的dockerfile進行建立的動作，</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 也可以使用-f選項來指定想要建立的dockerfile路徑位置，使用-t為建置映像檔的標籤資訊，</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 此為 bill/first_image。</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># exec </span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 不會被 run 後面的參數覆蓋, 且這些參數會被當作 ENTRYPOINT 的參數運作</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 可跟 CMD 一起用 此時, CMD 會變成傳參數給 ENTRYPOINT</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;docker-entrypoint.sh&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">### CMD &amp; ENTRYPOINT 一起用, 會變成 ENTRYPOINT 定義參數, CMD 傳遞參數</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> nginx</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;nginx&#34;</span>, <span style="color:#e6db74">&#34;-c&#34;</span>] <span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;/etc/nginx/nginx.conf&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">### 會變成 nginx -c /etc/nginx/nginx.conf</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><h5 id="cmd-與-entrypoint">CMD 與 ENTRYPOINT</h5>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
- - ENTRYPOINT <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;docker-entrypoint.sh&#34;</span><span style="color:#f92672">]</span>
- - CMD <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;mysqld&#34;</span><span style="color:#f92672">]</span>
-
 <span style="color:#75715e"># CMD: 直接寫執行用的語句</span>
 <span style="color:#75715e"># ENTRYPOINT:  額外的腳本執行, 常用來設置不同環境變數</span>
 <span style="color:#75715e"># 以執行 mysqld 指令優先</span>
@@ -379,11 +416,17 @@ Where time is spend, there is success.
   set -- /sbin/tini -- composer <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>
 <span style="color:#66d9ef">fi</span>
 
-</code></pre></div><h5 id="arg-與-env-都是給值">ARG 與 ENV 都是給值</h5>
-<pre tabindex="0"><code>
-ARG 只能活在 build image
+</code></pre></div><h3 id="docker-build">docker build</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
+    <span style="color:#75715e"># build 格式</span>
+    <span style="color:#75715e"># docker build [option]內容路徑</span>
 
-</code></pre><h3 id="build-image-google-jib">build image google Jib</h3>
+    docker build -t bill/first_image .
+
+    <span style="color:#75715e"># 即為在使用此目錄下（注意最後的點 .）的dockerfile進行建立的動作，</span>
+    <span style="color:#75715e"># 也可以使用-f選項來指定想要建立的dockerfile路徑位置，使用-t為建置映像檔的標籤資訊，</span>
+    <span style="color:#75715e"># 此為 bill/first_image。</span>
+</code></pre></div><h3 id="build-image-google-jib">build image google Jib</h3>
 <p>mvn / gradle 後 clean package (或直接install) build 出 jar</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span>    FROM openjdk:11<span style="color:#960050;background-color:#1e0010">
