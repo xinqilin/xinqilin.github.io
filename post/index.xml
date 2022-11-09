@@ -1708,6 +1708,8 @@ docker-compose config -q &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp
             - &lt;span style=&#34;color:#ae81ff&#34;&gt;/Users/bill/microService:/app&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
             - &lt;span style=&#34;color:#ae81ff&#34;&gt;my_network&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# 這個service，必須在 depends_on 的服務啟動後再執行, 不保證完全起起來, 只是順序而已&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;# 可搭配 https://github.com/vishnubob/wait-for-it 這個 shell&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;depends_on&lt;/span&gt;:
             - &lt;span style=&#34;color:#ae81ff&#34;&gt;redis&lt;/span&gt;
             - &lt;span style=&#34;color:#ae81ff&#34;&gt;mysql&lt;/span&gt;
@@ -1745,6 +1747,10 @@ docker-compose config -q &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp
     
 &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
     &lt;span style=&#34;color:#f92672&#34;&gt;my_network&lt;/span&gt;:
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# 純記錄 (沒用到)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;volumes&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;my_data&lt;/span&gt;:
 
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
@@ -2133,6 +2139,21 @@ docker run -d -p 8081:8080 --network my_network --name tomcat_2 tomcat
 &lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;CMD&lt;/span&gt; /bin/bash&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;sample2&#34;&gt;sample2&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-dockerfile&#34; data-lang=&#34;dockerfile&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; openjdk:8-jdk-alpine&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; apk add --no-cache bash&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# https://github.com/vishnubob/wait-for-it &lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;COPY&lt;/span&gt; wait-for-it.sh /wait-for-it.sh&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; chmod +x /wait-for-it.sh&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;ADD&lt;/span&gt; /target/mms.war .&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;EXPOSE&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; 8080&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;sample3&#34;&gt;sample3&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-dockerfile&#34; data-lang=&#34;dockerfile&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ubuntu&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;MAINTAINER&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; Bill.Lin&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;

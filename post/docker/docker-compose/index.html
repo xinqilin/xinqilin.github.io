@@ -163,7 +163,7 @@ Where time is spend, there is success.
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/docker\/docker-compose\/",
-        "wordCount" : "154",
+        "wordCount" : "170",
         "genre" : [ 
       
       "Docker"
@@ -359,6 +359,8 @@ docker-compose config -q <span style="color:#f92672">&amp;&amp;</span> docker-co
             - <span style="color:#ae81ff">/Users/bill/microService:/app</span>
         <span style="color:#f92672">networks</span>:
             - <span style="color:#ae81ff">my_network</span>
+        <span style="color:#75715e"># 這個service，必須在 depends_on 的服務啟動後再執行, 不保證完全起起來, 只是順序而已</span>
+        <span style="color:#75715e"># 可搭配 https://github.com/vishnubob/wait-for-it 這個 shell</span>
         <span style="color:#f92672">depends_on</span>:
             - <span style="color:#ae81ff">redis</span>
             - <span style="color:#ae81ff">mysql</span>
@@ -396,6 +398,10 @@ docker-compose config -q <span style="color:#f92672">&amp;&amp;</span> docker-co
     
 <span style="color:#f92672">networks</span>:
     <span style="color:#f92672">my_network</span>:
+
+<span style="color:#75715e"># 純記錄 (沒用到)</span>
+<span style="color:#f92672">volumes</span>:
+    <span style="color:#f92672">my_data</span>:
 
 
 </code></pre></div></div>
