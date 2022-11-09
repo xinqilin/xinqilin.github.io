@@ -8,7 +8,7 @@
     
       Bill.Lin の 成長之路 ©
         |
-        Docker
+        Network
 
 
       
@@ -66,7 +66,7 @@ Where time is spend, there is success.
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="https://xinqilin.github.io/categories/docker/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/docker/network/" />
 
   
   
@@ -91,15 +91,8 @@ Where time is spend, there is success.
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Docker"/>
-<meta name="twitter:description" content="後端工程師 Java, Kotlin 
-
-我的線上筆記
-
-Pleased to meet you!
-
-Where time is spend, there is success.
-"/>
+<meta name="twitter:title" content="Network"/>
+<meta name="twitter:description" content="Docker network  bridge: 為一個容器配置 ip, 並配置 docker0（虛擬橋接, default 為該模式）   &ndash;network bridge 指定, default 用 docker0   host: 容器不會虛擬出自己的網卡, 用 Machine 的   &ndash;network host 指定   none: 容器有獨立的網卡, 但不對其進行任何配置（少用）   &ndash;network none 指定   container: 新創建的容器不會有自己的網卡, ip 而是與其他容器共用 ip, port   &ndash;network container:NAME 或容器 ID 指定  docker network ls # bridge, host, none, container docker network prune "/>
 
 
 
@@ -108,6 +101,86 @@ Where time is spend, there is success.
 
   
   
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "Network",
+        "headline": "Network",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Docker network  bridge: 為一個容器配置 ip, 並配置 docker0（虛擬橋接, default 為該模式）   \u0026ndash;network bridge 指定, default 用 docker0   host: 容器不會虛擬出自己的網卡, 用 Machine 的   \u0026ndash;network host 指定   none: 容器有獨立的網卡, 但不對其進行任何配置（少用）   \u0026ndash;network none 指定   container: 新創建的容器不會有自己的網卡, ip 而是與其他容器共用 ip, port   \u0026ndash;network container:NAME 或容器 ID 指定  docker network ls # bridge, host, none, container docker network prune 
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/docker\/network\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-07-26T02:21:13.00Z",
+        "datePublished": "2021-07-26T02:21:13.00Z",
+        "dateModified": "2021-07-26T02:21:13.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/docker\/network\/",
+        "wordCount" : "51",
+        "genre" : [ 
+      
+      "Docker"
+
+    
+      
+        ,
+
+      
+      "Network"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
 
 </head>
 <body>
@@ -227,37 +300,76 @@ Where time is spend, there is success.
         <div class="autopagerize_page_element">
           <div class="content">
   <div
-    class="archive 
+    class="post 
       animated fadeInDown
 
     "
   >
-    <ul class="list-with-title">
+    <div class="post-content">
       
-        <div class="listing-title">2021</div>
+      <div class="post-title">
+        <h1>Network</h1>
         
-          <ul class="listing">
-            <div class="listing-item">
-              <div class="listing-post">
-                <a href="/post/docker/network/" title="Network">Network</a>
-                <div class="post-time">
-                  <span class="date"
-                    >
-                      Jul 26
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Mon, Jul 26, 2021
 
 
-                    </span
-                  >
-                </div>
-              </div>
-            </div>
-          </ul>
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
+          </div>
 
         
+      </div><h3 id="docker-network">Docker network</h3>
+<ul>
+<li>bridge: 為一個容器配置 ip, 並配置 docker0（虛擬橋接, default 為該模式）</li>
+</ul>
+<ul>
+<li>&ndash;network bridge 指定, default 用 docker0</li>
+</ul>
+<ul>
+<li>host: 容器不會虛擬出自己的網卡, 用 Machine 的</li>
+</ul>
+<ul>
+<li>&ndash;network host 指定</li>
+</ul>
+<ul>
+<li>none: 容器有獨立的網卡, 但不對其進行任何配置（少用）</li>
+</ul>
+<ul>
+<li>&ndash;network none 指定</li>
+</ul>
+<ul>
+<li>container: 新創建的容器不會有自己的網卡, ip 而是與其他容器共用 ip, port</li>
+</ul>
+<ul>
+<li>&ndash;network container:NAME 或容器 ID 指定</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
+docker network ls  <span style="color:#75715e"># bridge, host, none, container</span>
+docker network prune
 
 
-      
-    </ul>
+</code></pre></div></div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/docker/">Docker</a><a class="category" href="/categories/network/">Network</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
   </div>
 
 

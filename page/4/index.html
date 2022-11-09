@@ -261,6 +261,55 @@ Where time is spend, there is success.
     >
       
       <div class="post-title">
+        <h3><a href="/post/spring/resttemplate/">RestTemplate</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              RestTemplate 一般比較常用的 rest 服務，有的人自己公司可能會 base 在 OKHttp 上 包一層 HttpHelper/ HttpUtil 之類的方便使用，但在之前公司，有自己開發一個 microservice module 時 ，我一開始是選用 RestTemplate，這邊紀錄一下，未來要用時能直接隨開隨用。 //config  @Configuration public class RestTemplateConfig { @Bean public RestTemplate restTemplate(ClientHttpRequestFactory factory) { return new RestTemplate(factory); } @Bean public ClientHttpRequestFactory simpleClientHttpRequestFactory() { SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory(); factory.
+
+
+            
+          </p>
+          <a href="/post/spring/resttemplate/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Wed, Jun 30, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/java/">Java</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
         <h3><a href="/post/other/yaml/">Yaml</a></h3>
       </div>
       <div class="post-content">
@@ -700,56 +749,6 @@ Where time is spend, there is success.
             >
             
               <span class="separator"><a class="category" href="/categories/spring/">Spring</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/script/awk/">Awk</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Awk  &lsquo;{print}&rsquo; 指令
- awk &#39;{print}&#39; fileName &lsquo;$0&rsquo;,'$1'~'$N' (N 為欄位數) $0: 一整行
-
-
-            
-          </p>
-          <a href="/post/script/awk/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Sat, Apr 6, 2019
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/script/">script</a><a class="category" href="/categories/awk/">awk</a></span>
 
 
 

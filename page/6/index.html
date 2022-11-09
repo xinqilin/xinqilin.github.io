@@ -261,6 +261,57 @@ Where time is spend, there is success.
     >
       
       <div class="post-title">
+        <h3><a href="/post/designpattern/gof/behavioral/observer/">DesignPattern - Behavioral - Observer</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Observer (pub-sub) 在觀察者設計模式中，多個觀察者對象向一個主題註冊以獲取通知中的任何更改。當主題的狀態發生變化時，它會通知觀察者。監聽或觀察變化的對象稱為觀察者，被觀察的對象稱為主體。
+主題為觀察者提供了一個接口，可以在主題中註冊和註銷自己。 主題知道它的訂閱者是誰。 多個觀察者可以訂閱通知。 主題發布通知。 主題只是發送通知說狀態已更改。它不傳遞任何狀態信息。 一旦收到來自主題的通知，觀察者就會調用主題並獲取更改的數據。
+ Subject， 註冊觀察者。對象使用此接口註冊為觀察者，也可以將自己從觀察者中移除。 Observer為對象定義了一個更新接口，這些接口應該被通知主題的變化。但是，所有的觀察者都需要實現 Observer 接口。該接口有一個方法 update()，當 Subject 的狀態發生變化時會調用該方法。 ConcreteSubject，將感興趣的狀態存儲到 ConcreteObserver 對象。當它的狀態改變時，它會向它的觀察者發送一個通知。此外，一個具體的主題總是實現主題接口。我們使用 * notifyObservers() 方法在狀態發生變化時更新所有當前的觀察者。 ConcreateObserver 維護對 ConcreteSubject 對象的引用並實現 Observer 接口。每個觀察者註冊一個具體的主題以接收更新。  public interface Subject { public void registerObserver(Observer observer); public void notifyObserver(); public void unregisterObserver(Observer observer); public Object getUpdate(); } public interface Observer { public void update(); public void setSubject(Subject sub); } //Concrete Subject  public class Blog implements Subject { List&lt;Observer&gt; observersList; private boolean stateChange; public Blog() { this.
+
+
+            
+          </p>
+          <a href="/post/designpattern/gof/behavioral/observer/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Aug 7, 2018
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
         <h3><a href="/post/designpattern/gof/behavioral/chainofresponsibility/">DesignPattern - Behavioral - Chain Of Responsibility</a></h3>
       </div>
       <div class="post-content">
@@ -678,56 +729,6 @@ Bridge 的目的是將抽象和實現放入兩個不同的類層次結構中，�
             
           </p>
           <a href="/post/designpattern/gof/structural/composite/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Tue, Aug 7, 2018
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/designpattern/gof/structural/adapter/">DesignPattern - Structural - Adapter</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Adapter  將一個類別的介面 轉換成另一個類別的介面供客戶使用 讓介面不相容的類別可以合作
- 有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。 顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。
-
-
-            
-          </p>
-          <a href="/post/designpattern/gof/structural/adapter/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
