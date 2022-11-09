@@ -1701,6 +1701,38 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
 docker network ls  &lt;span style=&#34;color:#75715e&#34;&gt;# bridge, host, none, container&lt;/span&gt;
 docker network prune
+docker network inspect &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;bridge, host, my_network&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+docker network inspect bridge | grep name
+
+docker inspect &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;containerID&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# bridge 不寫就是 bridge&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;### ens33 -&amp;gt; bridge (docker0) -&amp;gt; container&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;###         veth             -&amp;gt; eth0&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# host&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;### 直接用 local 端的 ip &amp;amp; port, 重複則遞增&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# none &lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;### 什麼都沒有, 須自己配置&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# container &lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 坑 （下面起不起來因兩台 tomcat 都用 8080 映射出去）&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 借用 tomcat_1 網路&lt;/span&gt;
+docker run -d -p 8080:8080 --name tomcat_1 tomcat
+docker run -d -p 8081:8080 --network container:tomcat_1 --name tomcat_2 tomcat
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# 這就可以了&lt;/span&gt;
+docker run -it --name alpine_1 alpine /bin/sh
+docker run -it --network container:alpine_1 --name alpine_2 alpine /bin/sh
+
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#============&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 容器內 ip 會變&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 直接起兩台 tomcat ip addr 看 ip 後, 互 ping 是會通的, 但 ip 會變, 所以要用自定義網路名&lt;/span&gt;
+docker network create my_network &lt;span style=&#34;color:#75715e&#34;&gt;# 自己創見網路&lt;/span&gt;
+docker run -d -p 8080:8080 --network my_network --name tomcat_1 tomcat
+docker run -d -p 8081:8080 --network my_network --name tomcat_2 tomcat
 
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
