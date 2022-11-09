@@ -1667,6 +1667,91 @@ Examples: Assume we have three accounts, we connect them like this in order to u
     </item>
     
     <item>
+      <title>Docker Compose</title>
+      <link>https://xinqilin.github.io/post/docker/docker-compose/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/docker/docker-compose/</guid>
+      
+        <description>&lt;h3 id=&#34;docker-composeyml&#34;&gt;docker-compose.yml&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+docker-compose --version
+docker-compose -h &lt;span style=&#34;color:#75715e&#34;&gt;# 查看help&lt;/span&gt;
+docker-compose up
+docker-compose up -d &lt;span style=&#34;color:#75715e&#34;&gt;# 背景&lt;/span&gt;
+docker-compose down
+docker-compose exec &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;自訂義的service id&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; /bin/bash
+docker-compose ps &lt;span style=&#34;color:#75715e&#34;&gt;# 查看目前運行的 status&lt;/span&gt;
+docker-compose top &lt;span style=&#34;color:#75715e&#34;&gt;# container 進程？&lt;/span&gt;
+docker-compose logs &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;id&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# container log&lt;/span&gt;
+docker-compose config &lt;span style=&#34;color:#75715e&#34;&gt;# 檢查 config&lt;/span&gt;
+docker-compose config -q &lt;span style=&#34;color:#75715e&#34;&gt;# 檢查 config, 有error 才 alert&lt;/span&gt;
+docker-compose restart
+docker-compose start
+docker-compose stop
+
+
+docker-compose config -q &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; docker-compose down &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;  docker-compose up -d 
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 選3之後的&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;services&lt;/span&gt;:
+    &lt;span style=&#34;color:#75715e&#34;&gt;# 自訂服務名&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;microService&lt;/span&gt;:
+        &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;my_image:1.0&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;container_name&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;ms_01&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+            - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;8081:8080&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;volumes&lt;/span&gt;:
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;/Users/bill/microService:/app&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;my_network&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;depends_on&lt;/span&gt;:
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;redis&lt;/span&gt;
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;mysql&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# docker run -d -p 8081:8080 -v /Users/bill/microService:/app --network my_network&lt;/span&gt;
+
+    &lt;span style=&#34;color:#f92672&#34;&gt;redis&lt;/span&gt;: 
+        &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;redis:6.0.8&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+            - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;6379:6379&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;volumes&lt;/span&gt;:
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;/app/redis/redis.conf:/etc/redis/redis.conf&lt;/span&gt;
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;/app/redis/data:/data&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;my_network&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;command&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;redis-server /etc/redis/redis.conf&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#f92672&#34;&gt;mysql&lt;/span&gt;:
+        &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;mysql:5.7&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;environment&lt;/span&gt;:
+            &lt;span style=&#34;color:#f92672&#34;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;123456&amp;#39;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;MYSQL_ALLOW_EMPTY_PASSWORD&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;no&amp;#39;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;MYSQL_DATABASE&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;my_test_db&amp;#39;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;MYSQL_USER&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bill&amp;#39;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;MYSQL_PASSWORD&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;user_pwd&amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:
+            - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3306:3306&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;volumes&lt;/span&gt;:
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;/app/mysql/db:/var/lib/mysql&lt;/span&gt;
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;/app/mysql/conf/my.cnf:/etc/my.cnf&lt;/span&gt;
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;/app/mysql/init:/docker-entrypoint-initdb.d&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+            - &lt;span style=&#34;color:#ae81ff&#34;&gt;my_network&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;command&lt;/span&gt;: --&lt;span style=&#34;color:#ae81ff&#34;&gt;default-authentication-plugin=mysql_native_password&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# 解決外部無法 access&lt;/span&gt;
+
+    
+&lt;span style=&#34;color:#f92672&#34;&gt;networks&lt;/span&gt;:
+    &lt;span style=&#34;color:#f92672&#34;&gt;my_network&lt;/span&gt;:
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
+    <item>
       <title>Network</title>
       <link>https://xinqilin.github.io/post/docker/network/</link>
       <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
