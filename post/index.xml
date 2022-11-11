@@ -1766,28 +1766,26 @@ docker-compose config -q &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp
       
         <description>&lt;h3 id=&#34;docker-network&#34;&gt;Docker network&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;bridge: 為一個容器配置 ip, 並配置 docker0（虛擬橋接, default 為該模式）&lt;/li&gt;
-&lt;/ul&gt;
+&lt;li&gt;bridge: 為一個容器配置 ip, 並配置 docker0（虛擬橋接, default 為該模式）
 &lt;ul&gt;
-&lt;li&gt;&amp;ndash;network bridge 指定, default 用 docker0&lt;/li&gt;
+&lt;li&gt;network bridge 指定, default 用 docker0&lt;/li&gt;
 &lt;/ul&gt;
-&lt;ul&gt;
-&lt;li&gt;host: 容器不會虛擬出自己的網卡, 用 Machine 的&lt;/li&gt;
-&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;host: 容器不會虛擬出自己的網卡, 用 Machine 的
 &lt;ul&gt;
 &lt;li&gt;&amp;ndash;network host 指定&lt;/li&gt;
 &lt;/ul&gt;
-&lt;ul&gt;
-&lt;li&gt;none: 容器有獨立的網卡, 但不對其進行任何配置（少用）&lt;/li&gt;
-&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;none: 容器有獨立的網卡, 但不對其進行任何配置（少用）
 &lt;ul&gt;
 &lt;li&gt;&amp;ndash;network none 指定&lt;/li&gt;
 &lt;/ul&gt;
-&lt;ul&gt;
-&lt;li&gt;container: 新創建的容器不會有自己的網卡, ip 而是與其他容器共用 ip, port&lt;/li&gt;
-&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;container: 新創建的容器不會有自己的網卡, ip 而是與其他容器共用 ip, port
 &lt;ul&gt;
 &lt;li&gt;&amp;ndash;network container:NAME 或容器 ID 指定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
 docker network ls  &lt;span style=&#34;color:#75715e&#34;&gt;# bridge, host, none, container&lt;/span&gt;
