@@ -164,7 +164,7 @@ Where time is spend, there is success.
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/structural\/adapter\/",
-        "wordCount" : "143",
+        "wordCount" : "256",
         "genre" : [ 
       
       "DesignPattern"
@@ -314,7 +314,7 @@ Where time is spend, there is success.
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 1 分鐘</span>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
           </div>
 
         
@@ -383,7 +383,52 @@ Where time is spend, there is success.
 <li>想要創建一個可重用的類，它與不相關或不可預見的類（即不一定具有兼容接口的類）協作。</li>
 <li>有幾個現有的子類可供使用，但通過對每個子類進行子類化來調整它們的接口是不切實際的。對象適配器可以適配其父類的接口。</li>
 </ul>
-</div>
+<h3 id="more-sample">more sample</h3>
+<p>Adapter 模式將 Adaptee 類別的 specificRequest() 方法包裝成 Target 接口的 request() 方法。<br>
+Client 類別可以通過呼叫 Target 接口的 request() 方法來發送請求，而不用知道底層使用的是 Adaptee 類別的 specificRequest() 方法。<br>
+通過使用 Adapter 模式，我們可以讓不兼容的類別一起工作，這對於在現有系統中加入新功能非常有用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+   <span style="color:#75715e">// Target interface
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Target</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">request</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#75715e">// Adaptee class
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adaptee</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">specificRequest</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+       <span style="color:#75715e">// Perform some specific request
+</span><span style="color:#75715e"></span>   <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#75715e">// Adapter class
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adapter</span> <span style="color:#66d9ef">implements</span> Target <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">private</span> Adaptee adaptee<span style="color:#f92672">;</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Adapter</span><span style="color:#f92672">(</span>Adaptee adaptee<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+       <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">adaptee</span> <span style="color:#f92672">=</span> adaptee<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#a6e22e">@Override</span>
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">request</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+       adaptee<span style="color:#f92672">.</span><span style="color:#a6e22e">specificRequest</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#75715e">// Client
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">makeRequest</span><span style="color:#f92672">(</span>Target target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+       target<span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#75715e">// Usage
+</span><span style="color:#75715e"></span>   Adaptee adaptee <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Adaptee<span style="color:#f92672">();</span>
+   Target target <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Adapter<span style="color:#f92672">(</span>adaptee<span style="color:#f92672">);</span>
+   Client client <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Client<span style="color:#f92672">();</span>
+   client<span style="color:#f92672">.</span><span style="color:#a6e22e">makeRequest</span><span style="color:#f92672">(</span>target<span style="color:#f92672">);</span>
+
+
+</code></pre></div></div>
     <div class="post-footer">
       <div class="info">
         
