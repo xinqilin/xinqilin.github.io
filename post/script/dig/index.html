@@ -8,7 +8,7 @@
     
       Bill.Lin の 成長之路 ©
         |
-        sed
+        Dig
 
 
       
@@ -66,7 +66,7 @@ Where time is spend, there is success.
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="https://xinqilin.github.io/post/script/sed/" />
+  <link rel="canonical" href="https://xinqilin.github.io/post/script/dig/" />
 
   
   
@@ -91,8 +91,8 @@ Where time is spend, there is success.
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="sed"/>
-<meta name="twitter:description" content="sed sed [options] &lsquo;[地址定界] command&rsquo; file(s) sed -e	&lsquo;1,8	s/	[Tt]he/	THE/	g&rsquo;	MyFile."/>
+<meta name="twitter:title" content="Dig"/>
+<meta name="twitter:description" content="Ubuntu # 安裝 bind-utils 套件（Ubuntu） sudo apt install dnsutils dig www."/>
 
 
 
@@ -108,12 +108,12 @@ Where time is spend, there is success.
         "@context": "http://schema.org",
         "@type": "BlogPosting",
         "articleSection": "post",
-        "name": "sed",
-        "headline": "sed",
+        "name": "Dig",
+        "headline": "Dig",
         "alternativeHeadline": "",
         "description": "
       
-        sed sed [options] \u0026lsquo;[地址定界] command\u0026rsquo; file(s) sed -e\t\u0026lsquo;1,8\ts\/\t[Tt]he\/\tTHE\/\tg\u0026rsquo;\tMyFile.
+        Ubuntu # 安裝 bind-utils 套件（Ubuntu） sudo apt install dnsutils dig www.
 
 
       
@@ -124,7 +124,7 @@ Where time is spend, there is success.
         "isFamilyFriendly": "true",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\/\/xinqilin.github.io\/post\/script\/sed\/"
+            "@id": "https:\/\/xinqilin.github.io\/post\/script\/dig\/"
         },
         "author" : {
             "@type": "Person",
@@ -142,10 +142,10 @@ Where time is spend, there is success.
             "@type": "Person",
             "name": "Bill.Lin"
         },
-        "copyrightYear" : "2019",
-        "dateCreated": "2019-01-18T10:23:31.00Z",
-        "datePublished": "2019-01-18T10:23:31.00Z",
-        "dateModified": "2019-01-18T10:23:31.00Z",
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-01-08T21:39:14.00Z",
+        "datePublished": "2021-01-08T21:39:14.00Z",
+        "dateModified": "2021-01-08T21:39:14.00Z",
         "publisher":{
             "@type":"Organization",
             "name": "Bill.Lin",
@@ -162,8 +162,8 @@ Where time is spend, there is success.
       ]
 
     ,
-        "url" : "https:\/\/xinqilin.github.io\/post\/script\/sed\/",
-        "wordCount" : "65",
+        "url" : "https:\/\/xinqilin.github.io\/post\/script\/dig\/",
+        "wordCount" : "146",
         "genre" : [ 
       
       "Script"
@@ -173,7 +173,7 @@ Where time is spend, there is success.
         ,
 
       
-      "sed"
+      "dig"
 
     ],
         "keywords" : [ ]
@@ -308,13 +308,13 @@ Where time is spend, there is success.
     <div class="post-content">
       
       <div class="post-title">
-        <h1>sed</h1>
+        <h1>Dig</h1>
         
           <div class="info">
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Fri, Jan 18, 2019
+                Fri, Jan 8, 2021
 
 
               </span
@@ -324,55 +324,63 @@ Where time is spend, there is success.
           </div>
 
         
-      </div><h3 id="sed">sed</h3>
-<p>sed [options] &lsquo;[地址定界] command&rsquo; file(s)
-sed 	-e	&lsquo;1,8	s/	[Tt]he/	THE/	g&rsquo;	MyFile.txt</p>
-<pre tabindex="0"><code>
-   -n：不輸出模式空間內容到螢幕，即不自動列印，只列印匹配到的行
-   -e：多點編輯，對每行處理時，可以有多個Script
-   -f：把Script寫到檔案當中，在執行sed時-f 指定檔案路徑，如果是多個Script，換行寫
-   -r：支援擴充套件的正則表達式
-   -i：直接將處理的結果寫入檔案
-   -i.bak：在將處理的結果寫入檔案之前備份一份
-   
-   不給地址：對全文進行處理
-   單地址：
-   #: 指定的行
-   /pattern/：被此處模式所能夠匹配到的每一行
-   地址範圍：
-   #,#
-   #,+#
-   /pat1/,/pat2/
-   #,/pat1/
-   ~：步進
-    sed -n '1~2p'  只列印奇數行 （1~2 從第1行，一次加2行）
-    sed -n '2~2p'  只列印偶數行
+      </div><h3 id="ubuntu">Ubuntu</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">    <span style="color:#75715e"># 安裝 bind-utils 套件（Ubuntu）</span>
+    sudo apt install dnsutils
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
+dig www.google.com
 
-</code></pre><pre tabindex="0"><code>   d：刪除模式空間匹配的行，並立即啓用下一輪回圈
-   p：列印當前模式空間內容，追加到預設輸出之後
-   a：在指定行後面追加文字，支援使用\n實現多行追加
-   i：在行前面插入文字，支援使用\n實現多行追加
-   c：替換行爲單行或多行文字，支援使用\n實現多行追加
-   w：儲存模式匹配的行至指定檔案
-   r：讀取指定檔案的文字至模式空間中匹配到的行後
-   =：爲模式空間中的行列印行號
-   !：模式空間中匹配行取反處理
-   s///：查詢替換，支援使用其它分隔符，如：s@@@，s###；
-   加g表示行內全域性替換；
-   在替換時，可以加一下命令，實現大小寫轉換
-   \l：把下個字元轉換成小寫。
-   \L：把replacement字母轉換成小寫，直到\U或\E出現。
-   \u：把下個字元轉換成大寫。
-   \U：把replacement字母轉換成大寫，直到\L或\E出現。
-   \E：停止以\L或\U開始的大小寫轉換
-</code></pre><p>&hellip; to be continued&hellip;</p>
-<p>reference:
-<a href="https://tw511.com/a/01/11537.html" alt="TW511教學網" target="_blank">TW511教學網</a></p>
-</div>
+; &lt;&lt;&gt;&gt; DiG 9.10.6 &lt;&lt;&gt;&gt; www.google.com
+;; global options: +cmd
+;; Got answer:
+;; -&gt;&gt;HEADER<span style="color:#e6db74">&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span style="color:#ae81ff">21511</span>
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: <span style="color:#ae81ff">1</span>
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: <span style="color:#ae81ff">4096</span>
+;; QUESTION SECTION:   <span style="color:#75715e">### 請求</span>
+;www.google.com.			IN	A
+
+;; ANSWER SECTION:    <span style="color:#75715e">### 回覆</span>
+www.google.com.		147	IN	A	172.217.163.36
+
+;; Query time: <span style="color:#ae81ff">54</span> msec
+;; SERVER: 192.168.0.1#53<span style="color:#f92672">(</span>192.168.0.1<span style="color:#f92672">)</span>
+;; WHEN: Sun Jan <span style="color:#ae81ff">08</span> 21:40:50 CST <span style="color:#ae81ff">2023</span>
+;; MSG SIZE  rcvd: <span style="color:#ae81ff">59</span>
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
+<span style="color:#75715e"># 只輸出答案資訊</span>
+dig www.google.com +noall +answer
+<span style="color:#75715e"># 關閉註解</span>
+dig +nocmd www.google.com +noall +answer
+<span style="color:#75715e"># trace</span>
+dig www.google.com +trace
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
+<span style="color:#75715e"># 反查</span>
+dig -x 172.217.160.68
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
+<span style="color:#75715e"># 過 DNS</span>
+dig @8.8.4.4 www.google.com
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
+<span style="color:#75715e"># 預設是 A record; including: A、AAAA、CNAME、MX、TXT、NS、SOA</span>
+dig google.com a +short
+
+<span style="color:#75715e"># 查全部 DNS: any</span>
+dig google.com any
+
+</code></pre></div><h4 id="實用技">實用技</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
+watch -n <span style="color:#ae81ff">10</span> dig google.com
+
+</code></pre></div></div>
     <div class="post-footer">
       <div class="info">
         
-          <span class="separator"><a class="category" href="/categories/script/">Script</a><a class="category" href="/categories/sed/">sed</a></span>
+          <span class="separator"><a class="category" href="/categories/script/">Script</a><a class="category" href="/categories/dig/">dig</a></span>
 
 
 

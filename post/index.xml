@@ -3542,6 +3542,69 @@ CQRS: 適用於模型類別&lt;/p&gt;
     </item>
     
     <item>
+      <title>Dig</title>
+      <link>https://xinqilin.github.io/post/script/dig/</link>
+      <pubDate>Fri, 08 Jan 2021 21:39:14 +0800</pubDate>
+      
+      <guid>https://xinqilin.github.io/post/script/dig/</guid>
+      
+        <description>&lt;h3 id=&#34;ubuntu&#34;&gt;Ubuntu&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# 安裝 bind-utils 套件（Ubuntu）&lt;/span&gt;
+    sudo apt install dnsutils
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+dig www.google.com
+
+; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.10.6 &amp;lt;&amp;lt;&amp;gt;&amp;gt; www.google.com
+;; global options: +cmd
+;; Got answer:
+;; -&amp;gt;&amp;gt;HEADER&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt;- opco&lt;/span&gt;de: QUERY, status: NOERROR, id: &lt;span style=&#34;color:#ae81ff&#34;&gt;21511&lt;/span&gt;
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: &lt;span style=&#34;color:#ae81ff&#34;&gt;4096&lt;/span&gt;
+;; QUESTION SECTION:   &lt;span style=&#34;color:#75715e&#34;&gt;### 請求&lt;/span&gt;
+;www.google.com.			IN	A
+
+;; ANSWER SECTION:    &lt;span style=&#34;color:#75715e&#34;&gt;### 回覆&lt;/span&gt;
+www.google.com.		147	IN	A	172.217.163.36
+
+;; Query time: &lt;span style=&#34;color:#ae81ff&#34;&gt;54&lt;/span&gt; msec
+;; SERVER: 192.168.0.1#53&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;192.168.0.1&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+;; WHEN: Sun Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;08&lt;/span&gt; 21:40:50 CST &lt;span style=&#34;color:#ae81ff&#34;&gt;2023&lt;/span&gt;
+;; MSG SIZE  rcvd: &lt;span style=&#34;color:#ae81ff&#34;&gt;59&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 只輸出答案資訊&lt;/span&gt;
+dig www.google.com +noall +answer
+&lt;span style=&#34;color:#75715e&#34;&gt;# 關閉註解&lt;/span&gt;
+dig +nocmd www.google.com +noall +answer
+&lt;span style=&#34;color:#75715e&#34;&gt;# trace&lt;/span&gt;
+dig www.google.com +trace
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 反查&lt;/span&gt;
+dig -x 172.217.160.68
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 過 DNS&lt;/span&gt;
+dig @8.8.4.4 www.google.com
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 預設是 A record; including: A、AAAA、CNAME、MX、TXT、NS、SOA&lt;/span&gt;
+dig google.com a +short
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# 查全部 DNS: any&lt;/span&gt;
+dig google.com any
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;實用技&#34;&gt;實用技&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+watch -n &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt; dig google.com
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
+    <item>
       <title>SftpUtil</title>
       <link>https://xinqilin.github.io/post/spring/sftputil/</link>
       <pubDate>Tue, 05 Jan 2021 19:18:59 +0800</pubDate>
