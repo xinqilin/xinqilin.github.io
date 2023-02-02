@@ -163,7 +163,7 @@ Where time is spend, there is success.
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/script\/sed\/",
-        "wordCount" : "65",
+        "wordCount" : "115",
         "genre" : [ 
       
       "Script"
@@ -329,10 +329,10 @@ Where time is spend, there is success.
 sed 	-e	&lsquo;1,8	s/	[Tt]he/	THE/	g&rsquo;	MyFile.txt</p>
 <pre tabindex="0"><code>
    -n：不輸出模式空間內容到螢幕，即不自動列印，只列印匹配到的行
-   -e：多點編輯，對每行處理時，可以有多個Script
+   -e：參數指定要執行的編輯指令
    -f：把Script寫到檔案當中，在執行sed時-f 指定檔案路徑，如果是多個Script，換行寫
    -r：支援擴充套件的正則表達式
-   -i：直接將處理的結果寫入檔案
+   -i：直接處理檔案
    -i.bak：在將處理的結果寫入檔案之前備份一份
    
    不給地址：對全文進行處理
@@ -365,9 +365,26 @@ sed 	-e	&lsquo;1,8	s/	[Tt]he/	THE/	g&rsquo;	MyFile.txt</p>
    \u：把下個字元轉換成大寫。
    \U：把replacement字母轉換成大寫，直到\L或\E出現。
    \E：停止以\L或\U開始的大小寫轉換
-</code></pre><p>&hellip; to be continued&hellip;</p>
-<p>reference:
-<a href="https://tw511.com/a/01/11537.html" alt="TW511教學網" target="_blank">TW511教學網</a></p>
+</code></pre><h3 id="example">example</h3>
+<p>sed -e &rsquo;s/word1/word2/g'</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">
+<span style="color:#75715e"># s/find/replace/g</span>
+<span style="color:#75715e"># s: 5s 只處理第五行, 5,10s 五到十行</span>
+<span style="color:#75715e"># g: 全部, 不打: 只換第一個, 2: 換第二個, gi: ignore case</span>
+
+sed -i -e <span style="color:#e6db74">&#39;s/word1/word2/g&#39;</span> input.txt
+
+<span style="color:#75715e"># 將所有英文字轉為大寫</span>
+sed -i -e <span style="color:#e6db74">&#39;s/.*/\U&amp;/&#39;</span> input.txt
+
+<span style="color:#75715e"># 將所有英文字轉為小寫</span>
+sed -i -e <span style="color:#e6db74">&#39;s/.*/\L&amp;/&#39;</span> input.txt
+
+find . -name <span style="color:#e6db74">&#39;*.ts&#39;</span> -type f -exec sed -i <span style="color:#e6db74">&#39;s/pattern\([s]\)/要換的字\1/g&#39;</span> <span style="color:#e6db74">&#39;{}&#39;</span> <span style="color:#ae81ff">\;</span>
+
+</code></pre></div><p>reference:
+<a href="https://tw511.com/a/01/11537.html" alt="TW511教學網" target="_blank">TW511教學網</a>
+<a href="https://officeguide.cc/linux-sed-find-and-replace-text-in-file-tutorial-examples/" alt="office" target="_blank">office</a></p>
 </div>
     <div class="post-footer">
       <div class="info">

@@ -5124,10 +5124,10 @@ String !~ /regex/[actions]  =&amp;gt; String not match regex, then execute actio
 sed 	-e	&amp;lsquo;1,8	s/	[Tt]he/	THE/	g&amp;rsquo;	MyFile.txt&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;
    -n：不輸出模式空間內容到螢幕，即不自動列印，只列印匹配到的行
-   -e：多點編輯，對每行處理時，可以有多個Script
+   -e：參數指定要執行的編輯指令
    -f：把Script寫到檔案當中，在執行sed時-f 指定檔案路徑，如果是多個Script，換行寫
    -r：支援擴充套件的正則表達式
-   -i：直接將處理的結果寫入檔案
+   -i：直接處理檔案
    -i.bak：在將處理的結果寫入檔案之前備份一份
    
    不給地址：對全文進行處理
@@ -5160,9 +5160,26 @@ sed 	-e	&amp;lsquo;1,8	s/	[Tt]he/	THE/	g&amp;rsquo;	MyFile.txt&lt;/p&gt;
    \u：把下個字元轉換成大寫。
    \U：把replacement字母轉換成大寫，直到\L或\E出現。
    \E：停止以\L或\U開始的大小寫轉換
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&amp;hellip; to be continued&amp;hellip;&lt;/p&gt;
-&lt;p&gt;reference:
-&lt;a href=&#34;https://tw511.com/a/01/11537.html&#34; alt=&#34;TW511教學網&#34; target=&#34;_blank&#34;&gt;TW511教學網&lt;/a&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;example&#34;&gt;example&lt;/h3&gt;
+&lt;p&gt;sed -e &amp;rsquo;s/word1/word2/g&#39;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# s/find/replace/g&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# s: 5s 只處理第五行, 5,10s 五到十行&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# g: 全部, 不打: 只換第一個, 2: 換第二個, gi: ignore case&lt;/span&gt;
+
+sed -i -e &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/word1/word2/g&amp;#39;&lt;/span&gt; input.txt
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# 將所有英文字轉為大寫&lt;/span&gt;
+sed -i -e &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/.*/\U&amp;amp;/&amp;#39;&lt;/span&gt; input.txt
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# 將所有英文字轉為小寫&lt;/span&gt;
+sed -i -e &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/.*/\L&amp;amp;/&amp;#39;&lt;/span&gt; input.txt
+
+find . -name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*.ts&amp;#39;&lt;/span&gt; -type f -exec sed -i &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/pattern\([s]\)/要換的字\1/g&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{}&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;reference:
+&lt;a href=&#34;https://tw511.com/a/01/11537.html&#34; alt=&#34;TW511教學網&#34; target=&#34;_blank&#34;&gt;TW511教學網&lt;/a&gt;
+&lt;a href=&#34;https://officeguide.cc/linux-sed-find-and-replace-text-in-file-tutorial-examples/&#34; alt=&#34;office&#34; target=&#34;_blank&#34;&gt;office&lt;/a&gt;&lt;/p&gt;
 </description>
       
     </item>
