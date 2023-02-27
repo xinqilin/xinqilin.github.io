@@ -4027,6 +4027,13 @@ B+ Tree (完美二元樹)&lt;/p&gt;
 &lt;li&gt;2NF 去除部分相依 (就&amp;hellip;增加FK 一張大Table 拆成很多小Table 並用 FK 建立連結)&lt;/li&gt;
 &lt;li&gt;3NF 去除間接相依 (就&amp;hellip;再拆更細, 小Table 還會有相依 -&amp;gt; 再拆)&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;lock-level&#34;&gt;Lock Level&lt;/h3&gt;
+&lt;p&gt;Dirty Read: 交易(T1)讀到了交易(T2)尚未Commit的資料
+Non-repeatable Read: 在交易(T1)過程中，因&amp;quot;另一個&amp;quot;交易(T2)提交了Commit，當次的交易(T1)前後查詢得到不同結果
+Phantom Read: 一個交易(T1)過程中前後兩次查詢的資料總數不同，因為&amp;quot;另一個&amp;quot;交易(T2)使用INSERT或DELETE導致&lt;/p&gt;
+&lt;p&gt;ref: &lt;br&gt;
+&lt;a href=&#34;https://hackmd.io/@sY3vBDLFRc2TPxaF7R84og/HkrPD2JCi&#34;&gt;DB Transaction筆記&lt;/a&gt;
+&lt;a href=&#34;https://notes.andywu.tw/2021/select-for-update%E5%86%8Dinsert%E9%80%A0%E6%88%90deadlock%E7%9A%84%E9%99%B7%E9%98%B1/?fbclid=IwAR0MuuQQONwUH8v8_wQ7ER2mgy_vZJU75PMbTMoCqpMYj48rjUWN042bE8s&#34;&gt;select&amp;hellip;for deadlock的陷阱&lt;/a&gt;&lt;/p&gt;
 </description>
       
     </item>
