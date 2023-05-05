@@ -18,7 +18,7 @@
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.111.3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta
     name="description"
     content="
@@ -74,8 +74,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
-    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
     crossorigin="anonymous"
   ></script>
 
@@ -84,8 +84,8 @@ Where time is spend, there is success.
     
     <script
       type="text/javascript"
-      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
-      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
       crossorigin="anonymous"
     ></script>
 
@@ -298,8 +298,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
-    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
     crossorigin="anonymous"
   ></script></div>
 </aside>
@@ -332,88 +332,85 @@ Where time is spend, there is success.
 
         
       </div><h3 id="dependency">Dependency</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">
-implementation <span style="color:#e6db74">&#39;commons-net:commons-net:{version}&#39;</span>
-
-
-</code></pre></div><h3 id="util">Util</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.InputStream<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.net.MalformedURLException<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import</span> org.apache.commons.net.ftp.FTPClient<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.commons.net.ftp.FTPReply<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.slf4j.Logger<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.slf4j.LoggerFactory<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FtpUtils</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>FtpUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FTP_IP <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> FTP_PORT <span style="color:#f92672">=</span> 66666<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FTP_USERNAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FTP_PASSWORD <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
-
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String FTP_BASE_PATH <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">private</span> FTPClient ftpClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">uploadFile</span><span style="color:#f92672">(</span>String fileName<span style="color:#f92672">,</span> InputStream input<span style="color:#f92672">,</span> InvoiceType invoiceType<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">boolean</span> success <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">boolean</span> isFolderExist <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-        ftpClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FTPClient<span style="color:#f92672">();</span>
-        ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">setControlEncoding</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            initFtpClient<span style="color:#f92672">();</span>
-            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">setFileType</span><span style="color:#f92672">(</span>FTPClient<span style="color:#f92672">.</span><span style="color:#a6e22e">BINARY_FILE_TYPE</span><span style="color:#f92672">);</span>
-            isFolderExist <span style="color:#f92672">=</span> ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">changeWorkingDirectory</span><span style="color:#f92672">(</span>FTP_BASE_PATH<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>isFolderExist<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">makeDirectory</span><span style="color:#f92672">(</span>FTP_BASE_PATH<span style="color:#f92672">);</span>
-                ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">changeWorkingDirectory</span><span style="color:#f92672">(</span>FTP_BASE_PATH<span style="color:#f92672">);</span>
-            <span style="color:#f92672">}</span>
-            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">storeFile</span><span style="color:#f92672">(</span>fileName<span style="color:#f92672">,</span> input<span style="color:#f92672">);</span>
-            input<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
-            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">logout</span><span style="color:#f92672">();</span>
-            success <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">isConnected</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-                    ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">disconnect</span><span style="color:#f92672">();</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ioe<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> success<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initFtpClient</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        ftpClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FTPClient<span style="color:#f92672">();</span>
-        ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">setControlEncoding</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">(</span>FTP_IP<span style="color:#f92672">,</span> FTP_PORT<span style="color:#f92672">);</span>
-            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">login</span><span style="color:#f92672">(</span>FTP_USERNAME<span style="color:#f92672">,</span> FTP_PASSWORD<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">int</span> replyCode <span style="color:#f92672">=</span> ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">getReplyCode</span><span style="color:#f92672">();</span>
-            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ftp reply code: &#34;</span> <span style="color:#f92672">+</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>replyCode<span style="color:#f92672">));</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>FTPReply<span style="color:#f92672">.</span><span style="color:#a6e22e">isPositiveCompletion</span><span style="color:#f92672">(</span>replyCode<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-                logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ftp connect failed: &#34;</span> <span style="color:#f92672">+</span> FTP_USERNAME <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> FTP_PORT<span style="color:#f92672">);</span>
-            <span style="color:#f92672">}</span>
-            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ftp connect successfu: &#34;</span> <span style="color:#f92672">+</span> FTP_USERNAME <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> FTP_PORT<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>MalformedURLException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-
-</code></pre></div></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>implementation <span style="color:#e6db74">&#39;commons-net:commons-net:{version}&#39;</span>
+</span></span></code></pre></div><h3 id="util">Util</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStream<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.MalformedURLException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.commons.net.ftp.FTPClient<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.commons.net.ftp.FTPReply<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.slf4j.Logger<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.slf4j.LoggerFactory<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.springframework.stereotype.Component<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FtpUtils</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>FtpUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FTP_IP <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> FTP_PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">66666</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FTP_USERNAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FTP_PASSWORD <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String FTP_BASE_PATH <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> FTPClient ftpClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">uploadFile</span><span style="color:#f92672">(</span>String fileName<span style="color:#f92672">,</span> InputStream input<span style="color:#f92672">,</span> InvoiceType invoiceType<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">boolean</span> success <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">boolean</span> isFolderExist <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        ftpClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FTPClient<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">setControlEncoding</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            initFtpClient<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">setFileType</span><span style="color:#f92672">(</span>FTPClient<span style="color:#f92672">.</span><span style="color:#a6e22e">BINARY_FILE_TYPE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            isFolderExist <span style="color:#f92672">=</span> ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">changeWorkingDirectory</span><span style="color:#f92672">(</span>FTP_BASE_PATH<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>isFolderExist<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">makeDirectory</span><span style="color:#f92672">(</span>FTP_BASE_PATH<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">changeWorkingDirectory</span><span style="color:#f92672">(</span>FTP_BASE_PATH<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">storeFile</span><span style="color:#f92672">(</span>fileName<span style="color:#f92672">,</span> input<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            input<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">logout</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            success <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">isConnected</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">disconnect</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ioe<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> success<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initFtpClient</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        ftpClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FTPClient<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">setControlEncoding</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">(</span>FTP_IP<span style="color:#f92672">,</span> FTP_PORT<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">login</span><span style="color:#f92672">(</span>FTP_USERNAME<span style="color:#f92672">,</span> FTP_PASSWORD<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> replyCode <span style="color:#f92672">=</span> ftpClient<span style="color:#f92672">.</span><span style="color:#a6e22e">getReplyCode</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ftp reply code: &#34;</span> <span style="color:#f92672">+</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>replyCode<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>FTPReply<span style="color:#f92672">.</span><span style="color:#a6e22e">isPositiveCompletion</span><span style="color:#f92672">(</span>replyCode<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ftp connect failed: &#34;</span> <span style="color:#f92672">+</span> FTP_USERNAME <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> FTP_PORT<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ftp connect successfu: &#34;</span> <span style="color:#f92672">+</span> FTP_USERNAME <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> FTP_PORT<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>MalformedURLException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></div>
     <div class="post-footer">
       <div class="info">
         
@@ -454,8 +451,8 @@ implementation <span style="color:#e6db74">&#39;commons-net:commons-net:{version
   
   <script
     type="text/javascript"
-    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
-    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
     crossorigin="anonymous"
   ></script></body>
 </html>

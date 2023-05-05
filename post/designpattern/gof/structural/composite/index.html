@@ -18,7 +18,7 @@
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.111.3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta
     name="description"
     content="
@@ -74,8 +74,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
-    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
     crossorigin="anonymous"
   ></script>
 
@@ -84,8 +84,8 @@ Where time is spend, there is success.
     
     <script
       type="text/javascript"
-      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
-      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
       crossorigin="anonymous"
     ></script>
 
@@ -284,8 +284,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
-    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
     crossorigin="anonymous"
   ></script></div>
 </aside>
@@ -327,150 +327,148 @@ Where time is spend, there is success.
 <li>Leaf: 定義組合中元素的行為。它是組合的構建塊並實現基本組件。雖然，它沒有對其他組件的引用。</li>
 <li>Composite: 它由葉元素組成，並在基本組件中實現操作。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
-   <span style="color:#75715e">/**
-</span><span style="color:#75715e">   * Manager(Composite)
-</span><span style="color:#75715e">   * Developer(Leaf)
-</span><span style="color:#75715e">   * Employee(Component)
-</span><span style="color:#75715e">   */</span>
-
-   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Employee</span> <span style="color:#f92672">{</span>
-
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">);</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">);</span>
-       <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">getChild</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">);</span>
-       <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getSalary</span><span style="color:#f92672">();</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
-   <span style="color:#f92672">}</span>
-
-   <span style="color:#75715e">// 現在我們將創建 Manager (Composite)。這裡的關鍵點是所有通用方法都將其操作委託給子對象。它具有訪問和修改其子級的方法。
-</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Manager</span> <span style="color:#66d9ef">implements</span> Employee <span style="color:#f92672">{</span>
-
-       <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span> 
-       <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> salary<span style="color:#f92672">;</span>
-
-       <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Manager</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> salary<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-       <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
-       <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">salary</span> <span style="color:#f92672">=</span> salary<span style="color:#f92672">;</span>
-       <span style="color:#f92672">}</span>
-
-       var employees <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Employee<span style="color:#f92672">&gt;();</span> 
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-           employees<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp<span style="color:#f92672">);</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-           employees<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>emp<span style="color:#f92672">);</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">getChild</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-           <span style="color:#66d9ef">return</span> employees<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-           <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getSalary</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-           <span style="color:#66d9ef">return</span> salary<span style="color:#f92672">;</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Name = &#34;</span> <span style="color:#f92672">+</span> getName<span style="color:#f92672">());</span>
-           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Salary = &#34;</span> <span style="color:#f92672">+</span> getSalary<span style="color:#f92672">());</span>
-           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;-------------&#34;</span><span style="color:#f92672">);</span> 
-
-           Iterator<span style="color:#f92672">&lt;</span>Employee<span style="color:#f92672">&gt;</span> empIterator <span style="color:#f92672">=</span> employees<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
-           <span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>empIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">()){</span>
-               var emp <span style="color:#f92672">=</span> empIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
-               emp<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
-           <span style="color:#f92672">}</span>
-       <span style="color:#f92672">}</span>
-   <span style="color:#f92672">}</span>
-
-   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Manager</span> <span style="color:#66d9ef">implements</span> Employee <span style="color:#f92672">{</span>
-
-       <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span> 
-       <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> salary<span style="color:#f92672">;</span>
-
-       <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Manager</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> salary<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-           <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
-           <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">salary</span> <span style="color:#f92672">=</span> salary<span style="color:#f92672">;</span>
-       <span style="color:#f92672">}</span>
-
-       var employees <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Employee<span style="color:#f92672">&gt;();</span> 
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-           employees<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp<span style="color:#f92672">);</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-           employees<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>emp<span style="color:#f92672">);</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">getChild</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-           <span style="color:#66d9ef">return</span> employees<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-           <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getSalary</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-           <span style="color:#66d9ef">return</span> salary<span style="color:#f92672">;</span>
-       <span style="color:#f92672">}</span>
-
-       <span style="color:#a6e22e">@Override</span>
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Name = &#34;</span> <span style="color:#f92672">+</span> getName<span style="color:#f92672">());</span>
-           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Salary = &#34;</span> <span style="color:#f92672">+</span> getSalary<span style="color:#f92672">());</span>
-           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;-------------&#34;</span><span style="color:#f92672">);</span> 
-
-           Iterator<span style="color:#f92672">&lt;</span>Employee<span style="color:#f92672">&gt;</span> empIterator <span style="color:#f92672">=</span> employees<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
-           <span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>empIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">()){</span>
-               Employee emp<span style="color:#f92672">=</span> empIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
-               emp<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
-           <span style="color:#f92672">}</span>
-       <span style="color:#f92672">}</span>
-   <span style="color:#f92672">}</span>
-
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
-   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompositePatternTest</span> <span style="color:#f92672">{</span>
-
-       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-
-       Employee emp1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Developer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Bill&#34;</span><span style="color:#f92672">,</span> 10000<span style="color:#f92672">);</span>
-       Employee emp2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Developer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;David&#34;</span><span style="color:#f92672">,</span> 15000<span style="color:#f92672">);</span>
-       Employee manager1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Manager<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Paul&#34;</span><span style="color:#f92672">,</span> 25000<span style="color:#f92672">);</span>
-
-       manager1<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp1<span style="color:#f92672">);</span>
-       manager1<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp2<span style="color:#f92672">);</span>
-
-       Employee emp3 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Developer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Lag&#34;</span><span style="color:#f92672">,</span> 20000<span style="color:#f92672">);</span>
-       Manager generalManager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Manager<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Howard&#34;</span><span style="color:#f92672">,</span> 50000<span style="color:#f92672">);</span>
-
-       generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp3<span style="color:#f92672">);</span>
-       generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>manager1<span style="color:#f92672">);</span>
-
-       generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
-
-       <span style="color:#f92672">}</span>
-   <span style="color:#f92672">}</span>
-
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Manager(Composite)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Developer(Leaf)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Employee(Component)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Employee</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">getChild</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getSalary</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// 現在我們將創建 Manager (Composite)。這裡的關鍵點是所有通用方法都將其操作委託給子對象。它具有訪問和修改其子級的方法。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Manager</span> <span style="color:#66d9ef">implements</span> Employee <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span> 
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> salary<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Manager</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> salary<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">salary</span> <span style="color:#f92672">=</span> salary<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       var employees <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Employee<span style="color:#f92672">&gt;();</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           employees<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           employees<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>emp<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">getChild</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">return</span> employees<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getSalary</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">return</span> salary<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Name = &#34;</span> <span style="color:#f92672">+</span> getName<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Salary = &#34;</span> <span style="color:#f92672">+</span> getSalary<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;-------------&#34;</span><span style="color:#f92672">);</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>           Iterator<span style="color:#f92672">&lt;</span>Employee<span style="color:#f92672">&gt;</span> empIterator <span style="color:#f92672">=</span> employees<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>empIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">()){</span>
+</span></span><span style="display:flex;"><span>               var emp <span style="color:#f92672">=</span> empIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>               emp<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Manager</span> <span style="color:#66d9ef">implements</span> Employee <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span> 
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> salary<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Manager</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> salary<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">salary</span> <span style="color:#f92672">=</span> salary<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       var employees <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Employee<span style="color:#f92672">&gt;();</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           employees<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Employee emp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           employees<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>emp<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> Employee <span style="color:#a6e22e">getChild</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">return</span> employees<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getSalary</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">return</span> salary<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Name = &#34;</span> <span style="color:#f92672">+</span> getName<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Salary = &#34;</span> <span style="color:#f92672">+</span> getSalary<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>           System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;-------------&#34;</span><span style="color:#f92672">);</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>           Iterator<span style="color:#f92672">&lt;</span>Employee<span style="color:#f92672">&gt;</span> empIterator <span style="color:#f92672">=</span> employees<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>empIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">()){</span>
+</span></span><span style="display:flex;"><span>               Employee emp<span style="color:#f92672">=</span> empIterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>               emp<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompositePatternTest</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       Employee emp1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Developer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Bill&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">10000</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       Employee emp2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Developer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;David&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">15000</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       Employee manager1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Manager<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Paul&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">25000</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       manager1<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       manager1<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp2<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       Employee emp3 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Developer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Lag&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">20000</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       Manager generalManager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Manager<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Howard&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">50000</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>emp3<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>manager1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       generalManager<span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
 <li>當我們想要表示對象的部分整體層次結構時。</li>
 <li>當我們希望客戶能夠忽略對象組合和單個對象之間的差異時。客戶端將統一對待複合結構中的所有對象。</li>
 </ul>
@@ -515,8 +513,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
-    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
     crossorigin="anonymous"
   ></script></body>
 </html>

@@ -101,10 +101,10 @@
     <loc>https://xinqilin.github.io/categories/ssh/</loc>
     <lastmod>2022-02-09T19:46:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/docker/mysql/</loc>
+    <loc>https://xinqilin.github.io/categories/mysql/</loc>
     <lastmod>2022-01-18T23:56:44+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/mysql/</loc>
+    <loc>https://xinqilin.github.io/post/docker/mysql/</loc>
     <lastmod>2022-01-18T23:56:44+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/other/env/</loc>
@@ -161,13 +161,13 @@
     <loc>https://xinqilin.github.io/post/kotlin/lateinit/</loc>
     <lastmod>2021-08-05T21:07:54+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/curl/</loc>
+    <loc>https://xinqilin.github.io/categories/curl/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/script/curl/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/curl/</loc>
+    <loc>https://xinqilin.github.io/tags/curl/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/docker/</loc>
@@ -200,7 +200,7 @@
     <loc>https://xinqilin.github.io/post/designpattern/uml/</loc>
     <lastmod>2021-07-12T23:33:14+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/spring/autowired/</loc>
+    <loc>https://xinqilin.github.io/post/spring/@autowired/</loc>
     <lastmod>2021-07-10T20:27:20+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/designpattern/</loc>
@@ -251,19 +251,19 @@
     <loc>https://xinqilin.github.io/post/java/map-sort-by-value/</loc>
     <lastmod>2021-03-28T15:10:59+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/other/git/</loc>
+    <loc>https://xinqilin.github.io/categories/git/</loc>
     <lastmod>2021-03-01T21:16:29+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/git/</loc>
+    <loc>https://xinqilin.github.io/post/other/git/</loc>
     <lastmod>2021-03-01T21:16:29+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/tag/</loc>
     <lastmod>2021-03-01T21:16:29+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/script/dig/</loc>
+    <loc>https://xinqilin.github.io/categories/dig/</loc>
     <lastmod>2021-01-08T21:39:14+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/dig/</loc>
+    <loc>https://xinqilin.github.io/post/script/dig/</loc>
     <lastmod>2021-01-08T21:39:14+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/sftp/</loc>
@@ -281,12 +281,6 @@
     <loc>https://xinqilin.github.io/tags/script/</loc>
     <lastmod>2020-06-28T12:36:19+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/database/</loc>
-    <lastmod>2020-02-14T00:18:41+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/post/database/db-tuning/</loc>
-    <lastmod>2020-02-14T00:18:41+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/categories/jpa/</loc>
     <lastmod>2020-01-07T13:26:41+08:00</lastmod>
   </url><url>
@@ -302,10 +296,10 @@
     <loc>https://xinqilin.github.io/post/spring/springannotation/</loc>
     <lastmod>2019-09-05T23:50:29+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/script/awk/</loc>
+    <loc>https://xinqilin.github.io/categories/awk/</loc>
     <lastmod>2019-04-06T23:18:56+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/awk/</loc>
+    <loc>https://xinqilin.github.io/post/script/awk/</loc>
     <lastmod>2019-04-06T23:18:56+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/compute/</loc>

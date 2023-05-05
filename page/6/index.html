@@ -13,7 +13,7 @@
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.111.3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta
     name="description"
     content="
@@ -69,8 +69,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
-    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
     crossorigin="anonymous"
   ></script>
 
@@ -79,8 +79,8 @@ Where time is spend, there is success.
     
     <script
       type="text/javascript"
-      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
-      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
       crossorigin="anonymous"
     ></script>
 
@@ -228,8 +228,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
-    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
     crossorigin="anonymous"
   ></script></div>
 </aside>
@@ -261,55 +261,6 @@ Where time is spend, there is success.
     >
       
       <div class="post-title">
-        <h3><a href="/post/designpattern/gof/behavioral/interpreter/">DesignPattern - Behavioral - Interpreter</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Interpreter 用它來定義一種語言的語法表示，它提供了一個解釋器來處理語法。這種模式的最佳示例是 java 編譯器，它將 java 源代碼解釋為 JVM 可以理解的字節碼。google translation 也是Interpreter 的一個例子，其中輸入可以是任何語言，我們可以得到另一種語言的解釋輸出。
-
-
-            
-          </p>
-          <a href="/post/designpattern/gof/behavioral/interpreter/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Tue, Aug 7, 2018
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
         <h3><a href="/post/designpattern/gof/behavioral/iterator/">DesignPattern - Behavioral - Iterator</a></h3>
       </div>
       <div class="post-content">
@@ -317,7 +268,7 @@ Where time is spend, there is success.
           <p>
             
               Iterator Iterator 是一種行為模式，使用它來提供一種標準的方式來遍歷一組對象。我們在 Java 集合框架中廣泛使用 Iterator，其中迭代器接口提供了遍歷集合的方法。 迭代的邏輯嵌入在集合本身中，它可以幫助客戶端程序輕鬆地對其進行迭代。Iterator 對象包含公共方法，以允許客戶端對像在容器內的對象列表迭代。
-  Iterator 定義 interface 用來迭代或存取的接口
+Iterator 定義 interface 用來迭代或存取的接口
 
 
             
@@ -567,7 +518,7 @@ visitor pattern 允許在不更改集合中任何對象的類的情況下定義�
             
               Observer (pub-sub) 在觀察者設計模式中，多個觀察者對象向一個主題註冊以獲取通知中的任何更改。當主題的狀態發生變化時，它會通知觀察者。監聽或觀察變化的對象稱為觀察者，被觀察的對象稱為主體。
 主題為觀察者提供了一個接口，可以在主題中註冊和註銷自己。 主題知道它的訂閱者是誰。 多個觀察者可以訂閱通知。 主題發布通知。 主題只是發送通知說狀態已更改。它不傳遞任何狀態信息。 一旦收到來自主題的通知，觀察者就會調用主題並獲取更改的數據。
- Subject， 註冊觀察者。對象使用此接口註冊為觀察者，也可以將自己從觀察者中移除。 Observer為對象定義了一個更新接口，這些接口應該被通知主題的變化。但是，所有的觀察者都需要實現 Observer 接口。該接口有一個方法 update()，當 Subject 的狀態發生變化時會調用該方法。 ConcreteSubject，將感興趣的狀態存儲到 ConcreteObserver 對象。當它的狀態改變時，它會向它的觀察者發送一個通知。此外，一個具體的主題總是實現主題接口。我們使用 * notifyObservers() 方法在狀態發生變化時更新所有當前的觀察者。 ConcreateObserver 維護對 ConcreteSubject 對象的引用並實現 Observer 接口。每個觀察者註冊一個具體的主題以接收更新。  public interface Subject { public void registerObserver(Observer observer); public void notifyObserver(); public void unregisterObserver(Observer observer); public Object getUpdate(); } public interface Observer { public void update(); public void setSubject(Subject sub); } //Concrete Subject  public class Blog implements Subject { List&lt;Observer&gt; observersList; private boolean stateChange; public Blog() { this.
+Subject， 註冊觀察者。對象使用此接口註冊為觀察者，也可以將自己從觀察者中移除。 Observer為對象定義了一個更新接口，這些接口應該被通知主題的變化。但是，所有的觀察者都需要實現 Observer 接口。該接口有一個方法 update()，當 Subject 的狀態發生變化時會調用該方法。 ConcreteSubject，將感興趣的狀態存儲到 ConcreteObserver 對象。當它的狀態改變時，它會向它的觀察者發送一個通知。此外，一個具體的主題總是實現主題接口。我們使用 * notifyObservers() 方法在狀態發生變化時更新所有當前的觀察者。 ConcreateObserver 維護對 ConcreteSubject 對象的引用並實現 Observer 接口。每個觀察者註冊一個具體的主題以接收更新。 public interface Subject { public void registerObserver(Observer observer); public void notifyObserver(); public void unregisterObserver(Observer observer); public Object getUpdate(); } public interface Observer { public void update(); public void setSubject(Subject sub); } //Concrete Subject public class Blog implements Subject { List&lt;Observer&gt; observersList; private boolean stateChange; public Blog() { this.
 
 
             
@@ -618,7 +569,7 @@ visitor pattern 允許在不更改集合中任何對象的類的情況下定義�
             
               Chain Of Responsibility 當有多個對象可以處理或滿足客戶端請求時，責任鏈模式建議給這些對像中的每一個以某種順序處理請求的機會。在這種情況下應用該模式，這些潛在的處理程序中的每一個都可以以鏈的形式排列，每個對像都具有對鏈中下一個對象的引用。鏈中的第一個對象接收請求並決定處理請求或將其傳遞給鏈中的下一個對象。請求一個接一個地流過鏈中的所有對象，直到請求被鏈中的一個處理程序處理或請求到達鏈的末端而沒有得到處理。
 顯然，責任鏈模式用於在軟件設計中實現鬆散耦合，其中來自客戶端的請求被傳遞到對象鏈以處理它們。然後鏈中的對象將自行決定誰將處理請求以及是否需要將請求發送到鏈中的下一個對象。
- 多個類別繼承或實作抽象, 並使用, 實作中不是自己的就 next 下去, 是自己的就 action  // This&#39;s the request object.
+多個類別繼承或實作抽象, 並使用, 實作中不是自己的就 next 下去, 是自己的就 action // This&#39;s the request object.
 
 
             
@@ -670,7 +621,7 @@ visitor pattern 允許在不更改集合中任何對象的類的情況下定義�
               Mediator Mediator 通過阻止對象顯式地相互引用來促進鬆散耦合，並且它允許您獨立地改變它們的交互。 我們使用中介者設計模式在系統中的不同對象之間提供集中的通信媒介。
 中介者模式專注於在對象之間提供一個中介者進行互動，並幫助實現對象之間的丟失耦合。對像要求中介者代表它們進行交互，而不是直接相互交互。它導致可重用性和鬆散耦合。此外，它封裝了對象之間的交互，使它們相互獨立。這也允許他們通過實現不同的中介以完全不同的方式改變與其他對象的交互。調解器有助於降低類的複雜性。此外，每個對像不再需要詳細了解如何與其他對象交互。對象之間的耦合從緊緻僵硬到鬆散優雅。 中介者設計模式在多個對象相互交互的企業應用程序中非常有用。如果對象直接相互交互，系統組件就會相互緊密耦合。它們還使可維護性成本更高，並且不能靈活地輕鬆擴展。
 例如，空中交通管制員是調解員模式的一個很好的例子，其中機場控制室充當不同航班之間通信的調解員。中介作為對象之間的路由器工作，它可以有自己的邏輯來提供通信方式。
- Mediator: 定義一個與同事對象通信的 interface ConcreteMediator: 通過協調 Colleague 對象來實現協作行為。它還了解並維護其同事。 Colleague Classes: 每個 Colleague class 都知道它的 Mediator 對象。每位同事在本應與另一位同事溝通時都會與其調解員溝通。  public interface IMediator { public void talk(); public void fight(); public void registerA(ColleagueA a); public void registerB(ColleagueB b); } public class ConcreteMediator implements IMediator { ColleagueA talk; ColleagueB fight; @Override public void talk() { System.
+Mediator: 定義一個與同事對象通信的 interface ConcreteMediator: 通過協調 Colleague 對象來實現協作行為。它還了解並維護其同事。 Colleague Classes: 每個 Colleague class 都知道它的 Mediator 對象。每位同事在本應與另一位同事溝通時都會與其調解員溝通。 public interface IMediator { public void talk(); public void fight(); public void registerA(ColleagueA a); public void registerB(ColleagueB b); } public class ConcreteMediator implements IMediator { ColleagueA talk; ColleagueB fight; @Override public void talk() { System.
 
 
             
@@ -725,6 +676,57 @@ visitor pattern 允許在不更改集合中任何對象的類的情況下定義�
             
           </p>
           <a href="/post/designpattern/gof/behavioral/templatemethod/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Aug 7, 2018
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/designpattern/gof/structural/decorator/">DesignPattern - Structural - Decorator</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Decorator Decorator 的主要目的是動態地為對象附加額外的職責。Decorator 為擴展功能提供了一種靈活的替代子類的方法。
+當我們需要動態擴展對象的功能而無需更改原始類源或使用繼承時，Decorator 為我們提供了便利。這是通過在實際對象周圍創建一個稱為裝飾器的對象包裝器來實現的。
+Decorator 對象與底層對象具有相同的接口。這允許客戶端對像以與底層實際對象完全相同的方式與裝飾器對象交互。Decorator 對象包含對實際對象的引用。Decorator 對象接收來自客戶端的所有請求（調用）。反過來，它將這些調用轉發到底層對象。Decorator 對像在將請求轉發到底層對象之前或之後添加了一些附加功能。這確保了附加功能可以在運行時從外部添加到給定對象，而無需修改其結構。
+
+
+            
+          </p>
+          <a href="/post/designpattern/gof/structural/decorator/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -832,15 +834,6 @@ visitor pattern 允許在不更改集合中任何對象的類的情況下定義�
 
 
     
-      
-        <li class="page-item">
-          <a class="page-link" href="/page/8/">8</a>
-        </li>
-
-      
-
-
-    
     
       <li class="page-item">
         <a class="page-link" href="/page/7/">
@@ -878,8 +871,8 @@ visitor pattern 允許在不更改集合中任何對象的類的情況下定義�
   
   <script
     type="text/javascript"
-    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
-    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
     crossorigin="anonymous"
   ></script></body>
 </html>

@@ -18,7 +18,7 @@
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.92.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.111.3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta
     name="description"
     content="
@@ -74,8 +74,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/anatole-header.min.2a2cd9614b7d007dfbb75e8da19e3a0fa872ceab53c6d000c00b7a0c89b85bfc.js"
-    integrity="sha256-KizZYUt9AH37t16NoZ46D6hyzqtTxtAAwAt6DIm4W/w="
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
     crossorigin="anonymous"
   ></script>
 
@@ -84,15 +84,15 @@ Where time is spend, there is success.
     
     <script
       type="text/javascript"
-      src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
-      integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
       crossorigin="anonymous"
     ></script>
 
   
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Deploy Hugo"/>
-<meta name="twitter:description" content="Deploy Hugo  設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html hugo -t &lt;你的theme&gt;  再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !"/>
+<meta name="twitter:description" content="Deploy Hugo 設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html hugo -t &lt;你的theme&gt; 再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !"/>
 
 
 
@@ -113,7 +113,7 @@ Where time is spend, there is success.
         "alternativeHeadline": "",
         "description": "
       
-        Deploy Hugo  設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html hugo -t \u0026lt;你的theme\u0026gt;  再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
+        Deploy Hugo 設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html hugo -t \u0026lt;你的theme\u0026gt; 再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
 
 
       
@@ -295,8 +295,8 @@ Where time is spend, there is success.
   
   <script
     type="text/javascript"
-    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
-    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
     crossorigin="anonymous"
   ></script></div>
 </aside>
@@ -333,8 +333,8 @@ Where time is spend, there is success.
 設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html
 </p>
 <br>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">hugo -t &lt;你的theme&gt;
-</code></pre></div><p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-console" data-lang="console"><span style="display:flex;"><span>hugo -t &lt;你的theme&gt;
+</span></span></code></pre></div><p>
 再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !
 </p>
 <br>
@@ -362,26 +362,24 @@ Where time is spend, there is success.
 # build public/
 hugo -t &lt;你的theme&gt;
 
-commit_message = &quot;$1&quot;
+commit_message = &#34;$1&#34;
 
 # push public website
 cd public/
 git add . -A
-git commit -m &quot;$commit_message&quot;
+git commit -m &#34;$commit_message&#34;
 git push
 cd ..
 
 # push github backup
 git add . -A
-git commit -m &quot;$commit_message&quot;
+git commit -m &#34;$commit_message&#34;
 git push
-
 </code></pre><p>之後有新 post 要部屬上 github 時
 就執行 script 檔就行了 !
 <br></p>
 <pre tabindex="0"><code class="language-script" data-lang="script">
 . deploy.sh &lt;你要留的 commit message&gt;
-
 </code></pre><br>
 <br>
 <p>昨天電腦關機後想到的，之後看可不可以再改進腳本，讓他更方便</p>
@@ -432,8 +430,8 @@ git push
   
   <script
     type="text/javascript"
-    src="/js/medium-zoom.min.71100d84fab0ad794b8399a66ac810700cc78d703f715dc10af4d7ba7b761362.js"
-    integrity="sha256-cRANhPqwrXlLg5mmasgQcAzHjXA/cV3BCvTXunt2E2I="
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
     crossorigin="anonymous"
   ></script></body>
 </html>
