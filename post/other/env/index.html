@@ -163,7 +163,7 @@ Where time is spend, there is success.
 
     ,
         "url" : "https:\/\/xinqilin.github.io\/post\/other\/env\/",
-        "wordCount" : "781",
+        "wordCount" : "923",
         "genre" : [ 
       
       "MAC"
@@ -313,7 +313,7 @@ Where time is spend, there is success.
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 4 分鐘</span>
+            <span class="reading-time">閱讀時間 5 分鐘</span>
           </div>
 
         
@@ -358,108 +358,171 @@ chmod u+x *.sh</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span></code></pre></div><h3 id="zsh">zsh</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>    <span style="color:#75715e"># JDK</span>
-</span></span><span style="display:flex;"><span>    JAVA_HOME<span style="color:#f92672">=</span>/Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home
-</span></span><span style="display:flex;"><span>    PATH<span style="color:#f92672">=</span>$JAVA_HOME/bin:$PATH:.
-</span></span><span style="display:flex;"><span>    CLASSPATH<span style="color:#f92672">=</span>$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:.
-</span></span><span style="display:flex;"><span>    export JAVA_HOME
-</span></span><span style="display:flex;"><span>    export PATH
-</span></span><span style="display:flex;"><span>    export CLASSPATH
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!</span>
-</span></span><span style="display:flex;"><span>    export SDKMAN_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[[</span> -s <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman/bin/sdkman-init.sh&#34;</span> <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman/bin/sdkman-init.sh&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># homebrew</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># x86_64 version brew path</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 這邊會把舊版本取為 brow (o for old)</span>
-</span></span><span style="display:flex;"><span>    export PATH<span style="color:#f92672">=</span>/opt/homebrew/bin:$PATH
-</span></span><span style="display:flex;"><span>    alias brow<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;arch --x86_64 /usr/local/Homebrew/bin/brew&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># nvm</span>
-</span></span><span style="display:flex;"><span>    export NVM_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span><span style="color:#f92672">[</span> -z <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CONFIG_HOME-<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> printf %s <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>HOME<span style="color:#e6db74">}</span><span style="color:#e6db74">/.nvm&#34;</span> <span style="color:#f92672">||</span> printf %s <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CONFIG_HOME<span style="color:#e6db74">}</span><span style="color:#e6db74">/nvm&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span> -s <span style="color:#e6db74">&#34;</span>$NVM_DIR<span style="color:#e6db74">/nvm.sh&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\.</span> <span style="color:#e6db74">&#34;</span>$NVM_DIR<span style="color:#e6db74">/nvm.sh&#34;</span> <span style="color:#75715e"># This loads nvm</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># If you come from bash you might have to change your $PATH.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># export PATH=$HOME/bin:/usr/local/bin:$PATH</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Path to your oh-my-zsh installation.</span>
-</span></span><span style="display:flex;"><span>    export ZSH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.oh-my-zsh&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Set name of the theme to load --- if set to &#34;random&#34;, it will</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># load a random theme each time oh-my-zsh is loaded, in which case,</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># to know which specific one was loaded, run: echo $RANDOM_THEME</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</span>
-</span></span><span style="display:flex;"><span>    ZSH_THEME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;agnoster&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Set list of themes to pick from when loading at random</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Setting this variable when ZSH_THEME=random will cause zsh to load</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># a theme from this variable instead of looking in $ZSH/themes/</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># If set to an empty array, this variable will have no effect.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ZSH_THEME_RANDOM_CANDIDATES=( &#34;robbyrussell&#34; &#34;agnoster&#34; )</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line to use case-sensitive completion.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># CASE_SENSITIVE=&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line to use hyphen-insensitive completion.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Case-sensitive completion must be off. _ and - will be interchangeable.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># HYPHEN_INSENSITIVE=&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment one of the following lines to change the auto-update behavior</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># zstyle &#39;:omz:update&#39; mode disabled  # disable automatic updates</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># zstyle &#39;:omz:update&#39; mode auto      # update automatically without asking</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># zstyle &#39;:omz:update&#39; mode reminder  # just remind me to update when it&#39;s time</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line to change how often to auto-update (in days).</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># zstyle &#39;:omz:update&#39; frequency 13</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line if pasting URLs and other text is messed up.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># DISABLE_MAGIC_FUNCTIONS=&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line to disable colors in ls.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># DISABLE_LS_COLORS=&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line to disable auto-setting terminal title.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># DISABLE_AUTO_TITLE=&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line to enable command auto-correction.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ENABLE_CORRECTION=&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line to display red dots whilst waiting for completion.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># You can also set it to another string to have that shown instead of the default red dots.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># e.g. COMPLETION_WAITING_DOTS=&#34;%F{yellow}waiting...%f&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Caution: this setting can cause issues with multiline prompts in zsh &lt; 5.7.1 (see #5765)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># COMPLETION_WAITING_DOTS=&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line if you want to disable marking untracked files</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># under VCS as dirty. This makes repository status check for large repositories</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># much, much faster.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># DISABLE_UNTRACKED_FILES_DIRTY=&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Uncomment the following line if you want to change the command execution time</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># stamp shown in the history command output.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># You can set one of the optional three formats:</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># &#34;mm/dd/yyyy&#34;|&#34;dd.mm.yyyy&#34;|&#34;yyyy-mm-dd&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># or set a custom format using the strftime function format specifications,</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># see &#39;man strftime&#39; for details.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># HIST_STAMPS=&#34;mm/dd/yyyy&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Would you like to use another custom folder than $ZSH/custom?</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ZSH_CUSTOM=/path/to/new-custom-folder</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Which plugins would you like to load?</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Standard plugins can be found in $ZSH/plugins/</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Custom plugins may be added to $ZSH_CUSTOM/plugins/</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Example format: plugins=(rails git textmate ruby lighthouse)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Add wisely, as too many plugins slow down shell startup.</span>
-</span></span><span style="display:flex;"><span>    plugins<span style="color:#f92672">=(</span>git<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    source $ZSH/oh-my-zsh.sh
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># User configuration</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># export MANPATH=&#34;/usr/local/man:$MANPATH&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># You may need to manually set your language environment</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># export LANG=en_US.UTF-8</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Preferred editor for local and remote sessions</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># if [[ -n $SSH_CONNECTION ]]; then</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#   export EDITOR=&#39;vim&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># else</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#   export EDITOR=&#39;mvim&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># fi</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Compilation flags</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># export ARCHFLAGS=&#34;-arch x86_64&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Set personal aliases, overriding those provided by oh-my-zsh libs,</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># plugins, and themes. Aliases can be placed here, though oh-my-zsh</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># users are encouraged to define aliases within the ZSH_CUSTOM folder.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># For a full list of active aliases, run `alias`.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Example aliases</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># alias zshconfig=&#34;mate ~/.zshrc&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># alias ohmyzsh=&#34;mate ~/.oh-my-zsh&#34;</span>
-</span></span><span style="display:flex;"><span>    code <span style="color:#f92672">()</span> <span style="color:#f92672">{</span> VSCODE_CWD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PWD<span style="color:#e6db74">&#34;</span> open -n -b <span style="color:#e6db74">&#34;com.microsoft.VSCode&#34;</span> --args $* ;<span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    plugins<span style="color:#f92672">=(</span>
-</span></span><span style="display:flex;"><span>    git
-</span></span><span style="display:flex;"><span>    zsh-syntax-highlighting
-</span></span><span style="display:flex;"><span>    zsh-autosuggestions
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>  <span style="color:#75715e"># Fig pre block. Keep at the top of this file.</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[[</span> -f <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.fig/shell/zshrc.pre.zsh&#34;</span> <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> builtin source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.fig/shell/zshrc.pre.zsh&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Initialization code that may require console input (password prompts, [y/n]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># confirmations, etc.) must go above this block; everything else may go below.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> -r <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CACHE_HOME<span style="color:#66d9ef">:-</span>$HOME/.cache<span style="color:#e6db74">}</span><span style="color:#e6db74">/p10k-instant-prompt-</span><span style="color:#e6db74">${</span>(%)<span style="color:#66d9ef">:-</span>%n<span style="color:#e6db74">}</span><span style="color:#e6db74">.zsh&#34;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  source <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CACHE_HOME<span style="color:#66d9ef">:-</span>$HOME/.cache<span style="color:#e6db74">}</span><span style="color:#e6db74">/p10k-instant-prompt-</span><span style="color:#e6db74">${</span>(%)<span style="color:#66d9ef">:-</span>%n<span style="color:#e6db74">}</span><span style="color:#e6db74">.zsh&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 懶人指令</span>
+</span></span><span style="display:flex;"><span>alias hist<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;history&#39;</span>
+</span></span><span style="display:flex;"><span>alias d<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;docker&#39;</span>
+</span></span><span style="display:flex;"><span>alias gs<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;git status&#39;</span>
+</span></span><span style="display:flex;"><span>alias g<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;git&#39;</span>  
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># JDK</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># JAVA_HOME=/Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home</span>
+</span></span><span style="display:flex;"><span>JAVA_HOME<span style="color:#f92672">=</span>/Library/Java/JavaVirtualMachines/amazon-corretto-17.jdk/Contents/Home
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-lts-java11-20.3.4/Contents/Home</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java17-22.1.0/Contents/Home</span>
+</span></span><span style="display:flex;"><span>PATH<span style="color:#f92672">=</span>$JAVA_HOME/bin:$PATH:.
+</span></span><span style="display:flex;"><span>CLASSPATH<span style="color:#f92672">=</span>$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:.
+</span></span><span style="display:flex;"><span>export JAVA_HOME
+</span></span><span style="display:flex;"><span>export PATH
+</span></span><span style="display:flex;"><span>export CLASSPATH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!</span>
+</span></span><span style="display:flex;"><span>export SDKMAN_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[[</span> -s <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman/bin/sdkman-init.sh&#34;</span> <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.sdkman/bin/sdkman-init.sh&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># homebrew</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># x86_64 version brew path</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 這邊會把舊版本取為 brow (o for old)</span>
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>/opt/homebrew/bin:$PATH
+</span></span><span style="display:flex;"><span>alias brow<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;arch --x86_64 /usr/local/Homebrew/bin/brew&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># nvm</span>
+</span></span><span style="display:flex;"><span>export NVM_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span><span style="color:#f92672">[</span> -z <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CONFIG_HOME-<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> printf %s <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>HOME<span style="color:#e6db74">}</span><span style="color:#e6db74">/.nvm&#34;</span> <span style="color:#f92672">||</span> printf %s <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CONFIG_HOME<span style="color:#e6db74">}</span><span style="color:#e6db74">/nvm&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span> -s <span style="color:#e6db74">&#34;</span>$NVM_DIR<span style="color:#e6db74">/nvm.sh&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\.</span> <span style="color:#e6db74">&#34;</span>$NVM_DIR<span style="color:#e6db74">/nvm.sh&#34;</span> <span style="color:#75715e"># This loads nvm</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If you come from bash you might have to change your $PATH.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># export PATH=$HOME/bin:/usr/local/bin:$PATH</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Path to your oh-my-zsh installation.</span>
+</span></span><span style="display:flex;"><span>export ZSH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.oh-my-zsh&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set name of the theme to load --- if set to &#34;random&#34;, it will</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># load a random theme each time oh-my-zsh is loaded, in which case,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># to know which specific one was loaded, run: echo $RANDOM_THEME</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</span>
+</span></span><span style="display:flex;"><span>ZSH_THEME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;agnoster&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ZSH_THEME=&#34;powerlevel10k/powerlevel10k&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set list of themes to pick from when loading at random</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Setting this variable when ZSH_THEME=random will cause zsh to load</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># a theme from this variable instead of looking in $ZSH/themes/</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If set to an empty array, this variable will have no effect.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ZSH_THEME_RANDOM_CANDIDATES=( &#34;robbyrussell&#34; &#34;agnoster&#34; )</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line to use case-sensitive completion.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># CASE_SENSITIVE=&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line to use hyphen-insensitive completion.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Case-sensitive completion must be off. _ and - will be interchangeable.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># HYPHEN_INSENSITIVE=&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment one of the following lines to change the auto-update behavior</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># zstyle &#39;:omz:update&#39; mode disabled  # disable automatic updates</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># zstyle &#39;:omz:update&#39; mode auto      # update automatically without asking</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># zstyle &#39;:omz:update&#39; mode reminder  # just remind me to update when it&#39;s time</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line to change how often to auto-update (in days).</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># zstyle &#39;:omz:update&#39; frequency 13</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line if pasting URLs and other text is messed up.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># DISABLE_MAGIC_FUNCTIONS=&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line to disable colors in ls.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># DISABLE_LS_COLORS=&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line to disable auto-setting terminal title.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># DISABLE_AUTO_TITLE=&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line to enable command auto-correction.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ENABLE_CORRECTION=&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line to display red dots whilst waiting for completion.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># You can also set it to another string to have that shown instead of the default red dots.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># e.g. COMPLETION_WAITING_DOTS=&#34;%F{yellow}waiting...%f&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Caution: this setting can cause issues with multiline prompts in zsh &lt; 5.7.1 (see #5765)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># COMPLETION_WAITING_DOTS=&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line if you want to disable marking untracked files</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># under VCS as dirty. This makes repository status check for large repositories</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># much, much faster.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># DISABLE_UNTRACKED_FILES_DIRTY=&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment the following line if you want to change the command execution time</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># stamp shown in the history command output.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># You can set one of the optional three formats:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># &#34;mm/dd/yyyy&#34;|&#34;dd.mm.yyyy&#34;|&#34;yyyy-mm-dd&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or set a custom format using the strftime function format specifications,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># see &#39;man strftime&#39; for details.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># HIST_STAMPS=&#34;mm/dd/yyyy&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Would you like to use another custom folder than $ZSH/custom?</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ZSH_CUSTOM=/path/to/new-custom-folder</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Which plugins would you like to load?</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Standard plugins can be found in $ZSH/plugins/</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Custom plugins may be added to $ZSH_CUSTOM/plugins/</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Example format: plugins=(rails git textmate ruby lighthouse)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add wisely, as too many plugins slow down shell startup.</span>
+</span></span><span style="display:flex;"><span>plugins<span style="color:#f92672">=(</span>git<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>source $ZSH/oh-my-zsh.sh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># User configuration</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># export MANPATH=&#34;/usr/local/man:$MANPATH&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># You may need to manually set your language environment</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># export LANG=en_US.UTF-8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Preferred editor for local and remote sessions</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># if [[ -n $SSH_CONNECTION ]]; then</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   export EDITOR=&#39;vim&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># else</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   export EDITOR=&#39;mvim&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Compilation flags</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># export ARCHFLAGS=&#34;-arch x86_64&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set personal aliases, overriding those provided by oh-my-zsh libs,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># plugins, and themes. Aliases can be placed here, though oh-my-zsh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># users are encouraged to define aliases within the ZSH_CUSTOM folder.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># For a full list of active aliases, run `alias`.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Example aliases</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># alias zshconfig=&#34;mate ~/.zshrc&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># alias ohmyzsh=&#34;mate ~/.oh-my-zsh&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>code <span style="color:#f92672">()</span> <span style="color:#f92672">{</span> VSCODE_CWD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PWD<span style="color:#e6db74">&#34;</span> open -n -b <span style="color:#e6db74">&#34;com.microsoft.VSCode&#34;</span> --args $* ;<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plugins<span style="color:#f92672">=(</span>
+</span></span><span style="display:flex;"><span>git
+</span></span><span style="display:flex;"><span>zsh-syntax-highlighting
+</span></span><span style="display:flex;"><span>zsh-autosuggestions
+</span></span><span style="display:flex;"><span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[[</span> ! -f ~/.p10k.zsh <span style="color:#f92672">]]</span> <span style="color:#f92672">||</span> source ~/.p10k.zsh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 這行控制 userName</span>
+</span></span><span style="display:flex;"><span>prompt_context<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;</span>$USER<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span>$DEFAULT_USER<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">||</span> -n <span style="color:#e6db74">&#34;</span>$SSH_CLIENT<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    prompt_segment black default <span style="color:#e6db74">&#34;%(!.%{%F{yellow}%}.)Bill&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Fig post block. Keep at the bottom of this file.</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[[</span> -f <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.fig/shell/zshrc.post.zsh&#34;</span> <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> builtin source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.fig/shell/zshrc.post.zsh&#34;</span>
 </span></span></code></pre></div></div>
     <div class="post-footer">
       <div class="info">
