@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-tw">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>付款頁面</title>
+  <title>LinePay POC 付款頁面</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,19 +13,32 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      background-color: #f8f9fa;
     }
+
     header {
       margin-bottom: 20px;
+      text-align: center;
     }
+
+    h1 {
+      color: #333;
+    }
+
     main {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+
     footer {
       margin-top: 20px;
       text-align: center;
       color: #666;
       font-size: 0.8rem;
     }
+
     #windowWidth {
       position: fixed;
       bottom: 10px;
@@ -35,99 +49,130 @@
       border-radius: 5px;
       font-size: 12px;
     }
+
     .no-hash-message {
       text-align: center;
       padding: 20px;
-      color: #666;
+      color: #d9534f;
       font-size: 1.2rem;
+    }
+
+    .message-box {
+      margin: 20px 0;
+      padding: 15px;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 8px;
+      display: none;
+      border: 2px solid transparent;
+      /* 添加透明邊框以保留佈局 */
+    }
+
+    .success {
+      background-color: #dff0d8;
+      color: #3c763d;
+      border-color: #d6e9c6;
+      /* 成功消息的邊框顏色 */
+    }
+
+    .error {
+      background-color: #f2dede;
+      color: #a94442;
+      border-color: #ebccd1;
+      /* 錯誤消息的邊框顏色 */
     }
   </style>
 </head>
+
 <body onload="getHashFromUrl()">
   <header>
-    <h1>付款頁面</h1>
+    <h1>LinePay POC (請先忽略外觀美醜)</h1>
   </header>
-  
+
   <main>
     <easy-pay></easy-pay>
     <div id="no-hash-container" class="no-hash-message" style="display: none;">
       <p>未提供 hash 參數，無法處理付款請求。</p>
     </div>
+    <div id="messageContainer" class="message-box"></div>
     <div id="windowWidth">瀏覽器寬度：-</div>
   </main>
-  
+
   <footer>
     <p>&copy; LinePay Bill 測試付款系統</p>
   </footer>
 
-  <script type="module" src=""></script>
-  
+  <script type="module" src="https://bill-lin.dev/js/app.js"></script>
+
   <script>
     function getHashFromUrl() {
-      // 從 URL 參數中獲取 hash 值
       const urlParams = new URLSearchParams(window.location.search);
       const hash = urlParams.get('hash');
-      
-      // 如果有 hash 值則設置到 orderHash 中
+
       if (hash) {
         console.log('找到 hash:', hash);
         initPaymentWithHash(hash);
       } else {
         console.log('未找到 hash 參數');
-        // 當無 hash 參數時顯示提示訊息
         document.querySelector('easy-pay').style.display = 'none';
         document.getElementById('no-hash-container').style.display = 'block';
-        
-        // 仍然更新瀏覽器寬度顯示
+
         updateWidth();
         window.addEventListener('resize', updateWidth);
       }
     }
-    
+
     function initPaymentWithHash(hash) {
-      (function() {
+      (function () {
         const data = {
           "idTokenHash": "",
-          "orderHashList":[
+          "orderHashList": [
             {
               "orderHash": hash
             }
           ]
+        };
+
+        const setTestData = function () {
+          const easyPay = document.querySelector('easy-pay');
+          easyPay.paymentOrders = JSON.parse(JSON.stringify(data));
+          console.log(easyPay.paymentOrders);
         }
 
-        const setTestData = function() {
-          const easyPay = document.querySelector('easy-pay')
-          easyPay.paymentOrders = JSON.parse(JSON.stringify(data))
-          console.log(easyPay.paymentOrders)
+        window.payComplete = function (result) {
+          console.log('payComplete', result);
+          displayMessage('付款成功！', 'success');
         }
 
-        window.payComplete = function(result) {
-          console.log('payComplete', result)
+        window.payFailed = function (result) {
+          console.log('payFailed', result);
+          displayMessage('付款失敗，請稍後再試。', 'error');
         }
 
-        window.payFailed = function(result) {
-          console.log('payFailed', result)
-        }
-
-        // 取得瀏覽器寬度, 方便測試時查看
         function updateWidth() {
           const width = window.innerWidth;
           document.getElementById('windowWidth').innerText = '瀏覽器寬度：' + width + 'px';
         }
-        updateWidth()
+        updateWidth();
 
-        window.addEventListener('resize', updateWidth)
-        
-        // 延遲一下確保 web component 已載入
+        window.addEventListener('resize', updateWidth);
+
         setTimeout(setTestData, 500);
       })();
     }
-    
-    // 更新瀏覽器寬度顯示的共用函數
+
+    function displayMessage(message, type) {
+      const messageContainer = document.getElementById('messageContainer');
+      messageContainer.innerText = message;
+      messageContainer.className = `message-box ${type}`;
+      messageContainer.style.display = 'block';
+    }
+
     function updateWidth() {
       const width = window.innerWidth;
       document.getElementById('windowWidth').innerText = '瀏覽器寬度：' + width + 'px';
     }
   </script>
 </body>
+
 </html>
