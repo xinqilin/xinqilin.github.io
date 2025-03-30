@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    
+      Bill.Lin の 成長之路 ©
+        |
+        SnowFlake DistributionKey
+
+
+      
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      後端工程師 Java, Kotlin 
+
+我的線上筆記
+
+Pleased to meet you!
+
+Where time is spend, there is success.
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://xinqilin.github.io/post/distributedsystem/snowflake-distributionkey/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SnowFlake DistributionKey"/>
+<meta name="twitter:description" content="Snowflake - Distribution Key 單體式 ID 一般單體式 UUID(Universally Unique identifier) 8-4-4-4-12 總共 32 個 16 進位"/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "SnowFlake DistributionKey",
+        "headline": "SnowFlake DistributionKey",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Snowflake - Distribution Key 單體式 ID 一般單體式 UUID(Universally Unique identifier) 8-4-4-4-12 總共 32 個 16 進位
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/distributedsystem\/snowflake-distributionkey\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2022",
+        "dateCreated": "2022-09-13T23:05:38.00Z",
+        "datePublished": "2022-09-13T23:05:38.00Z",
+        "dateModified": "2022-09-13T23:05:38.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/distributedsystem\/snowflake-distributionkey\/",
+        "wordCount" : "592",
+        "genre" : [ 
+      
+      "Distributed System"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+      </div>
+      <ul>
+        
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
+
+        
+      </ul>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>SnowFlake DistributionKey</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Sep 13, 2022
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 3 分鐘</span>
+          </div>
+
+        
+      </div><h1 id="snowflake---distribution-key">Snowflake - Distribution Key</h1>
+<h3 id="單體式-id">單體式 ID</h3>
+<p>一般單體式 UUID(Universally Unique identifier)
+8-4-4-4-12 總共 32 個 16 進位</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    UUID<span style="color:#f92672">.</span><span style="color:#a6e22e">randomUUID</span><span style="color:#f92672">()</span>  <span style="color:#75715e">// 80e06459-942d-4a63-9fd4-81691b127363
+</span></span></span></code></pre></div><ul>
+<li>優點
+<ul>
+<li>性能高</li>
+<li>本地生成</li>
+<li>無網路延遲</li>
+</ul>
+</li>
+<li>缺點
+<ul>
+<li>無順序性</li>
+<li>字串不適合存 db 當 index or PK 且 32 長度太長</li>
+<li>因無序 所以對 b+ Tree 來說 插入時效能低</li>
+<li>極小機會但 會重複
+=&gt; ＤＢ 解法: replace into <br>
+跟insert功能類似, 但 replace into 會檢查是否存在, 如存在則先刪除, 再插入, 否则直接插入</li>
+</ul>
+</li>
+</ul>
+<h3 id="分佈式-id">分佈式 ID</h3>
+<p>twitter 開發的 雪花算法 - snowflake
+總共 64 bit</p>
+<ul>
+<li>
+<p>1bit
+不用，因為二進制中最高位是符號位，1表示負數，0表示正數。
+生成的id一般都是用整數，所以最高位固定為0。</p>
+</li>
+<li>
+<p>41bit-時間戳，用來記錄時間戳，亳秒級。
+41位可以表示 2^41-1個數字，
+如果只用來表示正整數(計算機中正數包含0)，可以表示的數值範圍是: 0 至 2^41 - 1， 減1是因為可表示的數值範圍是從0開始算的，而不是1.也就是說41位可以表示 2^41 - 1 個毫秒的值，轉化成單位年則是( 2^41 - 1 )/ (1000* 60 * 60 * 24 *365)= 69年</p>
+</li>
+<li>
+<p>10bit-工作機器id,用來記錄工作機器id.
+可以部署在 2^10 = 1024 個節點，包括5位 dataCenterId 和 15 位 workerId
+5位(bit) 可以表示的最大正整數是 2^5-1 = 31，即可以用 0, 1, 2, 3&hellip; 這 32 個數字來表示不同的 dataCenterId 或 workerId</p>
+</li>
+<li>
+<p>12bit, 序列號，序列號，用來記錄同毫秒內產生的不同id.
+12位(bit) 可以表示的最大正整數是 2^12 - 1 = 4095，即可以用 0, 1, 2, 3&hellip; 4094 這 4095 個數字,
+來表示同一機器同一時間截(毫秒)內產生的 4095 個ID序號。</p>
+</li>
+</ul>
+<ul>
+<li>優點</li>
+</ul>
+<ul>
+<li>全局唯一性</li>
+<li>递增性, 確保生成 ID 對於用户或業務是递增的。</li>
+<li>高可用性, 確保任何時候都能生成正確的 ID</li>
+<li>高性能, 在高併發下依然 ok</li>
+<li>亳秒数在高位，自增序列在低位，整個 ID 都是遞增的。</li>
+</ul>
+<ul>
+<li>缺點</li>
+</ul>
+<ul>
+<li>依賴機器時鐘，如果機器時鐘回撥，會導致重複 ID 生成</li>
+<li>在單機上是遞增的，但是由於設計到分佈式環境，每台機器上的時鐘不可能完全同步，有時候會出現不是全局遞增的情況(此缺點可以認為無所謂，- .般分佈式ID只要求趨勢遞增，並不會嚴格要求遞增，90%的需求都只要求趨勢遞增)</li>
+</ul>
+<ul>
+<li>additional 解決機器時鐘回撥問題</li>
+</ul>
+<ul>
+<li>Leaf - 美團點評分佈式ID生成系統</li>
+<li>百度 open source - UidGenerator</li>
+</ul>
+<h3 id="java-sample-code">java sample code</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SnowflakeIdWorker</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 开始时间截 (2015-01-01)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> twepoch <span style="color:#f92672">=</span> <span style="color:#ae81ff">1420041600000L</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 机器id所占的位数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> workerIdBits <span style="color:#f92672">=</span> <span style="color:#ae81ff">5L</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 数据标识id所占的位数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> datacenterIdBits <span style="color:#f92672">=</span> <span style="color:#ae81ff">5L</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> maxWorkerId <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1L</span> <span style="color:#f92672">^</span> <span style="color:#f92672">(-</span><span style="color:#ae81ff">1L</span> <span style="color:#f92672">&lt;&lt;</span> workerIdBits<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 支持的最大数据标识id，结果是31
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> maxDatacenterId <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1L</span> <span style="color:#f92672">^</span> <span style="color:#f92672">(-</span><span style="color:#ae81ff">1L</span> <span style="color:#f92672">&lt;&lt;</span> datacenterIdBits<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 序列在id中占的位数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> sequenceBits <span style="color:#f92672">=</span> <span style="color:#ae81ff">12L</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 机器ID向左移12位
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> workerIdShift <span style="color:#f92672">=</span> sequenceBits<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 数据标识id向左移17位(12+5)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> datacenterIdShift <span style="color:#f92672">=</span> sequenceBits <span style="color:#f92672">+</span> workerIdBits<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 时间截向左移22位(5+5+12)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> timestampLeftShift <span style="color:#f92672">=</span> sequenceBits <span style="color:#f92672">+</span> workerIdBits <span style="color:#f92672">+</span> datacenterIdBits<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> sequenceMask <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1L</span> <span style="color:#f92672">^</span> <span style="color:#f92672">(-</span><span style="color:#ae81ff">1L</span> <span style="color:#f92672">&lt;&lt;</span> sequenceBits<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 工作机器ID(0~31)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">long</span> workerId<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 数据中心ID(0~31)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">long</span> datacenterId<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 毫秒内序列(0~4095)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">long</span> sequence <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>L<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 上次生成ID的时间截
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">long</span> lastTimestamp <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1L</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 构造函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param workerId     工作ID (0~31)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param datacenterId 数据中心ID (0~31)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SnowflakeIdWorker</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> workerId<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> datacenterId<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>workerId <span style="color:#f92672">&gt;</span> maxWorkerId <span style="color:#f92672">||</span> workerId <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;worker Id can&#39;t be greater than %d or less than 0&#34;</span><span style="color:#f92672">,</span> maxWorkerId<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>datacenterId <span style="color:#f92672">&gt;</span> maxDatacenterId <span style="color:#f92672">||</span> datacenterId <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;datacenter Id can&#39;t be greater than %d or less than 0&#34;</span><span style="color:#f92672">,</span> maxDatacenterId<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">workerId</span> <span style="color:#f92672">=</span> workerId<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">datacenterId</span> <span style="color:#f92672">=</span> datacenterId<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 获得下一个ID (该方法是线程安全的)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @return SnowflakeId
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">nextId</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">long</span> timestamp <span style="color:#f92672">=</span> timeGen<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>timestamp <span style="color:#f92672">&lt;</span> lastTimestamp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>                    String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Clock moved backwards.  Refusing to generate id for %d milliseconds&#34;</span><span style="color:#f92672">,</span> lastTimestamp <span style="color:#f92672">-</span> timestamp<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 如果是同一时间生成的，则进行毫秒内序列
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>lastTimestamp <span style="color:#f92672">==</span> timestamp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            sequence <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>sequence <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">&amp;</span> sequenceMask<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 毫秒内序列溢出
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sequence <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//阻塞到下一个毫秒,获得新的时间戳
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                timestamp <span style="color:#f92672">=</span> tilNextMillis<span style="color:#f92672">(</span>lastTimestamp<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 时间戳改变，毫秒内序列重置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            sequence <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>L<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 上次生成ID的时间截
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        lastTimestamp <span style="color:#f92672">=</span> timestamp<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 移位并通过或运算拼到一起组成64位的ID
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">((</span>timestamp <span style="color:#f92672">-</span> twepoch<span style="color:#f92672">)</span> <span style="color:#f92672">&lt;&lt;</span> timestampLeftShift<span style="color:#f92672">)</span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#f92672">|</span> <span style="color:#f92672">(</span>datacenterId <span style="color:#f92672">&lt;&lt;</span> datacenterIdShift<span style="color:#f92672">)</span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#f92672">|</span> <span style="color:#f92672">(</span>workerId <span style="color:#f92672">&lt;&lt;</span> workerIdShift<span style="color:#f92672">)</span> <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#f92672">|</span> sequence<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 阻塞到下一个毫秒，直到获得新的时间戳
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param lastTimestamp 上次生成ID的时间截
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @return 当前时间戳
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">tilNextMillis</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> lastTimestamp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">long</span> timestamp <span style="color:#f92672">=</span> timeGen<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>timestamp <span style="color:#f92672">&lt;=</span> lastTimestamp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            timestamp <span style="color:#f92672">=</span> timeGen<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> timestamp<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 返回以毫秒为单位的当前时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @return 当前时间(毫秒)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">timeGen</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> InterruptedException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        SnowflakeIdWorker idWorker <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SnowflakeIdWorker<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> id <span style="color:#f92672">=</span> idWorker<span style="color:#f92672">.</span><span style="color:#a6e22e">nextId</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>id<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>reference: <br>
+<a href="https://github.com/twitter-archive/snowflake">https://github.com/twitter-archive/snowflake</a> <br>
+<a href="https://github.com/beyondfengyu/SnowFlake/blob/master/SnowFlake.java">https://github.com/beyondfengyu/SnowFlake/blob/master/SnowFlake.java</a> <br>
+<a href="https://blog.csdn.net/qq_45408390/article/details/119793810">https://blog.csdn.net/qq_45408390/article/details/119793810</a> <br></p>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/distributed-system/">Distributed System</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

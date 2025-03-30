@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    
+      Bill.Lin の 成長之路 ©
+        |
+        JWT
+
+
+      
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      後端工程師 Java, Kotlin 
+
+我的線上筆記
+
+Pleased to meet you!
+
+Where time is spend, there is success.
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://xinqilin.github.io/post/spring/jwt/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JWT"/>
+<meta name="twitter:description" content="JWT Dependency Inject // 兩種 引入 jjwt ， version 放 properties 內方便控管 &lt;properties&gt; &lt;project."/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "JWT",
+        "headline": "JWT",
+        "alternativeHeadline": "",
+        "description": "
+      
+        JWT Dependency Inject \/\/ 兩種 引入 jjwt ， version 放 properties 內方便控管 \u0026lt;properties\u0026gt; \u0026lt;project.
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/spring\/jwt\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-07-01T23:39:52.00Z",
+        "datePublished": "2021-07-01T23:39:52.00Z",
+        "dateModified": "2021-07-01T23:39:52.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/spring\/jwt\/",
+        "wordCount" : "602",
+        "genre" : [ 
+      
+      "Spring"
+
+    
+      
+        ,
+
+      
+      "Token"
+
+    
+      
+        ,
+
+      
+      "JAVA"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+      </div>
+      <ul>
+        
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
+
+        
+      </ul>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>JWT</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Thu, Jul 1, 2021
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 3 分鐘</span>
+          </div>
+
+        
+      </div><h1 id="jwt-dependency-inject">JWT Dependency Inject</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// 兩種  引入 jjwt ， version 放 properties 內方便控管
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;properties&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span style="color:#f92672">&lt;/project.build.sourceEncoding&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;java.version&gt;</span>1.8<span style="color:#f92672">&lt;/java.version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;maven.compiler.source&gt;</span>1.8<span style="color:#f92672">&lt;/maven.compiler.source&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;maven.compiler.target&gt;</span>1.8<span style="color:#f92672">&lt;/maven.compiler.target&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;jjwt.version&gt;</span>0.9.0<span style="color:#f92672">&lt;/jjwt.version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>io.jsonwebtoken<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jjwt<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>${jjwt.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>javax.xml.bind<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">&lt;artifactId&gt;</span>jaxb-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// 第二種
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>io.jsonwebtoken<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jjwt-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>0.11.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>io.jsonwebtoken<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jjwt-impl<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>0.11.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;scope&gt;</span>runtime<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>io.jsonwebtoken<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jjwt-jackson<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>0.11.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;scope&gt;</span>runtime<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>流程: 使用者帳密登入 -&gt; 驗證後 -&gt; 回應 token -&gt; 取得token 放入 header 中 打 API</p>
+<h3 id="model">model</h3>
+<blockquote>
+<p>Request  帳密</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthenticationRequest</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String userName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String password<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">AuthenticationRequest</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">AuthenticationRequest</span><span style="color:#f92672">(</span>String userName<span style="color:#f92672">,</span> String password<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">userName</span> <span style="color:#f92672">=</span> userName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getUserName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> userName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUserName</span><span style="color:#f92672">(</span>String userName<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">userName</span> <span style="color:#f92672">=</span> userName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getPassword</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> password<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setPassword</span><span style="color:#f92672">(</span>String password<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><blockquote>
+<p>Response 回應 token</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthenticationResponse</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String jwt<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">AuthenticationResponse</span><span style="color:#f92672">(</span>String jwt<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jwt</span> <span style="color:#f92672">=</span> jwt<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getJwt</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jwt<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="config">Config</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@EnableWebSecurity</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MySecurityConfig</span> <span style="color:#66d9ef">extends</span> WebSecurityConfigurerAdapter <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 建構子方式注入
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> MyUserDetailsService myUserDetailsService<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> JwtRequestFilter jwtRequestFilter<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MySecurityConfig</span><span style="color:#f92672">(</span>MyUserDetailsService myUserDetailsService<span style="color:#f92672">,</span> JwtRequestFilter jwtRequestFilter<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">myUserDetailsService</span> <span style="color:#f92672">=</span> myUserDetailsService<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jwtRequestFilter</span> <span style="color:#f92672">=</span> jwtRequestFilter<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// AuthenticationManager init 別的地方會用到
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> AuthenticationManager <span style="color:#a6e22e">authenticationManagerBean</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">authenticationManagerBean</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// /authentication 請求可過
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>HttpSecurity http<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        http<span style="color:#f92672">.</span><span style="color:#a6e22e">csrf</span><span style="color:#f92672">().</span><span style="color:#a6e22e">disable</span><span style="color:#f92672">().</span><span style="color:#a6e22e">authorizeRequests</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">antMatchers</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/authentication&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">permitAll</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">anyRequest</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">authenticated</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">sessionManagement</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">sessionCreationPolicy</span><span style="color:#f92672">(</span>SessionCreationPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">STATELESS</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        http<span style="color:#f92672">.</span><span style="color:#a6e22e">addFilterBefore</span><span style="color:#f92672">(</span>jwtRequestFilter<span style="color:#f92672">,</span> UsernamePasswordAuthenticationFilter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>AuthenticationManagerBuilder auth<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        auth<span style="color:#f92672">.</span><span style="color:#a6e22e">userDetailsService</span><span style="color:#f92672">(</span>myUserDetailsService<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> PasswordEncoder <span style="color:#a6e22e">passwordEncoder</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NoOpPasswordEncoder<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="最重要的-jwtutil">最重要的 JWTUtil</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JwtUtil</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String SECRET_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;@*$&amp;Secret&amp;&amp;$#&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">extractUsername</span><span style="color:#f92672">(</span>String token<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> extractClaim<span style="color:#f92672">(</span>token<span style="color:#f92672">,</span> Claims<span style="color:#f92672">::</span>getSubject<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Date <span style="color:#a6e22e">extractExpiration</span><span style="color:#f92672">(</span>String token<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> extractClaim<span style="color:#f92672">(</span>token<span style="color:#f92672">,</span> Claims<span style="color:#f92672">::</span>getExpiration<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">extractClaim</span><span style="color:#f92672">(</span>String token<span style="color:#f92672">,</span> Function<span style="color:#f92672">&lt;</span>Claims<span style="color:#f92672">,</span> T<span style="color:#f92672">&gt;</span> claimsResolver<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> Claims claims <span style="color:#f92672">=</span> extractAllClaims<span style="color:#f92672">(</span>token<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> claimsResolver<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>claims<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Claims <span style="color:#a6e22e">extractAllClaims</span><span style="color:#f92672">(</span>String token<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Jwts<span style="color:#f92672">.</span><span style="color:#a6e22e">parser</span><span style="color:#f92672">().</span><span style="color:#a6e22e">setSigningKey</span><span style="color:#f92672">(</span>SECRET_KEY<span style="color:#f92672">).</span><span style="color:#a6e22e">parseClaimsJws</span><span style="color:#f92672">(</span>token<span style="color:#f92672">).</span><span style="color:#a6e22e">getBody</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Boolean <span style="color:#a6e22e">isTokenExpired</span><span style="color:#f92672">(</span>String token<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> extractExpiration<span style="color:#f92672">(</span>token<span style="color:#f92672">).</span><span style="color:#a6e22e">before</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">generateToken</span><span style="color:#f92672">(</span>UserDetails userDetails<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> claims <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> createToken<span style="color:#f92672">(</span>claims<span style="color:#f92672">,</span> userDetails<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsername</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String <span style="color:#a6e22e">createToken</span><span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> claims<span style="color:#f92672">,</span> String subject<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Jwts<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">().</span><span style="color:#a6e22e">setClaims</span><span style="color:#f92672">(</span>claims<span style="color:#f92672">).</span><span style="color:#a6e22e">setSubject</span><span style="color:#f92672">(</span>subject<span style="color:#f92672">).</span><span style="color:#a6e22e">setIssuedAt</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">()))</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">setExpiration</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">signWith</span><span style="color:#f92672">(</span>SignatureAlgorithm<span style="color:#f92672">.</span><span style="color:#a6e22e">HS256</span><span style="color:#f92672">,</span> SECRET_KEY<span style="color:#f92672">).</span><span style="color:#a6e22e">compact</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Boolean <span style="color:#a6e22e">validateToken</span><span style="color:#f92672">(</span>String token<span style="color:#f92672">,</span> UserDetails userDetails<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> String userName <span style="color:#f92672">=</span> extractUsername<span style="color:#f92672">(</span>token<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>userName<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>userDetails<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsername</span><span style="color:#f92672">())</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>isTokenExpired<span style="color:#f92672">(</span>token<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="jwt-filter">JWT Filter</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JwtRequestFilter</span> <span style="color:#66d9ef">extends</span> OncePerRequestFilter <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> MyUserDetailsService myUserDetailsService<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> JwtUtil jwtUtil<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JwtRequestFilter</span><span style="color:#f92672">(</span>MyUserDetailsService myUserDetailsService<span style="color:#f92672">,</span> JwtUtil jwtUtil<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">myUserDetailsService</span> <span style="color:#f92672">=</span> myUserDetailsService<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jwtUtil</span> <span style="color:#f92672">=</span> jwtUtil<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doFilterInternal</span><span style="color:#f92672">(</span>HttpServletRequest request<span style="color:#f92672">,</span> HttpServletResponse response<span style="color:#f92672">,</span> FilterChain filterChain<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> ServletException<span style="color:#f92672">,</span> IOException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> String authorzationHeader <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span><span style="color:#a6e22e">getHeader</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Authorization&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        String username <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        String jwt <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>authorzationHeader <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> authorzationHeader<span style="color:#f92672">.</span><span style="color:#a6e22e">startsWith</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Bearer &#34;</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            jwt <span style="color:#f92672">=</span> authorzationHeader<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span><span style="color:#ae81ff">7</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            username <span style="color:#f92672">=</span> jwtUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">extractUsername</span><span style="color:#f92672">(</span>jwt<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>username <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> SecurityContextHolder<span style="color:#f92672">.</span><span style="color:#a6e22e">getContext</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getAuthentication</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            UserDetails userDetails <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">myUserDetailsService</span><span style="color:#f92672">.</span><span style="color:#a6e22e">loadUserByUsername</span><span style="color:#f92672">(</span>username<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>jwtUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">validateToken</span><span style="color:#f92672">(</span>jwt<span style="color:#f92672">,</span> userDetails<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UsernamePasswordAuthenticationToken<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>                        userDetails<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> userDetails<span style="color:#f92672">.</span><span style="color:#a6e22e">getAuthorities</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                usernamePasswordAuthenticationToken<span style="color:#f92672">.</span><span style="color:#a6e22e">setDetails</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> WebAuthenticationDetailsSource<span style="color:#f92672">().</span><span style="color:#a6e22e">buildDetails</span><span style="color:#f92672">(</span>request<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                SecurityContextHolder<span style="color:#f92672">.</span><span style="color:#a6e22e">getContext</span><span style="color:#f92672">().</span><span style="color:#a6e22e">setAuthentication</span><span style="color:#f92672">(</span>usernamePasswordAuthenticationToken<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        filterChain<span style="color:#f92672">.</span><span style="color:#a6e22e">doFilter</span><span style="color:#f92672">(</span>request<span style="color:#f92672">,</span> response<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="系統可以取得-user-帳密的-service">系統可以取得 User 帳密的 service</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyUserDetailsService</span> <span style="color:#66d9ef">implements</span> UserDetailsService <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> UserDetails <span style="color:#a6e22e">loadUserByUsername</span><span style="color:#f92672">(</span>String username<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> UsernameNotFoundException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//implement it in system user module
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Bill&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;billisgood&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="jwt-controller">JWT Controller</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JwtController</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> AuthenticationManager authenticationManager<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> MyUserDetailsService myUserDetailsService<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> JwtUtil jwtUtil<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JwtController</span><span style="color:#f92672">(</span>AuthenticationManager authenticationManager<span style="color:#f92672">,</span> MyUserDetailsService myUserDetailsService<span style="color:#f92672">,</span> JwtUtil jwtUtil<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">authenticationManager</span> <span style="color:#f92672">=</span> authenticationManager<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">myUserDetailsService</span> <span style="color:#f92672">=</span> myUserDetailsService<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jwtUtil</span> <span style="color:#f92672">=</span> jwtUtil<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/hello&#34;</span><span style="color:#f92672">,</span> method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">GET</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> ResponseEntity<span style="color:#f92672">&lt;?&gt;</span> sayHello<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> ResponseEntity<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">().</span><span style="color:#a6e22e">body</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;say hello success&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/authentication&#34;</span><span style="color:#f92672">,</span> method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">POST</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> ResponseEntity<span style="color:#f92672">&lt;?&gt;</span> createAuthenticationToken<span style="color:#f92672">(</span><span style="color:#a6e22e">@RequestBody</span> AuthenticationRequest authenticationRequest<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            authenticationManager<span style="color:#f92672">.</span><span style="color:#a6e22e">authenticate</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">new</span> UsernamePasswordAuthenticationToken<span style="color:#f92672">(</span>authenticationRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserName</span><span style="color:#f92672">(),</span> authenticationRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">getPassword</span><span style="color:#f92672">())</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BadCredentialsException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Exception<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Incorrect username or password&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> UserDetails userDetails <span style="color:#f92672">=</span> myUserDetailsService<span style="color:#f92672">.</span><span style="color:#a6e22e">loadUserByUsername</span><span style="color:#f92672">(</span>authenticationRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserName</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> String jwt <span style="color:#f92672">=</span> jwtUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">generateToken</span><span style="color:#f92672">(</span>userDetails<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> ResponseEntity<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AuthenticationResponse<span style="color:#f92672">(</span>jwt<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/token/">Token</a><a class="category" href="/categories/java/">JAVA</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

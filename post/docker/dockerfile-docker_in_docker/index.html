@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    
+      Bill.Lin の 成長之路 ©
+        |
+        Dockerfile - docker in docker
+
+
+      
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      後端工程師 Java, Kotlin 
+
+我的線上筆記
+
+Pleased to meet you!
+
+Where time is spend, there is success.
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://xinqilin.github.io/post/docker/dockerfile-docker_in_docker/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dockerfile - docker in docker"/>
+<meta name="twitter:description" content="Docker in Docker FROM ubuntu:22.04 AS build ENV NVM_DIR /opt/nvm ENV NODE_VERSION v16."/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "Dockerfile - docker in docker",
+        "headline": "Dockerfile - docker in docker",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Docker in Docker FROM ubuntu:22.04 AS build ENV NVM_DIR \/opt\/nvm ENV NODE_VERSION v16.
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/docker\/dockerfile-docker_in_docker\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-07-25T02:21:13.00Z",
+        "datePublished": "2021-07-25T02:21:13.00Z",
+        "dateModified": "2021-07-25T02:21:13.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/docker\/dockerfile-docker_in_docker\/",
+        "wordCount" : "500",
+        "genre" : [ 
+      
+      "Dockerfile"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+      </div>
+      <ul>
+        
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
+
+        
+      </ul>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>Dockerfile - docker in docker</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sun, Jul 25, 2021
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 3 分鐘</span>
+          </div>
+
+        
+      </div><h3 id="docker-in-docker">Docker in Docker</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    FROM ubuntu:22.04 AS build<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NVM_DIR /opt/nvm<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NODE_VERSION v16.13.2<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV APP_DIR /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $APP_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> mkdir -p $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $NVM_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> mkdir -p $NVM_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN apt-get update<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN apt-get install curl -y<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e"># install nvm &amp; node.js</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e"># RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh |bash</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN curl -o $NVM_DIR/install.sh https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN /bin/bash $NVM_DIR/install.sh<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV PATH $NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e"># install application</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY test /app/test<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY *.js /app/<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY *.json /app/<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY *.sh /app/<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN chmod <span style="color:#ae81ff">0755</span> /app/*.sh<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    WORKDIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN npm install<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">#####</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e"># arm64-firefox: seleniarm/standalone-firefox:latest</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">#####</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    FROM seleniarm/standalone-firefox:latest AS arm64-firefox<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV TERM<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;xterm-color&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV LANG<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;en_US.UTF-8&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV LANGUAGE<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;en_US.UTF-8&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NVM_DIR /opt/nvm<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NODE_VERSION v16.13.2<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV APP_DIR /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $APP_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>sudo mkdir -p $APP_DIR <span style="color:#f92672">&amp;&amp;</span> sudo chown <span style="color:#e6db74">`</span>whoami<span style="color:#e6db74">`</span>:<span style="color:#e6db74">`</span>id -g -n<span style="color:#e6db74">`</span> $APP_DIR<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $NVM_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>sudo mkdir -p $NVM_DIR <span style="color:#f92672">&amp;&amp;</span> sudo chown <span style="color:#e6db74">`</span>whoami<span style="color:#e6db74">`</span>:<span style="color:#e6db74">`</span>id -g -n<span style="color:#e6db74">`</span> $NVM_DIR<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY --from<span style="color:#f92672">=</span>build $NVM_DIR/install.sh $NVM_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN /bin/bash $NVM_DIR/install.sh<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV PATH $NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY --from<span style="color:#f92672">=</span>build $APP_DIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN chown seluser:seluser $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    WORKDIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    CMD <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;/app/entrypoint.sh&#34;</span> <span style="color:#f92672">]</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">#####</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e"># arm64-chrome:  seleniarm/standalone-chromium:latest</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">#####</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    FROM seleniarm/standalone-chromium:latest AS arm64-chrome<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV TERM<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;xterm-color&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV LANG<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;en_US.UTF-8&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV LANGUAGE<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;en_US.UTF-8&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NVM_DIR /opt/nvm<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NODE_VERSION v16.13.2<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV APP_DIR /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $APP_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>sudo mkdir -p $APP_DIR <span style="color:#f92672">&amp;&amp;</span> sudo chown <span style="color:#e6db74">`</span>whoami<span style="color:#e6db74">`</span>:<span style="color:#e6db74">`</span>id -g -n<span style="color:#e6db74">`</span> $APP_DIR<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $NVM_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>sudo mkdir -p $NVM_DIR <span style="color:#f92672">&amp;&amp;</span> sudo chown <span style="color:#e6db74">`</span>whoami<span style="color:#e6db74">`</span>:<span style="color:#e6db74">`</span>id -g -n<span style="color:#e6db74">`</span> $NVM_DIR<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY --from<span style="color:#f92672">=</span>build $NVM_DIR/install.sh $NVM_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN /bin/bash $NVM_DIR/install.sh<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV PATH $NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY --from<span style="color:#f92672">=</span>build $APP_DIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN chown seluser:seluser $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    WORKDIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    CMD <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;/app/entrypoint.sh&#34;</span> <span style="color:#f92672">]</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">#####</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e"># x86_64-firefox: selenium/standalone-firefox:latest</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">#####</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    FROM selenium/standalone-firefox:latest AS x86_64-firefox<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV TERM<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;xterm-color&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV LANG<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;en_US.UTF-8&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV LANGUAGE<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;en_US.UTF-8&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NVM_DIR /opt/nvm<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NODE_VERSION v16.13.2<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV APP_DIR /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $APP_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>sudo mkdir -p $APP_DIR <span style="color:#f92672">&amp;&amp;</span> sudo chown <span style="color:#e6db74">`</span>whoami<span style="color:#e6db74">`</span>:<span style="color:#e6db74">`</span>id -g -n<span style="color:#e6db74">`</span> $APP_DIR<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $NVM_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>sudo mkdir -p $NVM_DIR <span style="color:#f92672">&amp;&amp;</span> sudo chown <span style="color:#e6db74">`</span>whoami<span style="color:#e6db74">`</span>:<span style="color:#e6db74">`</span>id -g -n<span style="color:#e6db74">`</span> $NVM_DIR<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY --from<span style="color:#f92672">=</span>build $NVM_DIR/install.sh $NVM_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN /bin/bash $NVM_DIR/install.sh<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV PATH $NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY --from<span style="color:#f92672">=</span>build $APP_DIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN chown seluser:seluser $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    WORKDIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    CMD <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;/app/entrypoint.sh&#34;</span> <span style="color:#f92672">]</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">#####</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e"># x86_64-chrome:  selenium/standalone-chrome:latest</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">#####</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    FROM selenium/standalone-chrome:latest AS x86_64-chrome<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV TERM<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;xterm-color&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV LANG<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;en_US.UTF-8&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV LANGUAGE<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;en_US.UTF-8&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NVM_DIR /opt/nvm<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV NODE_VERSION v16.13.2<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV APP_DIR /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $APP_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>sudo mkdir -p $APP_DIR <span style="color:#f92672">&amp;&amp;</span> sudo chown <span style="color:#e6db74">`</span>whoami<span style="color:#e6db74">`</span>:<span style="color:#e6db74">`</span>id -g -n<span style="color:#e6db74">`</span> $APP_DIR<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN <span style="color:#f92672">[</span> -d $NVM_DIR <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>sudo mkdir -p $NVM_DIR <span style="color:#f92672">&amp;&amp;</span> sudo chown <span style="color:#e6db74">`</span>whoami<span style="color:#e6db74">`</span>:<span style="color:#e6db74">`</span>id -g -n<span style="color:#e6db74">`</span> $NVM_DIR<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY --from<span style="color:#f92672">=</span>build $NVM_DIR/install.sh $NVM_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN /bin/bash $NVM_DIR/install.sh<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    ENV PATH $NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    COPY --from<span style="color:#f92672">=</span>build $APP_DIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    RUN chown seluser:seluser $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    WORKDIR $APP_DIR<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    CMD <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;/app/entrypoint.sh&#34;</span> <span style="color:#f92672">]</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span> -f /usr/bin/firefox <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> export SCRIPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;docker-firefox&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span> -f /usr/bin/chromium-browser <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> export SCRIPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;docker-chrome&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span> -f /usr/bin/google-chrome <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> export SCRIPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;docker-chrome&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    uu<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>uname -m<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#39;uname -m:&#39;</span> $uu
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$uu<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;arm64&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">||</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$uu<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;aarch64&#34;</span> <span style="color:#f92672">]</span>;<span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        export SCRIPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$SCRIPTS<span style="color:#e6db74">-arm64&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    /opt/bin/entry_point.sh &gt; /dev/null 2&gt;&amp;<span style="color:#ae81ff">1</span> &amp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> number in <span style="color:#f92672">{</span>1..120<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> curl http://localhost:4444; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>            break
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Waiting selenium service,&#34;</span> $number
+</span></span><span style="display:flex;"><span>        sleep <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ! curl http://localhost:4444; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    cd /app
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;npm run </span>$SCRIPTS<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    npm run $SCRIPTS
+</span></span></code></pre></div></div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/dockerfile/">Dockerfile</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

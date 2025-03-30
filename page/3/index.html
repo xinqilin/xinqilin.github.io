@@ -261,18 +261,18 @@ Where time is spend, there is success.
     >
       
       <div class="post-title">
-        <h3><a href="/post/spring/ftputil/">FtpUtil</a></h3>
+        <h3><a href="/post/spring/querydsl/">QueryDSL</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              Dependency implementation &#39;commons-net:commons-net:{version}&#39; Util import java.io.IOException; import java.io.InputStream; import java.net.MalformedURLException; import org.
+              Maven integration &lt;dependency&gt; &lt;groupId&gt;com.querydsl&lt;/groupId&gt; &lt;artifactId&gt;querydsl-apt&lt;/artifactId&gt; &lt;version&gt;${querydsl.version}&lt;/version&gt; &lt;!-- //可不寫，由 spring 自動判斷 --&gt; &lt;scope&gt;provided&lt;/scope&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.
 
 
             
           </p>
-          <a href="/post/spring/ftputil/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/spring/querydsl/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -282,13 +282,13 @@ Where time is spend, there is success.
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Thu, Jan 5, 2023
+                Sun, Aug 8, 2021
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/ftp/">FTP</a><a class="category" href="/categories/ftp/">Ftp</a></span>
+              <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/querydsl/">QueryDSL</a></span>
 
 
 
@@ -310,18 +310,18 @@ Where time is spend, there is success.
     >
       
       <div class="post-title">
-        <h3><a href="/post/spring/ormenumtype/">ORMEnumType</a></h3>
+        <h3><a href="/post/kotlin/lateinit/">Lateinit</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              ORM Enum Type @Enumerated(EnumType.STRING) @Column(name = &#34;enum_type_name&#34;, columnDefinition = &#34;VARCHAR(10) NOT NULL DEFAULT &#39;CREATE&#39;&#34;) private EnumType enumType = EnumType.
+              lateinit：延遲初始化 當不想設定 init value 又不想加上 !! ， ?. ， 貓王運算 時 可以使用
 
 
             
           </p>
-          <a href="/post/spring/ormenumtype/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/kotlin/lateinit/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -331,7 +331,357 @@ Where time is spend, there is success.
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Thu, Jan 5, 2023
+                Thu, Aug 5, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/kotlin/">Kotlin</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/script/curl/">Curl</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              參數 -X/--request [GET|POST|PUT|DELETE|PATCH] 使用指定的 http method 來發出 http request -H/--header 設定 request 裡所攜帶的 header -i/--include 在 output 顯示 response 的 header -d/--data 攜帶 HTTP POST Data -v/--verbose 輸出更多的訊息方便 debug / 顯示接收及發送的訊息 - trace-ascii [fileName] [URL] 顯示更多詳細訊息 -u/--user 攜帶使用者帳號、密碼 -b/--cookie 攜帶 cookie（可以是參數或是檔案位置） -o [fileName] [URL] 下載若沒填 [fileName] 會直接用 source 原名 常用 curl [URL] curl -X POST/PUT [URL] -H &#34;Content-Type: application/json&#34; -d &#39;{&#34;key&#34; : &#34;value&#34; }&#39; curl -u [URL] &lt;Account&gt;:&lt;Password&gt; reference: Linux Curl Command 指令與基本操作入門教學
+
+
+            
+          </p>
+          <a href="/post/script/curl/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Aug 3, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/script/">Script</a><a class="category" href="/categories/curl/">curl</a></span>
+
+
+
+
+            
+
+            
+              <span class="separator"><a class="tag" href="/tags/curl/">CURL</a></span>
+
+
+
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/docker/docker-compose/">Docker Compose</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              docker-compose.yml docker-compose --version docker-compose -h # 查看help docker-compose up docker-compose up -d # 背景 docker-compose down docker-compose exec {自訂義的service id} /bin/bash docker-compose ps # 查看目前運行的 status docker-compose top # container 進程？ docker-compose logs {id} # container log docker-compose config # 檢查 config docker-compose config -q # 檢查 config, 有error 才 alert docker-compose restart docker-compose start docker-compose stop docker-compose config -q &amp;&amp; docker-compose down &amp;&amp; docker-compose up -d # 選3之後的 version: &#34;3&#34; services: # 自訂服務名 microService: image: my_image:1.
+
+
+            
+          </p>
+          <a href="/post/docker/docker-compose/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Mon, Jul 26, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/docker/">Docker</a><a class="category" href="/categories/docker-compose/">docker-compose</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/docker/network/">Network</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Docker network bridge: 為一個容器配置 ip, 並配置 docker0（虛擬橋接, default 為該模式） network bridge 指定, default 用 docker0 host: 容器不會虛擬出自己的網卡, 用 Machine 的 &ndash;network host 指定 none: 容器有獨立的網卡, 但不對其進行任何配置（少用） &ndash;network none 指定 container: 新創建的容器不會有自己的網卡, ip 而是與其他容器共用 ip, port &ndash;network container:NAME 或容器 ID 指定 docker network ls # bridge, host, none, container docker network prune docker network inspect {bridge, host, my_network} docker network inspect bridge | grep name docker inspect {containerID} # bridge 不寫就是 bridge ### ens33 -&gt; bridge (docker0) -&gt; container ### veth -&gt; eth0 # host ### 直接用 local 端的 ip &amp; port, 重複則遞增 # none ### 什麼都沒有, 須自己配置 # container # 坑 （下面起不起來因兩台 tomcat 都用 8080 映射出去） # 借用 tomcat_1 網路 docker run -d -p 8080:8080 --name tomcat_1 tomcat docker run -d -p 8081:8080 --network container:tomcat_1 --name tomcat_2 tomcat # 這就可以了 docker run -it --name alpine_1 alpine /bin/sh docker run -it --network container:alpine_1 --name alpine_2 alpine /bin/sh #============ # 容器內 ip 會變 # 直接起兩台 tomcat ip addr 看 ip 後, 互 ping 是會通的, 但 ip 會變, 所以要用自定義網路名 docker network create my_network # 自己創見網路 docker run -d -p 8080:8080 --network my_network --name tomcat_1 tomcat docker run -d -p 8081:8080 --network my_network --name tomcat_2 tomcat 
+
+
+            
+          </p>
+          </div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Mon, Jul 26, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/docker/">Docker</a><a class="category" href="/categories/network/">Network</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/docker/dockerfile-docker_in_docker/">Dockerfile - docker in docker</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Docker in Docker FROM ubuntu:22.04 AS build ENV NVM_DIR /opt/nvm ENV NODE_VERSION v16.
+
+
+            
+          </p>
+          <a href="/post/docker/dockerfile-docker_in_docker/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sun, Jul 25, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/dockerfile/">Dockerfile</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/docker/dockerfile-basic/">Dockerfile</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Dockerfile Basic # 首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔， # 版本18.04，若不給版本號則會是latest。 FROM ubuntu:18.04 # 維護者資訊想必也是不可少，此地方也可輸入E-mail資訊， # 注意此資訊會寫入產出映像檔的Author名稱屬性中。 MAINTAINER Bill # RUN 是在 build 階段運行 # 最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此， # 格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\來進行換行。 # 在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。 RUN apt-get update -y\ &amp;&amp; apt-get install nginx -y # Shell / exec 模式 RUN [&#34;.
+
+
+            
+          </p>
+          <a href="/post/docker/dockerfile-basic/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sat, Jul 24, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/dockerfile/">Dockerfile</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/designpattern/uml/">UML</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              Instance Level Dependency 依賴 Association 關聯 Aggregation 聚合 Composition 組合 Class Level Implementation 實作 Inheritance 繼承 Dependency 虛線，箭頭指向 被使用者 A ---&gt; B Association 實線，箭頭指向 被擁有者 ， 可在箭頭上增加 1-many 1-1 關西 A -&gt; B Aggregation 空心菱形屁股箭頭，箭頭指向 整體 A &lt;&gt;-&gt; B &lt;&gt;-&gt; C 要有A 必須要有B，C Composition 實心菱形屁股箭頭，箭頭指向 整體 to be continued&hellip;.
+
+
+            
+          </p>
+          <a href="/post/designpattern/uml/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Mon, Jul 12, 2021
+
+
+              </span
+            >
+            
+              <span class="separator"><a class="category" href="/categories/uml/">UML</a></span>
+
+
+
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div
+      class="post 
+        animated fadeInDown
+
+      "
+    >
+      
+      <div class="post-title">
+        <h3><a href="/post/spring/@autowired/">@Autowired is not recommended</a></h3>
+      </div>
+      <div class="post-content">
+        <div class="p_part">
+          <p>
+            
+              intellij 在使用 Bean Autowired 會跳出的警告 (Eclipse 不會)
+Field injection is not recommended Inspection info: Spring Team recommends: &#34;Always use constructor based dependency injection in your beans.
+
+
+            
+          </p>
+          <a href="/post/spring/@autowired/" class="read_more">繼續閱讀</a></div>
+      </div>
+
+      
+      <div class="post-footer">
+        <div class="meta">
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sat, Jul 10, 2021
 
 
               </span
@@ -359,19 +709,18 @@ Where time is spend, there is success.
     >
       
       <div class="post-title">
-        <h3><a href="/post/script/xargs/">Xargs</a></h3>
+        <h3><a href="/post/designpattern/solid/">SOLID</a></h3>
       </div>
       <div class="post-content">
         <div class="p_part">
           <p>
             
-              xargs extended arguments pipeline 中間操作, 將輸入的資料切割成多個字串，並將這些字串當成指定指令
-若沒給 command 則 default echo 並濾掉 換行符號\tab\空白
+              SOLID 首字母 代表 概念 S 單一職責原則: 「物件應該僅具有一種單一功能」的概念。 O 開閉原則: 「軟體體應該是對於擴充開放的，但是對於修改封閉的」的概念 L 里氏替換原則: 「程式中的物件應該是可以在不改變程式正確性的前提下被它的子類所替換的」 I 介面隔離原則: 「多個特定客戶端介面要好於一個寬泛用途的介面」 D 依賴反轉原則 一個方法應該遵從「依賴於抽象而不是一個實例」的概念。依賴注入是該原則的一種實現方式。 SRP Single Responsibility Principle A class should have only reason to change it 只能有一個理由去改變它，若有多個邏輯寫在一個method 中 不符合 複雜度降低 可讀性高 可維護姓提升 只有改這個才有影響 這個類別只做這件事 一個一個 component 不是他的事 他別碰 Dependency inversion principle 依賴反轉 high-level should not depend on low-level module.
 
 
             
           </p>
-          <a href="/post/script/xargs/" class="read_more">繼續閱讀</a></div>
+          <a href="/post/designpattern/solid/" class="read_more">繼續閱讀</a></div>
       </div>
 
       
@@ -381,360 +730,13 @@ Where time is spend, there is success.
             <em class="fas fa-calendar-day"></em>
             <span class="date"
               >
-                Wed, Nov 2, 2022
+                Thu, Jul 8, 2021
 
 
               </span
             >
             
-              <span class="separator"><a class="category" href="/categories/script/">Script</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/script/find/">Find</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              find find {目錄path} -name {fileName} find . -name test.txt find .
-
-
-            
-          </p>
-          <a href="/post/script/find/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Tue, Nov 1, 2022
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/script/">Script</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/script/ubuntu/">Ubuntu</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Ubuntu env docker pull ubuntu docker network create ubuntu-n docker run -dit -p 2222:22 -p 8000:8000 --network ubuntu-n --name ubuntu-c ubuntu docker exec -it ubuntu-c bash yes | unminimize &amp;&amp; apt install curl gawk git htop less lsof man-db rsync strace tmux vim ssh -y apt install jq -y apt install pip -y docker stop ubuntu-c docker rm ubuntu-c # restart docker start ubuntu-c 
-
-
-            
-          </p>
-          </div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Sat, Oct 29, 2022
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/linux/">Linux</a><a class="category" href="/categories/ubuntu/">Ubuntu</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/java/treeset/">TreeSet</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              TreeSet TreeSet使用是紅黑樹。
-自訂排序
-Set treeSet = new TreeSet&lt;&gt;(Comparator.comparing(String::length));
-Set&lt;Integer&gt; treeSet = new TreeSet&lt;&gt;(); treeSet.
-
-
-            
-          </p>
-          <a href="/post/java/treeset/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Sun, Oct 2, 2022
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/java/">Java</a></span>
-
-
-
-
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/java/">Java</a><a class="tag" href="/tags/map/">Map</a><a class="tag" href="/tags/treemap/">TreeMap</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/script/fileexpress/">FileExpress</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              File relations (文件表達式) [ -e xxx]
-// return true / false -e filename 如果 filename file存在 -d filename 如果 filename 為 dir -f filename 如果 filename 為常規文件 -L filename 如果 filename 為符號連接 -r filename 如果 filename 可讀取 -w filename 如果 filename 可寫入 -x filename 如果 filename 可執行 -s filename 如果 大小不為 0 -h filename 如果 是 link f1 -nt f2 f1 是否比 f2 新 f1 -ot f2 f1 是否比 f2 舊 -eq &#39;=&#39; -ne &#39;!
-
-
-            
-          </p>
-          <a href="/post/script/fileexpress/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Sat, Oct 1, 2022
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/script/">Script</a></span>
-
-
-
-
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/algorithm/reverselinkedlist/">ReverseLinkedList</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              reverse Linked List positive public ListNode reverseList(ListNode head) { ListNode prev = null; ListNode node = head; ListNode next = null; while(node !
-
-
-            
-          </p>
-          <a href="/post/algorithm/reverselinkedlist/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Wed, Sep 28, 2022
-
-
-              </span
-            >
-            
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/algorithm/unionfind/">UnionFind</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Union Find 990 [LC 990](990. Satisfiability of Equality Equations) 滿足所有等式
-
-
-            
-          </p>
-          <a href="/post/algorithm/unionfind/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Mon, Sep 26, 2022
-
-
-              </span
-            >
-            
-
-            
-              <span class="separator"><a class="tag" href="/tags/algorithm/">Algorithm</a></span>
-
-
-
-
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-    <div
-      class="post 
-        animated fadeInDown
-
-      "
-    >
-      
-      <div class="post-title">
-        <h3><a href="/post/distributedsystem/snowflake-distributionkey/">SnowFlake DistributionKey</a></h3>
-      </div>
-      <div class="post-content">
-        <div class="p_part">
-          <p>
-            
-              Snowflake - Distribution Key 單體式 ID 一般單體式 UUID(Universally Unique identifier) 8-4-4-4-12 總共 32 個 16 進位
-
-
-            
-          </p>
-          <a href="/post/distributedsystem/snowflake-distributionkey/" class="read_more">繼續閱讀</a></div>
-      </div>
-
-      
-      <div class="post-footer">
-        <div class="meta">
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Tue, Sep 13, 2022
-
-
-              </span
-            >
-            
-              <span class="separator"><a class="category" href="/categories/distributed-system/">Distributed System</a></span>
+              <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
 
 
 
@@ -754,10 +756,17 @@ Set&lt;Integer&gt; treeSet = new TreeSet&lt;&gt;(); treeSet.
     
     
     
+      <li class="page-item">
+        <a class="page-link" href="/page/2/">
+          <i class="fa fa-angle-left" aria-label="Previous"></i>
+        </a>
+      </li>
+
+    
     
       
         <li class="page-item">
-          <span class="page-link current">1</span>
+          <a class="page-link" href="/">1</a>
         </li>
 
       
@@ -767,6 +776,24 @@ Set&lt;Integer&gt; treeSet = new TreeSet&lt;&gt;(); treeSet.
       
         <li class="page-item">
           <a class="page-link" href="/page/2/">2</a>
+        </li>
+
+      
+
+
+    
+      
+        <li class="page-item">
+          <span class="page-link current">3</span>
+        </li>
+
+      
+
+
+    
+      
+        <li class="page-item">
+          <a class="page-link" href="/page/4/">4</a>
         </li>
 
       
@@ -794,22 +821,6 @@ Set&lt;Integer&gt; treeSet = new TreeSet&lt;&gt;(); treeSet.
 
     
       
-        
-
-
-      
-
-
-    
-      
-        
-
-
-      
-
-
-    
-      
         <li class="page-item">
           <a class="page-link" href="/page/7/">7</a>
         </li>
@@ -820,7 +831,7 @@ Set&lt;Integer&gt; treeSet = new TreeSet&lt;&gt;(); treeSet.
     
     
       <li class="page-item">
-        <a class="page-link" href="/page/2/">
+        <a class="page-link" href="/page/4/">
           <i class="fa fa-angle-right" aria-label="Next"></i>
         </a>
       </li>

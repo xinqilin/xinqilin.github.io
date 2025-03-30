@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    
+      Bill.Lin の 成長之路 ©
+        |
+        DesignPattern - Behavioral - State
+
+
+      
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      後端工程師 Java, Kotlin 
+
+我的線上筆記
+
+Pleased to meet you!
+
+Where time is spend, there is success.
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/gof/behavioral/state/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DesignPattern - Behavioral - State"/>
+<meta name="twitter:description" content="State 當對像在其內部狀態改變時改變其行為時，我們使用狀態設計模式。我們可以將對象的狀態定義為其在任何給定時間點的確切條件，具體取決於其屬性或屬性的值。一個類實現的一組方法構成了它的實例的行為。每當其屬性值發生變化時，我們就說對象的狀態發生了變化。
+首次創建 Context 對象時，它會使用其初始 State 對像對其自身進行初始化。此 State 對象成為上下文的當前 State 對象。通過用新的 State 對象替換當前的 State 對象，上下文轉換到新的狀態。當應用程序對象調用 Context 方法（行為）時，它會將方法調用轉發到其當前的 State 對象。"/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "DesignPattern - Behavioral - State",
+        "headline": "DesignPattern - Behavioral - State",
+        "alternativeHeadline": "",
+        "description": "
+      
+        State 當對像在其內部狀態改變時改變其行為時，我們使用狀態設計模式。我們可以將對象的狀態定義為其在任何給定時間點的確切條件，具體取決於其屬性或屬性的值。一個類實現的一組方法構成了它的實例的行為。每當其屬性值發生變化時，我們就說對象的狀態發生了變化。\n首次創建 Context 對象時，它會使用其初始 State 對像對其自身進行初始化。此 State 對象成為上下文的當前 State 對象。通過用新的 State 對象替換當前的 State 對象，上下文轉換到新的狀態。當應用程序對象調用 Context 方法（行為）時，它會將方法調用轉發到其當前的 State 對象。
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/state\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2018",
+        "dateCreated": "2018-08-07T22:37:58.00Z",
+        "datePublished": "2018-08-07T22:37:58.00Z",
+        "dateModified": "2018-08-07T22:37:58.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/state\/",
+        "wordCount" : "125",
+        "genre" : [ 
+      
+      "DesignPattern"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+      </div>
+      <ul>
+        
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
+
+        
+      </ul>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>DesignPattern - Behavioral - State</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Aug 7, 2018
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 1 分鐘</span>
+          </div>
+
+        
+      </div><h1 id="state">State</h1>
+<p>當對像在其內部狀態改變時改變其行為時，我們使用狀態設計模式。我們可以將對象的狀態定義為其在任何給定時間點的確切條件，具體取決於其屬性或屬性的值。一個類實現的一組方法構成了它的實例的行為。每當其屬性值發生變化時，我們就說對象的狀態發生了變化。</p>
+<p>首次創建 Context 對象時，它會使用其初始 State 對像對其自身進行初始化。此 State 對象成為上下文的當前 State 對象。通過用新的 State 對象替換當前的 State 對象，上下文轉換到新的狀態。當應用程序對象調用 Context 方法（行為）時，它會將方法調用轉發到其當前的 State 對象。</p>
+<ul>
+<li>上下文：定義客戶感興趣的接口。此外，它維護了一個定義當前狀態的 ConcreteState 子類的實例。</li>
+<li>State：  定義一個接口，用於封裝與 Context 的特定狀態相關的行為。</li>
+<li>ConcreteState 子類：每個子類實現與上下文狀態相關聯的行為。</li>
+</ul>
+<p>在狀態模式中，我們有一個 Context 類，並且這個類有一個對具體狀態實例的狀態引用。State 接口聲明了表示特定狀態行為的特定方法。具體國家實施這些行為。通過改變上下文的具體狀態，我們改變了它的行為。本質上，在狀態模式中，一個類（上下文）應該根據其狀態表現得像不同的類。狀態模式避免使用 switch 和 if 語句來改變行為。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MacState</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Lighting</span> <span style="color:#66d9ef">implements</span> MacState <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getState</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mac bright!&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Close</span> <span style="color:#66d9ef">implements</span> MacState <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getState</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Mac is shut down&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MacContext</span> <span style="color:#66d9ef">implements</span> MacState <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> MacState macState<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// constructor , setter , getter
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getState</span><span style="color:#f92672">(){</span>
+</span></span><span style="display:flex;"><span>            macState<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            var ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MacContext<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Lighting<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">setMacState</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Close<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">getState</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>狀態模式的好處之一是多態行為的實現，這是清晰可見的。因此，出錯的可能性較小。此外，很容易為其他行為添加更多狀態，使其更加健壯、易於維護和靈活。此外，在這種情況下，狀態模式有助於避免 if-else 或 switch-case 條件邏輯。</p>
+<ul>
+<li>當對象的行為取決於其狀態時，它必須在運行時根據其狀態改變其行為。</li>
+<li>當操作具有依賴於對象狀態的大型、多部分條件語句時。這種狀態通常由一個或多個枚舉常量表示。通常，多個操作將包含相同的條件結構。狀態模式將條件的每個分支放在一個單獨的類中。</li>
+<li>這讓我們可以將對象的狀態視為一個可以獨立於其他對像變化的對象。</li>
+</ul>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

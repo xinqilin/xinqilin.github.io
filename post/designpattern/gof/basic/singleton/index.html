@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    
+      Bill.Lin の 成長之路 ©
+        |
+        DesignPattern - Basic - Singleton
+
+
+      
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      後端工程師 Java, Kotlin 
+
+我的線上筆記
+
+Pleased to meet you!
+
+Where time is spend, there is success.
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/gof/basic/singleton/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DesignPattern - Basic - Singleton"/>
+<meta name="twitter:description" content="Singleton 確保在 java 虛擬機中只存在該類的一個實例。單例類必須提供一個全局訪問點來獲取類的實例。
+一個類應該只允許一個實例， 應該允許全局訪問該單個實例。 用於限制從其他類實例化類的私有構造函數。 同一類的私有靜態變量，是該類的唯一實例。 公共靜態方法，返回類的實例，這是外部世界獲取單例類實例的全局訪問點。 Reflection, Clone, 序列化/反序列化 違反 Singleton public static Singleton instance= new Singleton(); private Singleton() { System."/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "DesignPattern - Basic - Singleton",
+        "headline": "DesignPattern - Basic - Singleton",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Singleton 確保在 java 虛擬機中只存在該類的一個實例。單例類必須提供一個全局訪問點來獲取類的實例。\n一個類應該只允許一個實例， 應該允許全局訪問該單個實例。 用於限制從其他類實例化類的私有構造函數。 同一類的私有靜態變量，是該類的唯一實例。 公共靜態方法，返回類的實例，這是外部世界獲取單例類實例的全局訪問點。 Reflection, Clone, 序列化\/反序列化 違反 Singleton public static Singleton instance= new Singleton(); private Singleton() { System.
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/basic\/singleton\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2018",
+        "dateCreated": "2018-08-06T23:05:44.00Z",
+        "datePublished": "2018-08-06T23:05:44.00Z",
+        "dateModified": "2018-08-06T23:05:44.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/basic\/singleton\/",
+        "wordCount" : "242",
+        "genre" : [ 
+      
+      "DesignPattern"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+      </div>
+      <ul>
+        
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
+
+        
+      </ul>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>DesignPattern - Basic - Singleton</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Mon, Aug 6, 2018
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
+          </div>
+
+        
+      </div><h1 id="singleton">Singleton</h1>
+<p>確保在 java 虛擬機中只存在該類的一個實例。單例類必須提供一個全局訪問點來獲取類的實例。</p>
+<ul>
+<li>一個類應該只允許一個實例，</li>
+<li>應該允許全局訪問該單個實例。</li>
+<li>用於限制從其他類實例化類的私有構造函數。</li>
+<li>同一類的私有靜態變量，是該類的唯一實例。</li>
+<li>公共靜態方法，返回類的實例，這是外部世界獲取單例類實例的全局訪問點。</li>
+</ul>
+<h3 id="reflection-clone-序列化反序列化-違反-singleton">Reflection, Clone, 序列化/反序列化 違反 Singleton</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Singleton instance<span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Singleton<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Singleton</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;creating instance.....&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Singleton <span style="color:#a6e22e">getInstance</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   	<span style="color:#66d9ef">return</span> instance<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   	SingletonS s1 <span style="color:#f92672">=</span> SingletonS<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   	SingletonS s2 <span style="color:#f92672">=</span> SingletonS<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hashcode of Object s1: &#34;</span> <span style="color:#f92672">+</span>s1<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>   	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hashcode of Object s2: &#34;</span> <span style="color:#f92672">+</span>s2<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#75715e">// Reflection
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>       Class clazz <span style="color:#f92672">=</span> Class<span style="color:#f92672">.</span><span style="color:#a6e22e">forName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.dev.dp.creational.singleton.SingletonR&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   	Constructor<span style="color:#f92672">&lt;</span>SingletonR<span style="color:#f92672">&gt;</span> ctr<span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">getDeclaredConstructor</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   	ctr<span style="color:#f92672">.</span><span style="color:#a6e22e">setAccessible</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   	SingletonR s3 <span style="color:#f92672">=</span> ctr<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hashcode of Object s3: &#34;</span> <span style="color:#f92672">+</span>s3<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>   	
+</span></span><span style="display:flex;"><span>       <span style="color:#75715e">// Clone
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>       Singleton s3 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Singleton<span style="color:#f92672">)</span>s2<span style="color:#f92672">.</span><span style="color:#a6e22e">clone</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hashcode of Object s3: &#34;</span> <span style="color:#f92672">+</span>s3<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>       <span style="color:#75715e">// Serialization / Deserialization
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   	ObjectOutputStream oos <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectOutputStream<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;D:/tmp/s2.ser&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>   	oos<span style="color:#f92672">.</span><span style="color:#a6e22e">writeObject</span><span style="color:#f92672">(</span>s2<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   	
+</span></span><span style="display:flex;"><span>   	ObjectInputStream ois <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectInputStream<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FileInputStream<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;D:/tmp/s2.ser&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>   	SingletonS s3<span style="color:#f92672">=</span> <span style="color:#f92672">(</span>SingletonS<span style="color:#f92672">)</span>ois<span style="color:#f92672">.</span><span style="color:#a6e22e">readObject</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   	
+</span></span><span style="display:flex;"><span>   	System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hashcode of Object s3: &#34;</span> <span style="color:#f92672">+</span>s3<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">());</span>
+</span></span></code></pre></div><h3 id="修復">修復</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>instance <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;無法創造新 instance&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Singleton<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">();</span>
+</span></span></code></pre></div><h3 id="多執行緒-eager--lazy-init">多執行緒 eager / lazy init</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 可加 volatile 關鍵字 , write the main memory, 可減少開銷
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> SingletonT instance<span style="color:#f92672">=</span><span style="color:#66d9ef">null</span><span style="color:#f92672">;</span> <span style="color:#75715e">//lazy initialization
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">SingletonT</span><span style="color:#f92672">(){</span>
+</span></span><span style="display:flex;"><span>		System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Creating...&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// double check lock
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> SingletonT <span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(){</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>   <span style="color:#75715e">//check1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span>SingletonT<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>instance <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>   <span style="color:#75715e">//check2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					instance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SingletonT<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> instance<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">useSingleton</span><span style="color:#f92672">(){</span>
+</span></span><span style="display:flex;"><span>		SingletonT singleton <span style="color:#f92672">=</span> SingletonT<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>		System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hashcode of Singleton Object: &#34;</span><span style="color:#f92672">+</span>singleton<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		ExecutorService service <span style="color:#f92672">=</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newFixedThreadPool</span><span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		service<span style="color:#f92672">.</span><span style="color:#a6e22e">submit</span><span style="color:#f92672">(</span>SingletonT<span style="color:#f92672">::</span>useSingleton<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		service<span style="color:#f92672">.</span><span style="color:#a6e22e">submit</span><span style="color:#f92672">(</span>SingletonT<span style="color:#f92672">::</span>useSingleton<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		service<span style="color:#f92672">.</span><span style="color:#a6e22e">shutdown</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="singleton-目的">Singleton 目的</h3>
+<p>一次只能有一個實例（對象）的類是單例類。如果我們第二次嘗試實例化 Singleton 類，新變量也指向之前創建的實例。因此，無論我們通過任何實例對類內的任何變量進行任何修改，都會影響創建的單個實例的變量。例如，Runtime 類、Action Servlet、Service Locator 是一些 Singleton 類。私有構造函數和工廠方法也屬於單例類的例子。</p>
+<p>創建 Singleton 類的主要目的是限制創建對象的數量。此外，通過使用 Singleton 類，每次發出新請求時都不會創建對象。相反，將重複使用單個對象。這就是 Java 中的 Singleton 模式主要用於多線程和數據庫應用程序的原因。例如，我們在創建數據庫連接時使用了單例類的概念。在這種情況下，我們通過不創建多個數據庫連接來限制內存浪費。</p>
+<h3 id="note">Note</h3>
+<ul>
+<li>用private關鍵字聲明Singleton類的構造函數。通過將構造函數設為私有，沒有其他類可以從它實例化或生成對象。如果類中有多個構造函數，請將它們全部設為私有。</li>
+<li>同一類的私有靜態變量，它是該類的唯一實例。</li>
+<li>聲明一個返回類型為這個單例類的對象的靜態方法。</li>
+</ul>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

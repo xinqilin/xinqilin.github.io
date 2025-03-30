@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="zh-tw"
+  data-theme="dark"
+><head>
+  <title>
+    
+      Bill.Lin の 成長之路 ©
+        |
+        DesignPattern - Behavioral - Visitor
+
+
+      
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      後端工程師 Java, Kotlin 
+
+我的線上筆記
+
+Pleased to meet you!
+
+Where time is spend, there is success.
+
+
+
+    "
+  />
+  
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
+    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
+    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/gof/behavioral/visitor/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
+      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DesignPattern - Behavioral - Visitor"/>
+<meta name="twitter:description" content="Visitor 當必須對一組相似類型的對象執行操作時，我們使用訪問者模式。借助 visitor pattern，我們可以將操作邏輯從對象轉移到另一個類。例如，考慮一個購物車，我們可以在其中添加不同類型的商品（元素），當我們點擊結帳按鈕時，它會計算出我們需要支付的總金額。現在，我們可以在項目類中包含計算邏輯，或者我們可以使用 visitor pattern 將此邏輯移到另一個類中。因此，使用 visitor pattern，我們可以將邏輯移到另一個類。
+visitor pattern 允許在不更改集合中任何對象的類的情況下定義操作。為此，visitor pattern 建議在稱為 visitor類的單獨類中定義操作。這將操作與其操作的對象集合分開。對於要定義的每個新操作，都會創建一個新的訪問者類。由於操作將在一組對像上執行，因此訪問者需要一種訪問這些對象的公共成員的方法。"/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "DesignPattern - Behavioral - Visitor",
+        "headline": "DesignPattern - Behavioral - Visitor",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Visitor 當必須對一組相似類型的對象執行操作時，我們使用訪問者模式。借助 visitor pattern，我們可以將操作邏輯從對象轉移到另一個類。例如，考慮一個購物車，我們可以在其中添加不同類型的商品（元素），當我們點擊結帳按鈕時，它會計算出我們需要支付的總金額。現在，我們可以在項目類中包含計算邏輯，或者我們可以使用 visitor pattern 將此邏輯移到另一個類中。因此，使用 visitor pattern，我們可以將邏輯移到另一個類。\nvisitor pattern 允許在不更改集合中任何對象的類的情況下定義操作。為此，visitor pattern 建議在稱為 visitor類的單獨類中定義操作。這將操作與其操作的對象集合分開。對於要定義的每個新操作，都會創建一個新的訪問者類。由於操作將在一組對像上執行，因此訪問者需要一種訪問這些對象的公共成員的方法。
+
+
+      
+
+
+    ",
+        "inLanguage": "zh-tw",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/visitor\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Bill.Lin"
+        },
+        "copyrightYear" : "2018",
+        "dateCreated": "2018-08-07T22:38:06.00Z",
+        "datePublished": "2018-08-07T22:38:06.00Z",
+        "dateModified": "2018-08-07T22:38:06.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Bill.Lin",
+            "url": "https://xinqilin.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/visitor\/",
+        "wordCount" : "261",
+        "genre" : [ 
+      
+      "DesignPattern"
+
+    ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+      </div>
+      <ul>
+        
+        
+          <li>
+            <a class="theme-switch" title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </li>
+
+        
+      </ul>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
+        <div class="description">
+          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>DesignPattern - Behavioral - Visitor</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Tue, Aug 7, 2018
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">閱讀時間 2 分鐘</span>
+          </div>
+
+        
+      </div><h1 id="visitor">Visitor</h1>
+<p>當必須對一組相似類型的對象執行操作時，我們使用訪問者模式。借助 visitor pattern，我們可以將操作邏輯從對象轉移到另一個類。例如，考慮一個購物車，我們可以在其中添加不同類型的商品（元素），當我們點擊結帳按鈕時，它會計算出我們需要支付的總金額。現在，我們可以在項目類中包含計算邏輯，或者我們可以使用 visitor pattern 將此邏輯移到另一個類中。因此，使用 visitor pattern，我們可以將邏輯移到另一個類。</p>
+<p>visitor pattern 允許在不更改集合中任何對象的類的情況下定義操作。為此，visitor pattern 建議在稱為 visitor類的單獨類中定義操作。這將操作與其操作的對象集合分開。對於要定義的每個新操作，都會創建一個新的訪問者類。由於操作將在一組對像上執行，因此訪問者需要一種訪問這些對象的公共成員的方法。</p>
+<ul>
+<li>Visitor：為對象結構中的每個 ConcreteElement 類聲明一個訪問操作。操作的名稱和簽名標識向訪問者發送訪問請求的類。這讓訪問者可以確定被訪問元素的具體類。然後訪問者可以通過其特定的界面直接訪問該元素。</li>
+<li>ConcreteVisitor：實現訪問者聲明的每個操作。每個操作都實現了為結構中的相應對像類定義的算法片段。ConcreteVisitor 為算法提供上下文並存儲其本地狀態。這種狀態通常會在結構的遍歷過程中累積結果。</li>
+<li>Element：定義一個接受訪問者作為參數的操作。</li>
+<li>ConcreteElement：實現以訪問者為參數的 Accept 操作。</li>
+</ul>
+<p>ObjectStructure:</p>
+<ul>
+<li>可以枚舉它的元素。</li>
+<li>可以提供高級界面以允許訪問者訪問其元素。</li>
+<li>可以是組合或集合，例如列表或集合。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ShoppingCartElement</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>ShoppingCartVisitor visitor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Beef</span> <span style="color:#66d9ef">implements</span> ShoppingCartElement <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> price<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> weight<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// constructor , getter , setter
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//Notice the implementation of accept() method in concrete classes, 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//its calling visit() method of Visitor and passing itself as argument.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>ShoppingCartVisitor visitor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fruit</span> <span style="color:#66d9ef">implements</span> ShoppingCartElement <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> pricePerKg<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> weight<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// constructor , getter , setter
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>ShoppingCartVisitor visitor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ShoppingCartVisitor</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>Beef book<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>Fruit fruit<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ShoppingCartVisitorImpl</span> <span style="color:#66d9ef">implements</span> ShoppingCartVisitor <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>Beef beef<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         var cost <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#75715e">//apply 5$ discount if book price is greater than 50
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>         <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>beef<span style="color:#f92672">.</span><span style="color:#a6e22e">getPrice</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">50</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>            cost <span style="color:#f92672">=</span> beef<span style="color:#f92672">.</span><span style="color:#a6e22e">getPrice</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            cost <span style="color:#f92672">=</span> beef<span style="color:#f92672">.</span><span style="color:#a6e22e">getPrice</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;beef: {}&#34;</span><span style="color:#f92672">,</span> beef<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cost<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>Fruit fruit<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         var cost <span style="color:#f92672">=</span> fruit<span style="color:#f92672">.</span><span style="color:#a6e22e">getPricePerKg</span><span style="color:#f92672">()</span> <span style="color:#f92672">*</span> fruit<span style="color:#f92672">.</span><span style="color:#a6e22e">getWeight</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>         log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cost: &#34;</span> <span style="color:#f92672">+</span> cost<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">return</span> cost<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        var items <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ShoppingCartElement<span style="color:#f92672">[]{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">new</span> Beef<span style="color:#f92672">(</span><span style="color:#ae81ff">20</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">2.0</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">new</span> Beef<span style="color:#f92672">(</span><span style="color:#ae81ff">100</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">3.0</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">new</span> Fruit<span style="color:#f92672">(</span><span style="color:#ae81ff">10</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Apple&#34;</span><span style="color:#f92672">),</span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">new</span> Fruit<span style="color:#f92672">(</span><span style="color:#ae81ff">5</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Banana&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> total <span style="color:#f92672">=</span> calculatePrice<span style="color:#f92672">(</span>items<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;total: &#34;</span> <span style="color:#f92672">+</span> total<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">calculatePrice</span><span style="color:#f92672">(</span>ShoppingCartElement<span style="color:#f92672">[]</span> items<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        var visitor <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ShoppingCartVisitorImpl<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>ShoppingCartElement item <span style="color:#f92672">:</span> items<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>            sum <span style="color:#f92672">+=</span> item<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>visitor<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> sum<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
+<li>一個對象結構包含許多具有不同接口的對像類，並且您希望對這些對象執行依賴於它們的具體類的操作。</li>
+<li>當我們需要對對象結構中的對象執行許多不同且不相關的操作時，我們希望避免這些操作 &ldquo;污染&rdquo; 它們的 class。訪問者允許您通過在一個類中定義相關操作來將它們保持在一起。當我們需要與許多應用程序共享對象結構時，使用訪問者將操作放在那些需要它們的應用程序中。</li>
+<li>定義對象結構的類很少更改，但您經常希望在該結構上定義新操作。但是，更改對象結構類需要重新定義所有訪問者的接口，這可能是昂貴的。如果對象結構類經常更改，那麼最好在這些類中定義操作。</li>
+</ul>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+          <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
+
+
+
+
+        
+
+        
+      </div>
+    </div>
+
+    
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Bill.Lin の 成長之路 ©
+          2023
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+    crossorigin="anonymous"
+  ></script></body>
+</html>
