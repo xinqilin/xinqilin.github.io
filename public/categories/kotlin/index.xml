@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Kotlin on Bill.Lin&#39;s Notes</title>
+    <link>http://localhost:1313/categories/kotlin/</link>
+    <description>Recent content in Kotlin on Bill.Lin&#39;s Notes</description>
+    <image>
+      <title>Bill.Lin&#39;s Notes</title>
+      <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.146.5</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Thu, 05 Aug 2021 21:07:54 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lateinit</title>
+      <link>http://localhost:1313/post/kotlin/lateinit/</link>
+      <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
+      <guid>http://localhost:1313/post/kotlin/lateinit/</guid>
+      <description>&lt;h3 id=&#34;lateinit延遲初始化&#34;&gt;lateinit：延遲初始化&lt;/h3&gt;
+&lt;p&gt;當不想設定 init value 又不想加上 &lt;code&gt;!!&lt;/code&gt; ， &lt;code&gt;?.&lt;/code&gt; ， &lt;code&gt;貓王運算&lt;/code&gt; 時 可以使用&lt;/p&gt;
+&lt;p&gt;ex: DI 時可以使用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;lateinit&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;py&#34;&gt;adminUserRepository&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AdminUserRepository&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;lateinit-with-val&#34;&gt;lateinit with val&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    lateinit modifier is allowed only on mutable properties
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;lateinit 算有點語法糖，強制不初始化，繞過compiler，但要小心 之後一定要給值，不然就踩到自己埋的地雷
+&lt;!-- raw HTML omitted --&gt;
+檢查 lateinit 是否已給值:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;xxx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;isInitialized&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+  </channel>
+</rss>

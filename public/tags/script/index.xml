@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Script on Bill.Lin&#39;s Notes</title>
+    <link>http://localhost:1313/tags/script/</link>
+    <description>Recent content in Script on Bill.Lin&#39;s Notes</description>
+    <image>
+      <title>Bill.Lin&#39;s Notes</title>
+      <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.146.5</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 28 Jun 2020 12:36:19 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/script/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Deploy Hugo</title>
+      <link>http://localhost:1313/post/script/deploy-hugo/</link>
+      <pubDate>Sun, 28 Jun 2020 12:36:19 +0800</pubDate>
+      <guid>http://localhost:1313/post/script/deploy-hugo/</guid>
+      <description>&lt;h1 id=&#34;deploy-hugo&#34;&gt;Deploy Hugo&lt;/h1&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;go&#34;&gt;hugo -t &amp;lt;你的theme&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;flow&#34;&gt;Flow&lt;/h1&gt;
+&lt;p&gt;先確定一次流程&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;build 出 public 檔&lt;/li&gt;
+&lt;li&gt;add-commit-push  -&amp;gt; static website repository&lt;/li&gt;
+&lt;li&gt;add-commit-push -&amp;gt; backup repository&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;製作-script&#34;&gt;製作 Script&lt;/h1&gt;
+&lt;p&gt;先 touch 一個 &lt;strong&gt;deploy.sh&lt;/strong&gt;
+上述其實就三個步驟，把它的 command line 都填入 &lt;strong&gt;deploy.sh&lt;/strong&gt;
+&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;接著我想要執行這個 &lt;strong&gt;deploy.sh&lt;/strong&gt; 這個時順便填寫 git commit 的 message
+&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;先宣告一個變數吧 &amp;lt;&lt;strong&gt;commit_message&lt;/strong&gt;&amp;gt;  =&amp;gt;
+&lt;code&gt;commit_message = &amp;quot;$1&amp;quot;&lt;/code&gt;
+接著在需要用的變數的地方就可以直接使用 &lt;code&gt;commit_message&lt;/code&gt; 來操縱
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

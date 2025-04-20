@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Categories on Bill.Lin&#39;s Notes</title>
+    <link>http://localhost:1313/categories/</link>
+    <description>Recent content in Categories on Bill.Lin&#39;s Notes</description>
+    <image>
+      <title>Bill.Lin&#39;s Notes</title>
+      <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.146.5</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Thu, 05 Jan 2023 23:45:46 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ftp</title>
+      <link>http://localhost:1313/categories/ftp/</link>
+      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+      <guid>http://localhost:1313/categories/ftp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spring</title>
+      <link>http://localhost:1313/categories/spring/</link>
+      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+      <guid>http://localhost:1313/categories/spring/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Script</title>
+      <link>http://localhost:1313/categories/script/</link>
+      <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
+      <guid>http://localhost:1313/categories/script/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Linux</title>
+      <link>http://localhost:1313/categories/linux/</link>
+      <pubDate>Sat, 29 Oct 2022 00:10:56 +0800</pubDate>
+      <guid>http://localhost:1313/categories/linux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ubuntu</title>
+      <link>http://localhost:1313/categories/ubuntu/</link>
+      <pubDate>Sat, 29 Oct 2022 00:10:56 +0800</pubDate>
+      <guid>http://localhost:1313/categories/ubuntu/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Java</title>
+      <link>http://localhost:1313/categories/java/</link>
+      <pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
+      <guid>http://localhost:1313/categories/java/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Distributed System</title>
+      <link>http://localhost:1313/categories/distributed-system/</link>
+      <pubDate>Tue, 13 Sep 2022 23:05:38 +0800</pubDate>
+      <guid>http://localhost:1313/categories/distributed-system/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Algorithm</title>
+      <link>http://localhost:1313/categories/algorithm/</link>
+      <pubDate>Tue, 10 May 2022 23:34:53 +0800</pubDate>
+      <guid>http://localhost:1313/categories/algorithm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Backtracking</title>
+      <link>http://localhost:1313/categories/backtracking/</link>
+      <pubDate>Tue, 10 May 2022 23:34:53 +0800</pubDate>
+      <guid>http://localhost:1313/categories/backtracking/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Bad Smell</title>
+      <link>http://localhost:1313/categories/bad-smell/</link>
+      <pubDate>Thu, 17 Mar 2022 22:50:11 +0800</pubDate>
+      <guid>http://localhost:1313/categories/bad-smell/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Github</title>
+      <link>http://localhost:1313/categories/github/</link>
+      <pubDate>Wed, 09 Feb 2022 19:46:19 +0800</pubDate>
+      <guid>http://localhost:1313/categories/github/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ssh</title>
+      <link>http://localhost:1313/categories/ssh/</link>
+      <pubDate>Wed, 09 Feb 2022 19:46:19 +0800</pubDate>
+      <guid>http://localhost:1313/categories/ssh/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mysql</title>
+      <link>http://localhost:1313/categories/mysql/</link>
+      <pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
+      <guid>http://localhost:1313/categories/mysql/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>MAC</title>
+      <link>http://localhost:1313/categories/mac/</link>
+      <pubDate>Sun, 16 Jan 2022 22:35:54 +0800</pubDate>
+      <guid>http://localhost:1313/categories/mac/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TopologicalSort</title>
+      <link>http://localhost:1313/categories/topologicalsort/</link>
+      <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
+      <guid>http://localhost:1313/categories/topologicalsort/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Flux</title>
+      <link>http://localhost:1313/categories/flux/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>http://localhost:1313/categories/flux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mono</title>
+      <link>http://localhost:1313/categories/mono/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>http://localhost:1313/categories/mono/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Reactive</title>
+      <link>http://localhost:1313/categories/reactive/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>http://localhost:1313/categories/reactive/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>InOrder</title>
+      <link>http://localhost:1313/categories/inorder/</link>
+      <pubDate>Sun, 21 Nov 2021 20:11:03 +0800</pubDate>
+      <guid>http://localhost:1313/categories/inorder/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PostOrder</title>
+      <link>http://localhost:1313/categories/postorder/</link>
+      <pubDate>Sun, 21 Nov 2021 20:11:03 +0800</pubDate>
+      <guid>http://localhost:1313/categories/postorder/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tree</title>
+      <link>http://localhost:1313/categories/tree/</link>
+      <pubDate>Sun, 21 Nov 2021 20:11:03 +0800</pubDate>
+      <guid>http://localhost:1313/categories/tree/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>QueryDSL</title>
+      <link>http://localhost:1313/categories/querydsl/</link>
+      <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
+      <guid>http://localhost:1313/categories/querydsl/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kotlin</title>
+      <link>http://localhost:1313/categories/kotlin/</link>
+      <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
+      <guid>http://localhost:1313/categories/kotlin/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Curl</title>
+      <link>http://localhost:1313/categories/curl/</link>
+      <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
+      <guid>http://localhost:1313/categories/curl/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Docker</title>
+      <link>http://localhost:1313/categories/docker/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>http://localhost:1313/categories/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Docker-Compose</title>
+      <link>http://localhost:1313/categories/docker-compose/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>http://localhost:1313/categories/docker-compose/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Network</title>
+      <link>http://localhost:1313/categories/network/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>http://localhost:1313/categories/network/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dockerfile</title>
+      <link>http://localhost:1313/categories/dockerfile/</link>
+      <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>http://localhost:1313/categories/dockerfile/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>UML</title>
+      <link>http://localhost:1313/categories/uml/</link>
+      <pubDate>Mon, 12 Jul 2021 23:33:14 +0800</pubDate>
+      <guid>http://localhost:1313/categories/uml/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DesignPattern</title>
+      <link>http://localhost:1313/categories/designpattern/</link>
+      <pubDate>Thu, 08 Jul 2021 21:20:39 +0800</pubDate>
+      <guid>http://localhost:1313/categories/designpattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vue</title>
+      <link>http://localhost:1313/categories/vue/</link>
+      <pubDate>Sun, 04 Jul 2021 22:27:03 +0800</pubDate>
+      <guid>http://localhost:1313/categories/vue/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Token</title>
+      <link>http://localhost:1313/categories/token/</link>
+      <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
+      <guid>http://localhost:1313/categories/token/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Yaml</title>
+      <link>http://localhost:1313/categories/yaml/</link>
+      <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
+      <guid>http://localhost:1313/categories/yaml/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CQRS</title>
+      <link>http://localhost:1313/categories/cqrs/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>http://localhost:1313/categories/cqrs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DDD</title>
+      <link>http://localhost:1313/categories/ddd/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>http://localhost:1313/categories/ddd/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Git</title>
+      <link>http://localhost:1313/categories/git/</link>
+      <pubDate>Mon, 01 Mar 2021 21:16:29 +0800</pubDate>
+      <guid>http://localhost:1313/categories/git/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tag</title>
+      <link>http://localhost:1313/categories/tag/</link>
+      <pubDate>Mon, 01 Mar 2021 21:16:29 +0800</pubDate>
+      <guid>http://localhost:1313/categories/tag/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dig</title>
+      <link>http://localhost:1313/categories/dig/</link>
+      <pubDate>Fri, 08 Jan 2021 21:39:14 +0800</pubDate>
+      <guid>http://localhost:1313/categories/dig/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sftp</title>
+      <link>http://localhost:1313/categories/sftp/</link>
+      <pubDate>Tue, 05 Jan 2021 19:18:59 +0800</pubDate>
+      <guid>http://localhost:1313/categories/sftp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hugo</title>
+      <link>http://localhost:1313/categories/hugo/</link>
+      <pubDate>Sun, 28 Jun 2020 12:36:19 +0800</pubDate>
+      <guid>http://localhost:1313/categories/hugo/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>JPA</title>
+      <link>http://localhost:1313/categories/jpa/</link>
+      <pubDate>Tue, 07 Jan 2020 13:26:41 +0800</pubDate>
+      <guid>http://localhost:1313/categories/jpa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Config</title>
+      <link>http://localhost:1313/categories/config/</link>
+      <pubDate>Wed, 01 Jan 2020 20:31:25 +0800</pubDate>
+      <guid>http://localhost:1313/categories/config/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Awk</title>
+      <link>http://localhost:1313/categories/awk/</link>
+      <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
+      <guid>http://localhost:1313/categories/awk/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Compute</title>
+      <link>http://localhost:1313/categories/compute/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>http://localhost:1313/categories/compute/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ComputeIfAbsent</title>
+      <link>http://localhost:1313/categories/computeifabsent/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>http://localhost:1313/categories/computeifabsent/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ComputeIfPresent</title>
+      <link>http://localhost:1313/categories/computeifpresent/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>http://localhost:1313/categories/computeifpresent/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Map</title>
+      <link>http://localhost:1313/categories/map/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>http://localhost:1313/categories/map/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sed</title>
+      <link>http://localhost:1313/categories/sed/</link>
+      <pubDate>Fri, 18 Jan 2019 10:23:31 +0800</pubDate>
+      <guid>http://localhost:1313/categories/sed/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

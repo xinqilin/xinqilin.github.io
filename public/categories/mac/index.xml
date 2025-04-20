@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>MAC on Bill.Lin&#39;s Notes</title>
+    <link>http://localhost:1313/categories/mac/</link>
+    <description>Recent content in MAC on Bill.Lin&#39;s Notes</description>
+    <image>
+      <title>Bill.Lin&#39;s Notes</title>
+      <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.146.5</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 16 Jan 2022 22:35:54 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/mac/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Env</title>
+      <link>http://localhost:1313/post/other/env/</link>
+      <pubDate>Sun, 16 Jan 2022 22:35:54 +0800</pubDate>
+      <guid>http://localhost:1313/post/other/env/</guid>
+      <description>&lt;h3 id=&#34;basic&#34;&gt;Basic&lt;/h3&gt;
+&lt;p&gt;u: All Users
++: add permission
+x: execute
+chmod u+x *.sh&lt;/p&gt;
+&lt;h3 id=&#34;homebrew&#34;&gt;Homebrew&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;quot;&lt;/code&gt;
+&lt;code&gt;brew install cask&lt;/code&gt;
+&lt;code&gt;brew install wget&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;sdkman&#34;&gt;SDKMAN&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;curl -s &amp;quot;https://get.sdkman.io&amp;quot; | bash&lt;/code&gt;
+&lt;code&gt;source &amp;quot;$HOME/.sdkman/bin/sdkman-init.sh&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;openjdk&#34;&gt;OPENJDK&lt;/h3&gt;
+&lt;p&gt;/Library/Java/JavaVirtualMachines/  下面
+&lt;code&gt;/usr/libexec/java_home --verbose&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;remove&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /Library/Java/JavaVirtualMachines/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sudo rm -rf amazon-corretto-11.jdk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;maven--gradle&#34;&gt;MAVEN &amp;amp; GRADLE&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk list java
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk current java
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk list java
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk list gradle
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk install gradle &lt;span class=&#34;s1&#34;&gt;&amp;#39;version&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk list maven
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk list java
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    history&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep sdk
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk list maven
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    sdk install maven &lt;span class=&#34;s1&#34;&gt;&amp;#39;version&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;nvm&#34;&gt;NVM&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash&lt;/code&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
