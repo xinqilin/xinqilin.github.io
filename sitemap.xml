@@ -194,10 +194,16 @@
     <loc>https://xinqilin.github.io/post/tools/github-ssh/</loc>
     <lastmod>2022-02-09T19:46:19+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/containerization/</loc>
+    <lastmod>2022-01-18T23:56:44+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/categories/devops/</loc>
     <lastmod>2022-01-18T23:56:44+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/devops/mysql/</loc>
+    <loc>https://xinqilin.github.io/tags/devops/</loc>
+    <lastmod>2022-01-18T23:56:44+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/devops/docker-mysql/</loc>
     <lastmod>2022-01-18T23:56:44+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/tools/env/</loc>
@@ -311,16 +317,49 @@
     <loc>https://xinqilin.github.io/tags/web-development/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/bridge/</loc>
+    <lastmod>2021-07-26T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/docker-compose/</loc>
+    <lastmod>2021-07-26T02:21:13+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/devops/docker-compose/</loc>
     <lastmod>2021-07-26T02:21:13+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/devops/network/</loc>
+    <loc>https://xinqilin.github.io/post/devops/docker-network/</loc>
     <lastmod>2021-07-26T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/host/</loc>
+    <lastmod>2021-07-26T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/microservices/</loc>
+    <lastmod>2021-07-26T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/yaml/</loc>
+    <lastmod>2021-07-26T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/cross-platform/</loc>
+    <lastmod>2021-07-25T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/dockerfile/</loc>
+    <lastmod>2021-07-25T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/multi-stage-build/</loc>
+    <lastmod>2021-07-25T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/node.js/</loc>
+    <lastmod>2021-07-25T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/selenium/</loc>
+    <lastmod>2021-07-25T02:21:13+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/devops/dockerfile-docker_in_docker/</loc>
     <lastmod>2021-07-25T02:21:13+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/devops/dockerfile-basic/</loc>
+    <lastmod>2021-07-24T02:21:13+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/image-build/</loc>
     <lastmod>2021-07-24T02:21:13+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/uml/</loc>
@@ -416,13 +455,7 @@
     <loc>https://xinqilin.github.io/tags/configuration/</loc>
     <lastmod>2021-06-29T13:45:56+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/devops/</loc>
-    <lastmod>2021-06-29T13:45:56+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/kubernetes/</loc>
-    <lastmod>2021-06-29T13:45:56+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/yaml/</loc>
     <lastmod>2021-06-29T13:45:56+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/tools/yaml/</loc>

@@ -303,6 +303,20 @@
       <description></description>
     </item>
     <item>
+      <title>Containerization</title>
+      <link>https://xinqilin.github.io/tags/containerization/</link>
+      <pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/containerization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DevOps</title>
+      <link>https://xinqilin.github.io/tags/devops/</link>
+      <pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/devops/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>BFS</title>
       <link>https://xinqilin.github.io/tags/bfs/</link>
       <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
@@ -499,6 +513,83 @@
       <description></description>
     </item>
     <item>
+      <title>Bridge</title>
+      <link>https://xinqilin.github.io/tags/bridge/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/bridge/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Docker Compose</title>
+      <link>https://xinqilin.github.io/tags/docker-compose/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/docker-compose/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Host</title>
+      <link>https://xinqilin.github.io/tags/host/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/host/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Microservices</title>
+      <link>https://xinqilin.github.io/tags/microservices/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/microservices/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>YAML</title>
+      <link>https://xinqilin.github.io/tags/yaml/</link>
+      <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/yaml/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cross-Platform</title>
+      <link>https://xinqilin.github.io/tags/cross-platform/</link>
+      <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/cross-platform/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dockerfile</title>
+      <link>https://xinqilin.github.io/tags/dockerfile/</link>
+      <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/dockerfile/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Multi-Stage Build</title>
+      <link>https://xinqilin.github.io/tags/multi-stage-build/</link>
+      <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/multi-stage-build/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Node.js</title>
+      <link>https://xinqilin.github.io/tags/node.js/</link>
+      <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/node.js/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Selenium</title>
+      <link>https://xinqilin.github.io/tags/selenium/</link>
+      <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/selenium/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Image Build</title>
+      <link>https://xinqilin.github.io/tags/image-build/</link>
+      <pubDate>Sat, 24 Jul 2021 02:21:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/image-build/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Autowired</title>
       <link>https://xinqilin.github.io/tags/autowired/</link>
       <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
@@ -660,24 +751,10 @@
       <description></description>
     </item>
     <item>
-      <title>DevOps</title>
-      <link>https://xinqilin.github.io/tags/devops/</link>
-      <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/devops/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Kubernetes</title>
       <link>https://xinqilin.github.io/tags/kubernetes/</link>
       <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/kubernetes/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>YAML</title>
-      <link>https://xinqilin.github.io/tags/yaml/</link>
-      <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/yaml/</guid>
       <description></description>
     </item>
     <item>

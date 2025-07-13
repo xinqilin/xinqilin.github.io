@@ -1,44 +1,12 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Docker Compose - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Docker Compose"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/devops/docker-compose/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Docker Compose 完整指南：多容器應用程式的定義與執行 - Bill.Lin's Notes</title><meta name=description content="深入解析 Docker Compose 的核心概念、常用指令與 `docker-compose.yml` 設定檔的撰寫方式，幫助您輕鬆定義與管理多容器應用程式的生命週期。"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Docker Compose 完整指南：多容器應用程式的定義與執行"><meta property="og:description" content="深入解析 Docker Compose 的核心概念、常用指令與 `docker-compose.yml` 設定檔的撰寫方式，幫助您輕鬆定義與管理多容器應用程式的生命週期。"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/devops/docker-compose/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
 Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
-<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Docker Compose</h1><div class=post-meta><div class=post-info><time class=post-date>2021年07月26日</time>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Docker Compose 完整指南：多容器應用程式的定義與執行</h1><div class=post-meta><div class=post-info><time class=post-date>2021年07月26日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/devops class=category-link>DevOps</a></div></div></header><div class=post-content><h3 id=docker-composeyml>docker-compose.yml</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>docker-compose --version
-</span></span><span class=line><span class=cl>docker-compose -h <span class=c1># 查看help</span>
-</span></span><span class=line><span class=cl>docker-compose up
-</span></span><span class=line><span class=cl>docker-compose up -d <span class=c1># 背景</span>
-</span></span><span class=line><span class=cl>docker-compose down
-</span></span><span class=line><span class=cl>docker-compose <span class=nb>exec</span> <span class=o>{</span>自訂義的service id<span class=o>}</span> /bin/bash
-</span></span><span class=line><span class=cl>docker-compose ps <span class=c1># 查看目前運行的 status</span>
-</span></span><span class=line><span class=cl>docker-compose top <span class=c1># container 進程？</span>
-</span></span><span class=line><span class=cl>docker-compose logs <span class=o>{</span>id<span class=o>}</span> <span class=c1># container log</span>
-</span></span><span class=line><span class=cl>docker-compose config <span class=c1># 檢查 config</span>
-</span></span><span class=line><span class=cl>docker-compose config -q <span class=c1># 檢查 config, 有error 才 alert</span>
-</span></span><span class=line><span class=cl>docker-compose restart
-</span></span><span class=line><span class=cl>docker-compose start
-</span></span><span class=line><span class=cl>docker-compose stop
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>docker-compose config -q <span class=o>&amp;&amp;</span> docker-compose down <span class=o>&amp;&amp;</span>  docker-compose up -d 
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+<span class=reading-time>3 分鐘閱讀</span></div><div class=post-categories><a href=/categories/devops class=category-link>DevOps</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>在現代應用程式開發中，一個專案往往由多個服務組成，例如前端、後端 API、資料庫、快取等。這些服務各自運行在不同的容器中，而 Docker Compose 正是為了解決這種多容器應用程式的定義與管理而生。</p><p>Docker Compose 允許您使用一個 YAML 檔案 (<code>docker-compose.yml</code>) 來定義應用程式的所有服務、網路和儲存卷，然後透過單一指令啟動、停止或管理整個應用程式堆疊。這極大地簡化了開發、測試和部署的流程。</p><h2 id=常用-docker-compose-指令>常用 Docker Compose 指令</h2><p>以下是 Docker Compose 的一些常用指令，用於管理您的多容器應用程式：</p><table><thead><tr><th style=text-align:left>指令</th><th style=text-align:left>說明</th><th style=text-align:left>範例</th></tr></thead><tbody><tr><td style=text-align:left><code>docker-compose --version</code></td><td style=text-align:left>顯示 Docker Compose 的版本資訊。</td><td style=text-align:left><code>docker-compose --version</code></td></tr><tr><td style=text-align:left><code>docker-compose -h</code></td><td style=text-align:left>顯示 Docker Compose 的幫助訊息。</td><td style=text-align:left><code>docker-compose -h</code></td></tr><tr><td style=text-align:left><code>docker-compose up</code></td><td style=text-align:left>啟動並建立所有服務的容器。如果容器已存在，則會重新建立。</td><td style=text-align:left><code>docker-compose up</code></td></tr><tr><td style=text-align:left><code>docker-compose up -d</code></td><td style=text-align:left>在背景模式 (detached mode) 啟動並建立所有服務的容器。</td><td style=text-align:left><code>docker-compose up -d</code></td></tr><tr><td style=text-align:left><code>docker-compose down</code></td><td style=text-align:left>停止並移除所有服務的容器、網路和預設儲存卷。</td><td style=text-align:left><code>docker-compose down</code></td></tr><tr><td style=text-align:left><code>docker-compose exec &lt;service_name> &lt;command></code></td><td style=text-align:left>在指定服務的容器中執行指令。</td><td style=text-align:left><code>docker-compose exec microService /bin/bash</code></td></tr><tr><td style=text-align:left><code>docker-compose ps</code></td><td style=text-align:left>列出所有服務的容器狀態。</td><td style=text-align:left><code>docker-compose ps</code></td></tr><tr><td style=text-align:left><code>docker-compose top</code></td><td style=text-align:left>顯示服務容器的運行進程。</td><td style=text-align:left><code>docker-compose top</code></td></tr><tr><td style=text-align:left><code>docker-compose logs &lt;service_name></code></td><td style=text-align:left>顯示指定服務容器的日誌輸出。</td><td style=text-align:left><code>docker-compose logs microService</code></td></tr><tr><td style=text-align:left><code>docker-compose config</code></td><td style=text-align:left>驗證 <code>docker-compose.yml</code> 檔案的語法是否正確，並顯示解析後的配置。</td><td style=text-align:left><code>docker-compose config</code></td></tr><tr><td style=text-align:left><code>docker-compose config -q</code></td><td style=text-align:left>靜默模式驗證配置，只在有錯誤時輸出訊息。</td><td style=text-align:left><code>docker-compose config -q</code></td></tr><tr><td style=text-align:left><code>docker-compose restart &lt;service_name></code></td><td style=text-align:left>重新啟動指定服務的容器。若未指定服務，則重新啟動所有服務。</td><td style=text-align:left><code>docker-compose restart microService</code></td></tr><tr><td style=text-align:left><code>docker-compose start &lt;service_name></code></td><td style=text-align:left>啟動指定服務的容器。若未指定服務，則啟動所有已停止的服務。</td><td style=text-align:left><code>docker-compose start microService</code></td></tr><tr><td style=text-align:left><code>docker-compose stop &lt;service_name></code></td><td style=text-align:left>停止指定服務的容器。若未指定服務，則停止所有運行中的服務。</td><td style=text-align:left><code>docker-compose stop microService</code></td></tr></tbody></table><h3 id=常用組合指令>常用組合指令</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 驗證配置後，停止並重新啟動所有服務</span>
+</span></span><span class=line><span class=cl>docker-compose config -q <span class=o>&amp;&amp;</span> docker-compose down <span class=o>&amp;&amp;</span> docker-compose up -d
+</span></span></code></pre></td></tr></table></div></div><h2 id=docker-composeyml-檔案結構詳解><code>docker-compose.yml</code> 檔案結構詳解</h2><p><code>docker-compose.yml</code> 是 Docker Compose 的核心配置檔案，它使用 YAML 語法來定義應用程式的服務。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -96,64 +64,98 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span><span class=lnt>56
 </span><span class=lnt>57
 </span><span class=lnt>58
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 選3之後的</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;3&#34;</span><span class=w>
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># 指定 Docker Compose 檔案格式的版本，建議使用最新穩定版 (目前為 &#39;3.x&#39;)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;3.8&#34;</span><span class=w> </span><span class=c># 建議使用 3.8 或更高版本，以支援更多功能</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 定義應用程式中的所有服務 (即容器)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>services</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># 自訂服務名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># 自訂服務名稱，例如 &#39;microService&#39;、&#39;web&#39;、&#39;db&#39; 等</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>microService</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 指定服務所使用的 Docker 映像檔</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>my_image:1.0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 定義容器的名稱，方便識別和管理</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>ms_01</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 埠映射：將主機埠映射到容器埠 (HOST_PORT:CONTAINER_PORT)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>ports</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;8081:8080&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;8081:8080&#34;</span><span class=w> </span><span class=c># 將主機的 8081 埠映射到容器的 8080 埠</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 儲存卷映射：將主機路徑映射到容器路徑 (HOST_PATH:CONTAINER_PATH)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>/Users/bill/microService:/app</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>/Users/bill/microService:/app</span><span class=w> </span><span class=c># 將主機的 /Users/bill/microService 目錄映射到容器的 /app 目錄</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 指定服務所連接的網路</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>networks</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>my_network</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 這個service，必須在 depends_on 的服務啟動後再執行, 不保證完全起起來, 只是順序而已</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 可搭配 https://github.com/vishnubob/wait-for-it 這個 shell</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>my_network</span><span class=w> </span><span class=c># 連接到名為 &#39;my_network&#39; 的網路</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 定義服務的啟動順序依賴關係</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 注意：depends_on 只保證服務啟動順序，不保證服務內部應用程式完全就緒</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 可搭配 https://github.com/vishnubob/wait-for-it 或其他健康檢查機制確保服務可用</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>depends_on</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>redis</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>mysql</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># docker run -d -p 8081:8080 -v /Users/bill/microService:/app --network my_network</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>redis</span><span class=w> </span><span class=c># microService 服務會在 redis 服務啟動後才啟動</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>mysql</span><span class=w> </span><span class=c># microService 服務會在 mysql 服務啟動後才啟動</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 範例：等同於 `docker run -d -p 8081:8080 -v /Users/bill/microService:/app --network my_network`</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>redis</span><span class=p>:</span><span class=w> 
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>redis:6.0.8</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>redis</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>redis:6.0.8</span><span class=w> </span><span class=c># 使用 Redis 6.0.8 映像檔</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>ports</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;6379:6379&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;6379:6379&#34;</span><span class=w> </span><span class=c># 映射 Redis 預設埠</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># 映射 Redis 配置檔，讓容器使用自訂配置</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>/app/redis/redis.conf:/etc/redis/redis.conf</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># 映射 Redis 資料目錄，實現資料持久化</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>/app/redis/data:/data</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>networks</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>my_network</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 覆寫容器的預設啟動指令，讓 Redis 使用指定的配置檔啟動</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>command</span><span class=p>:</span><span class=w> </span><span class=l>redis-server /etc/redis/redis.conf</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>mysql</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>mysql:5.7</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>mysql:5.7</span><span class=w> </span><span class=c># 使用 MySQL 5.7 映像檔</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 設定 MySQL 容器的環境變數</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>environment</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_ROOT_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;123456&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_ALLOW_EMPTY_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;no&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_DATABASE</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;my_test_db&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_USER</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;bill&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;user_pwd&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_ROOT_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;123456&#39;</span><span class=w> </span><span class=c># 設定 root 使用者的密碼</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_ALLOW_EMPTY_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;no&#39;</span><span class=w> </span><span class=c># 不允許 root 密碼為空</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_DATABASE</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;my_test_db&#39;</span><span class=w> </span><span class=c># 建立一個名為 &#39;my_test_db&#39; 的資料庫</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_USER</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;bill&#39;</span><span class=w> </span><span class=c># 建立一個名為 &#39;bill&#39; 的使用者</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>MYSQL_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;user_pwd&#39;</span><span class=w> </span><span class=c># 設定 &#39;bill&#39; 使用者的密碼</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>ports</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;3306:3306&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;3306:3306&#34;</span><span class=w> </span><span class=c># 映射 MySQL 預設埠</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># 映射 MySQL 資料目錄，實現資料持久化</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>/app/mysql/db:/var/lib/mysql</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># 映射 MySQL 配置檔</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>/app/mysql/conf/my.cnf:/etc/my.cnf</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># 映射初始化腳本目錄，容器啟動時會執行此目錄下的 .sh 或 .sql 腳本</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>/app/mysql/init:/docker-entrypoint-initdb.d</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>networks</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>my_network</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>command</span><span class=p>:</span><span class=w> </span>--<span class=l>default-authentication-plugin=mysql_native_password</span><span class=w> </span><span class=c># 解決外部無法 access</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># 解決 MySQL 8.0 之後預設認證插件導致外部客戶端無法連接的問題</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>command</span><span class=p>:</span><span class=w> </span>--<span class=l>default-authentication-plugin=mysql_native_password</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 定義應用程式使用的網路</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>networks</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>my_network</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>my_network</span><span class=p>:</span><span class=w> </span><span class=c># 自訂網路名稱，所有服務將在此網路中互相通訊</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 純記錄 (沒用到)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>volumes</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>my_data</span><span class=p>:</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/devops/network/ class=post-nav-link>Network</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 定義應用程式使用的儲存卷 (可選，如果服務中直接使用匿名卷或綁定掛載則不需要在此定義)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># volumes:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#     my_data: # 自訂儲存卷名稱</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/docker class=tag-link>#Docker</a>
+<a href=/tags/docker-compose class=tag-link>#Docker Compose</a>
+<a href=/tags/devops class=tag-link>#DevOps</a>
+<a href=/tags/containerization class=tag-link>#Containerization</a>
+<a href=/tags/microservices class=tag-link>#Microservices</a>
+<a href=/tags/yaml class=tag-link>#YAML</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/devops/docker-network/ class=post-nav-link>Docker 網路模式詳解：容器間通訊與外部連接</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
 <a href=https://xinqilin.github.io/post/tools/curl/ class=post-nav-link>cURL 完整指南：HTTP 客戶端工具與 API 測試利器</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div></body></html>

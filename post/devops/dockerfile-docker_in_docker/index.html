@@ -1,288 +1,72 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Dockerfile - docker in docker - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Dockerfile - docker in docker"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/devops/dockerfile-docker_in_docker/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>多階段 Dockerfile：建構跨平台 Selenium 應用程式映像檔 - Bill.Lin's Notes</title><meta name=description content="本指南詳細介紹如何使用多階段 Dockerfile 建構支援不同 CPU 架構 (ARM64, x86_64) 和瀏覽器 (Firefox, Chrome) 的 Selenium 自動化測試應用程式映像檔，並解析其啟動腳本。"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="多階段 Dockerfile：建構跨平台 Selenium 應用程式映像檔"><meta property="og:description" content="本指南詳細介紹如何使用多階段 Dockerfile 建構支援不同 CPU 架構 (ARM64, x86_64) 和瀏覽器 (Firefox, Chrome) 的 Selenium 自動化測試應用程式映像檔，並解析其啟動腳本。"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/devops/dockerfile-docker_in_docker/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
 Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
-<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Dockerfile - docker in docker</h1><div class=post-meta><div class=post-info><time class=post-date>2021年07月25日</time>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>多階段 Dockerfile：建構跨平台 Selenium 應用程式映像檔</h1><div class=post-meta><div class=post-info><time class=post-date>2021年07月25日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>4 分鐘閱讀</span></div><div class=post-categories><a href=/categories/devops class=category-link>DevOps</a></div></div></header><div class=post-content><h3 id=docker-in-docker>Docker in Docker</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
-</span><span class=lnt>  2
-</span><span class=lnt>  3
-</span><span class=lnt>  4
-</span><span class=lnt>  5
-</span><span class=lnt>  6
-</span><span class=lnt>  7
-</span><span class=lnt>  8
-</span><span class=lnt>  9
-</span><span class=lnt> 10
-</span><span class=lnt> 11
-</span><span class=lnt> 12
-</span><span class=lnt> 13
-</span><span class=lnt> 14
-</span><span class=lnt> 15
-</span><span class=lnt> 16
-</span><span class=lnt> 17
-</span><span class=lnt> 18
-</span><span class=lnt> 19
-</span><span class=lnt> 20
-</span><span class=lnt> 21
-</span><span class=lnt> 22
-</span><span class=lnt> 23
-</span><span class=lnt> 24
-</span><span class=lnt> 25
-</span><span class=lnt> 26
-</span><span class=lnt> 27
-</span><span class=lnt> 28
-</span><span class=lnt> 29
-</span><span class=lnt> 30
-</span><span class=lnt> 31
-</span><span class=lnt> 32
-</span><span class=lnt> 33
-</span><span class=lnt> 34
-</span><span class=lnt> 35
-</span><span class=lnt> 36
-</span><span class=lnt> 37
-</span><span class=lnt> 38
-</span><span class=lnt> 39
-</span><span class=lnt> 40
-</span><span class=lnt> 41
-</span><span class=lnt> 42
-</span><span class=lnt> 43
-</span><span class=lnt> 44
-</span><span class=lnt> 45
-</span><span class=lnt> 46
-</span><span class=lnt> 47
-</span><span class=lnt> 48
-</span><span class=lnt> 49
-</span><span class=lnt> 50
-</span><span class=lnt> 51
-</span><span class=lnt> 52
-</span><span class=lnt> 53
-</span><span class=lnt> 54
-</span><span class=lnt> 55
-</span><span class=lnt> 56
-</span><span class=lnt> 57
-</span><span class=lnt> 58
-</span><span class=lnt> 59
-</span><span class=lnt> 60
-</span><span class=lnt> 61
-</span><span class=lnt> 62
-</span><span class=lnt> 63
-</span><span class=lnt> 64
-</span><span class=lnt> 65
-</span><span class=lnt> 66
-</span><span class=lnt> 67
-</span><span class=lnt> 68
-</span><span class=lnt> 69
-</span><span class=lnt> 70
-</span><span class=lnt> 71
-</span><span class=lnt> 72
-</span><span class=lnt> 73
-</span><span class=lnt> 74
-</span><span class=lnt> 75
-</span><span class=lnt> 76
-</span><span class=lnt> 77
-</span><span class=lnt> 78
-</span><span class=lnt> 79
-</span><span class=lnt> 80
-</span><span class=lnt> 81
-</span><span class=lnt> 82
-</span><span class=lnt> 83
-</span><span class=lnt> 84
-</span><span class=lnt> 85
-</span><span class=lnt> 86
-</span><span class=lnt> 87
-</span><span class=lnt> 88
-</span><span class=lnt> 89
-</span><span class=lnt> 90
-</span><span class=lnt> 91
-</span><span class=lnt> 92
-</span><span class=lnt> 93
-</span><span class=lnt> 94
-</span><span class=lnt> 95
-</span><span class=lnt> 96
-</span><span class=lnt> 97
-</span><span class=lnt> 98
-</span><span class=lnt> 99
-</span><span class=lnt>100
-</span><span class=lnt>101
-</span><span class=lnt>102
-</span><span class=lnt>103
-</span><span class=lnt>104
-</span><span class=lnt>105
-</span><span class=lnt>106
-</span><span class=lnt>107
-</span><span class=lnt>108
-</span><span class=lnt>109
-</span><span class=lnt>110
-</span><span class=lnt>111
-</span><span class=lnt>112
-</span><span class=lnt>113
-</span><span class=lnt>114
-</span><span class=lnt>115
-</span><span class=lnt>116
-</span><span class=lnt>117
-</span><span class=lnt>118
-</span><span class=lnt>119
-</span><span class=lnt>120
-</span><span class=lnt>121
-</span><span class=lnt>122
-</span><span class=lnt>123
-</span><span class=lnt>124
-</span><span class=lnt>125
-</span><span class=lnt>126
-</span><span class=lnt>127
-</span><span class=lnt>128
-</span><span class=lnt>129
-</span><span class=lnt>130
-</span><span class=lnt>131
-</span><span class=lnt>132
-</span><span class=lnt>133
-</span><span class=lnt>134
-</span><span class=lnt>135
-</span><span class=lnt>136
-</span><span class=lnt>137
-</span><span class=lnt>138
-</span><span class=lnt>139
-</span><span class=lnt>140
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    FROM ubuntu:22.04 AS build<span class=err>
+<span class=reading-time>4 分鐘閱讀</span></div><div class=post-categories><a href=/categories/devops class=category-link>DevOps</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>在自動化測試和網路爬蟲等場景中，經常需要將應用程式與瀏覽器自動化工具 (如 Selenium) 打包到同一個 Docker 容器中。此外，為了支援不同的運行環境（例如 ARM64 或 x86_64 架構，以及 Firefox 或 Chrome 瀏覽器），我們需要一個靈活的建構流程。</p><p>本文將深入解析一個多階段 Dockerfile，它展示了如何：</p><ol><li>建構一個包含 Node.js 應用程式的基礎映像檔。</li><li>利用這個基礎映像檔，為不同的 CPU 架構和瀏覽器環境建立多個最終的 Selenium 應用程式映像檔。</li><li>透過一個通用的 <code>entrypoint.sh</code> 腳本，在容器啟動時自動判斷環境並執行對應的測試。</li></ol><h2 id=dockerfile-詳解>Dockerfile 詳解</h2><p>這個 Dockerfile 採用了多階段建構 (Multi-stage Builds) 的方式，以確保最終映像檔的輕量化和模組化。</p><h3 id=第一階段應用程式建構-build-階段>第一階段：應用程式建構 (<code>build</code> 階段)</h3><p>這個階段負責準備 Node.js 環境並打包應用程式。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s> ubuntu:22.04 AS build</span><span class=err>
 </span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NVM_DIR /opt/nvm<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NODE_VERSION v16.13.2<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV APP_DIR /app<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 設定環境變數</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> NVM_DIR /opt/nvm          <span class=c1># NVM (Node Version Manager) 的安裝目錄</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> NODE_VERSION v16.13.2     <span class=c1># 指定要安裝的 Node.js 版本</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> APP_DIR /app              <span class=c1># 應用程式的工作目錄</span><span class=err>
 </span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$APP_DIR</span> <span class=o>]</span> <span class=o>||</span> mkdir -p <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$NVM_DIR</span> <span class=o>]</span> <span class=o>||</span> mkdir -p <span class=nv>$NVM_DIR</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 建立必要的目錄</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> <span class=o>[</span> -d <span class=nv>$APP_DIR</span> <span class=o>]</span> <span class=o>||</span> mkdir -p <span class=nv>$APP_DIR</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> <span class=o>[</span> -d <span class=nv>$NVM_DIR</span> <span class=o>]</span> <span class=o>||</span> mkdir -p <span class=nv>$NVM_DIR</span><span class=err>
 </span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN apt-get update<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN apt-get install curl -y<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 更新套件列表並安裝 curl (用於下載 NVM)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> apt-get update <span class=o>&amp;&amp;</span> apt-get install curl -y<span class=err>
 </span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1># install nvm &amp; node.js</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1># RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh |bash</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN curl -o <span class=nv>$NVM_DIR</span>/install.sh https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN /bin/bash <span class=nv>$NVM_DIR</span>/install.sh<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV PATH <span class=nv>$NVM_DIR</span>/versions/node/<span class=nv>$NODE_VERSION</span>/bin:<span class=nv>$PATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 安裝 NVM 和指定版本的 Node.js</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 從 GitHub 下載 NVM 安裝腳本</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> curl -o <span class=nv>$NVM_DIR</span>/install.sh https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 執行 NVM 安裝腳本</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> /bin/bash <span class=nv>$NVM_DIR</span>/install.sh<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 設定 PATH 環境變數，將 Node.js 可執行檔加入路徑</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> PATH <span class=nv>$NVM_DIR</span>/versions/node/<span class=nv>$NODE_VERSION</span>/bin:<span class=nv>$PATH</span><span class=err>
 </span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1># install application</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY <span class=nb>test</span> /app/test<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY *.js /app/<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY *.json /app/<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY *.sh /app/<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN chmod <span class=m>0755</span> /app/*.sh<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 複製應用程式檔案</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> <span class=nb>test</span> /app/test          <span class=c1># 複製 &#39;test&#39; 目錄</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> *.js /app/              <span class=c1># 複製所有 .js 檔案</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> *.json /app/            <span class=c1># 複製所有 .json 檔案</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> *.sh /app/              <span class=c1># 複製所有 .sh 腳本</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> chmod <span class=m>0755</span> /app/*.sh     <span class=c1># 為腳本添加執行權限</span><span class=err>
 </span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    WORKDIR <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN npm install<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1>#####</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1># arm64-firefox: seleniarm/standalone-firefox:latest</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1>#####</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    FROM seleniarm/standalone-firefox:latest AS arm64-firefox<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>TERM</span><span class=o>=</span><span class=s2>&#34;xterm-color&#34;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>LANG</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>LANGUAGE</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NVM_DIR /opt/nvm<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NODE_VERSION v16.13.2<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV APP_DIR /app<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$APP_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$APP_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$APP_DIR</span><span class=o>)</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$NVM_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$NVM_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$NVM_DIR</span><span class=o>)</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY --from<span class=o>=</span>build <span class=nv>$NVM_DIR</span>/install.sh <span class=nv>$NVM_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN /bin/bash <span class=nv>$NVM_DIR</span>/install.sh<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV PATH <span class=nv>$NVM_DIR</span>/versions/node/<span class=nv>$NODE_VERSION</span>/bin:<span class=nv>$PATH</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY --from<span class=o>=</span>build <span class=nv>$APP_DIR</span> <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN chown seluser:seluser <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    WORKDIR <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    CMD <span class=o>[</span> <span class=s2>&#34;/app/entrypoint.sh&#34;</span> <span class=o>]</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1>#####</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1># arm64-chrome:  seleniarm/standalone-chromium:latest</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1>#####</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    FROM seleniarm/standalone-chromium:latest AS arm64-chrome<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>TERM</span><span class=o>=</span><span class=s2>&#34;xterm-color&#34;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>LANG</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>LANGUAGE</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NVM_DIR /opt/nvm<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NODE_VERSION v16.13.2<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV APP_DIR /app<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$APP_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$APP_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$APP_DIR</span><span class=o>)</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$NVM_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$NVM_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$NVM_DIR</span><span class=o>)</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY --from<span class=o>=</span>build <span class=nv>$NVM_DIR</span>/install.sh <span class=nv>$NVM_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN /bin/bash <span class=nv>$NVM_DIR</span>/install.sh<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV PATH <span class=nv>$NVM_DIR</span>/versions/node/<span class=nv>$NODE_VERSION</span>/bin:<span class=nv>$PATH</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY --from<span class=o>=</span>build <span class=nv>$APP_DIR</span> <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN chown seluser:seluser <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    WORKDIR <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    CMD <span class=o>[</span> <span class=s2>&#34;/app/entrypoint.sh&#34;</span> <span class=o>]</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1>#####</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1># x86_64-firefox: selenium/standalone-firefox:latest</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1>#####</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    FROM selenium/standalone-firefox:latest AS x86_64-firefox<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>TERM</span><span class=o>=</span><span class=s2>&#34;xterm-color&#34;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>LANG</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>LANGUAGE</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NVM_DIR /opt/nvm<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NODE_VERSION v16.13.2<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV APP_DIR /app<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$APP_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$APP_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$APP_DIR</span><span class=o>)</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$NVM_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$NVM_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$NVM_DIR</span><span class=o>)</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY --from<span class=o>=</span>build <span class=nv>$NVM_DIR</span>/install.sh <span class=nv>$NVM_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN /bin/bash <span class=nv>$NVM_DIR</span>/install.sh<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV PATH <span class=nv>$NVM_DIR</span>/versions/node/<span class=nv>$NODE_VERSION</span>/bin:<span class=nv>$PATH</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY --from<span class=o>=</span>build <span class=nv>$APP_DIR</span> <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN chown seluser:seluser <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    WORKDIR <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    CMD <span class=o>[</span> <span class=s2>&#34;/app/entrypoint.sh&#34;</span> <span class=o>]</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1>#####</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1># x86_64-chrome:  selenium/standalone-chrome:latest</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=c1>#####</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    FROM selenium/standalone-chrome:latest AS x86_64-chrome<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>TERM</span><span class=o>=</span><span class=s2>&#34;xterm-color&#34;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>LANG</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV <span class=nv>LANGUAGE</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NVM_DIR /opt/nvm<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV NODE_VERSION v16.13.2<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV APP_DIR /app<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$APP_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$APP_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$APP_DIR</span><span class=o>)</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN <span class=o>[</span> -d <span class=nv>$NVM_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$NVM_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$NVM_DIR</span><span class=o>)</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY --from<span class=o>=</span>build <span class=nv>$NVM_DIR</span>/install.sh <span class=nv>$NVM_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN /bin/bash <span class=nv>$NVM_DIR</span>/install.sh<span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    ENV PATH <span class=nv>$NVM_DIR</span>/versions/node/<span class=nv>$NODE_VERSION</span>/bin:<span class=nv>$PATH</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    COPY --from<span class=o>=</span>build <span class=nv>$APP_DIR</span> <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    RUN chown seluser:seluser <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    WORKDIR <span class=nv>$APP_DIR</span><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err>
-</span></span></span><span class=line><span class=cl><span class=err></span>    CMD <span class=o>[</span> <span class=s2>&#34;/app/entrypoint.sh&#34;</span> <span class=o>]</span><span class=err>
-</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 設定工作目錄並安裝 Node.js 依賴</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s> $APP_DIR</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> npm install<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=第二階段selenium-瀏覽器映像檔建構-多個-from-階段>第二階段：Selenium 瀏覽器映像檔建構 (多個 <code>FROM</code> 階段)</h3><p>這個 Dockerfile 為不同的 CPU 架構 (ARM64, x86_64) 和瀏覽器 (Firefox, Chrome) 定義了多個最終映像檔。每個階段都從一個預先建構好的 Selenium 映像檔開始，並將第一階段建構好的應用程式複製進來。</p><h4 id=arm64-架構---firefox-瀏覽器>ARM64 架構 - Firefox 瀏覽器</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -315,39 +99,148 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span><span class=lnt>31
 </span><span class=lnt>32
 </span><span class=lnt>33
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1>#!/bin/bash</span>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s> seleniarm/standalone-firefox:latest AS arm64-firefox</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 設定終端機和語言環境變數</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> <span class=nv>TERM</span><span class=o>=</span><span class=s2>&#34;xterm-color&#34;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> <span class=nv>LANG</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> <span class=nv>LANGUAGE</span><span class=o>=</span><span class=s1>&#39;en_US.UTF-8&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 重新設定 NVM 和應用程式目錄 (因為是新的 FROM 階段)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> NVM_DIR /opt/nvm<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> NODE_VERSION v16.13.2<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> APP_DIR /app<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 建立目錄並調整權限 (使用 sudo 和 chown 是因為基礎映像檔可能以非 root 用戶運行)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> <span class=o>[</span> -d <span class=nv>$APP_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$APP_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$APP_DIR</span><span class=o>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> <span class=o>[</span> -d <span class=nv>$NVM_DIR</span> <span class=o>]</span> <span class=o>||</span> <span class=o>(</span>sudo mkdir -p <span class=nv>$NVM_DIR</span> <span class=o>&amp;&amp;</span> sudo chown <span class=sb>`</span>whoami<span class=sb>`</span>:<span class=sb>`</span>id -g -n<span class=sb>`</span> <span class=nv>$NVM_DIR</span><span class=o>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 從 &#39;build&#39; 階段複製 NVM 安裝腳本並執行</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> --from<span class=o>=</span>build <span class=nv>$NVM_DIR</span>/install.sh <span class=nv>$NVM_DIR</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> /bin/bash <span class=nv>$NVM_DIR</span>/install.sh<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 設定 PATH 環境變數</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> PATH <span class=nv>$NVM_DIR</span>/versions/node/<span class=nv>$NODE_VERSION</span>/bin:<span class=nv>$PATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 從 &#39;build&#39; 階段複製應用程式檔案</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> --from<span class=o>=</span>build <span class=nv>$APP_DIR</span> <span class=nv>$APP_DIR</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 調整應用程式目錄的擁有者為 &#39;seluser&#39; (Selenium 映像檔的預設用戶)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> chown seluser:seluser <span class=nv>$APP_DIR</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 設定工作目錄</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s> $APP_DIR</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 定義容器啟動時執行的命令 (將由 entrypoint.sh 腳本處理)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span> <span class=s2>&#34;/app/entrypoint.sh&#34;</span> <span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=arm64-架構---chrome-瀏覽器>ARM64 架構 - Chrome 瀏覽器</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s> seleniarm/standalone-chromium:latest AS arm64-chrome</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># ... (與 arm64-firefox 階段類似的環境變數、目錄建立、NVM 安裝、應用程式複製和權限調整) ...</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span> <span class=s2>&#34;/app/entrypoint.sh&#34;</span> <span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=x86_64-架構---firefox-瀏覽器>x86_64 架構 - Firefox 瀏覽器</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s> selenium/standalone-firefox:latest AS x86_64-firefox</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># ... (與 arm64-firefox 階段類似的環境變數、目錄建立、NVM 安裝、應用程式複製和權限調整) ...</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span> <span class=s2>&#34;/app/entrypoint.sh&#34;</span> <span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=x86_64-架構---chrome-瀏覽器>x86_64 架構 - Chrome 瀏覽器</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s> selenium/standalone-chrome:latest AS x86_64-chrome</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># ... (與 arm64-firefox 階段類似的環境變數、目錄建立、NVM 安裝、應用程式複製和權限調整) ...</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span> <span class=s2>&#34;/app/entrypoint.sh&#34;</span> <span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=entrypointsh-腳本詳解><code>entrypoint.sh</code> 腳本詳解</h2><p>這個腳本是容器啟動時執行的入口點，它負責根據運行環境動態判斷要執行的 <code>npm</code> 腳本，並確保 Selenium 服務已啟動。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># 根據容器中存在的瀏覽器可執行檔來設定 SCRIPTS 變數</span>
+</span></span><span class=line><span class=cl><span class=c1># 如果找到 firefox，則 SCRIPTS 為 &#34;docker-firefox&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span> -f /usr/bin/firefox <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>export</span> <span class=nv>SCRIPTS</span><span class=o>=</span><span class=s2>&#34;docker-firefox&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 如果找到 chromium-browser 或 google-chrome，則 SCRIPTS 為 &#34;docker-chrome&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span> -f /usr/bin/chromium-browser <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>export</span> <span class=nv>SCRIPTS</span><span class=o>=</span><span class=s2>&#34;docker-chrome&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>[</span> -f /usr/bin/google-chrome <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>export</span> <span class=nv>SCRIPTS</span><span class=o>=</span><span class=s2>&#34;docker-chrome&#34;</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=o>[</span> -f /usr/bin/firefox <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>export</span> <span class=nv>SCRIPTS</span><span class=o>=</span><span class=s2>&#34;docker-firefox&#34;</span>
-</span></span><span class=line><span class=cl>    <span class=o>[</span> -f /usr/bin/chromium-browser <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>export</span> <span class=nv>SCRIPTS</span><span class=o>=</span><span class=s2>&#34;docker-chrome&#34;</span>
-</span></span><span class=line><span class=cl>    <span class=o>[</span> -f /usr/bin/google-chrome <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>export</span> <span class=nv>SCRIPTS</span><span class=o>=</span><span class=s2>&#34;docker-chrome&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 判斷 CPU 架構 (uname -m 會回傳機器硬體名稱)</span>
+</span></span><span class=line><span class=cl><span class=nv>uu</span><span class=o>=</span><span class=sb>`</span>uname -m<span class=sb>`</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;uname -m:&#39;</span> <span class=nv>$uu</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$uu</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;arm64&#34;</span> <span class=o>]</span> <span class=o>||</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$uu</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;aarch64&#34;</span> <span class=o>]</span><span class=p>;</span><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 如果是 ARM64 架構，則在 SCRIPTS 後面加上 &#34;-arm64&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>export</span> <span class=nv>SCRIPTS</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$SCRIPTS</span><span class=s2>-arm64&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
 </span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 啟動 Selenium 服務的入口點腳本 (通常由基礎映像檔提供)</span>
+</span></span><span class=line><span class=cl><span class=c1># 將標準輸出和標準錯誤重定向到 /dev/null，使其在背景靜默運行</span>
+</span></span><span class=line><span class=cl>/opt/bin/entry_point.sh &gt; /dev/null 2&gt;<span class=p>&amp;</span><span class=m>1</span> <span class=p>&amp;</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nv>uu</span><span class=o>=</span><span class=sb>`</span>uname -m<span class=sb>`</span>
-</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s1>&#39;uname -m:&#39;</span> <span class=nv>$uu</span>
-</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$uu</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;arm64&#34;</span> <span class=o>]</span> <span class=o>||</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$uu</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;aarch64&#34;</span> <span class=o>]</span><span class=p>;</span><span class=k>then</span>
-</span></span><span class=line><span class=cl>        <span class=nb>export</span> <span class=nv>SCRIPTS</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$SCRIPTS</span><span class=s2>-arm64&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 等待 Selenium 服務啟動 (檢查 localhost:4444 是否可訪問)</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> number in <span class=o>{</span>1..120<span class=o>}</span> <span class=c1># 最多等待 120 秒</span>
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> curl -s http://localhost:4444<span class=p>;</span> <span class=k>then</span> <span class=c1># -s 靜默模式，不顯示進度或錯誤</span>
+</span></span><span class=line><span class=cl>        <span class=nb>break</span> <span class=c1># 如果成功訪問，則跳出迴圈</span>
 </span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Waiting selenium service,&#34;</span> <span class=nv>$number</span> <span class=c1># 顯示等待訊息</span>
+</span></span><span class=line><span class=cl>    sleep <span class=m>1</span> <span class=c1># 每秒檢查一次</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    /opt/bin/entry_point.sh &gt; /dev/null 2&gt;<span class=p>&amp;</span><span class=m>1</span> <span class=p>&amp;</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=k>for</span> number in <span class=o>{</span>1..120<span class=o>}</span>
-</span></span><span class=line><span class=cl>    <span class=k>do</span>
-</span></span><span class=line><span class=cl>        <span class=k>if</span> curl http://localhost:4444<span class=p>;</span> <span class=k>then</span>
-</span></span><span class=line><span class=cl>            <span class=nb>break</span>
-</span></span><span class=line><span class=cl>        <span class=k>fi</span>
-</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Waiting selenium service,&#34;</span> <span class=nv>$number</span>
-</span></span><span class=line><span class=cl>        sleep <span class=m>1</span>
-</span></span><span class=line><span class=cl>    <span class=k>done</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=k>if</span> ! curl http://localhost:4444<span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl><span class=c1># 再次檢查 Selenium 服務是否成功啟動，如果沒有則退出並報錯</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> ! curl -s http://localhost:4444<span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Selenium service failed to start.&#34;</span>
 </span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
-</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nb>cd</span> /app
-</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;npm run </span><span class=nv>$SCRIPTS</span><span class=s2>&#34;</span>
-</span></span><span class=line><span class=cl>    npm run <span class=nv>$SCRIPTS</span>
-</span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/devops/dockerfile-basic/ class=post-nav-link>Dockerfile</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
-<a href=https://xinqilin.github.io/post/devops/network/ class=post-nav-link>Network</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div></body></html>
+</span></span><span class=line><span class=cl><span class=c1># 進入應用程式目錄</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> /app
+</span></span><span class=line><span class=cl><span class=c1># 執行對應的 npm 腳本</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;npm run </span><span class=nv>$SCRIPTS</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>npm run <span class=nv>$SCRIPTS</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=最佳實踐與考量>最佳實踐與考量</h2><ul><li><strong>多階段建構</strong>：此 Dockerfile 充分利用了多階段建構的優勢，將建構環境與運行環境分離，顯著減小了最終映像檔的大小，並提高了安全性。</li><li><strong>跨平台支援</strong>：透過為不同 CPU 架構和瀏覽器建立獨立的階段，實現了單一 Dockerfile 支援多種運行環境的能力。</li><li><strong>權限管理</strong>：在複製應用程式檔案後，使用 <code>chown</code> 調整檔案擁有者，確保應用程式以非 <code>root</code> 用戶運行，這是一個重要的安全實踐。</li><li><strong>健壯的啟動腳本</strong>：<code>entrypoint.sh</code> 腳本包含了等待外部服務 (Selenium) 啟動的邏輯，這使得容器的啟動更加健壯和可靠。</li><li><strong>環境變數</strong>：合理使用 <code>ENV</code> 指令來管理版本號和路徑，提高了 Dockerfile 的可維護性。</li></ul><p>透過這個詳細的 Dockerfile 和啟動腳本，您可以高效地建構和部署跨平台的 Selenium 自動化測試應用程式。</p></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/docker class=tag-link>#Docker</a>
+<a href=/tags/dockerfile class=tag-link>#Dockerfile</a>
+<a href=/tags/multi-stage-build class=tag-link>#Multi-stage Build</a>
+<a href=/tags/selenium class=tag-link>#Selenium</a>
+<a href=/tags/node.js class=tag-link>#Node.js</a>
+<a href=/tags/devops class=tag-link>#DevOps</a>
+<a href=/tags/cross-platform class=tag-link>#Cross-platform</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/devops/dockerfile-basic/ class=post-nav-link>Dockerfile 基礎：建構 Docker 映像檔的核心指令</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/devops/docker-network/ class=post-nav-link>Docker 網路模式詳解：容器間通訊與外部連接</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div></body></html>
