@@ -1,71 +1,9 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Behavioral - Template Method - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="DesignPattern - Behavioral - Template Method"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/templatemethod/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Behavioral - Template Method - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="DesignPattern - Behavioral - Template Method"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/templatemethod/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
 Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Behavioral - Template Method</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=template-method>Template Method</h1><p>Template Method pattern 定義了操作中算法的骨架，將一些步驟推遲到子類。
+<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=template-method>Template Method</h1><p>Template Method pattern 定義了操作中算法的骨架，將一些步驟推遲到子類。
 Template Method讓子類在不改變算法結構的情況下重新定義算法的某些步驟。
-可以在有算法的情況下使用Template Method pattern，其中一些步驟可以以多種不同的方式實現。在這種情況下，Template Method pattern 建議將算法的大綱保留在一個單獨的方法中，該方法稱為類中的Template方法。我們可以將其稱為Template類，將算法的變體部分（可以以多種不同方式實現的步驟）的具體實現留給該類的不同子類。</p><p>Template 類不必將實現完全留給它的子類。相反，作為提供算法大綱的一部分，Template 類還可以提供一些實現，我們可以認為這些實現在不同的實現中是不變的。如果合適，它甚至可以為可變部分提供默認實現。我們只在不同的子類中實現特定的細節。這種類型的實現消除了重複代碼的需要，這意味著要編寫的代碼量最少。</p><ul><li>大多數都是子類別呼叫父類別方法, 但在Template Method中，父類別 Template 調用子類的方法 => 好萊塢原則—— &ldquo;Don’t call us, we’ll call you.&rdquo;</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span><span class=lnt>48
-</span><span class=lnt>49
-</span><span class=lnt>50
-</span><span class=lnt>51
-</span><span class=lnt>52
-</span><span class=lnt>53
-</span><span class=lnt>54
-</span><span class=lnt>55
-</span><span class=lnt>56
-</span><span class=lnt>57
-</span><span class=lnt>58
-</span><span class=lnt>59
-</span><span class=lnt>60
-</span><span class=lnt>61
-</span><span class=lnt>62
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+可以在有算法的情況下使用Template Method pattern，其中一些步驟可以以多種不同的方式實現。在這種情況下，Template Method pattern 建議將算法的大綱保留在一個單獨的方法中，該方法稱為類中的Template方法。我們可以將其稱為Template類，將算法的變體部分（可以以多種不同方式實現的步驟）的具體實現留給該類的不同子類。</p><p>Template 類不必將實現完全留給它的子類。相反，作為提供算法大綱的一部分，Template 類還可以提供一些實現，我們可以認為這些實現在不同的實現中是不變的。如果合適，它甚至可以為可變部分提供默認實現。我們只在不同的子類中實現特定的細節。這種類型的實現消除了重複代碼的需要，這意味著要編寫的代碼量最少。</p><ul><li>大多數都是子類別呼叫父類別方法, 但在Template Method中，父類別 Template 調用子類的方法 => 好萊塢原則—— &ldquo;Don’t call us, we’ll call you.&rdquo;</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kd>class</span> <span class=nc>OrderTemplate</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c1>// 定義是否要覆寫</span><span class=w>
@@ -127,15 +65,7 @@ Template Method讓子類在不改變算法結構的情況下重新定義算法�
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;pay delivery fee online&#34;</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=kd>var</span><span class=w> </span><span class=n>online</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>OnlineOrder</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>online</span><span class=p>.</span><span class=na>processOrder</span><span class=p>();</span><span class=w>
@@ -143,6 +73,6 @@ Template Method讓子類在不改變算法結構的情況下重新定義算法�
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=kd>var</span><span class=w> </span><span class=n>store</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>StoreOrder</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>store</span><span class=p>.</span><span class=na>processOrder</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><ul><li>減少複製貼上（寫重複code） 的機會</li><li>一次實現算法的不變部分並將其留給子類來實現可以變化的行為。</li><li>當子類之間的共同行為應該在一個共同的類中被分解和本地化以避免代碼重複時。應該先識別現有 code 中的差異，然後區分新操作中的差異。最後，用調用這些新操作之一的模板方法替換不同的代碼。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+</span></span></span></code></pre></div><ul><li>減少複製貼上（寫重複code） 的機會</li><li>一次實現算法的不變部分並將其留給子類來實現可以變化的行為。</li><li>當子類之間的共同行為應該在一個共同的類中被分解和本地化以避免代碼重複時。應該先識別現有 code 中的差異，然後區分新操作中的差異。最後，用調用這些新操作之一的模板方法替換不同的代碼。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
 <a href=https://xinqilin.github.io/post/architecture/decorator/ class=post-nav-link>DesignPattern - Structural - Decorator</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
 <a href=https://xinqilin.github.io/post/architecture/mediator/ class=post-nav-link>DesignPattern - Behavioral - Mediator</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

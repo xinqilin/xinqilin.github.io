@@ -1,69 +1,7 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Behavioral - Command - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="DesignPattern - Behavioral - Command"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/command/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Behavioral - Command - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="DesignPattern - Behavioral - Command"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/command/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
 Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Behavioral - Command</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=command>Command</h1><p>Command Pattern 是一種行為對象設計模式。在 Command Pattern 中，命令接口聲明了用於執行特定操作的方法。具體的 Command 類實現了 Command interface 的 execute()方法，這個execute()方法調用了具體 Command 類所包含的 Receiver 類的相應動作方法。此外，Receiver 類執行特定的操作。但是，客戶端類負責創建具體命令並設置具體命令的接收者。此外，Invoker 類包含對 Command 的引用，並具有執行 Command 的方法。</p><p>在命令模式中，調用者與接收者執行的動作分離。調用者不知道接收者。調用者調用命令，命令執行接收者的適當動作。因此，調用者可以在不知道要執行的動作的細節的情況下調用命令。此外，這種解耦意味著對接收者動作的更改不會直接影響動作的調用。</p><p>我們甚至可以使用命令模式來執行“撤消”功能。在這種情況下，Command 接口應該包含一個方法，例如 unexecuted() 方法。</p><p>不用說，它還幫助我們在請求-響應模型中實現松耦合。簡而言之，請求被發送給調用者，調用者將其傳遞給封裝的 命令對象。命令對象將請求傳遞給 Receiver的適當方法以執行特定操作。客戶端程序創建接收器對象，然後將其附加到命令。然後，它創建調用程序對象並附加命令對像以執行操作。現在，當客戶端程序執行動作時，它會根據命令和接收器對象進行處理。</p><ul><li>Command是一個帶有 execute() 方法的接口。它是契約的核心。</li><li>Client 創建一個命令實現的實例並將其與接收器相關聯。</li><li>Invoker指示命令執行操作。</li><li>命令實現的實例在接收者和動作之間創建一個綁定。</li><li>Receiver 是知道執行操作的實際步驟的對象。任何類都可以作為接收者。</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span><span class=lnt>48
-</span><span class=lnt>49
-</span><span class=lnt>50
-</span><span class=lnt>51
-</span><span class=lnt>52
-</span><span class=lnt>53
-</span><span class=lnt>54
-</span><span class=lnt>55
-</span><span class=lnt>56
-</span><span class=lnt>57
-</span><span class=lnt>58
-</span><span class=lnt>59
-</span><span class=lnt>60
-</span><span class=lnt>61
-</span><span class=lnt>62
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=command>Command</h1><p>Command Pattern 是一種行為對象設計模式。在 Command Pattern 中，命令接口聲明了用於執行特定操作的方法。具體的 Command 類實現了 Command interface 的 execute()方法，這個execute()方法調用了具體 Command 類所包含的 Receiver 類的相應動作方法。此外，Receiver 類執行特定的操作。但是，客戶端類負責創建具體命令並設置具體命令的接收者。此外，Invoker 類包含對 Command 的引用，並具有執行 Command 的方法。</p><p>在命令模式中，調用者與接收者執行的動作分離。調用者不知道接收者。調用者調用命令，命令執行接收者的適當動作。因此，調用者可以在不知道要執行的動作的細節的情況下調用命令。此外，這種解耦意味著對接收者動作的更改不會直接影響動作的調用。</p><p>我們甚至可以使用命令模式來執行“撤消”功能。在這種情況下，Command 接口應該包含一個方法，例如 unexecuted() 方法。</p><p>不用說，它還幫助我們在請求-響應模型中實現松耦合。簡而言之，請求被發送給調用者，調用者將其傳遞給封裝的 命令對象。命令對象將請求傳遞給 Receiver的適當方法以執行特定操作。客戶端程序創建接收器對象，然後將其附加到命令。然後，它創建調用程序對象並附加命令對像以執行操作。現在，當客戶端程序執行動作時，它會根據命令和接收器對象進行處理。</p><ul><li>Command是一個帶有 execute() 方法的接口。它是契約的核心。</li><li>Client 創建一個命令實現的實例並將其與接收器相關聯。</li><li>Invoker指示命令執行操作。</li><li>命令實現的實例在接收者和動作之間創建一個綁定。</li><li>Receiver 是知道執行操作的實際步驟的對象。任何類都可以作為接收者。</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// command pattern 起手式</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>Command</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
@@ -125,23 +63,7 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>command</span><span class=p>.</span><span class=na>execute</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>var</span><span class=w> </span><span class=n>homework</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Homework</span><span class=p>();</span><span class=w> </span><span class=c1>// receiver</span><span class=w>
@@ -157,6 +79,6 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>invoker</span><span class=p>.</span><span class=na>setCommand</span><span class=p>(</span><span class=n>classmateCommand</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>invoker</span><span class=p>.</span><span class=na>invoke</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><ul><li>通過要執行的操作參數化對象。</li><li>圍繞基於原語操作的高級操作構建系統。這種結構在支持事務的信息系統中很常見。此外，命令模式提供了一種對事務建模的方法。命令有一個通用接口，讓您以相同的方式調用所有事務。該模式還使得使用新事務擴展系統變得容易。</li><li>命令的執行操作可以存儲狀態以在命令本身中反轉其效果。Command 接口必須有一個添加的 Un-execute 操作，它可以逆轉先前調用 Execute 的效果。我們可以將執行的命令存儲在歷史列表中。此外，我們可以通過分別調用 Un-execute 和 Execute 來回遍歷這個列表來實現無限級別的撤消和重做。它也支持撤消。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+</span></span></span></code></pre></div><ul><li>通過要執行的操作參數化對象。</li><li>圍繞基於原語操作的高級操作構建系統。這種結構在支持事務的信息系統中很常見。此外，命令模式提供了一種對事務建模的方法。命令有一個通用接口，讓您以相同的方式調用所有事務。該模式還使得使用新事務擴展系統變得容易。</li><li>命令的執行操作可以存儲狀態以在命令本身中反轉其效果。Command 接口必須有一個添加的 Un-execute 操作，它可以逆轉先前調用 Execute 的效果。我們可以將執行的命令存儲在歷史列表中。此外，我們可以通過分別調用 Un-execute 和 Execute 來回遍歷這個列表來實現無限級別的撤消和重做。它也支持撤消。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
 <a href=https://xinqilin.github.io/post/architecture/strategy/ class=post-nav-link>DesignPattern - Behavioral - Strategy</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
 <a href=https://xinqilin.github.io/post/architecture/state/ class=post-nav-link>DesignPattern - Behavioral - State</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

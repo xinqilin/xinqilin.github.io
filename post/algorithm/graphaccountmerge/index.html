@@ -1,84 +1,34 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>GraphAccountMerge - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="GraphAccountMerge"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/algorithm/graphaccountmerge/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>GraphAccountMerge - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="GraphAccountMerge"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/algorithm/graphaccountmerge/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
 Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>GraphAccountMerge</h1><div class=post-meta><div class=post-info><time class=post-date>2021年11月29日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>3 分鐘閱讀</span></div><div class=post-categories><a href=/categories/algorithm class=category-link>Algorithm</a></div></div></header><div class=post-content><h3 id=721><code>#721</code></h3><pre tabindex=0><code>Input: accounts = 
-[
-    [&#34;John&#34;,&#34;johnsmith@mail.com&#34;,&#34;john_newyork@mail.com&#34;],
-    [&#34;John&#34;,&#34;johnsmith@mail.com&#34;,&#34;john00@mail.com&#34;],
-    [&#34;Mary&#34;,&#34;mary@mail.com&#34;],
-    [&#34;John&#34;,&#34;johnnybravo@mail.com&#34;]
-]
-
-Output: 
-[
-    [&#34;John&#34;,&#34;john00@mail.com&#34;,&#34;john_newyork@mail.com&#34;,&#34;johnsmith@mail.com&#34;],
-    [&#34;Mary&#34;,&#34;mary@mail.com&#34;],
-    [&#34;John&#34;,&#34;johnnybravo@mail.com&#34;]
-]
-Explanation:
-The first and second John&#39;s are the same person as they have the common email &#34;johnsmith@mail.com&#34;.
-The third John and Mary are different people as none of their email addresses are used by other accounts.
-We could return these lists in any order, for example the answer [[&#39;Mary&#39;, &#39;mary@mail.com&#39;], [&#39;John&#39;, &#39;johnnybravo@mail.com&#39;], 
-[&#39;John&#39;, &#39;john00@mail.com&#39;, &#39;john_newyork@mail.com&#39;, &#39;johnsmith@mail.com&#39;]] would still be accepted.
-</code></pre><h3 id=sol>Sol:</h3><p>Graph + DFS
-ref: <a href=https://leetcode.com/problems/accounts-merge/discuss/109158/Java-Solution-(Build-graph-%2B-DFS-search)>click me!</a></p><pre tabindex=0><code>Use these edges to build some components. Common email addresses are like the intersections that connect each single component for each account.
-Because each component represents a merged account, do DFS search for each components and add into a list. Before add the name into this list, sort the emails. Then add name string into it.
-Examples: Assume we have three accounts, we connect them like this in order to use DFS.
-{Name, 1, 2, 3} =&gt; Name -- 1 -- 2 -- 3
-{Name, 2, 4, 5} =&gt; Name -- 2 -- 4 -- 5 (The same graph node 2 appears)
-{Name, 6, 7, 8} =&gt; Name -- 6 -- 7 -- 8
-(Where numbers represent email addresses).
-</code></pre><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span><span class=lnt>48
-</span><span class=lnt>49
-</span><span class=lnt>50
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Solution</span><span class=w> </span><span class=p>{</span><span class=w>
+<span class=reading-time>3 分鐘閱讀</span></div><div class=post-categories><a href=/categories/algorithm class=category-link>Algorithm</a></div></div></header><div class=post-content><h3 id=721><code>#721</code></h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Input: accounts = 
+</span></span><span class=line><span class=cl>[
+</span></span><span class=line><span class=cl>    [&#34;John&#34;,&#34;johnsmith@mail.com&#34;,&#34;john_newyork@mail.com&#34;],
+</span></span><span class=line><span class=cl>    [&#34;John&#34;,&#34;johnsmith@mail.com&#34;,&#34;john00@mail.com&#34;],
+</span></span><span class=line><span class=cl>    [&#34;Mary&#34;,&#34;mary@mail.com&#34;],
+</span></span><span class=line><span class=cl>    [&#34;John&#34;,&#34;johnnybravo@mail.com&#34;]
+</span></span><span class=line><span class=cl>]
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Output: 
+</span></span><span class=line><span class=cl>[
+</span></span><span class=line><span class=cl>    [&#34;John&#34;,&#34;john00@mail.com&#34;,&#34;john_newyork@mail.com&#34;,&#34;johnsmith@mail.com&#34;],
+</span></span><span class=line><span class=cl>    [&#34;Mary&#34;,&#34;mary@mail.com&#34;],
+</span></span><span class=line><span class=cl>    [&#34;John&#34;,&#34;johnnybravo@mail.com&#34;]
+</span></span><span class=line><span class=cl>]
+</span></span><span class=line><span class=cl>Explanation:
+</span></span><span class=line><span class=cl>The first and second John&#39;s are the same person as they have the common email &#34;johnsmith@mail.com&#34;.
+</span></span><span class=line><span class=cl>The third John and Mary are different people as none of their email addresses are used by other accounts.
+</span></span><span class=line><span class=cl>We could return these lists in any order, for example the answer [[&#39;Mary&#39;, &#39;mary@mail.com&#39;], [&#39;John&#39;, &#39;johnnybravo@mail.com&#39;], 
+</span></span><span class=line><span class=cl>[&#39;John&#39;, &#39;john00@mail.com&#39;, &#39;john_newyork@mail.com&#39;, &#39;johnsmith@mail.com&#39;]] would still be accepted.
+</span></span></code></pre></div><h3 id=sol>Sol:</h3><p>Graph + DFS
+ref: <a href=https://leetcode.com/problems/accounts-merge/discuss/109158/Java-Solution-(Build-graph-%2B-DFS-search)>click me!</a></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Use these edges to build some components. Common email addresses are like the intersections that connect each single component for each account.
+</span></span><span class=line><span class=cl>Because each component represents a merged account, do DFS search for each components and add into a list. Before add the name into this list, sort the emails. Then add name string into it.
+</span></span><span class=line><span class=cl>Examples: Assume we have three accounts, we connect them like this in order to use DFS.
+</span></span><span class=line><span class=cl>{Name, 1, 2, 3} =&gt; Name -- 1 -- 2 -- 3
+</span></span><span class=line><span class=cl>{Name, 2, 4, 5} =&gt; Name -- 2 -- 4 -- 5 (The same graph node 2 appears)
+</span></span><span class=line><span class=cl>{Name, 6, 7, 8} =&gt; Name -- 6 -- 7 -- 8
+</span></span><span class=line><span class=cl>(Where numbers represent email addresses).
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Solution</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=nf>accountsMerge</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>accounts</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>List</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>result</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ArrayList</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=p>(</span><span class=n>accounts</span><span class=o>==</span><span class=kc>null</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>accounts</span><span class=p>.</span><span class=na>size</span><span class=p>()</span><span class=o>==</span><span class=n>0</span><span class=p>)</span><span class=w>
@@ -128,48 +78,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><h3 id=bfs>BFS</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=nf>accountsMerge</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>accounts</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span></code></pre></div><h3 id=bfs>BFS</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=nf>accountsMerge</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>accounts</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>HashMap</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>emailName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HashMap</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>HashMap</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>graph</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HashMap</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>for</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>account</span><span class=p>:</span><span class=w> </span><span class=n>accounts</span><span class=p>){</span><span class=w>
@@ -210,7 +119,7 @@ Examples: Assume we have three accounts, we connect them like this in order to u
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>res</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+</span></span></span></code></pre></div></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
 <a href=/tags/algorithm class=tag-link>#Algorithm</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/algorithm/treetraversal/ class=post-nav-link>TreeTraversal</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
-<a href=https://xinqilin.github.io/post/backend/reactivejava/ class=post-nav-link>ReactiveJava</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
+<a href=https://xinqilin.github.io/post/algorithm/treetraversal/ class=post-nav-link>二元樹遍歷（Binary Tree Traversal）完整指南</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/backend/reactivejava/ class=post-nav-link>Reactive Programming 完整指南：Spring WebFlux 與 Project Reactor</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

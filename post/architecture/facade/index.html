@@ -1,50 +1,11 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Structural - Facade - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="DesignPattern - Structural - Facade"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/facade/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Structural - Facade - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="DesignPattern - Structural - Facade"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/facade/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
 Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Structural - Facade</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=facade>Facade</h1><p>為子系統中的一組 interface 提供統一的入口。Facade Pattern 定義了一個更高級別的接口，使子系統更易於使用
+<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=facade>Facade</h1><p>為子系統中的一組 interface 提供統一的入口。Facade Pattern 定義了一個更高級別的接口，使子系統更易於使用
 Facade 並沒有封裝子系統類或接口；它只是為其功能提供了一個簡化的界面。
 此外，客戶端可以直接訪問這些類。它仍然為可能需要它的客戶公開系統的全部功能。簡而言之，它只是為子系統的複雜接口提供了一層，使其更易於使用。</p><p>外觀設計模式是促進鬆散耦合的其他設計模式之一。它強調了設計中最重要的一個方面，即抽象。通過隱藏它背後的複雜性並暴露一個簡單的接口，它實現了抽象。
 Facade 和 Adapter 一樣可以封裝多個類，但是 Facade 使用接口來簡化複雜接口的使用，而 Adapter 用於將接口轉換為客戶端期望的接口。
-在抽象方面，中介者設計模式可能看起來與外觀設計模式非常相似。Mediator 以類似於外觀模式的方式抽象子系統的功能。然而，在中介者模式的實現中，子系統或對等點的組件都知道中介者並與之交互。但是在外觀模式的情況下，子系統不知道外觀的存在。只有外觀與子系統對話。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+在抽象方面，中介者設計模式可能看起來與外觀設計模式非常相似。Mediator 以類似於外觀模式的方式抽象子系統的功能。然而，在中介者模式的實現中，子系統或對等點的組件都知道中介者並與之交互。但是在外觀模式的情況下，子系統不知道外觀的存在。只有外觀與子系統對話。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Service1</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>doSth</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>x</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 複雜的業務邏輯...</span><span class=w>
@@ -83,15 +44,7 @@ Facade 和 Adapter 一樣可以封裝多個類，但是 Facade 使用接口來�
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>return</span><span class=w> </span><span class=n>Service3</span><span class=p>.</span><span class=na>doSth3</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=w> </span><span class=n>2</span><span class=p>,</span><span class=w> </span><span class=n>3</span><span class=p>.</span><span class=na>0</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>Facade</span><span class=w> </span><span class=n>facade</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Facade</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=kt>int</span><span class=w> </span><span class=n>x</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>3</span><span class=p>;</span><span class=w>
@@ -99,6 +52,6 @@ Facade 和 Adapter 一樣可以封裝多個類，但是 Facade 使用接口來�
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Cube of &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>x</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; times 2:&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>facade</span><span class=p>.</span><span class=na>cut</span><span class=p>(</span><span class=n>100</span><span class=p>));</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>x</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; multiply class1 &amp; class2 :&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>facade</span><span class=p>.</span><span class=na>multiply</span><span class=p>(</span><span class=n>100</span><span class=p>));</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><ul><li>子系統接口不知道 Facade，它們不應該有任何 Facade 接口的引用。</li><li>子系統可以相互依賴。在這種情況下，外觀可以充當協調器並解耦子系統之間的依賴關係。</li><li>外觀模式更像是客戶端應用程序的助手；它不會對客戶端隱藏子系統接口。是否使用 Facade 完全取決於客戶端代碼。</li><li>外觀模式可以應用於任何開發點，通常是在接口數量增加和系統變得複雜時。</li><li>外觀模式應該應用於類似類型的接口；它的目的是提供一個接口而不是多個接口來完成類似的工作。</li><li>可以使用帶有 Facade 的工廠模式來為客戶端系統提供更好的接口。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+</span></span></span></code></pre></div><ul><li>子系統接口不知道 Facade，它們不應該有任何 Facade 接口的引用。</li><li>子系統可以相互依賴。在這種情況下，外觀可以充當協調器並解耦子系統之間的依賴關係。</li><li>外觀模式更像是客戶端應用程序的助手；它不會對客戶端隱藏子系統接口。是否使用 Facade 完全取決於客戶端代碼。</li><li>外觀模式可以應用於任何開發點，通常是在接口數量增加和系統變得複雜時。</li><li>外觀模式應該應用於類似類型的接口；它的目的是提供一個接口而不是多個接口來完成類似的工作。</li><li>可以使用帶有 Facade 的工廠模式來為客戶端系統提供更好的接口。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
 <a href=https://xinqilin.github.io/post/architecture/flyweight/ class=post-nav-link>DesignPattern - Structural - Flyweight</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
 <a href=https://xinqilin.github.io/post/architecture/bridge/ class=post-nav-link>DesignPattern - Structural - Bridge</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

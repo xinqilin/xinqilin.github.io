@@ -6,13 +6,90 @@
     <description>Recent content in Tags on Bill.Lin&#39;s Notes</description>
     <generator>Hugo</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sun, 02 Oct 2022 00:48:01 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 05 Jan 2023 23:45:46 +0800</lastBuildDate>
     <atom:link href="https://xinqilin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Commons-Net</title>
+      <link>https://xinqilin.github.io/tags/commons-net/</link>
+      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/commons-net/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>FileTransfer</title>
+      <link>https://xinqilin.github.io/tags/filetransfer/</link>
+      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/filetransfer/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>FTP</title>
+      <link>https://xinqilin.github.io/tags/ftp/</link>
+      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/ftp/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Java</title>
       <link>https://xinqilin.github.io/tags/java/</link>
-      <pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
+      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/java/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>https://xinqilin.github.io/tags/security/</link>
+      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spring</title>
+      <link>https://xinqilin.github.io/tags/spring/</link>
+      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/spring/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Database</title>
+      <link>https://xinqilin.github.io/tags/database/</link>
+      <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/database/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Enum</title>
+      <link>https://xinqilin.github.io/tags/enum/</link>
+      <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/enum/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hibernate</title>
+      <link>https://xinqilin.github.io/tags/hibernate/</link>
+      <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/hibernate/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>JPA</title>
+      <link>https://xinqilin.github.io/tags/jpa/</link>
+      <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/jpa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>MySQL</title>
+      <link>https://xinqilin.github.io/tags/mysql/</link>
+      <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ORM</title>
+      <link>https://xinqilin.github.io/tags/orm/</link>
+      <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/orm/</guid>
       <description></description>
     </item>
     <item>
@@ -30,6 +107,27 @@
       <description></description>
     </item>
     <item>
+      <title>Algorithm</title>
+      <link>https://xinqilin.github.io/tags/algorithm/</link>
+      <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/algorithm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LinkedList</title>
+      <link>https://xinqilin.github.io/tags/linkedlist/</link>
+      <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/linkedlist/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pointer</title>
+      <link>https://xinqilin.github.io/tags/pointer/</link>
+      <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/pointer/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Recursion</title>
       <link>https://xinqilin.github.io/tags/recursion/</link>
       <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
@@ -37,10 +135,24 @@
       <description></description>
     </item>
     <item>
-      <title>Algorithm</title>
-      <link>https://xinqilin.github.io/tags/algorithm/</link>
+      <title>DisjointSet</title>
+      <link>https://xinqilin.github.io/tags/disjointset/</link>
       <pubDate>Mon, 26 Sep 2022 22:15:44 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/algorithm/</guid>
+      <guid>https://xinqilin.github.io/tags/disjointset/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Graph</title>
+      <link>https://xinqilin.github.io/tags/graph/</link>
+      <pubDate>Mon, 26 Sep 2022 22:15:44 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/graph/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>UnionFind</title>
+      <link>https://xinqilin.github.io/tags/unionfind/</link>
+      <pubDate>Mon, 26 Sep 2022 22:15:44 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/unionfind/</guid>
       <description></description>
     </item>
     <item>
@@ -51,6 +163,83 @@
       <description></description>
     </item>
     <item>
+      <title>BFS</title>
+      <link>https://xinqilin.github.io/tags/bfs/</link>
+      <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/bfs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DFS</title>
+      <link>https://xinqilin.github.io/tags/dfs/</link>
+      <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/dfs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TopologicalSort</title>
+      <link>https://xinqilin.github.io/tags/topologicalsort/</link>
+      <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/topologicalsort/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Async</title>
+      <link>https://xinqilin.github.io/tags/async/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/async/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Flux</title>
+      <link>https://xinqilin.github.io/tags/flux/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/flux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mono</title>
+      <link>https://xinqilin.github.io/tags/mono/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/mono/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Reactive</title>
+      <link>https://xinqilin.github.io/tags/reactive/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/reactive/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Reactor</title>
+      <link>https://xinqilin.github.io/tags/reactor/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/reactor/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>WebFlux</title>
+      <link>https://xinqilin.github.io/tags/webflux/</link>
+      <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/webflux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tree</title>
+      <link>https://xinqilin.github.io/tags/tree/</link>
+      <pubDate>Sun, 21 Nov 2021 20:11:03 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/tree/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>遞歸</title>
+      <link>https://xinqilin.github.io/tags/%E9%81%9E%E6%AD%B8/</link>
+      <pubDate>Sun, 21 Nov 2021 20:11:03 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/%E9%81%9E%E6%AD%B8/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>CURL</title>
       <link>https://xinqilin.github.io/tags/curl/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
@@ -58,10 +247,143 @@
       <description></description>
     </item>
     <item>
+      <title>Autowired</title>
+      <link>https://xinqilin.github.io/tags/autowired/</link>
+      <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/autowired/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Best-Practices</title>
+      <link>https://xinqilin.github.io/tags/best-practices/</link>
+      <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/best-practices/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Constructor</title>
+      <link>https://xinqilin.github.io/tags/constructor/</link>
+      <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/constructor/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DI</title>
+      <link>https://xinqilin.github.io/tags/di/</link>
+      <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/di/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>IoC</title>
+      <link>https://xinqilin.github.io/tags/ioc/</link>
+      <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/ioc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>API</title>
+      <link>https://xinqilin.github.io/tags/api/</link>
+      <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/api/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Documentation</title>
+      <link>https://xinqilin.github.io/tags/documentation/</link>
+      <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/documentation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>OpenAPI</title>
+      <link>https://xinqilin.github.io/tags/openapi/</link>
+      <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/openapi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>REST</title>
+      <link>https://xinqilin.github.io/tags/rest/</link>
+      <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/rest/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SpringBoot</title>
+      <link>https://xinqilin.github.io/tags/springboot/</link>
+      <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/springboot/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Swagger</title>
+      <link>https://xinqilin.github.io/tags/swagger/</link>
+      <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/swagger/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Script</title>
       <link>https://xinqilin.github.io/tags/script/</link>
       <pubDate>Sun, 28 Jun 2020 12:36:19 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/script/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Annotation</title>
+      <link>https://xinqilin.github.io/tags/annotation/</link>
+      <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/annotation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Configuration</title>
+      <link>https://xinqilin.github.io/tags/configuration/</link>
+      <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/configuration/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Data</title>
+      <link>https://xinqilin.github.io/tags/data/</link>
+      <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/data/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spring-Boot</title>
+      <link>https://xinqilin.github.io/tags/spring-boot/</link>
+      <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/spring-boot/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Web</title>
+      <link>https://xinqilin.github.io/tags/web/</link>
+      <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/web/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Collections</title>
+      <link>https://xinqilin.github.io/tags/collections/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/collections/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Data-Structure</title>
+      <link>https://xinqilin.github.io/tags/data-structure/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/data-structure/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>HashMap</title>
+      <link>https://xinqilin.github.io/tags/hashmap/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/hashmap/</guid>
       <description></description>
     </item>
   </channel>

@@ -1,35 +1,35 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>FileExpress - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="FileExpress"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/fileexpress/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>FileExpress - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="FileExpress"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/fileexpress/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
 Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>FileExpress</h1><div class=post-meta><div class=post-info><time class=post-date>2022年10月01日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h3 id=file-relations-文件表達式>File relations (文件表達式)</h3><p>[ -e xxx]</p><pre tabindex=0><code>    // return true / false
-
-    -e filename 如果 filename file存在
-    -d filename 如果 filename 為 dir
-    -f filename 如果 filename 為常規文件
-    -L filename 如果 filename 為符號連接
-    -r filename 如果 filename 可讀取
-    -w filename 如果 filename 可寫入
-    -x filename 如果 filename 可執行
-    -s filename 如果 大小不為 0
-    -h filename 如果 是 link
-
-    f1 -nt f2 f1 是否比 f2 新
-    f1 -ot f2 f1 是否比 f2 舊
-</code></pre><pre tabindex=0><code>
-    -eq  &#39;=&#39;
-    -ne  &#39;!=&#39;
-    -gt  &#39;&gt;&#39;
-    -ge  &#39;&gt;=&#39;
-    -lt  &#39;&lt;&#39;
-    -le  &#39;&lt;=&#39;
-</code></pre><h4 id=exercise>exercise</h4><pre tabindex=0><code>
-    if  [ -n $string  ]          
-    if  [ -z $string  ]   
-    if  [ $sting ]                
-    if [ ! express ]
-    if [ ! -d $num ]
-    if [ express1  –a  express2 ]
-    if [ express1 –o express2 ]
-</code></pre></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/algorithm/reverselinkedlist/ class=post-nav-link>ReverseLinkedList</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h3 id=file-relations-文件表達式>File relations (文件表達式)</h3><p>[ -e xxx]</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    // return true / false
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    -e filename 如果 filename file存在
+</span></span><span class=line><span class=cl>    -d filename 如果 filename 為 dir
+</span></span><span class=line><span class=cl>    -f filename 如果 filename 為常規文件
+</span></span><span class=line><span class=cl>    -L filename 如果 filename 為符號連接
+</span></span><span class=line><span class=cl>    -r filename 如果 filename 可讀取
+</span></span><span class=line><span class=cl>    -w filename 如果 filename 可寫入
+</span></span><span class=line><span class=cl>    -x filename 如果 filename 可執行
+</span></span><span class=line><span class=cl>    -s filename 如果 大小不為 0
+</span></span><span class=line><span class=cl>    -h filename 如果 是 link
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    f1 -nt f2 f1 是否比 f2 新
+</span></span><span class=line><span class=cl>    f1 -ot f2 f1 是否比 f2 舊
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    -eq  &#39;=&#39;
+</span></span><span class=line><span class=cl>    -ne  &#39;!=&#39;
+</span></span><span class=line><span class=cl>    -gt  &#39;&gt;&#39;
+</span></span><span class=line><span class=cl>    -ge  &#39;&gt;=&#39;
+</span></span><span class=line><span class=cl>    -lt  &#39;&lt;&#39;
+</span></span><span class=line><span class=cl>    -le  &#39;&lt;=&#39;
+</span></span></code></pre></div><h4 id=exercise>exercise</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    if  [ -n $string  ]          
+</span></span><span class=line><span class=cl>    if  [ -z $string  ]   
+</span></span><span class=line><span class=cl>    if  [ $sting ]                
+</span></span><span class=line><span class=cl>    if [ ! express ]
+</span></span><span class=line><span class=cl>    if [ ! -d $num ]
+</span></span><span class=line><span class=cl>    if [ express1  –a  express2 ]
+</span></span><span class=line><span class=cl>    if [ express1 –o express2 ]
+</span></span></code></pre></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/algorithm/reverselinkedlist/ class=post-nav-link>鏈表反轉（Reverse Linked List）完整解析</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
 <a href=https://xinqilin.github.io/post/backend/treeset/ class=post-nav-link>TreeSet</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
