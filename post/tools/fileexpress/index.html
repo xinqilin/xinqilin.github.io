@@ -1,7 +1,52 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>FileExpress - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="FileExpress"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/fileexpress/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>FileExpress</h1><div class=post-meta><div class=post-info><time class=post-date>2022年10月01日</time>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Shell 檔案與字串表達式詳解 - Bill.Lin's Notes</title><meta name=description content="本文提供 Shell Script 中常用的檔案、目錄及字串測試表達式，包含語法說明與實用範例，幫助您更有效地撰寫腳本。"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Shell 檔案與字串表達式詳解"><meta property="og:description" content="本文提供 Shell Script 中常用的檔案、目錄及字串測試表達式，包含語法說明與實用範例，幫助您更有效地撰寫腳本。"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/fileexpress/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Shell 檔案與字串表達式詳解</h1><div class=post-meta><div class=post-info><time class=post-date>2022年10月01日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h3 id=file-relations-文件表達式>File relations (文件表達式)</h3><p>[ -e xxx]</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>在撰寫 Shell Script 時，我們經常需要對檔案、目錄或字串的狀態進行判斷，例如檢查檔案是否存在、是否可讀，或判斷字串是否為空。這時就需要使用測試表達式 <code>[ ... ]</code> 或 <code>test</code> 指令。本文將詳細介紹這些常用的表達式及其用法。</p><h2 id=檔案測試表達式>檔案測試表達式</h2><p>檔案測試表達式用於判斷檔案的類型或權限狀態。其回傳值為布林值（<code>true</code> 或 <code>false</code>），可搭配 <code>if</code> 條件式使用。</p><h3 id=語法>語法</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -&lt;operator&gt; &lt;filename&gt; <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=c1># do something</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=常用運算子>常用運算子</h3><table><thead><tr><th style=text-align:left>運算子</th><th style=text-align:left>說明</th><th style=text-align:left>範例</th></tr></thead><tbody><tr><td style=text-align:left><code>-e</code></td><td style=text-align:left>如果檔案存在 (exist)，則為 <code>true</code></td><td style=text-align:left><code>[ -e /etc/hosts ]</code></td></tr><tr><td style=text-align:left><code>-d</code></td><td style=text-align:left>如果檔案是目錄 (directory)，則為 <code>true</code></td><td style=text-align:left><code>[ -d /home/user ]</code></td></tr><tr><td style=text-align:left><code>-f</code></td><td style=text-align:left>如果檔案是常規檔案 (regular file)，則為 <code>true</code></td><td style=text-align:left><code>[ -f /etc/passwd ]</code></td></tr><tr><td style=text-align:left><code>-L</code></td><td style=text-align:left>如果檔案是符號連結 (symbolic link)，則為 <code>true</code></td><td style=text-align:left><code>[ -L /usr/bin/python ]</code></td></tr><tr><td style=text-align:left><code>-h</code></td><td style=text-align:left>與 <code>-L</code> 相同，如果檔案是符號連結，則為 <code>true</code></td><td style=text-align:left><code>[ -h /usr/bin/python ]</code></td></tr><tr><td style=text-align:left><code>-r</code></td><td style=text-align:left>如果檔案可讀 (readable)，則為 <code>true</code></td><td style=text-align:left><code>[ -r /etc/shadow ]</code></td></tr><tr><td style=text-align:left><code>-w</code></td><td style=text-align:left>如果檔案可寫 (writable)，則為 <code>true</code></td><td style=text-align:left><code>[ -w /tmp/test.log ]</code></td></tr><tr><td style=text-align:left><code>-x</code></td><td style=text-align:left>如果檔案可執行 (executable)，則為 <code>true</code></td><td style=text-align:left><code>[ -x ./deploy.sh ]</code></td></tr><tr><td style=text-align:left><code>-s</code></td><td style=text-align:left>如果檔案大小不為 0，則為 <code>true</code></td><td style=text-align:left><code>[ -s /var/log/syslog ]</code></td></tr></tbody></table><h3 id=檔案比較運算子>檔案比較運算子</h3><p>用於比較兩個檔案的新舊關係。</p><table><thead><tr><th style=text-align:left>運算子</th><th style=text-align:left>說明</th><th style=text-align:left>範例</th></tr></thead><tbody><tr><td style=text-align:left><code>f1 -nt f2</code></td><td style=text-align:left>如果檔案 <code>f1</code> 比 <code>f2</code> 新 (newer than)，則為 <code>true</code></td><td style=text-align:left><code>[ file1.log -nt file2.log ]</code></td></tr><tr><td style=text-align:left><code>f1 -ot f2</code></td><td style=text-align:left>如果檔案 <code>f1</code> 比 <code>f2</code> 舊 (older than)，則為 <code>true</code></td><td style=text-align:left><code>[ file1.log -ot file2.log ]</code></td></tr></tbody></table><h2 id=字串與數值測試表達式>字串與數值測試表達式</h2><p>除了檔案，測試表達式也常用於比較數值或判斷字串狀態。</p><h3 id=數值比較>數值比較</h3><table><thead><tr><th style=text-align:left>運算子</th><th style=text-align:left>說明</th><th style=text-align:left>等價符號</th></tr></thead><tbody><tr><td style=text-align:left><code>-eq</code></td><td style=text-align:left>等於 (equal)</td><td style=text-align:left><code>==</code></td></tr><tr><td style=text-align:left><code>-ne</code></td><td style=text-align:left>不等於 (not equal)</td><td style=text-align:left><code>!=</code></td></tr><tr><td style=text-align:left><code>-gt</code></td><td style=text-align:left>大於 (greater than)</td><td style=text-align:left><code>></code></td></tr><tr><td style=text-align:left><code>-ge</code></td><td style=text-align:left>大於或等於 (greater or equal)</td><td style=text-align:left><code>>=</code></td></tr><tr><td style=text-align:left><code>-lt</code></td><td style=text-align:left>小於 (less than)</td><td style=text-align:left><code>&lt;</code></td></tr><tr><td style=text-align:left><code>-le</code></td><td style=text-align:left>小於或等於 (less or equal)</td><td style=text-align:left><code>&lt;=</code></td></tr></tbody></table><h3 id=字串比較>字串比較</h3><table><thead><tr><th style=text-align:left>運算子</th><th style=text-align:left>說明</th><th style=text-align:left>範例</th></tr></thead><tbody><tr><td style=text-align:left><code>-n</code></td><td style=text-align:left>如果字串長度不為 0，則為 <code>true</code></td><td style=text-align:left><code>[ -n "$my_var" ]</code></td></tr><tr><td style=text-align:left><code>-z</code></td><td style=text-align:left>如果字串長度為 0 (zero)，則為 <code>true</code></td><td style=text-align:left><code>[ -z "$my_var" ]</code></td></tr><tr><td style=text-align:left><code>$string</code></td><td style=text-align:left>如果字串不為空，則為 <code>true</code> (與 <code>-n</code> 效果相同)</td><td style=text-align:left><code>[ "$my_var" ]</code></td></tr></tbody></table><h2 id=邏輯運算子>邏輯運算子</h2><p>用於組合多個表達式。</p><table><thead><tr><th style=text-align:left>運算子</th><th style=text-align:left>說明</th><th style=text-align:left>範例</th></tr></thead><tbody><tr><td style=text-align:left><code>!</code></td><td style=text-align:left><strong>NOT</strong>：反轉表達式的結果</td><td style=text-align:left><code>[ ! -d /tmp/non_existent ]</code></td></tr><tr><td style=text-align:left><code>-a</code></td><td style=text-align:left><strong>AND</strong>：兩個表達式都為 <code>true</code> 時，結果才為 <code>true</code></td><td style=text-align:left><code>[ -r "$file" -a -s "$file" ]</code></td></tr><tr><td style=text-align:left><code>-o</code></td><td style=text-align:left><strong>OR</strong>：兩個表達式只要有一個為 <code>true</code>，結果就為 <code>true</code></td><td style=text-align:left><code>[ -d "$dir" -o -f "$dir" ]</code></td></tr></tbody></table><p><strong>注意</strong>：建議使用 <code>&&</code> 和 <code>||</code> 來取代 <code>-a</code> 和 <code>-o</code>，因為它們更符合現代 Shell 的標準且更安全。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用 &amp;&amp; (AND)</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -r <span class=s2>&#34;</span><span class=nv>$file</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=o>[</span> -s <span class=s2>&#34;</span><span class=nv>$file</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;檔案可讀且內容不為空&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用 || (OR)</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -d <span class=s2>&#34;</span><span class=nv>$path</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> <span class=o>[</span> -f <span class=s2>&#34;</span><span class=nv>$path</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;路徑是一個目錄或檔案&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=實用範例>實用範例</h2><h3 id=範例-1檢查目錄是否存在若不存在則建立>範例 1：檢查目錄是否存在，若不存在則建立</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nv>LOG_DIR</span><span class=o>=</span><span class=s2>&#34;/var/log/myapp&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> ! -d <span class=s2>&#34;</span><span class=nv>$LOG_DIR</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;日誌目錄不存在，正在建立: </span><span class=nv>$LOG_DIR</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  mkdir -p <span class=s2>&#34;</span><span class=nv>$LOG_DIR</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;日誌目錄已存在。&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=範例-2檢查字串變數是否為空>範例 2：檢查字串變數是否為空</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -15,50 +60,48 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span><span class=lnt>12
 </span><span class=lnt>13
 </span><span class=lnt>14
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    // return true / false
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nv>USERNAME</span><span class=o>=</span><span class=s2>&#34;&#34;</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    -e filename 如果 filename file存在
-</span></span><span class=line><span class=cl>    -d filename 如果 filename 為 dir
-</span></span><span class=line><span class=cl>    -f filename 如果 filename 為常規文件
-</span></span><span class=line><span class=cl>    -L filename 如果 filename 為符號連接
-</span></span><span class=line><span class=cl>    -r filename 如果 filename 可讀取
-</span></span><span class=line><span class=cl>    -w filename 如果 filename 可寫入
-</span></span><span class=line><span class=cl>    -x filename 如果 filename 可執行
-</span></span><span class=line><span class=cl>    -s filename 如果 大小不為 0
-</span></span><span class=line><span class=cl>    -h filename 如果 是 link
+</span></span><span class=line><span class=cl><span class=c1># ... 從某處讀取使用者名稱 ...</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    f1 -nt f2 f1 是否比 f2 新
-</span></span><span class=line><span class=cl>    f1 -ot f2 f1 是否比 f2 舊
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    -eq  &#39;=&#39;
-</span></span><span class=line><span class=cl>    -ne  &#39;!=&#39;
-</span></span><span class=line><span class=cl>    -gt  &#39;&gt;&#39;
-</span></span><span class=line><span class=cl>    -ge  &#39;&gt;=&#39;
-</span></span><span class=line><span class=cl>    -lt  &#39;&lt;&#39;
-</span></span><span class=line><span class=cl>    -le  &#39;&lt;=&#39;
-</span></span></code></pre></td></tr></table></div></div><h4 id=exercise>exercise</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    if  [ -n $string  ]          
-</span></span><span class=line><span class=cl>    if  [ -z $string  ]   
-</span></span><span class=line><span class=cl>    if  [ $sting ]                
-</span></span><span class=line><span class=cl>    if [ ! express ]
-</span></span><span class=line><span class=cl>    if [ ! -d $num ]
-</span></span><span class=line><span class=cl>    if [ express1  –a  express2 ]
-</span></span><span class=line><span class=cl>    if [ express1 –o express2 ]
-</span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -z <span class=s2>&#34;</span><span class=nv>$USERNAME</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;錯誤：使用者名稱不能為空！&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 另一種寫法</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> ! <span class=s2>&#34;</span><span class=nv>$USERNAME</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;錯誤：使用者名稱不能為空！&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=範例-3結合多個條件>範例 3：結合多個條件</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nv>CONFIG_FILE</span><span class=o>=</span><span class=s2>&#34;config.conf&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -f <span class=s2>&#34;</span><span class=nv>$CONFIG_FILE</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=o>[</span> -r <span class=s2>&#34;</span><span class=nv>$CONFIG_FILE</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;設定檔存在且可讀取，載入設定...&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>source</span> <span class=s2>&#34;</span><span class=nv>$CONFIG_FILE</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;警告：找不到設定檔或無法讀取。&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/shell class=tag-link>#Shell</a>
+<a href=/tags/bash class=tag-link>#Bash</a>
+<a href=/tags/file-system class=tag-link>#File System</a>
+<a href=/tags/scripting class=tag-link>#Scripting</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
 <a href=https://xinqilin.github.io/post/algorithm/reverselinkedlist/ class=post-nav-link>鏈表反轉（Reverse Linked List）完整解析</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
-<a href=https://xinqilin.github.io/post/backend/treeset/ class=post-nav-link>Java TreeSet 資料結構詳解：排序集合與紅黑樹實作原理</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
+<a href=https://xinqilin.github.io/post/backend/treeset/ class=post-nav-link>Java TreeSet 資料結構詳解：排序集合與紅黑樹實作原理</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div></body></html>

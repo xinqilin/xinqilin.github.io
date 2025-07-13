@@ -226,6 +226,27 @@
       <description></description>
     </item>
     <item>
+      <title>Bash</title>
+      <link>https://xinqilin.github.io/tags/bash/</link>
+      <pubDate>Sat, 01 Oct 2022 21:25:56 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/bash/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>File System</title>
+      <link>https://xinqilin.github.io/tags/file-system/</link>
+      <pubDate>Sat, 01 Oct 2022 21:25:56 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/file-system/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scripting</title>
+      <link>https://xinqilin.github.io/tags/scripting/</link>
+      <pubDate>Sat, 01 Oct 2022 21:25:56 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/scripting/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Algorithm</title>
       <link>https://xinqilin.github.io/tags/algorithm/</link>
       <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
@@ -562,17 +583,17 @@
       <description></description>
     </item>
     <item>
+      <title>Spring Boot</title>
+      <link>https://xinqilin.github.io/tags/spring-boot/</link>
+      <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/spring-boot/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Spring Security</title>
       <link>https://xinqilin.github.io/tags/spring-security/</link>
       <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/spring-security/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Spring-Boot</title>
-      <link>https://xinqilin.github.io/tags/spring-boot/</link>
-      <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/spring-boot/</guid>
       <description></description>
     </item>
     <item>
@@ -629,6 +650,34 @@
       <link>https://xinqilin.github.io/tags/web-service/</link>
       <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/web-service/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Configuration</title>
+      <link>https://xinqilin.github.io/tags/configuration/</link>
+      <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/configuration/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DevOps</title>
+      <link>https://xinqilin.github.io/tags/devops/</link>
+      <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/devops/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kubernetes</title>
+      <link>https://xinqilin.github.io/tags/kubernetes/</link>
+      <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>YAML</title>
+      <link>https://xinqilin.github.io/tags/yaml/</link>
+      <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/yaml/</guid>
       <description></description>
     </item>
     <item>
@@ -713,13 +762,6 @@
       <link>https://xinqilin.github.io/tags/spring-data-jpa/</link>
       <pubDate>Tue, 07 Jan 2020 13:26:41 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/spring-data-jpa/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Configuration</title>
-      <link>https://xinqilin.github.io/tags/configuration/</link>
-      <pubDate>Wed, 01 Jan 2020 20:31:25 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/configuration/</guid>
       <description></description>
     </item>
     <item>
