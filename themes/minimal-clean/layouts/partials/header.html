@@ -1,7 +1,11 @@
 <header class="header">
     <nav class="nav">
         <div class="nav-brand">
-            <a href="{{ .Site.BaseURL }}" class="nav-title">{{ .Site.Title }}</a>
+            <a href="{{ .Site.BaseURL }}" class="nav-title">
+                <img src="/favicons/favicon.ico" alt="Site Icon" class="nav-icon">
+                {{ .Site.Title }}
+            </a>
+            <img src="/images/avatar-chibi.svg" alt="Bill's Avatar" class="nav-avatar">
         </div>
         
         <ul class="nav-menu">
