@@ -10,6 +10,10 @@
     {{ $css := resources.Get "css/style.css" | resources.Minify }}
     <link rel="stylesheet" href="{{ $css.Permalink }}">
     
+    <!-- Syntax Highlighting CSS -->
+    {{ $chroma := resources.Get "css/chroma.css" | resources.Minify }}
+    <link rel="stylesheet" href="{{ $chroma.Permalink }}">
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/images/Bill-coding.svg">
     <link rel="icon" type="image/x-icon" href="/images/Bill-coding.ico">
