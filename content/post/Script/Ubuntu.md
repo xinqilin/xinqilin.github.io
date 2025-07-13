@@ -5,7 +5,7 @@ date: 2022-10-29T00:10:56+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Linux", "Ubuntu"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

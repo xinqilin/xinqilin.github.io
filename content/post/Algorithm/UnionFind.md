@@ -5,7 +5,7 @@ date: 2022-09-26T22:15:44+08:00
 draft: false
 tags: ["Algorithm"]
 Description: ""
-Categories: []
+Categories: ["Algorithm"]
 DisableComments: false
 ---
 

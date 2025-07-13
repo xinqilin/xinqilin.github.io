@@ -5,7 +5,7 @@ date: 2021-01-08T21:39:14+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Script", "dig"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

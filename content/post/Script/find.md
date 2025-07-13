@@ -5,7 +5,7 @@ date: 2022-11-01T21:59:56+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Script"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

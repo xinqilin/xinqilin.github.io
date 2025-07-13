@@ -5,7 +5,7 @@ date: 2022-02-09T19:46:19+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["github", "ssh"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

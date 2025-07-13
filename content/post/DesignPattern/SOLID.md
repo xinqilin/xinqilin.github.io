@@ -5,7 +5,7 @@ date: 2021-07-08T21:20:39+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["DesignPattern"]
+Categories: ["Architecture"]
 DisableComments: false
 ---
 

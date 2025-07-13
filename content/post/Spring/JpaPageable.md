@@ -5,7 +5,7 @@ date: 2020-01-07T13:26:41+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Spring", "JPA"]
+Categories: ["Backend"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2021-07-26T02:21:13+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Docker", "Network"]
+Categories: ["DevOps"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2022-01-18T23:56:44+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["mysql"]
+Categories: ["DevOps"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2021-01-05T19:18:59+08:00
 draft: false
 tags: []
 Description: "Spring boot with sftp tool"
-Categories: ["Spring", "SFTP", "Sftp"]
+Categories: ["Backend"]
 DisableComments: false
 ---
 

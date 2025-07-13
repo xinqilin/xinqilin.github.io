@@ -5,7 +5,7 @@ date: 2020-06-28T12:36:19+08:00
 draft: false
 tags: ["Script"]
 Description: ""
-Categories: ["Script","hugo"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2019-01-18T10:23:31+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Script", "sed"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

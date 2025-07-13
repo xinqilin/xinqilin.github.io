@@ -5,7 +5,7 @@ date: 2021-03-01T21:16:29+08:00
 draft: false
 tags: []
 Description: "recording the tag use in CI process"
-Categories: ["git", "tag"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

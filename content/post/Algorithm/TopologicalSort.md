@@ -5,7 +5,7 @@ date: 2021-12-26T12:53:14+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["TopologicalSort", "Java"]
+Categories: ["Algorithm"]
 DisableComments: false
 ---
 

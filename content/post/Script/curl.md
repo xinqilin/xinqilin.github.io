@@ -5,7 +5,7 @@ date: 2021-08-03T10:23:31+08:00
 draft: false
 tags: ["CURL"]
 Description: ""
-Categories: ["Script", "curl"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

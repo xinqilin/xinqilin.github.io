@@ -5,7 +5,7 @@ date: 2018-08-07T22:37:58+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["DesignPattern"]
+Categories: ["Architecture"]
 DisableComments: false
 ---
 

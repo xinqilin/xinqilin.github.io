@@ -5,7 +5,7 @@ date: 2022-01-16T22:35:54+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["MAC"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

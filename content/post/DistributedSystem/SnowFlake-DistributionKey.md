@@ -5,7 +5,7 @@ date: 2022-09-13T23:05:38+08:00
 draft: false
 tags: []
 Description: ""
-Categories: [Distributed System]
+Categories: ["Architecture"]
 DisableComments: false
 ---
 

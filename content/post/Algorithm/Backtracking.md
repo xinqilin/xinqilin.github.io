@@ -5,7 +5,7 @@ date: 2022-05-10T23:34:53+08:00
 draft: false
 tags: ["Algorithm", "Backtracking", "遞歸"]
 Description: "深入探討回溯演算法的原理、實作技巧與經典題型解析"
-Categories: ["Backtracking", "Algorithm"]
+Categories: ["Algorithm"]
 DisableComments: false
 ---
 

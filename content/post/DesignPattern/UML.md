@@ -5,7 +5,7 @@ date: 2021-07-12T23:33:14+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["UML"]
+Categories: ["Architecture"]
 DisableComments: false
 ---
 

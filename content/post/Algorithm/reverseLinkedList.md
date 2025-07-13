@@ -3,9 +3,9 @@ title: "ReverseLinkedList"
 author: Bill.Lin
 date: 2022-09-28T21:19:26+08:00
 draft: false
-tags: []
+tags: ["Java", "遞歸"]
 Description: ""
-Categories: []
+Categories: ["Algorithm"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2021-05-16T21:18:11+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["DDD", "CQRS"]
+Categories: ["Architecture"]
 DisableComments: false
 ---
 

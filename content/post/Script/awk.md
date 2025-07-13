@@ -5,7 +5,7 @@ date: 2019-04-06T23:18:56+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Script", "awk"]
+Categories: ["Tools"]
 DisableComments: false
 ---
 

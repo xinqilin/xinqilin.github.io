@@ -5,7 +5,7 @@ date: 2021-11-21T20:11:03+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Tree","InOrder","PostOrder"]
+Categories: ["Algorithm"]
 DisableComments: false
 ---
 

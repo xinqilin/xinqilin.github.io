@@ -5,7 +5,7 @@ date: 2021-08-08T13:07:45+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["Spring","QueryDSL"]
+Categories: ["Backend"]
 DisableComments: false
 ---
 

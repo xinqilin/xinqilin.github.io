@@ -5,7 +5,7 @@ date: 2022-03-17T22:50:11+08:00
 draft: false
 tags: []
 Description: ""
-Categories: ["bad smell"]
+Categories: ["Architecture"]
 DisableComments: false
 ---
 

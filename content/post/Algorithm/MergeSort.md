@@ -5,7 +5,7 @@ date: 2021-06-28T19:57:24+08:00
 draft: false
 tags: ["Java", "Algorithm"]
 Description: ""
-Categories: ["Java", "Algorithm"]
+Categories: ["Algorithm"]
 DisableComments: false
 ---
 
