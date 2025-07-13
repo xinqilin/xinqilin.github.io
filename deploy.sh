@@ -19,21 +19,32 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# 推送 public 網站到 GitHub Pages
+# 推送 public 網站到 GitHub Pages (submodule)
 echo "正在部署到 GitHub Pages..."
 cd public/
 git add . -A
-git commit -m "$commit_message"
-git push
 
-# 檢查 GitHub Pages 推送是否成功
-if [ $? -ne 0 ]; then
-    echo "錯誤: GitHub Pages 推送失敗"
-    cd ..
-    exit 1
+# 檢查是否有變更需要提交
+if git diff --staged --quiet; then
+    echo "沒有變更需要部署到 GitHub Pages"
+else
+    git commit -m "$commit_message"
+    git push
+    
+    # 檢查 GitHub Pages 推送是否成功
+    if [ $? -ne 0 ]; then
+        echo "錯誤: GitHub Pages 推送失敗"
+        cd ..
+        exit 1
+    fi
+    echo "✅ GitHub Pages 部署成功"
 fi
 
 cd ..
+
+# 更新主專案中的 submodule 參考
+echo "正在更新 submodule 參考..."
+git add public .gitmodules
 
 # 推送 source code 到 GitHub
 echo "正在備份 source code..."
@@ -47,6 +58,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "部署完成！"
-echo "GitHub Pages: https://xinqilin.github.io/"
-echo "Source Code: https://github.com/xinqilin/blog-simple-version-source-code"
+echo "🎉 部署完成！"
+echo "📄 GitHub Pages: https://xinqilin.github.io/"
+echo "📁 Source Code: https://github.com/xinqilin/blog-simple-version-source-code"
+echo "📦 Generated Site: https://github.com/xinqilin/xinqilin.github.io"
