@@ -1,0 +1,140 @@
+<header class="header">
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="{{ .Site.BaseURL }}" class="nav-title">
+                <img src="/images/Bill-coding.svg" alt="Site Icon" class="nav-icon">
+                {{ .Site.Title }}
+            </a>
+        </div>
+        
+        <div class="nav-center">
+            <a href="{{ .Site.BaseURL }}" class="avatar-link">
+                <div class="avatar-container">
+                    <div class="avatar-ring"></div>
+                    <img src="/images/Bill-coding.svg" alt="Bill's Avatar" class="nav-avatar-center">
+                </div>
+            </a>
+        </div>
+        
+        <div class="nav-right">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ .Site.BaseURL }}" class="nav-link">Me</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/posts/" class="nav-link posts">Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/categories/" class="nav-link categories">Categories</a>
+                </li>
+                <li class="nav-item" id="search-container">
+                    <a href="#" id="search-trigger" class="nav-link">Search</a>
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <div id="search-results-container"></div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<style>
+/* Increase container width to give more space */
+.container {
+    max-width: 1100px;
+}
+
+#search-container {
+    position: relative;
+}
+
+#search-input {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 100%;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1em;
+    color: #4a5568;
+    background-color: #fff;
+    outline: none;
+    transition: width 0.35s ease, opacity 0.3s ease, padding 0.35s ease;
+    z-index: 10;
+}
+
+#search-container.search-active #search-trigger {
+    opacity: 0;
+    visibility: hidden; /* Keep it in the layout, but invisible */
+}
+
+#search-container.search-active #search-input {
+    width: 220px;
+    padding: 0.6rem 1.2rem;
+    opacity: 1;
+    visibility: visible;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+#search-results-container {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 320px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    z-index: 1001;
+}
+
+/* New styles for clickable search result block */
+.search-result-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+}
+
+.search-result-link:hover {
+    background-color: #f8f9fa;
+}
+
+.search-result-link:last-child {
+    border-bottom: none;
+}
+
+.search-result-title {
+    font-size: 1em;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+
+.search-result-link:hover .search-result-title {
+    color: #61c8e0;
+}
+
+.search-result-summary {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+</style>

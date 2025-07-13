@@ -3,6 +3,12 @@ languageCode: zh-tw
 defaultContentLanguage: zh-tw
 theme: minimal-clean
 
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
 author: Bill Lin
 title: Bill.Lin's Notes
 

@@ -4,16 +4,14 @@ author: Bill.Lin
 date: 2022-02-09T19:46:19+08:00
 draft: false
 tags: []
-Description: ""
+Description: "換工作時，重新設定 github ssh 連線"
 Categories: ["Tools"]
 DisableComments: false
 ---
 
-<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" alt="GitHub 教學">GitHub 教學 </a>
-
 ### GitHub SSH Setting
 
-```zsh
+```bash
 
     cd ~/
     mkdir .ssh 
@@ -32,7 +30,7 @@ DisableComments: false
 
 ### 重設 remote url => https 改 ssh
 
-```zsh
+```bash
     git remote rm origin
     git remote add origin [url]
 ```
@@ -41,3 +39,4 @@ DisableComments: false
 
 setting -> developer setting -> personal access token -> generate new token
 
+<a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" alt="GitHub 教學">GitHub 教學 </a>
