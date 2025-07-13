@@ -1,0 +1,73 @@
+{{ define "main" }}
+<div class="category-posts-page">
+    <header class="category-header">
+        <div class="category-info">
+            <h1 class="category-title">{{ .Title }}</h1>
+            <p class="category-subtitle">{{ len .Pages }} 篇文章</p>
+        </div>
+        <div class="category-icon-large">
+            {{ if eq .Title "Algorithm" }}📊
+            {{ else if eq .Title "Backend" }}⚙️
+            {{ else if eq .Title "Frontend" }}🎨
+            {{ else if eq .Title "DevOps" }}🚀
+            {{ else if eq .Title "Architecture" }}🏗️
+            {{ else if eq .Title "Tools" }}🛠️
+            {{ else }}📁{{ end }}
+        </div>
+    </header>
+
+    {{ if .Content }}
+    <div class="category-description">
+        {{ .Content }}
+    </div>
+    {{ end }}
+
+    {{ if .Pages }}
+    <div class="category-posts-container">
+        {{ range .Pages.ByDate.Reverse }}
+        <a href="{{ .Permalink }}" class="category-post-card-link">
+            <article class="category-post-card">
+                <div class="category-post-content">
+                    <h2 class="category-post-title">{{ .Title }}</h2>
+                    
+                    {{ if .Description }}
+                    <p class="category-post-description">{{ .Description }}</p>
+                    {{ else if .Summary }}
+                    <p class="category-post-description">{{ .Summary | truncate 150 }}</p>
+                    {{ end }}
+                    
+                    <div class="category-post-meta">
+                        <time class="category-post-date">{{ .Date.Format "2006年01月02日" }}</time>
+                        {{ if .Params.tags }}
+                        <div class="category-post-tags">
+                            {{ range first 3 .Params.tags }}
+                            <span class="category-tag-small">#{{ . }}</span>
+                            {{ end }}
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+                
+                <div class="category-post-arrow">
+                    <span class="arrow">→</span>
+                </div>
+            </article>
+        </a>
+        {{ end }}
+    </div>
+    {{ else }}
+    <div class="category-no-posts">
+        <div class="no-posts-icon">📝</div>
+        <h3>暫無文章</h3>
+        <p>此分類下尚未發布任何文章</p>
+    </div>
+    {{ end }}
+
+    <div class="category-navigation">
+        <a href="/categories/" class="back-to-categories">
+            <span class="back-arrow">←</span>
+            返回所有分類
+        </a>
+    </div>
+</div>
+{{ end }}

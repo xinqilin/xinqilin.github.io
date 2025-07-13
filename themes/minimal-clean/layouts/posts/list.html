@@ -27,7 +27,7 @@
                         {{ if .Params.categories }}
                         <div class="tech-post-categories">
                             {{ range .Params.categories }}
-                            <span class="tech-category-tag">{{ . }}</span>
+                            <a href="/categories/{{ . | urlize }}/" class="tech-category-tag">{{ . }}</a>
                             {{ end }}
                         </div>
                         {{ end }}

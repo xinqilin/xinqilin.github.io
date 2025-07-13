@@ -1,9 +1,51 @@
 {{ define "main" }}
 <div class="about-hero">
     <div class="about-intro">
-        <h1>Hi, I'm Bill Lin</h1>
-        <p class="about-subtitle">Backend Engineer / Full Stack Developer</p>
-        <p class="about-description">Passionate about technology, focusing on backend service development, with deep understanding of frontend technologies. I love sharing technical insights and learning notes.</p>
+        <h1>Hi, I'm Bill Lin <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width="30px" alt="wave" style="display: inline-block; vertical-align: middle;"></h1>
+        <p class="about-subtitle">Backend Engineer / Full Stack Developer / Android Developer</p>
+        <p class="about-description">I'm Bill, working in Taipei City, Taiwan 🇹🇼</p>
+        
+        <div class="about-details">
+            <div class="detail-item">
+                <span class="detail-icon">💻</span>
+                <span>Skilled in <strong>Java, Kotlin, JavaScript/TypeScript, Python</strong> and interested in <strong>Golang</strong></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-icon">🏗️</span>
+                <span>Specializing in <strong>backend service development</strong> with expertise in <strong>Spring Framework</strong>, microservices architecture, and database optimization</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-icon">📱</span>
+                <span>Android development experience (~8 months) using <strong>Kotlin</strong> for mobile applications</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-icon">🎨</span>
+                <span>Frontend experience with <strong>React/Vue frameworks</strong> using JavaScript/TypeScript</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-icon">🌙</span>
+                <span>I'm a night owl 🦉 - most productive during evening hours</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-icon">📚</span>
+                <span>Passionate about <strong>continuous learning</strong> and sharing technical insights through this blog</span>
+            </div>
+        </div>
+        
+        <div class="coding-stats">
+            <div class="stat-item">
+                <span class="stat-number">9.8M+</span>
+                <span class="stat-label">Lines of Code Written</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">Java</span>
+                <span class="stat-label">Primary Language (73%)</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">IntelliJ IDEA</span>
+                <span class="stat-label">Favorite Editor</span>
+            </div>
+        </div>
         
         <div class="home-contact">
             <a href="https://github.com/xinqilin" class="contact-link github" target="_blank" rel="noopener">
@@ -39,18 +81,18 @@
             <p>Specializing in Java backend service development, familiar with Spring Framework, microservices architecture, database design and performance optimization.</p>
         </div>
         
+        <div class="experience-card frontend">
+            <div class="experience-icon">🎨</div>
+            <h3>Frontend Frameworks</h3>
+            <div class="experience-duration">3+ years experience</div>
+            <p>Familiar with Vue.js and React frontend frameworks, capable of developing modern user interfaces and interactive experiences.</p>
+        </div>
+
         <div class="experience-card mobile">
             <div class="experience-icon">📱</div>
             <h3>Android Development</h3>
             <div class="experience-duration">8 months experience</div>
             <p>Using Kotlin for Android application development, understanding the challenges and best practices of mobile development.</p>
-        </div>
-        
-        <div class="experience-card frontend">
-            <div class="experience-icon">🎨</div>
-            <h3>Frontend Frameworks</h3>
-            <div class="experience-duration">2+ years experience</div>
-            <p>Familiar with Vue.js and React frontend frameworks, capable of developing modern user interfaces and interactive experiences.</p>
         </div>
     </div>
 </div>
@@ -64,6 +106,7 @@
             <div class="skill-tags">
                 <span class="skill-tag primary">Java</span>
                 <span class="skill-tag primary">Kotlin</span>
+                <span class="skill-tag primary">Python</span>
                 <span class="skill-tag primary">JavaScript</span>
                 <span class="skill-tag primary">TypeScript</span>
             </div>
@@ -89,16 +132,4 @@
     </div>
 </div>
 
-<section class="homepage-nav">
-    <div class="nav-cards">
-        <a href="/posts/" class="nav-card posts-card">
-            <h3>Posts</h3>
-            <p>Browse all technical articles</p>
-        </a>
-        <a href="/categories/" class="nav-card categories-card">
-            <h3>Categories</h3>
-            <p>Explore by topic</p>
-        </a>
-    </div>
-</section>
 {{ end }}

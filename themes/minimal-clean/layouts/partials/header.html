@@ -1,23 +1,32 @@
 <header class="header">
     <nav class="nav">
-        <div class="nav-brand">
+        <div class="nav-left">
             <a href="{{ .Site.BaseURL }}" class="nav-title">
-                <img src="/favicons/favicon.ico" alt="Site Icon" class="nav-icon">
+                <img src="/images/Bill-coding.svg" alt="Site Icon" class="nav-icon">
                 {{ .Site.Title }}
             </a>
-            <img src="/images/avatar-chibi.svg" alt="Bill's Avatar" class="nav-avatar">
         </div>
         
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="{{ .Site.BaseURL }}" class="nav-link">Me</a>
-            </li>
-            <li class="nav-item">
-                <a href="/posts/" class="nav-link posts">Posts</a>
-            </li>
-            <li class="nav-item">
-                <a href="/categories/" class="nav-link categories">Categories</a>
-            </li>
-        </ul>
+        <!-- 中間的 Q 版頭像與動態外框 -->
+        <div class="nav-center">
+            <div class="avatar-container">
+                <div class="avatar-ring"></div>
+                <img src="/images/Bill-coding.svg" alt="Bill's Avatar" class="nav-avatar-center">
+            </div>
+        </div>
+        
+        <div class="nav-right">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ .Site.BaseURL }}" class="nav-link">Me</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/posts/" class="nav-link posts">Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/categories/" class="nav-link categories">Categories</a>
+                </li>
+            </ul>
+        </div>
     </nav>
 </header>
