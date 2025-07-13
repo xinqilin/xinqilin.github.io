@@ -1,7 +1,28 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>FTP 工具類實作指南：安全、可靠的檔案傳輸解決方案 - Bill.Lin's Notes</title><meta name=description content="完整的 FTP 工具類實作指南，包含連線池管理、安全配置、錯誤處理與最佳實踐"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="FTP 工具類實作指南：安全、可靠的檔案傳輸解決方案"><meta property="og:description" content="完整的 FTP 工具類實作指南，包含連線池管理、安全配置、錯誤處理與最佳實踐"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/backend/ftputil/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>FTP 工具類實作指南：安全、可靠的檔案傳輸解決方案</h1><div class=post-meta><div class=post-info><time class=post-date>2023年01月05日</time>
+<!doctype html><html lang=zh-tw><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>FTP 工具類實作指南：安全、可靠的檔案傳輸解決方案 - Bill.Lin's Notes</title><meta name=description content="完整的 FTP 工具類實作指南，包含連線池管理、安全配置、錯誤處理與最佳實踐"><link rel=stylesheet href=http://localhost:1313/css/style.min.css><link rel=stylesheet href=http://localhost:1313/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="FTP 工具類實作指南：安全、可靠的檔案傳輸解決方案"><meta property="og:description" content="完整的 FTP 工具類實作指南，包含連線池管理、安全配置、錯誤處理與最佳實踐"><meta property="og:type" content="article"><meta property="og:url" content="http://localhost:1313/post/backend/ftputil/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=http://localhost:1313/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=http://localhost:1313/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=http://localhost:1313/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>FTP 工具類實作指南：安全、可靠的檔案傳輸解決方案</h1><div class=post-meta><div class=post-info><time class=post-date>2023年01月05日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>10 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>FTP（File Transfer Protocol）是企業環境中常用的檔案傳輸協定。本文提供一個完整、安全且可靠的 FTP 工具類實作，適用於生產環境的檔案上傳、下載和管理需求。</p><h2 id=核心特性>核心特性</h2><ul><li>✅ <strong>配置外部化</strong>：所有連線資訊透過配置檔案管理</li><li>✅ <strong>連線池管理</strong>：支援連線複用，提升效能</li><li>✅ <strong>完整錯誤處理</strong>：詳細的異常處理和重試機制</li><li>✅ <strong>檔案操作</strong>：上傳、下載、刪除、列表等完整功能</li><li>✅ <strong>安全考量</strong>：密碼加密、連線超時、資源釋放</li><li>✅ <strong>日誌記錄</strong>：完整的操作日誌和監控</li></ul><h2 id=依賴配置>依賴配置</h2><h3 id=maven-依賴>Maven 依賴</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+<span class=reading-time>13 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>FTP（File Transfer Protocol）是企業環境中常用的檔案傳輸協定。本文提供一個完整、安全且可靠的 FTP 工具類實作，適用於生產環境的檔案上傳、下載和管理需求。</p><h2 id=核心特性>核心特性</h2><ul><li>✅ <strong>配置外部化</strong>：所有連線資訊透過配置檔案管理</li><li>✅ <strong>連線池管理</strong>：支援連線複用，提升效能</li><li>✅ <strong>完整錯誤處理</strong>：詳細的異常處理和重試機制</li><li>✅ <strong>檔案操作</strong>：上傳、下載、刪除、列表等完整功能</li><li>✅ <strong>安全考量</strong>：密碼加密、連線超時、資源釋放</li><li>✅ <strong>日誌記錄</strong>：完整的操作日誌和監控</li></ul><h2 id=依賴配置>依賴配置</h2><h3 id=maven-依賴>Maven 依賴</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=c>&lt;!-- Apache Commons Net --&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
 </span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>commons-net<span class=nt>&lt;/groupId&gt;</span>
@@ -22,12 +43,72 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span><span class=line><span class=cl>        <span class=nt>&lt;optional&gt;</span>true<span class=nt>&lt;/optional&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
 </span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
-</span></span></code></pre></div><h3 id=gradle-依賴>Gradle 依賴</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-groovy data-lang=groovy><span class=line><span class=cl><span class=n>dependencies</span> <span class=o>{</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=gradle-依賴>Gradle 依賴</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-groovy data-lang=groovy><span class=line><span class=cl><span class=n>dependencies</span> <span class=o>{</span>
 </span></span><span class=line><span class=cl>    <span class=n>implementation</span> <span class=s1>&#39;commons-net:commons-net:3.9.0&#39;</span>
 </span></span><span class=line><span class=cl>    <span class=n>implementation</span> <span class=s1>&#39;org.springframework.boot:spring-boot-starter&#39;</span>
 </span></span><span class=line><span class=cl>    <span class=n>annotationProcessor</span> <span class=s1>&#39;org.springframework.boot:spring-boot-configuration-processor&#39;</span>
 </span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></div><h2 id=配置類設計>配置類設計</h2><h3 id=ftp-配置屬性>FTP 配置屬性</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>com.example.config</span><span class=p>;</span><span class=w>
+</span></span></code></pre></td></tr></table></div></div><h2 id=配置類設計>配置類設計</h2><h3 id=ftp-配置屬性>FTP 配置屬性</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>com.example.config</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.boot.context.properties.ConfigurationProperties</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.stereotype.Component</span><span class=p>;</span><span class=w>
@@ -82,7 +163,25 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>getMaxConnections</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>maxConnections</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setMaxConnections</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>maxConnections</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>maxConnections</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>maxConnections</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=應用配置檔案>應用配置檔案</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># application.yml</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=應用配置檔案>應用配置檔案</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># application.yml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>ftp</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>${FTP_HOST:ftp.example.com}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=l>${FTP_PORT:21}</span><span class=w>
@@ -100,7 +199,128 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c># export FTP_HOST=your-ftp-server.com</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c># export FTP_USERNAME=your-username  </span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c># export FTP_PASSWORD=your-secure-password</span><span class=w>
-</span></span></span></code></pre></div><h2 id=核心工具類實作>核心工具類實作</h2><h3 id=ftp-連線工廠>FTP 連線工廠</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>com.example.util</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=核心工具類實作>核心工具類實作</h2><h3 id=ftp-連線工廠>FTP 連線工廠</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>com.example.util</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.apache.commons.net.ftp.FTPClient</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.apache.commons.net.ftp.FTPReply</span><span class=p>;</span><span class=w>
@@ -221,7 +441,305 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=主要-ftp-工具類>主要 FTP 工具類</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>com.example.util</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=主要-ftp-工具類>主要 FTP 工具類</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span><span class=lnt>203
+</span><span class=lnt>204
+</span><span class=lnt>205
+</span><span class=lnt>206
+</span><span class=lnt>207
+</span><span class=lnt>208
+</span><span class=lnt>209
+</span><span class=lnt>210
+</span><span class=lnt>211
+</span><span class=lnt>212
+</span><span class=lnt>213
+</span><span class=lnt>214
+</span><span class=lnt>215
+</span><span class=lnt>216
+</span><span class=lnt>217
+</span><span class=lnt>218
+</span><span class=lnt>219
+</span><span class=lnt>220
+</span><span class=lnt>221
+</span><span class=lnt>222
+</span><span class=lnt>223
+</span><span class=lnt>224
+</span><span class=lnt>225
+</span><span class=lnt>226
+</span><span class=lnt>227
+</span><span class=lnt>228
+</span><span class=lnt>229
+</span><span class=lnt>230
+</span><span class=lnt>231
+</span><span class=lnt>232
+</span><span class=lnt>233
+</span><span class=lnt>234
+</span><span class=lnt>235
+</span><span class=lnt>236
+</span><span class=lnt>237
+</span><span class=lnt>238
+</span><span class=lnt>239
+</span><span class=lnt>240
+</span><span class=lnt>241
+</span><span class=lnt>242
+</span><span class=lnt>243
+</span><span class=lnt>244
+</span><span class=lnt>245
+</span><span class=lnt>246
+</span><span class=lnt>247
+</span><span class=lnt>248
+</span><span class=lnt>249
+</span><span class=lnt>250
+</span><span class=lnt>251
+</span><span class=lnt>252
+</span><span class=lnt>253
+</span><span class=lnt>254
+</span><span class=lnt>255
+</span><span class=lnt>256
+</span><span class=lnt>257
+</span><span class=lnt>258
+</span><span class=lnt>259
+</span><span class=lnt>260
+</span><span class=lnt>261
+</span><span class=lnt>262
+</span><span class=lnt>263
+</span><span class=lnt>264
+</span><span class=lnt>265
+</span><span class=lnt>266
+</span><span class=lnt>267
+</span><span class=lnt>268
+</span><span class=lnt>269
+</span><span class=lnt>270
+</span><span class=lnt>271
+</span><span class=lnt>272
+</span><span class=lnt>273
+</span><span class=lnt>274
+</span><span class=lnt>275
+</span><span class=lnt>276
+</span><span class=lnt>277
+</span><span class=lnt>278
+</span><span class=lnt>279
+</span><span class=lnt>280
+</span><span class=lnt>281
+</span><span class=lnt>282
+</span><span class=lnt>283
+</span><span class=lnt>284
+</span><span class=lnt>285
+</span><span class=lnt>286
+</span><span class=lnt>287
+</span><span class=lnt>288
+</span><span class=lnt>289
+</span><span class=lnt>290
+</span><span class=lnt>291
+</span><span class=lnt>292
+</span><span class=lnt>293
+</span><span class=lnt>294
+</span><span class=lnt>295
+</span><span class=lnt>296
+</span><span class=lnt>297
+</span><span class=lnt>298
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>com.example.util</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.apache.commons.net.ftp.FTPClient</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.apache.commons.net.ftp.FTPFile</span><span class=p>;</span><span class=w>
@@ -519,7 +1037,36 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=檔案資訊實體類>檔案資訊實體類</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>com.example.util</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=檔案資訊實體類>檔案資訊實體類</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>com.example.util</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>java.util.Calendar</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
@@ -548,7 +1095,59 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>                           </span><span class=n>name</span><span class=p>,</span><span class=w> </span><span class=n>size</span><span class=p>,</span><span class=w> </span><span class=n>isDirectory</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=使用範例>使用範例</h2><h3 id=基本使用>基本使用</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=使用範例>使用範例</h2><h3 id=基本使用>基本使用</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FileService</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
@@ -600,7 +1199,45 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>LocalDateTime</span><span class=p>.</span><span class=na>now</span><span class=p>().</span><span class=na>format</span><span class=p>(</span><span class=n>DateTimeFormatter</span><span class=p>.</span><span class=na>ofPattern</span><span class=p>(</span><span class=s>&#34;yyyy/MM/dd&#34;</span><span class=p>));</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=進階功能檔案同步>進階功能：檔案同步</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=進階功能檔案同步>進階功能：檔案同步</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FtpSyncService</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
@@ -638,12 +1275,39 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=安全最佳實踐>安全最佳實踐</h2><h3 id=1-配置安全>1. 配置安全</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># 使用環境變數或加密配置</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=安全最佳實踐>安全最佳實踐</h2><h3 id=1-配置安全>1. 配置安全</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># 使用環境變數或加密配置</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>ftp</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>${FTP_HOST}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>username</span><span class=p>:</span><span class=w> </span><span class=l>${FTP_USERNAME}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>${FTP_PASSWORD:#{null}} </span><span class=w> </span><span class=c># 可以為空，使用 SSH Key</span><span class=w>
-</span></span></span></code></pre></div><h3 id=2-檔案驗證>2. 檔案驗證</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-檔案驗證>2. 檔案驗證</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FileValidator</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>ALLOWED_EXTENSIONS</span><span class=w> </span><span class=o>=</span><span class=w> 
@@ -665,7 +1329,19 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>ALLOWED_EXTENSIONS</span><span class=p>.</span><span class=na>contains</span><span class=p>(</span><span class=n>extension</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=3-存取控制>3. 存取控制</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-存取控制>3. 存取控制</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FtpAccessControl</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
@@ -677,7 +1353,29 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>remotePath</span><span class=p>.</span><span class=na>startsWith</span><span class=p>(</span><span class=s>&#34;users/&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>userId</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;/&#34;</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=監控與維護>監控與維護</h2><h3 id=健康檢查>健康檢查</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=監控與維護>監控與維護</h2><h3 id=健康檢查>健康檢查</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FtpHealthIndicator</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>HealthIndicator</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
@@ -699,7 +1397,33 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=效能監控>效能監控</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Aspect</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=效能監控>效能監控</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Aspect</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Component</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FtpPerformanceAspect</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
@@ -725,20 +1449,65 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=常見問題與解決方案>常見問題與解決方案</h2><h3 id=1-連線逾時問題>1. 連線逾時問題</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 增加重試機制</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=常見問題與解決方案>常見問題與解決方案</h2><h3 id=1-連線逾時問題>1. 連線逾時問題</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 增加重試機制</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Retryable</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=n>IOException</span><span class=p>.</span><span class=na>class</span><span class=p>},</span><span class=w> </span><span class=n>maxAttempts</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>3</span><span class=p>,</span><span class=w> </span><span class=n>backoff</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Backoff</span><span class=p>(</span><span class=n>delay</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>1000</span><span class=p>))</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>uploadFileWithRetry</span><span class=p>(</span><span class=n>InputStream</span><span class=w> </span><span class=n>inputStream</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>remotePath</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>fileName</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>uploadFile</span><span class=p>(</span><span class=n>inputStream</span><span class=p>,</span><span class=w> </span><span class=n>remotePath</span><span class=p>,</span><span class=w> </span><span class=n>fileName</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=2-中文檔名問題>2. 中文檔名問題</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 在 FTP 配置中設定正確的編碼</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-中文檔名問題>2. 中文檔名問題</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 在 FTP 配置中設定正確的編碼</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>ftpClient</span><span class=p>.</span><span class=na>setControlEncoding</span><span class=p>(</span><span class=s>&#34;UTF-8&#34;</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 或者對檔名進行編碼處理</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>String</span><span class=w> </span><span class=n>encodedFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>String</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=na>getBytes</span><span class=p>(</span><span class=s>&#34;UTF-8&#34;</span><span class=p>),</span><span class=w> </span><span class=s>&#34;ISO-8859-1&#34;</span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><h3 id=3-防火牆問題>3. 防火牆問題</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># 使用被動模式避免防火牆問題</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-防火牆問題>3. 防火牆問題</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># 使用被動模式避免防火牆問題</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>ftp</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>passive-mode</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span></span></span></code></pre></div><h2 id=測試範例>測試範例</h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootTest</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=測試範例>測試範例</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootTest</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>FtpUtilTest</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
@@ -770,11 +1539,11 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=總結>總結</h2><p>本文提供的 FTP 工具類具備以下優勢：</p><ol><li><strong>安全性</strong>：配置外部化，避免硬編碼敏感資訊</li><li><strong>可靠性</strong>：完整的錯誤處理和重試機制</li><li><strong>效能</strong>：連線池管理，支援併發操作</li><li><strong>可維護性</strong>：模組化設計，易於擴展和維護</li><li><strong>生產就緒</strong>：包含監控、日誌和健康檢查</li></ol><p>在實際使用時，請根據具體需求調整配置參數和安全設定，確保符合您的業務場景和安全要求。</p><h2 id=參考資料>參考資料</h2><ul><li><a href=https://commons.apache.org/proper/commons-net/>Apache Commons Net 官方文檔</a></li><li><a href=https://docs.spring.io/spring-boot/docs/current/reference/html/configuration-metadata.html>Spring Boot Configuration Properties</a></li><li><a href=https://tools.ietf.org/html/rfc959>FTP RFC 959 協定規範</a></li><li><a href=https://www.baeldung.com/java-ftp-client>Java FTP 最佳實踐</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=總結>總結</h2><p>本文提供的 FTP 工具類具備以下優勢：</p><ol><li><strong>安全性</strong>：配置外部化，避免硬編碼敏感資訊</li><li><strong>可靠性</strong>：完整的錯誤處理和重試機制</li><li><strong>效能</strong>：連線池管理，支援併發操作</li><li><strong>可維護性</strong>：模組化設計，易於擴展和維護</li><li><strong>生產就緒</strong>：包含監控、日誌和健康檢查</li></ol><p>在實際使用時，請根據具體需求調整配置參數和安全設定，確保符合您的業務場景和安全要求。</p><h2 id=參考資料>參考資料</h2><ul><li><a href=https://commons.apache.org/proper/commons-net/>Apache Commons Net 官方文檔</a></li><li><a href=https://docs.spring.io/spring-boot/docs/current/reference/html/configuration-metadata.html>Spring Boot Configuration Properties</a></li><li><a href=https://tools.ietf.org/html/rfc959>FTP RFC 959 協定規範</a></li><li><a href=https://www.baeldung.com/java-ftp-client>Java FTP 最佳實踐</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
 <a href=/tags/java class=tag-link>#Java</a>
 <a href=/tags/ftp class=tag-link>#FTP</a>
 <a href=/tags/filetransfer class=tag-link>#FileTransfer</a>
 <a href=/tags/spring class=tag-link>#Spring</a>
 <a href=/tags/commons-net class=tag-link>#Commons-Net</a>
 <a href=/tags/security class=tag-link>#Security</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/backend/ormenumtype/ class=post-nav-link>JPA Enum 型別處理完整指南：映射策略與最佳實踐</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
+<a href=http://localhost:1313/post/backend/ormenumtype/ class=post-nav-link>JPA Enum 型別處理完整指南：映射策略與最佳實踐</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

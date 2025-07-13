@@ -1,11 +1,29 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Deploy Hugo - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Deploy Hugo"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/deploy-hugo/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Deploy Hugo</h1><div class=post-meta><div class=post-info><time class=post-date>2020年06月28日</time>
+<!doctype html><html lang=zh-tw><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Deploy Hugo - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=http://localhost:1313/css/style.min.css><link rel=stylesheet href=http://localhost:1313/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Deploy Hugo"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="http://localhost:1313/post/tools/deploy-hugo/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=http://localhost:1313/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=http://localhost:1313/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=http://localhost:1313/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Deploy Hugo</h1><div class=post-meta><div class=post-info><time class=post-date>2020年06月28日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h1 id=deploy-hugo>Deploy Hugo</h1><p>設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html</p><br><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>hugo -t &lt;你的theme&gt;
-</span></span></span></code></pre></div><p>再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !</p><br><h1 id=flow>Flow</h1><p>先確定一次流程</p><ol><li>build 出 public 檔</li><li>add-commit-push -> static website repository</li><li>add-commit-push -> backup repository</li></ol><br><h1 id=製作-script>製作 Script</h1><p>先 touch 一個 <strong>deploy.sh</strong>
+<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h1 id=deploy-hugo>Deploy Hugo</h1><p>設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html</p><br><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>hugo -t &lt;你的theme&gt;
+</span></span></span></code></pre></td></tr></table></div></div><p>再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !</p><br><h1 id=flow>Flow</h1><p>先確定一次流程</p><ol><li>build 出 public 檔</li><li>add-commit-push -> static website repository</li><li>add-commit-push -> backup repository</li></ol><br><h1 id=製作-script>製作 Script</h1><p>先 touch 一個 <strong>deploy.sh</strong>
 上述其實就三個步驟，把它的 command line 都填入 <strong>deploy.sh</strong><br></p><p>接著我想要執行這個 <strong>deploy.sh</strong> 這個時順便填寫 git commit 的 message<br></p><p>先宣告一個變數吧 &lt;<strong>commit_message</strong>> =>
 <code>commit_message = "$1"</code>
-接著在需要用的變數的地方就可以直接使用 <code>commit_message</code> 來操縱<br><br></p><p>完成版:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
+接著在需要用的變數的地方就可以直接使用 <code>commit_message</code> 來操縱<br><br></p><p>完成版:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
 </span></span><span class=line><span class=cl># build public/
 </span></span><span class=line><span class=cl>hugo -t &lt;你的theme&gt;
 </span></span><span class=line><span class=cl>
@@ -22,10 +40,12 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span><span class=line><span class=cl>git add . -A
 </span></span><span class=line><span class=cl>git commit -m &#34;$commit_message&#34;
 </span></span><span class=line><span class=cl>git push
-</span></span></code></pre></div><p>之後有新 post 要部屬上 github 時
-就執行 script 檔就行了 !<br></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
+</span></span></code></pre></td></tr></table></div></div><p>之後有新 post 要部屬上 github 時
+就執行 script 檔就行了 !<br></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>. deploy.sh &lt;你要留的 commit message&gt;
-</span></span></code></pre></div><br><br><p>昨天電腦關機後想到的，之後看可不可以再改進腳本，讓他更方便</p></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+</span></span></code></pre></td></tr></table></div></div><br><br><p>昨天電腦關機後想到的，之後看可不可以再改進腳本，讓他更方便</p></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
 <a href=/tags/script class=tag-link>#Script</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/backend/jpapageable/ class=post-nav-link>JpaPageable</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
-<a href=https://xinqilin.github.io/post/backend/sftputil/ class=post-nav-link>SftpUtil</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
+<a href=http://localhost:1313/post/backend/jpapageable/ class=post-nav-link>JpaPageable</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=http://localhost:1313/post/backend/sftputil/ class=post-nav-link>SftpUtil</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

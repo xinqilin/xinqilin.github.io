@@ -1,7 +1,68 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>SideProjectConfig - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="SideProjectConfig"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/backend/sideprojectconfig/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>SideProjectConfig</h1><div class=post-meta><div class=post-info><time class=post-date>2020年01月01日</time>
+<!doctype html><html lang=zh-tw><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>SideProjectConfig - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=http://localhost:1313/css/style.min.css><link rel=stylesheet href=http://localhost:1313/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="SideProjectConfig"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="http://localhost:1313/post/backend/sideprojectconfig/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=http://localhost:1313/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=http://localhost:1313/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=http://localhost:1313/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>SideProjectConfig</h1><div class=post-meta><div class=post-info><time class=post-date>2020年01月01日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>3 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h1 id=side-project-常用功能紀錄方便以後快速-setup-環境>Side Project 常用功能，紀錄，方便以後快速 setup 環境</h1><h3 id=di>DI</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl>
+<span class=reading-time>4 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h1 id=side-project-常用功能紀錄方便以後快速-setup-環境>Side Project 常用功能，紀錄，方便以後快速 setup 環境</h1><h3 id=di>DI</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c>&lt;!--  Lombok--&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
 </span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
@@ -62,7 +123,20 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>guava<span class=nt>&lt;/artifactId&gt;</span>
 </span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>30.1.1-jre<span class=nt>&lt;/version&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
-</span></span></code></pre></div><h3 id=properties-or-yaml>Properties or Yaml</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-properties data-lang=properties><span class=line><span class=cl>
+</span></span></code></pre></td></tr></table></div></div><h3 id=properties-or-yaml>Properties or Yaml</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-properties data-lang=properties><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=na>server.port</span> <span class=o>=</span> <span class=s>808x</span>
 </span></span><span class=line><span class=cl>    <span class=na>server.servlet.context-path</span> <span class=o>=</span> <span class=s>/name</span>
 </span></span><span class=line><span class=cl>
@@ -75,7 +149,34 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span><span class=line><span class=cl>    <span class=c1>#JPA</span>
 </span></span><span class=line><span class=cl>    <span class=na>spring.jpa.hibernate.ddl-auto</span> <span class=o>=</span> <span class=s>update</span>
 </span></span><span class=line><span class=cl>    <span class=na>spring.jpa.show-sql</span> <span class=o>=</span> <span class=s>true</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>server</span><span class=p>:</span><span class=w>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>server</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=l>808x</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>servlet</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>context-path</span><span class=p>:</span><span class=w> </span><span class=l>/name</span><span class=w>
@@ -102,7 +203,25 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>hibernate</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>ddl-auto</span><span class=p>:</span><span class=w> </span><span class=l>update</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>show-sql</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span></span></span></code></pre></div><h3 id=config>Config</h3><p>Swagger2Config</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=config>Config</h3><p>Swagger2Config</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
 </span></span></span><span class=line><span class=cl><span class=cm>    * @author Bill.Lin 
 </span></span></span><span class=line><span class=cl><span class=cm>    */</span><span class=w>
@@ -120,7 +239,23 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>build</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><p>RestTemplateConfig</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=nd>@Configuration</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>RestTemplateConfig</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=nd>@Configuration</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>RestTemplateConfig</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Bean</span><span class=w>
@@ -136,7 +271,84 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>factory</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=docker-compose>docker-compose</h3><p>kafka</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=docker-compose>docker-compose</h3><p>kafka</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;3&#39;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>services</span><span class=p>:</span><span class=w>
@@ -213,7 +425,67 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>mongo</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>networks</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>default</span><span class=w>
-</span></span></span></code></pre></div><h3 id=logstash-config-resource>logstash config (resource)</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=logstash-config-resource>logstash config (resource)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 </span></span><span class=line><span class=cl><span class=nt>&lt;configuration&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;conversionRule</span> <span class=na>conversionWord=</span><span class=s>&#34;clr&#34;</span> <span class=na>converterClass=</span><span class=s>&#34;org.springframework.boot.logging.logback.ColorConverter&#34;</span> <span class=nt>/&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;conversionRule</span> <span class=na>conversionWord=</span><span class=s>&#34;wex&#34;</span> <span class=na>converterClass=</span><span class=s>&#34;org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter&#34;</span> <span class=nt>/&gt;</span>
@@ -273,7 +545,20 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;/springProfile&gt;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=nt>&lt;/configuration&gt;</span>
-</span></span></code></pre></div><h3 id=other>Other</h3><p>banner.txt</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>
+</span></span></code></pre></td></tr></table></div></div><h3 id=other>Other</h3><p>banner.txt</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>      ,.  - · - .,  &#39;             ,.-·.              ,.  &#39;                ,.  &#39;
 </span></span><span class=line><span class=cl>,·&#39;´,.-,   ,. -.,   `&#39;;,&#39;         /    ;&#39;\&#39;          /   &#39;;\              /   &#39;;\
 </span></span><span class=line><span class=cl> \::\.&#39;´  ;&#39;\::::;:&#39;  ,·&#39;:\&#39;      ;    ;:::\       ,&#39;   ,&#39;::&#39;\           ,&#39;   ,&#39;::&#39;\
@@ -286,6 +571,6 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span><span class=line><span class=cl>   \:\`&#39;´\:::::::::&#39;\;:·&#39;´        &#39;\::\:;&#39;        \¨:::::::::::\&#39;;     \¨:::::::::::\&#39;;
 </span></span><span class=line><span class=cl>    &#39;\;\:::\;: -~*´‘              `*´‘          &#39;\;::_;:-·&#39;´‘        &#39;\;::_;:-·&#39;´‘
 </span></span><span class=line><span class=cl>             &#39;                                     &#39;¨                   &#39;¨
-</span></span></code></pre></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/backend/springannotation/ class=post-nav-link>Spring Framework 註解完整指南：從基礎到進階應用</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
-<a href=https://xinqilin.github.io/post/backend/jpapageable/ class=post-nav-link>JpaPageable</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
+</span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=http://localhost:1313/post/backend/springannotation/ class=post-nav-link>Spring Framework 註解完整指南：從基礎到進階應用</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=http://localhost:1313/post/backend/jpapageable/ class=post-nav-link>JpaPageable</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

@@ -1,7 +1,25 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Reactive Programming 完整指南：Spring WebFlux 與 Project Reactor - Bill.Lin's Notes</title><meta name=description content="深入探討 Reactive Programming 概念，包含 Mono、Flux 操作符詳解與 Spring WebFlux 實戰應用"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.a91b8e061a8c203e746b8ef3a474886aadf09694603e85dd93de8339a38911c9.css integrity="sha256-qRuOBhqMID50a47zpHSIaq3wlpRgPoXdk96DOaOJEck="><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.eb43a1bce3cd013a08124fb3fc84c9d072347d0495cd6739132ef2ac0618998f.css integrity="sha256-60OhvOPNAToIEk+z/ITJ0HI0fQSVzWc5Ey7yrAYYmY8="><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Reactive Programming 完整指南：Spring WebFlux 與 Project Reactor"><meta property="og:description" content="深入探討 Reactive Programming 概念，包含 Mono、Flux 操作符詳解與 Spring WebFlux 實戰應用"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/backend/reactivejava/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Reactive Programming 完整指南：Spring WebFlux 與 Project Reactor</h1><div class=post-meta><div class=post-info><time class=post-date>2021年12月01日</time>
+<!doctype html><html lang=zh-tw><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Reactive Programming 完整指南：Spring WebFlux 與 Project Reactor - Bill.Lin's Notes</title><meta name=description content="深入探討 Reactive Programming 概念，包含 Mono、Flux 操作符詳解與 Spring WebFlux 實戰應用"><link rel=stylesheet href=http://localhost:1313/css/style.min.css><link rel=stylesheet href=http://localhost:1313/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Reactive Programming 完整指南：Spring WebFlux 與 Project Reactor"><meta property="og:description" content="深入探討 Reactive Programming 概念，包含 Mono、Flux 操作符詳解與 Spring WebFlux 實戰應用"><meta property="og:type" content="article"><meta property="og:url" content="http://localhost:1313/post/backend/reactivejava/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=http://localhost:1313/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=http://localhost:1313/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=http://localhost:1313/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Reactive Programming 完整指南：Spring WebFlux 與 Project Reactor</h1><div class=post-meta><div class=post-info><time class=post-date>2021年12月01日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>10 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>Reactive Programming（響應式程式設計）是一種基於資料流和變化傳播的程式設計模式。在 Java 生態系統中，Project Reactor 是實現響應式程式設計的核心函式庫，而 Spring WebFlux 則建立在其之上，提供非阻塞式的 Web 應用程式開發能力。</p><h2 id=核心概念>核心概念</h2><h3 id=什麼是-reactive-programming>什麼是 Reactive Programming？</h3><p>響應式程式設計的核心特徵：</p><ul><li><strong>非阻塞（Non-blocking）</strong>：執行緒不會被 I/O 操作阻塞</li><li><strong>事件驅動（Event-driven）</strong>：基於事件流處理資料</li><li><strong>背壓支援（Backpressure）</strong>：自動處理生產者和消費者之間的速度差異</li><li><strong>彈性（Resilient）</strong>：具備錯誤處理和恢復能力</li><li><strong>響應性（Responsive）</strong>：快速回應使用者請求</li></ul><h3 id=reactive-streams-規範>Reactive Streams 規範</h3><p>Reactive Streams 定義了四個核心介面：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>Publisher</span><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+<span class=reading-time>13 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>Reactive Programming（響應式程式設計）是一種基於資料流和變化傳播的程式設計模式。在 Java 生態系統中，Project Reactor 是實現響應式程式設計的核心函式庫，而 Spring WebFlux 則建立在其之上，提供非阻塞式的 Web 應用程式開發能力。</p><h2 id=核心概念>核心概念</h2><h3 id=什麼是-reactive-programming>什麼是 Reactive Programming？</h3><p>響應式程式設計的核心特徵：</p><ul><li><strong>非阻塞（Non-blocking）</strong>：執行緒不會被 I/O 操作阻塞</li><li><strong>事件驅動（Event-driven）</strong>：基於事件流處理資料</li><li><strong>背壓支援（Backpressure）</strong>：自動處理生產者和消費者之間的速度差異</li><li><strong>彈性（Resilient）</strong>：具備錯誤處理和恢復能力</li><li><strong>響應性（Responsive）</strong>：快速回應使用者請求</li></ul><h3 id=reactive-streams-規範>Reactive Streams 規範</h3><p>Reactive Streams 定義了四個核心介面：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>Publisher</span><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>subscribe</span><span class=p>(</span><span class=n>Subscriber</span><span class=o>&lt;?</span><span class=w> </span><span class=kd>super</span><span class=w> </span><span class=n>T</span><span class=o>&gt;</span><span class=w> </span><span class=n>s</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
@@ -19,7 +37,30 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>Processor</span><span class=o>&lt;</span><span class=n>T</span><span class=p>,</span><span class=w> </span><span class=n>R</span><span class=o>&gt;</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Subscriber</span><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=n>Publisher</span><span class=o>&lt;</span><span class=n>R</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=project-reactor-基礎>Project Reactor 基礎</h2><h3 id=mono-與-flux>Mono 與 Flux</h3><p>Project Reactor 提供兩個核心類型：</p><ul><li><strong>Mono<t></strong>：發出 0 或 1 個元素的響應式流</li><li><strong>Flux<t></strong>：發出 0 到 N 個元素的響應式流</li></ul><h3 id=創建響應式流>創建響應式流</h3><h4 id=mono-創建方式>Mono 創建方式</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 創建包含單一值的 Mono</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=project-reactor-基礎>Project Reactor 基礎</h2><h3 id=mono-與-flux>Mono 與 Flux</h3><p>Project Reactor 提供兩個核心類型：</p><ul><li><strong>Mono<t></strong>：發出 0 或 1 個元素的響應式流</li><li><strong>Flux<t></strong>：發出 0 到 N 個元素的響應式流</li></ul><h3 id=創建響應式流>創建響應式流</h3><h4 id=mono-創建方式>Mono 創建方式</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 創建包含單一值的 Mono</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Mono</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>mono1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Mono</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;Hello Reactive&#34;</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 創建空的 Mono</span><span class=w>
@@ -42,7 +83,26 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 錯誤 Mono</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Mono</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>error</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Mono</span><span class=p>.</span><span class=na>error</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>RuntimeException</span><span class=p>(</span><span class=s>&#34;Something went wrong&#34;</span><span class=p>));</span><span class=w>
-</span></span></span></code></pre></div><h4 id=flux-創建方式>Flux 創建方式</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 從可變參數創建</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=flux-創建方式>Flux 創建方式</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 從可變參數創建</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>flux1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;A&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;B&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;C&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;D&#34;</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 從集合創建</span><span class=w>
@@ -61,7 +121,44 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 從 Stream 創建</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>flux4</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>fromStream</span><span class=p>(</span><span class=n>Stream</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;Stream1&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Stream2&#34;</span><span class=p>));</span><span class=w>
-</span></span></span></code></pre></div><h3 id=訂閱與消費>訂閱與消費</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 基本訂閱</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=訂閱與消費>訂閱與消費</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 基本訂閱</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>numbers</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>range</span><span class=p>(</span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>5</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 只處理數據</span><span class=w>
@@ -98,7 +195,16 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>});</span><span class=w>
-</span></span></span></code></pre></div><h2 id=核心操作符詳解>核心操作符詳解</h2><h3 id=轉換操作符>轉換操作符</h3><h4 id=map---元素轉換>map - 元素轉換</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>names</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;alice&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;bob&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;charlie&#34;</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=核心操作符詳解>核心操作符詳解</h2><h3 id=轉換操作符>轉換操作符</h3><h4 id=map---元素轉換>map - 元素轉換</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>names</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;alice&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;bob&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;charlie&#34;</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 轉換為大寫</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>upperNames</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>names</span><span class=p>.</span><span class=na>map</span><span class=p>(</span><span class=n>String</span><span class=p>::</span><span class=n>toUpperCase</span><span class=p>);</span><span class=w>
@@ -107,7 +213,24 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 轉換為長度</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>lengths</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>names</span><span class=p>.</span><span class=na>map</span><span class=p>(</span><span class=n>String</span><span class=p>::</span><span class=n>length</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>lengths</span><span class=p>.</span><span class=na>subscribe</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w> </span><span class=c1>// 5, 3, 7</span><span class=w>
-</span></span></span></code></pre></div><h4 id=flatmap---扁平化處理>flatMap - 扁平化處理</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>sentences</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;Hello World&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Reactive Programming&#34;</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=flatmap---扁平化處理>flatMap - 扁平化處理</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>sentences</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;Hello World&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Reactive Programming&#34;</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 將每個句子拆分為單詞</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>words</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sentences</span><span class=p>.</span><span class=na>flatMap</span><span class=p>(</span><span class=n>sentence</span><span class=w> </span><span class=o>-&gt;</span><span class=w> 
@@ -124,12 +247,35 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;Response from &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>url</span><span class=p>;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}).</span><span class=na>subscribeOn</span><span class=p>(</span><span class=n>Schedulers</span><span class=p>.</span><span class=na>boundedElastic</span><span class=p>())</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><h4 id=concatmap---順序處理>concatMap - 順序處理</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 與 flatMap 不同，concatMap 保持順序</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=concatmap---順序處理>concatMap - 順序處理</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 與 flatMap 不同，concatMap 保持順序</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>ordered</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>urls</span><span class=p>.</span><span class=na>concatMap</span><span class=p>(</span><span class=n>url</span><span class=w> </span><span class=o>-&gt;</span><span class=w> 
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Mono</span><span class=p>.</span><span class=na>fromCallable</span><span class=p>(()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=s>&#34;Response from &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>url</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>subscribeOn</span><span class=p>(</span><span class=n>Schedulers</span><span class=p>.</span><span class=na>boundedElastic</span><span class=p>())</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><h3 id=過濾操作符>過濾操作符</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>numbers</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>range</span><span class=p>(</span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>10</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=過濾操作符>過濾操作符</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>numbers</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>range</span><span class=p>(</span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>10</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 過濾偶數</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>evenNumbers</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>numbers</span><span class=p>.</span><span class=na>filter</span><span class=p>(</span><span class=n>n</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>n</span><span class=w> </span><span class=o>%</span><span class=w> </span><span class=n>2</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>0</span><span class=p>);</span><span class=w>
@@ -147,7 +293,16 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 取不重複元素直到遇到重複</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>distinctUntilChanged</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;A&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;A&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;B&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;B&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;C&#34;</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>distinctUntilChanged</span><span class=p>();</span><span class=w>
-</span></span></span></code></pre></div><h3 id=組合操作符>組合操作符</h3><h4 id=merge---合併多個流>merge - 合併多個流</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>flux1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;A&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;B&#34;</span><span class=p>).</span><span class=na>delayElements</span><span class=p>(</span><span class=n>Duration</span><span class=p>.</span><span class=na>ofMillis</span><span class=p>(</span><span class=n>100</span><span class=p>));</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=組合操作符>組合操作符</h3><h4 id=merge---合併多個流>merge - 合併多個流</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>flux1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;A&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;B&#34;</span><span class=p>).</span><span class=na>delayElements</span><span class=p>(</span><span class=n>Duration</span><span class=p>.</span><span class=na>ofMillis</span><span class=p>(</span><span class=n>100</span><span class=p>));</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>flux2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;C&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;D&#34;</span><span class=p>).</span><span class=na>delayElements</span><span class=p>(</span><span class=n>Duration</span><span class=p>.</span><span class=na>ofMillis</span><span class=p>(</span><span class=n>150</span><span class=p>));</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 合併（順序不保證）</span><span class=w>
@@ -156,13 +311,30 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 使用 mergeWith</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>merged2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>flux1</span><span class=p>.</span><span class=na>mergeWith</span><span class=p>(</span><span class=n>flux2</span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><h4 id=concat---連接流>concat - 連接流</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 連接（保持順序）</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=concat---連接流>concat - 連接流</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 連接（保持順序）</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>concatenated</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>concat</span><span class=p>(</span><span class=n>flux1</span><span class=p>,</span><span class=w> </span><span class=n>flux2</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>concatenated</span><span class=p>.</span><span class=na>subscribe</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w> </span><span class=c1>// 輸出: A, B, C, D</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 使用 concatWith</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>concatenated2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>flux1</span><span class=p>.</span><span class=na>concatWith</span><span class=p>(</span><span class=n>flux2</span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><h4 id=zip---配對元素>zip - 配對元素</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>names</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;Alice&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Bob&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Charlie&#34;</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=zip---配對元素>zip - 配對元素</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>names</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;Alice&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Bob&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Charlie&#34;</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>ages</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=n>25</span><span class=p>,</span><span class=w> </span><span class=n>30</span><span class=p>,</span><span class=w> </span><span class=n>35</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 配對元素</span><span class=w>
@@ -173,7 +345,35 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Alice is 25 years old</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Bob is 30 years old  </span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Charlie is 35 years old</span><span class=w>
-</span></span></span></code></pre></div><h3 id=錯誤處理>錯誤處理</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;A&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;B&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;C&#34;</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=錯誤處理>錯誤處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>just</span><span class=p>(</span><span class=s>&#34;A&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;B&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;C&#34;</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>map</span><span class=p>(</span><span class=n>s</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=s>&#34;B&#34;</span><span class=p>.</span><span class=na>equals</span><span class=p>(</span><span class=n>s</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RuntimeException</span><span class=p>(</span><span class=s>&#34;Error on B&#34;</span><span class=p>);</span><span class=w>
@@ -201,7 +401,36 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>continueOnError</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>source</span><span class=p>.</span><span class=na>onErrorContinue</span><span class=p>((</span><span class=n>error</span><span class=p>,</span><span class=w> </span><span class=n>item</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Error on item &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>item</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>error</span><span class=p>.</span><span class=na>getMessage</span><span class=p>());</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>});</span><span class=w>
-</span></span></span></code></pre></div><h2 id=背壓backpressure處理>背壓（Backpressure）處理</h2><p>背壓是響應式程式設計中的重要概念，用於處理生產者速度超過消費者處理能力的情況：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 背壓策略示例</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=背壓backpressure處理>背壓（Backpressure）處理</h2><p>背壓是響應式程式設計中的重要概念，用於處理生產者速度超過消費者處理能力的情況：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 背壓策略示例</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>fastProducer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Flux</span><span class=p>.</span><span class=na>range</span><span class=p>(</span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>1000</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>delayElements</span><span class=p>(</span><span class=n>Duration</span><span class=p>.</span><span class=na>ofMillis</span><span class=p>(</span><span class=n>1</span><span class=p>));</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
@@ -230,7 +459,29 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>dropped</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fastProducer</span><span class=p>.</span><span class=na>onBackpressureDrop</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>latest</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fastProducer</span><span class=p>.</span><span class=na>onBackpressureLatest</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>Integer</span><span class=o>&gt;</span><span class=w> </span><span class=n>error</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fastProducer</span><span class=p>.</span><span class=na>onBackpressureError</span><span class=p>();</span><span class=w>
-</span></span></span></code></pre></div><h2 id=排程器scheduler>排程器（Scheduler）</h2><p>Reactor 提供多種排程器來控制執行上下文：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 不同類型的排程器</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=排程器scheduler>排程器（Scheduler）</h2><p>Reactor 提供多種排程器來控制執行上下文：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 不同類型的排程器</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Scheduler</span><span class=w> </span><span class=n>single</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Schedulers</span><span class=p>.</span><span class=na>single</span><span class=p>();</span><span class=w>              </span><span class=c1>// 單執行緒</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Scheduler</span><span class=w> </span><span class=n>parallel</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Schedulers</span><span class=p>.</span><span class=na>parallel</span><span class=p>();</span><span class=w>          </span><span class=c1>// 並行處理（CPU 密集）</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=n>Scheduler</span><span class=w> </span><span class=n>boundedElastic</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Schedulers</span><span class=p>.</span><span class=na>boundedElastic</span><span class=p>();</span><span class=w> </span><span class=c1>// 彈性執行緒池（I/O 密集）</span><span class=w>
@@ -252,7 +503,17 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>publishOn</span><span class=p>(</span><span class=n>Schedulers</span><span class=p>.</span><span class=na>parallel</span><span class=p>())</span><span class=w>         </span><span class=c1>// 後續操作在並行排程器</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>map</span><span class=p>(</span><span class=n>s</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>s</span><span class=p>.</span><span class=na>toUpperCase</span><span class=p>())</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>subscribe</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><h2 id=spring-webflux-實戰>Spring WebFlux 實戰</h2><h3 id=依賴配置>依賴配置</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=spring-webflux-實戰>Spring WebFlux 實戰</h2><h3 id=依賴配置>依賴配置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
 </span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
 </span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter-webflux<span class=nt>&lt;/artifactId&gt;</span>
@@ -262,7 +523,55 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter-data-r2dbc<span class=nt>&lt;/artifactId&gt;</span>
 </span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
 </span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
-</span></span></code></pre></div><h3 id=響應式-rest-controller>響應式 REST Controller</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RestController</span><span class=w>
+</span></span></code></pre></td></tr></table></div></div><h3 id=響應式-rest-controller>響應式 REST Controller</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RestController</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@RequestMapping</span><span class=p>(</span><span class=s>&#34;/api/users&#34;</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>UserController</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
@@ -310,7 +619,76 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>delayElements</span><span class=p>(</span><span class=n>Duration</span><span class=p>.</span><span class=na>ofSeconds</span><span class=p>(</span><span class=n>1</span><span class=p>));</span><span class=w> </span><span class=c1>// 每秒發送一個用戶</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=響應式-service-層>響應式 Service 層</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=響應式-service-層>響應式 Service 層</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>UserService</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>UserRepository</span><span class=w> </span><span class=n>userRepository</span><span class=p>;</span><span class=w>
@@ -379,7 +757,54 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>onErrorReturn</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>UserPreferences</span><span class=p>());</span><span class=w> </span><span class=c1>// 預設偏好設定</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=響應式資料庫存取>響應式資料庫存取</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// R2DBC Repository</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=響應式資料庫存取>響應式資料庫存取</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// R2DBC Repository</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Repository</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>UserRepository</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>ReactiveCrudRepository</span><span class=o>&lt;</span><span class=n>User</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
@@ -426,7 +851,73 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>all</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=webclient-使用>WebClient 使用</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=webclient-使用>WebClient 使用</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ExternalApiClient</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>WebClient</span><span class=w> </span><span class=n>webClient</span><span class=p>;</span><span class=w>
@@ -492,7 +983,108 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>collectList</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=測試響應式程式碼>測試響應式程式碼</h2><h3 id=測試配置>測試配置</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@ExtendWith</span><span class=p>(</span><span class=n>MockitoExtension</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=測試響應式程式碼>測試響應式程式碼</h2><h3 id=測試配置>測試配置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@ExtendWith</span><span class=p>(</span><span class=n>MockitoExtension</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>UserServiceTest</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Mock</span><span class=w>
@@ -593,7 +1185,81 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>verify</span><span class=p>();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=整合測試>整合測試</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootTest</span><span class=p>(</span><span class=n>webEnvironment</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>SpringBootTest</span><span class=p>.</span><span class=na>WebEnvironment</span><span class=p>.</span><span class=na>RANDOM_PORT</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=整合測試>整合測試</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootTest</span><span class=p>(</span><span class=n>webEnvironment</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>SpringBootTest</span><span class=p>.</span><span class=na>WebEnvironment</span><span class=p>.</span><span class=na>RANDOM_PORT</span><span class=p>)</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>UserControllerIntegrationTest</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
@@ -667,7 +1333,16 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>isEqualTo</span><span class=p>(</span><span class=n>createdUser</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=效能優化與最佳實踐>效能優化與最佳實踐</h2><h3 id=1-適當的背壓策略>1. 適當的背壓策略</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 根據情況選擇合適的背壓策略</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=效能優化與最佳實踐>效能優化與最佳實踐</h2><h3 id=1-適當的背壓策略>1. 適當的背壓策略</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 根據情況選擇合適的背壓策略</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>ProcessedData</span><span class=o>&gt;</span><span class=w> </span><span class=nf>processLargeDataset</span><span class=p>(</span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>RawData</span><span class=o>&gt;</span><span class=w> </span><span class=n>input</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>input</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>onBackpressureBuffer</span><span class=p>(</span><span class=n>1000</span><span class=p>)</span><span class=w> </span><span class=c1>// 適度緩衝</span><span class=w>
@@ -676,7 +1351,26 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>log</span><span class=p>.</span><span class=na>warn</span><span class=p>(</span><span class=s>&#34;處理項目 {} 時發生錯誤: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>item</span><span class=p>,</span><span class=w> </span><span class=n>error</span><span class=p>.</span><span class=na>getMessage</span><span class=p>());</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>});</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=2-合理使用排程器>2. 合理使用排程器</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-合理使用排程器>2. 合理使用排程器</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>OptimizedService</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// CPU 密集型操作使用 parallel()</span><span class=w>
@@ -695,7 +1389,25 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}).</span><span class=na>subscribeOn</span><span class=p>(</span><span class=n>Schedulers</span><span class=p>.</span><span class=na>boundedElastic</span><span class=p>());</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=3-資源管理>3. 資源管理</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 使用 using() 確保資源正確釋放</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-資源管理>3. 資源管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 使用 using() 確保資源正確釋放</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>Mono</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>processFileWithProperCleanup</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>filename</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>Mono</span><span class=p>.</span><span class=na>using</span><span class=p>(</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>Files</span><span class=p>.</span><span class=na>newBufferedReader</span><span class=p>(</span><span class=n>Paths</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=n>filename</span><span class=p>)),</span><span class=w> </span><span class=c1>// 資源供應商</span><span class=w>
@@ -713,7 +1425,26 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=4-快取策略>4. 快取策略</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=4-快取策略>4. 快取策略</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CachedUserService</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>Cache</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>User</span><span class=o>&gt;</span><span class=w> </span><span class=n>userCache</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Caffeine</span><span class=p>.</span><span class=na>newBuilder</span><span class=p>()</span><span class=w>
@@ -732,7 +1463,15 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>cache</span><span class=p>(</span><span class=n>Duration</span><span class=p>.</span><span class=na>ofMinutes</span><span class=p>(</span><span class=n>5</span><span class=p>));</span><span class=w> </span><span class=c1>// Reactor 層級快取</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=監控與除錯>監控與除錯</h2><h3 id=1-日誌記錄>1. 日誌記錄</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>User</span><span class=o>&gt;</span><span class=w> </span><span class=nf>processUsers</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=監控與除錯>監控與除錯</h2><h3 id=1-日誌記錄>1. 日誌記錄</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=n>Flux</span><span class=o>&lt;</span><span class=n>User</span><span class=o>&gt;</span><span class=w> </span><span class=nf>processUsers</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>userRepository</span><span class=p>.</span><span class=na>findAll</span><span class=p>()</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>doOnSubscribe</span><span class=p>(</span><span class=n>subscription</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>log</span><span class=p>.</span><span class=na>info</span><span class=p>(</span><span class=s>&#34;開始處理用戶&#34;</span><span class=p>))</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>doOnNext</span><span class=p>(</span><span class=n>user</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>log</span><span class=p>.</span><span class=na>debug</span><span class=p>(</span><span class=s>&#34;處理用戶: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>user</span><span class=p>.</span><span class=na>getId</span><span class=p>()))</span><span class=w>
@@ -740,7 +1479,37 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>doOnComplete</span><span class=p>(()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>log</span><span class=p>.</span><span class=na>info</span><span class=p>(</span><span class=s>&#34;用戶處理完成&#34;</span><span class=p>))</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>doFinally</span><span class=p>(</span><span class=n>signalType</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>log</span><span class=p>.</span><span class=na>info</span><span class=p>(</span><span class=s>&#34;處理結束，信號類型: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>signalType</span><span class=p>));</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h3 id=2-度量收集>2. 度量收集</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-度量收集>2. 度量收集</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>MetricsService</span><span class=w> </span><span class=p>{</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>MeterRegistry</span><span class=w> </span><span class=n>meterRegistry</span><span class=p>;</span><span class=w>
@@ -770,7 +1539,7 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>subscribeOn</span><span class=p>(</span><span class=n>Schedulers</span><span class=p>.</span><span class=na>boundedElastic</span><span class=p>());</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></div><h2 id=總結>總結</h2><p>Reactive Programming 為 Java 開發者提供了處理非同步、非阻塞程式設計的強大工具。透過 Project Reactor 和 Spring WebFlux，我們可以：</p><h3 id=核心優勢>核心優勢</h3><ol><li><strong>高效能</strong>：非阻塞 I/O 提升系統吞吐量</li><li><strong>可擴展性</strong>：更好地利用系統資源</li><li><strong>彈性</strong>：內建錯誤處理和恢復機制</li><li><strong>組合性</strong>：豐富的操作符支援複雜的資料流處理</li></ol><h3 id=最佳實踐要點>最佳實踐要點</h3><ol><li><strong>適當場景</strong>：I/O 密集型應用程式最適合</li><li><strong>操作符選擇</strong>：理解不同操作符的特性和適用場景</li><li><strong>錯誤處理</strong>：設計完善的錯誤處理策略</li><li><strong>測試</strong>：使用 StepVerifier 進行完整測試</li><li><strong>監控</strong>：建立適當的日誌和度量機制</li></ol><p>響應式程式設計雖然學習曲線較陡，但掌握後能顯著提升應用程式的效能和可維護性，特別適合現代微服務架構和雲端環境。</p><h2 id=參考資料>參考資料</h2><ul><li><a href=https://projectreactor.io/docs>Project Reactor 官方文檔</a></li><li><a href=https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html>Spring WebFlux 參考指南</a></li><li><a href=https://www.reactive-streams.org/>Reactive Streams 規範</a></li><li><a href=https://r2dbc.io/>R2DBC 響應式資料庫存取</a></li><li><a href=https://projectreactor.io/docs/core/release/reference/>Reactor 3 Reference Guide</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=總結>總結</h2><p>Reactive Programming 為 Java 開發者提供了處理非同步、非阻塞程式設計的強大工具。透過 Project Reactor 和 Spring WebFlux，我們可以：</p><h3 id=核心優勢>核心優勢</h3><ol><li><strong>高效能</strong>：非阻塞 I/O 提升系統吞吐量</li><li><strong>可擴展性</strong>：更好地利用系統資源</li><li><strong>彈性</strong>：內建錯誤處理和恢復機制</li><li><strong>組合性</strong>：豐富的操作符支援複雜的資料流處理</li></ol><h3 id=最佳實踐要點>最佳實踐要點</h3><ol><li><strong>適當場景</strong>：I/O 密集型應用程式最適合</li><li><strong>操作符選擇</strong>：理解不同操作符的特性和適用場景</li><li><strong>錯誤處理</strong>：設計完善的錯誤處理策略</li><li><strong>測試</strong>：使用 StepVerifier 進行完整測試</li><li><strong>監控</strong>：建立適當的日誌和度量機制</li></ol><p>響應式程式設計雖然學習曲線較陡，但掌握後能顯著提升應用程式的效能和可維護性，特別適合現代微服務架構和雲端環境。</p><h2 id=參考資料>參考資料</h2><ul><li><a href=https://projectreactor.io/docs>Project Reactor 官方文檔</a></li><li><a href=https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html>Spring WebFlux 參考指南</a></li><li><a href=https://www.reactive-streams.org/>Reactive Streams 規範</a></li><li><a href=https://r2dbc.io/>R2DBC 響應式資料庫存取</a></li><li><a href=https://projectreactor.io/docs/core/release/reference/>Reactor 3 Reference Guide</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
 <a href=/tags/java class=tag-link>#Java</a>
 <a href=/tags/spring class=tag-link>#Spring</a>
 <a href=/tags/webflux class=tag-link>#WebFlux</a>
@@ -779,5 +1548,5 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 <a href=/tags/async class=tag-link>#Async</a>
 <a href=/tags/mono class=tag-link>#Mono</a>
 <a href=/tags/flux class=tag-link>#Flux</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/algorithm/graphaccountmerge/ class=post-nav-link>GraphAccountMerge</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
-<a href=https://xinqilin.github.io/post/algorithm/topologicalsort/ class=post-nav-link>拓撲排序（Topological Sort）演算法詳解</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
+<a href=http://localhost:1313/post/algorithm/graphaccountmerge/ class=post-nav-link>GraphAccountMerge</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=http://localhost:1313/post/algorithm/topologicalsort/ class=post-nav-link>拓撲排序（Topological Sort）演算法詳解</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
