@@ -1,10 +1,10 @@
 ---
-title: "MapCompute"
+title: "Java Map 計算方法詳解：putIfAbsent、compute、computeIfAbsent 使用指南"
 author: Bill.Lin
 date: 2019-03-20T20:58:17+08:00
 draft: false
-tags: []
-Description: ""
+tags: ["Java", "Map", "HashMap", "Collections", "Data-Structure"]
+Description: "詳細介紹 Java Map 介面的計算相關方法，包含 putIfAbsent、compute、computeIfAbsent、computeIfPresent 的使用方式與實際範例"
 Categories: ["Backend"]
 DisableComments: false
 ---

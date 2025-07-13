@@ -1,4 +1,5 @@
 /* Generated using: hugo gen chromastyles --style=github */
+/* Enhanced for better visibility */
 
 /* Background */ .bg { background-color:#fff; }
 /* PreWrapper */ .chroma { background-color:#fff; }
@@ -12,67 +13,81 @@
 /* LineNumbersTable */ .chroma .lnt { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f }
 /* LineNumbers */ .chroma .ln { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f }
 /* Line */ .chroma .line { display:flex; }
-/* Keyword */ .chroma .k { color:#cf222e }
-/* KeywordConstant */ .chroma .kc { color:#cf222e }
-/* KeywordDeclaration */ .chroma .kd { color:#cf222e }
-/* KeywordNamespace */ .chroma .kn { color:#cf222e }
-/* KeywordPseudo */ .chroma .kp { color:#cf222e }
-/* KeywordReserved */ .chroma .kr { color:#cf222e }
-/* KeywordType */ .chroma .kt { color:#cf222e }
-/* Name */ .chroma .n {  }
-/* NameAttribute */ .chroma .na { color:#1f2328 }
-/* NameClass */ .chroma .nc { color:#1f2328 }
-/* NameConstant */ .chroma .no { color:#0550ae }
-/* NameDecorator */ .chroma .nd { color:#0550ae }
-/* NameEntity */ .chroma .ni { color:#6639ba }
-/* NameException */ .chroma .ne {  }
-/* NameLabel */ .chroma .nl { color:#900;font-weight:bold }
-/* NameNamespace */ .chroma .nn { color:#24292e }
-/* NameOther */ .chroma .nx { color:#1f2328 }
-/* NameProperty */ .chroma .py {  }
-/* NameTag */ .chroma .nt { color:#0550ae }
-/* NameBuiltin */ .chroma .nb { color:#6639ba }
-/* NameBuiltinPseudo */ .chroma .bp { color:#6a737d }
-/* NameVariable */ .chroma .nv { color:#953800 }
-/* NameVariableClass */ .chroma .vc { color:#953800 }
-/* NameVariableGlobal */ .chroma .vg { color:#953800 }
-/* NameVariableInstance */ .chroma .vi { color:#953800 }
-/* NameVariableMagic */ .chroma .vm { color:#953800 }
-/* NameFunction */ .chroma .nf { color:#6639ba }
-/* NameFunctionMagic */ .chroma .fm { color:#6639ba }
-/* Literal */ .chroma .l {  }
-/* LiteralDate */ .chroma .ld {  }
-/* LiteralString */ .chroma .s { color:#0a3069 }
-/* LiteralStringAffix */ .chroma .sa { color:#0a3069 }
-/* LiteralStringBacktick */ .chroma .sb { color:#0a3069 }
-/* LiteralStringChar */ .chroma .sc { color:#0a3069 }
-/* LiteralStringDelimiter */ .chroma .dl { color:#0a3069 }
-/* LiteralStringDoc */ .chroma .sd { color:#0a3069 }
-/* LiteralStringDouble */ .chroma .s2 { color:#0a3069 }
-/* LiteralStringEscape */ .chroma .se { color:#0a3069 }
-/* LiteralStringHeredoc */ .chroma .sh { color:#0a3069 }
-/* LiteralStringInterpol */ .chroma .si { color:#0a3069 }
-/* LiteralStringOther */ .chroma .sx { color:#0a3069 }
-/* LiteralStringRegex */ .chroma .sr { color:#0a3069 }
-/* LiteralStringSingle */ .chroma .s1 { color:#0a3069 }
-/* LiteralStringSymbol */ .chroma .ss { color:#032f62 }
-/* LiteralNumber */ .chroma .m { color:#0550ae }
-/* LiteralNumberBin */ .chroma .mb { color:#0550ae }
-/* LiteralNumberFloat */ .chroma .mf { color:#0550ae }
-/* LiteralNumberHex */ .chroma .mh { color:#0550ae }
-/* LiteralNumberInteger */ .chroma .mi { color:#0550ae }
-/* LiteralNumberIntegerLong */ .chroma .il { color:#0550ae }
-/* LiteralNumberOct */ .chroma .mo { color:#0550ae }
-/* Operator */ .chroma .o { color:#0550ae }
-/* OperatorWord */ .chroma .ow { color:#0550ae }
-/* Punctuation */ .chroma .p { color:#1f2328 }
-/* Comment */ .chroma .c { color:#57606a }
-/* CommentHashbang */ .chroma .ch { color:#57606a }
-/* CommentMultiline */ .chroma .cm { color:#57606a }
-/* CommentSingle */ .chroma .c1 { color:#57606a }
-/* CommentSpecial */ .chroma .cs { color:#57606a }
-/* CommentPreproc */ .chroma .cp { color:#57606a }
-/* CommentPreprocFile */ .chroma .cpf { color:#57606a }
+
+/* Keywords - 更鮮豔的紅色 */
+.chroma .k { color:#d73027; font-weight:600; }
+.chroma .kc { color:#d73027; font-weight:600; }
+.chroma .kd { color:#d73027; font-weight:600; }
+.chroma .kn { color:#d73027; font-weight:600; }
+.chroma .kp { color:#d73027; font-weight:600; }
+.chroma .kr { color:#d73027; font-weight:600; }
+.chroma .kt { color:#d73027; font-weight:600; }
+
+/* Names - 更深的顏色 */
+.chroma .n { color:#333; }
+.chroma .na { color:#1f2328; font-weight:500; }
+.chroma .nc { color:#0969da; font-weight:700; }  /* 類別名稱 - 更鮮豔的藍色 */
+.chroma .no { color:#0969da; font-weight:600; }
+.chroma .nd { color:#8250df; font-weight:600; }  /* 裝飾器 - 紫色 */
+.chroma .ni { color:#8250df; font-weight:600; }
+.chroma .ne { color:#cf222e; font-weight:600; }
+.chroma .nl { color:#cf222e; font-weight:bold; }
+.chroma .nn { color:#0969da; font-weight:600; }  /* 命名空間 - 藍色 */
+.chroma .nx { color:#1f2328; font-weight:500; }
+.chroma .py {  }
+.chroma .nt { color:#116329; font-weight:600; }  /* 標籤 - 綠色 */
+.chroma .nb { color:#8250df; font-weight:600; }  /* 內建函式 - 紫色 */
+.chroma .bp { color:#8250df; font-weight:500; }
+.chroma .nv { color:#e36209; font-weight:600; }  /* 變數 - 橙色 */
+.chroma .vc { color:#e36209; font-weight:600; }
+.chroma .vg { color:#e36209; font-weight:600; }
+.chroma .vi { color:#e36209; font-weight:600; }
+.chroma .vm { color:#e36209; font-weight:600; }
+.chroma .nf { color:#8250df; font-weight:700; }  /* 函式名稱 - 粗體紫色 */
+.chroma .fm { color:#8250df; font-weight:700; }
+/* Literal */ .chroma .l { color:#333; }
+/* LiteralDate */ .chroma .ld { color:#0a3069; }
+
+/* Strings - 更鮮豔的深藍色 */
+.chroma .s { color:#0a3069; font-weight:600; }
+.chroma .sa { color:#0a3069; font-weight:600; }
+.chroma .sb { color:#0a3069; font-weight:600; }
+.chroma .sc { color:#0a3069; font-weight:600; }
+.chroma .dl { color:#0a3069; font-weight:600; }
+.chroma .sd { color:#0a3069; font-weight:600; }
+.chroma .s2 { color:#0a3069; font-weight:600; }
+.chroma .se { color:#0a3069; font-weight:600; }
+.chroma .sh { color:#0a3069; font-weight:600; }
+.chroma .si { color:#0a3069; font-weight:600; }
+.chroma .sx { color:#0a3069; font-weight:600; }
+.chroma .sr { color:#0a3069; font-weight:600; }
+.chroma .s1 { color:#0a3069; font-weight:600; }
+.chroma .ss { color:#032f62; font-weight:600; }
+
+/* Numbers - 更鮮豔的藍色 */
+.chroma .m { color:#005cc5; font-weight:600; }
+.chroma .mb { color:#005cc5; font-weight:600; }
+.chroma .mf { color:#005cc5; font-weight:600; }
+.chroma .mh { color:#005cc5; font-weight:600; }
+.chroma .mi { color:#005cc5; font-weight:600; }
+.chroma .il { color:#005cc5; font-weight:600; }
+.chroma .mo { color:#005cc5; font-weight:600; }
+
+/* Operators - 更鮮豔的藍色 */
+.chroma .o { color:#005cc5; font-weight:600; }
+.chroma .ow { color:#005cc5; font-weight:600; }
+
+/* Punctuation - 深灰色 */
+.chroma .p { color:#1f2328; font-weight:500; }
+
+/* Comments - 更顯眼的灰色 */
+.chroma .c { color:#6a737d; font-style:italic; }
+.chroma .ch { color:#6a737d; font-style:italic; }
+.chroma .cm { color:#6a737d; font-style:italic; }
+.chroma .c1 { color:#6a737d; font-style:italic; }
+.chroma .cs { color:#6a737d; font-style:italic; }
+.chroma .cp { color:#6a737d; font-style:italic; }
+.chroma .cpf { color:#6a737d; font-style:italic; }
 /* Generic */ .chroma .g {  }
 /* GenericDeleted */ .chroma .gd { color:#82071e;background-color:#ffebe9 }
 /* GenericEmph */ .chroma .ge { color:#1f2328 }

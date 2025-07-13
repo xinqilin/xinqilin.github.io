@@ -27,8 +27,8 @@ body::before {
     right: 0;
     height: 100vh;
     background: radial-gradient(circle at 20% 50%, rgba(97, 200, 224, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(114, 229, 197, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(255, 164, 143, 0.02) 0%, transparent 50%);
+        radial-gradient(circle at 80% 20%, rgba(114, 229, 197, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 164, 143, 0.02) 0%, transparent 50%);
     pointer-events: none;
     z-index: -1;
 }
@@ -380,10 +380,10 @@ body::before {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background: linear-gradient(45deg, 
-        #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, 
-        #feca57, #ff9ff3, #54a0ff, #5f27cd,
-        #ff6b6b);
+    background: linear-gradient(45deg,
+            #ff6b6b, #4ecdc4, #45b7d1, #96ceb4,
+            #feca57, #ff9ff3, #54a0ff, #5f27cd,
+            #ff6b6b);
     background-size: 400% 400%;
     animation: gradientRotate 3s ease-in-out infinite;
     opacity: 0.8;
@@ -422,18 +422,22 @@ body::before {
         background-position: 0% 50%;
         transform: rotate(0deg);
     }
+
     25% {
         background-position: 100% 50%;
         transform: rotate(90deg);
     }
+
     50% {
         background-position: 100% 50%;
         transform: rotate(180deg);
     }
+
     75% {
         background-position: 0% 50%;
         transform: rotate(270deg);
     }
+
     100% {
         background-position: 0% 50%;
         transform: rotate(360deg);
@@ -446,10 +450,13 @@ body::before {
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
         opacity: 0.8;
     }
+
     50% {
         transform: scale(1.05);
         opacity: 1;
@@ -468,10 +475,13 @@ body::before {
 }
 
 @keyframes sparkle {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0;
         transform: scale(0.8) rotate(0deg);
     }
+
     50% {
         opacity: 1;
         transform: scale(1.2) rotate(180deg);
@@ -532,12 +542,12 @@ body::before {
         gap: 1rem;
         padding: 1rem 0;
     }
-    
+
     .nav-left,
     .nav-right {
         flex: none;
     }
-    
+
     .nav-center {
         position: relative;
         left: auto;
@@ -546,23 +556,23 @@ body::before {
         order: -1;
         margin-bottom: 1rem;
     }
-    
+
     .nav-menu {
         gap: 1rem;
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .avatar-container {
         width: 50px;
         height: 50px;
     }
-    
+
     .avatar-ring {
         width: 60px;
         height: 60px;
     }
-    
+
     .nav-avatar-center {
         width: 40px;
         height: 40px;
@@ -727,24 +737,24 @@ body::before {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .about-card {
         padding: 20px;
     }
-    
+
     .about-card-header h3 {
         font-size: 1.2rem;
     }
-    
+
     .content-area {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .area-icon {
         margin-bottom: 8px;
     }
-    
+
     .quote-text {
         font-size: 1.3rem;
     }
@@ -884,7 +894,8 @@ body::before {
     gap: 0.5rem;
 }
 
-.category-tag, .category-link {
+.category-tag,
+.category-link {
     background: rgba(226, 232, 240, 0.6);
     color: #4a5568;
     padding: 0.2rem 0.8rem;
@@ -933,7 +944,8 @@ body::before {
     gap: 0.5rem;
 }
 
-.tag, .tag-link {
+.tag,
+.tag-link {
     color: #72e5c5;
     font-size: 0.85rem;
     text-decoration: none;
@@ -975,7 +987,8 @@ body::before {
     flex-wrap: wrap;
 }
 
-.post-author, .reading-time {
+.post-author,
+.reading-time {
     color: #888;
     font-size: 0.9rem;
 }
@@ -997,12 +1010,29 @@ body::before {
     font-weight: 600;
 }
 
-.post-content h1 { font-size: 2rem; }
-.post-content h2 { font-size: 1.6rem; }
-.post-content h3 { font-size: 1.4rem; }
-.post-content h4 { font-size: 1.2rem; }
-.post-content h5 { font-size: 1.1rem; }
-.post-content h6 { font-size: 1rem; }
+.post-content h1 {
+    font-size: 2rem;
+}
+
+.post-content h2 {
+    font-size: 1.6rem;
+}
+
+.post-content h3 {
+    font-size: 1.4rem;
+}
+
+.post-content h4 {
+    font-size: 1.2rem;
+}
+
+.post-content h5 {
+    font-size: 1.1rem;
+}
+
+.post-content h6 {
+    font-size: 1rem;
+}
 
 .post-content p {
     margin-bottom: 1.5rem;
@@ -1030,23 +1060,25 @@ body::before {
 }
 
 .post-content code {
-    background: #f6f8fa;
-    padding: 0.2rem 0.4rem;
+    background: #f8f9fa;
+    padding: 0.25rem 0.5rem;
     border-radius: 6px;
     font-family: 'SFMono-Regular', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    font-size: 0.85em;
-    color: #cf222e;
-    border: 1px solid #d1d9e0;
+    font-size: 0.9em;
+    color: #e83e8c;
+    border: 1px solid #e1e8ed;
+    font-weight: 600;
 }
 
 .post-content pre {
-    background: #f6f8fa;
-    padding: 1rem;
-    border-radius: 8px;
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
     overflow-x: auto;
-    margin: 1.5rem 0;
-    border: 1px solid #d1d9e0;
+    margin: 2rem 0;
+    border: 2px solid #e1e8ed;
     position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .post-content pre code {
@@ -1054,16 +1086,19 @@ body::before {
     padding: 0;
     color: inherit;
     border: none;
-    font-size: 0.875em;
-    line-height: 1.45;
+    font-size: 0.9em;
+    line-height: 1.5;
+    font-weight: 500;
 }
 
-/* Chroma code blocks styling */
+/* Chroma code blocks styling - Enhanced */
 .post-content .chroma {
-    background: #f6f8fa !important;
-    border-radius: 8px;
-    border: 1px solid #d1d9e0;
-    margin: 1.5rem 0;
+    background: #f8f9fa !important;
+    border-radius: 12px;
+    border: 2px solid #e1e8ed;
+    margin: 2rem 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .post-content .chroma .lntable {
@@ -1084,18 +1119,21 @@ body::before {
 .post-content .chroma .ln {
     margin-right: 0.4em;
     padding: 0 0.4em 0 0.4em;
-    color: #656d76;
-    background: #f6f8fa;
+    color: #6a737d;
+    background: #f1f3f4;
     min-width: 2em;
     text-align: right;
     user-select: none;
+    border-right: 1px solid #e1e8ed;
 }
 
 .post-content .chroma pre {
     margin: 0;
-    padding: 1rem;
+    padding: 1.5rem;
     background: transparent;
     border: none;
+    font-size: 0.9em;
+    line-height: 1.5;
 }
 
 .post-content img {
@@ -1212,12 +1250,12 @@ body::before {
     text-align: center;
     margin-bottom: 4rem;
     padding: 3rem 2rem;
-    background: linear-gradient(135deg, 
-        rgba(167, 139, 250, 0.06) 0%, 
-        rgba(96, 165, 250, 0.06) 25%,
-        rgba(52, 211, 153, 0.06) 50%,
-        rgba(251, 191, 36, 0.06) 75%,
-        rgba(251, 113, 133, 0.06) 100%);
+    background: linear-gradient(135deg,
+            rgba(167, 139, 250, 0.06) 0%,
+            rgba(96, 165, 250, 0.06) 25%,
+            rgba(52, 211, 153, 0.06) 50%,
+            rgba(251, 191, 36, 0.06) 75%,
+            rgba(251, 113, 133, 0.06) 100%);
     border-radius: 20px;
     border: 1px solid rgba(226, 232, 240, 0.6);
     backdrop-filter: blur(10px);
@@ -1237,8 +1275,15 @@ body::before {
 }
 
 @keyframes float {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(-20px, -20px) rotate(180deg); }
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(-20px, -20px) rotate(180deg);
+    }
 }
 
 .categories-title {
@@ -1431,33 +1476,33 @@ body::before {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-    
+
     .categories-header {
         padding: 2rem 1.5rem;
         margin-bottom: 3rem;
     }
-    
+
     .categories-title {
         font-size: 2rem;
     }
-    
+
     .categories-subtitle {
         font-size: 1.1rem;
     }
-    
+
     .category-link {
         padding: 2rem 1.5rem;
     }
-    
+
     .category-icon {
         font-size: 2.5rem;
         margin-bottom: 1rem;
     }
-    
+
     .category-name {
         font-size: 1.3rem;
     }
-    
+
     .category-meta {
         flex-direction: column;
         gap: 0.5rem;
@@ -1469,11 +1514,11 @@ body::before {
     .categories-header {
         padding: 1.5rem 1rem;
     }
-    
+
     .categories-title {
         font-size: 1.8rem;
     }
-    
+
     .category-link {
         padding: 1.5rem 1rem;
     }
@@ -1641,28 +1686,28 @@ body::before {
         max-width: 100%;
         padding: 0 15px;
     }
-    
+
     .tech-header {
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
     }
-    
+
     .tech-title {
         font-size: 1.75rem;
     }
-    
+
     .tech-post-card-link {
         margin-bottom: 1.5rem;
     }
-    
+
     .tech-post-card {
         padding: 1.25rem;
     }
-    
+
     .tech-post-title {
         font-size: 1.15rem;
     }
-    
+
     .tech-post-meta {
         flex-direction: column;
         align-items: flex-start;
@@ -1674,24 +1719,24 @@ body::before {
     .tech-posts-page {
         padding: 0 10px;
     }
-    
+
     .tech-title {
         font-size: 1.5rem;
     }
-    
+
     .tech-post-card-link {
         margin-bottom: 1rem;
     }
-    
+
     .tech-post-card {
         padding: 1rem;
         border-radius: 0 6px 6px 0;
     }
-    
+
     .tech-post-title {
         font-size: 1.1rem;
     }
-    
+
     .tech-post-description {
         font-size: 0.9rem;
     }
@@ -1932,8 +1977,15 @@ body::before {
 }
 
 @keyframes gradientBorder {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .contact-link-new {
@@ -1998,7 +2050,7 @@ body::before {
 }
 
 /* Add some breathing room */
-.contact-links-prominent + .core-skills {
+.contact-links-prominent+.core-skills {
     margin-top: 2rem;
 }
 
@@ -2009,7 +2061,7 @@ body::before {
         gap: 1rem;
         padding: 1rem;
     }
-    
+
     .contact-link-new {
         justify-content: center;
         padding: 1rem;
@@ -2029,9 +2081,9 @@ body::before {
     justify-content: space-between;
     margin-bottom: 3rem;
     padding: 2rem;
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.9) 0%, 
-        rgba(248, 250, 252, 0.9) 100%);
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.9) 0%,
+            rgba(248, 250, 252, 0.9) 100%);
     border-radius: 16px;
     border: 1px solid rgba(226, 232, 240, 0.8);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
@@ -2249,27 +2301,27 @@ body::before {
         gap: 1rem;
         padding: 1.5rem;
     }
-    
+
     .category-info h1.category-title {
         font-size: 1.8rem;
     }
-    
+
     .category-icon-large {
         font-size: 3rem;
     }
-    
+
     .category-post-card {
         padding: 1.2rem;
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
-    
+
     .category-post-arrow {
         margin-left: 0;
         align-self: flex-end;
     }
-    
+
     .category-post-meta {
         flex-direction: column;
         align-items: flex-start;
@@ -2281,20 +2333,140 @@ body::before {
     .category-posts-page {
         padding: 0 15px;
     }
-    
+
     .category-header {
         padding: 1rem;
     }
-    
+
     .category-info h1.category-title {
         font-size: 1.6rem;
     }
-    
+
     .category-post-card {
         padding: 1rem;
     }
-    
+
     .category-post-title {
         font-size: 1.2rem;
     }
+}
+
+/* 隱藏 Chroma 程式碼區塊中的空白行 */
+.post-content .chroma .line .cl .w:only-child:empty {
+    display: none;
+}
+
+/* 隱藏只包含空白字元的行 */
+.post-content .chroma .line .cl:only-child .w:only-child {
+    white-space: nowrap;
+}
+
+/* 完全隱藏空白行 */
+.post-content .chroma .line:has(.cl:only-child .w:only-child:empty) {
+    display: none;
+}
+
+/* 對於不支援 :has 的瀏覽器的備用方案 */
+.post-content .chroma .line .cl:only-child .w:only-child:empty {
+    line-height: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+}
+
+/* 移除程式碼區塊末尾的多餘空白 */
+.post-content .chroma .lntable tr:last-child .line:last-child .cl .w:only-child:empty {
+    display: none;
+}
+
+/* 程式碼區塊增強效果 */
+.post-content .chroma::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px 12px 0 0;
+}
+
+.post-content .chroma {
+    position: relative;
+}
+
+/* 程式碼區塊 hover 效果 */
+.post-content .chroma:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* 行內程式碼 hover 效果 */
+.post-content code:hover {
+    background: #e9ecef;
+    color: #d63384;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}
+
+/* 程式碼語言標籤 */
+.post-content .chroma[data-lang]::after {
+    content: attr(data-lang);
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: rgba(102, 126, 234, 0.9);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 特殊語言標籤顏色 */
+.post-content .chroma[data-lang="java"]::after {
+    background: linear-gradient(135deg, #f89820 0%, #ed8936 100%);
+}
+
+.post-content .chroma[data-lang="javascript"]::after {
+    background: linear-gradient(135deg, #f7df1e 0%, #ffd500 100%);
+    color: #333;
+}
+
+.post-content .chroma[data-lang="python"]::after {
+    background: linear-gradient(135deg, #3776ab 0%, #306998 100%);
+}
+
+.post-content .chroma[data-lang="css"]::after {
+    background: linear-gradient(135deg, #1572b6 0%, #33a9dc 100%);
+}
+
+.post-content .chroma[data-lang="html"]::after {
+    background: linear-gradient(135deg, #e34f26 0%, #f06529 100%);
+}
+
+.post-content .chroma[data-lang="yaml"]::after,
+.post-content .chroma[data-lang="yml"]::after {
+    background: linear-gradient(135deg, #cb171e 0%, #dc3545 100%);
+}
+
+.post-content .chroma[data-lang="json"]::after {
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+}
+
+.post-content .chroma[data-lang="xml"]::after {
+    background: linear-gradient(135deg, #005f9f 0%, #1e90ff 100%);
+}
+
+.post-content .chroma[data-lang="bash"]::after,
+.post-content .chroma[data-lang="shell"]::after {
+    background: linear-gradient(135deg, #4eaa25 0%, #89e051 100%);
+}
+
+.post-content .chroma[data-lang="sql"]::after {
+    background: linear-gradient(135deg, #336791 0%, #4479a1 100%);
 }
