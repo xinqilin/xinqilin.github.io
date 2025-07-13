@@ -1,1 +1,51 @@
+# Robots.txt for Bill.Lin's Notes
+# 允許所有搜尋引擎索引網站內容
+
 User-agent: *
+Allow: /
+
+# 允許特定頁面被索引
+Allow: /posts/
+Allow: /categories/
+Allow: /tags/
+Allow: /about/
+
+# 禁止爬取管理和系統檔案
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /.env
+Disallow: /.htaccess
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+
+# 禁止爬取備份和臨時檔案
+Disallow: /*.bak$
+Disallow: /*.tmp$
+Disallow: /*.log$
+Disallow: /*~$
+Disallow: /*.swp$
+
+# 禁止特定惡意爬蟲
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# 設定爬取延遲（避免伺服器過載）
+Crawl-delay: 1
+
+# Sitemap 位置
+Sitemap: https://xinqilin.github.io/sitemap.xml
