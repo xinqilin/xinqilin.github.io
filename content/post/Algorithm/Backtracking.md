@@ -3,7 +3,7 @@ title: "回溯演算法（Backtracking）完整指南"
 author: Bill.Lin
 date: 2022-05-10T23:34:53+08:00
 draft: false
-tags: ["Algorithm", "Backtracking", "遞歸"]
+tags: ["Algorithm", "Backtracking", "Recursion"]
 Description: "深入探討回溯演算法的原理、實作技巧與經典題型解析"
 Categories: ["Algorithm"]
 DisableComments: false
@@ -18,7 +18,7 @@ DisableComments: false
 回溯演算法遵循三個核心步驟：
 
 1. **選擇（Choose）**：從當前狀態的可選項中做出選擇
-2. **探索（Explore）**：遞歸地探索這個選擇的後果
+2. **探索（Explore）**：Recursion地探索這個選擇的後果
 3. **撤銷（Un-choose）**：撤銷選擇，恢復到選擇前的狀態
 
 ### 演算法模板
@@ -53,7 +53,7 @@ void backtrack(路徑, 選擇列表) {
 **解題思路**：
 - 對於每個元素，我們都有「選擇」或「不選擇」兩種決策
 - 使用回溯法遍歷所有可能的組合
-- 每次遞歸都將當前路徑加入結果集
+- 每次Recursion都將當前路徑加入結果集
 
 ```java
 public List<List<Integer>> subsets(int[] nums) {
@@ -73,7 +73,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
         // 做選擇：將當前元素加入路徑
         currentPath.add(nums[i]);
         
-        // 遞歸探索：繼續選擇下一個元素
+        // Recursion探索：繼續選擇下一個元素
         backtrack(result, currentPath, nums, i + 1);
         
         // 撤銷選擇：移除當前元素，回溯
@@ -115,7 +115,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
         // 做選擇
         currentPath.add(nums[i]);
         
-        // 遞歸探索
+        // Recursion探索
         backtrack(result, currentPath, nums, i + 1);
         
         // 撤銷選擇
@@ -124,7 +124,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
 }
 ```
 
-**去重關鍵**：`i > startIndex && nums[i] == nums[i-1]` 這個條件確保在同一層遞歸中跳過重複元素。
+**去重關鍵**：`i > startIndex && nums[i] == nums[i-1]` 這個條件確保在同一層Recursion中跳過重複元素。
 
 ### 3. 全排列（Permutations）
 
@@ -159,7 +159,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath, in
         // 做選擇
         currentPath.add(nums[i]);
         
-        // 遞歸探索
+        // Recursion探索
         backtrack(result, currentPath, nums);
         
         // 撤銷選擇
@@ -232,7 +232,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
         used[i] = true;
         currentPath.add(nums[i]);
         
-        // 遞歸探索
+        // Recursion探索
         backtrack(result, currentPath, nums, used);
         
         // 撤銷選擇
@@ -242,7 +242,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
 }
 ```
 
-**去重原理**：`!used[i-1]` 確保在同一層遞歸中，相同的元素只會被選擇一次，從而避免重複排列。
+**去重原理**：`!used[i-1]` 確保在同一層Recursion中，相同的元素只會被選擇一次，從而避免重複排列。
 
 ### 5. 組合總和（Combination Sum - 可重複使用元素）
 
@@ -283,7 +283,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
         // 做選擇
         currentPath.add(candidates[i]);
         
-        // 遞歸探索：注意這裡傳入 i 而不是 i+1，因為可以重複使用同一元素
+        // Recursion探索：注意這裡傳入 i 而不是 i+1，因為可以重複使用同一元素
         backtrack(result, currentPath, candidates, remainingTarget - candidates[i], i);
         
         // 撤銷選擇
@@ -293,7 +293,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
 ```
 
 **關鍵點**：
-- 遞歸時傳入 `i` 而非 `i+1`，允許重複使用當前元素
+- Recursion時傳入 `i` 而非 `i+1`，允許重複使用當前元素
 - 排序後可以進行剪枝優化，提早終止無效分支
 
 ### 6. 組合總和 II（Combination Sum II - 含重複元素但不可重複使用）
@@ -303,7 +303,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
 **解題思路**：
 - 每個元素只能使用一次，需要跳過重複元素避免重複組合
 - 排序後使用去重邏輯
-- 遞歸時傳入 `i+1` 確保每個位置的元素只能使用一次
+- Recursion時傳入 `i+1` 確保每個位置的元素只能使用一次
 
 ```java
 public List<List<Integer>> combinationSum2(int[] candidates, int target) {
@@ -327,7 +327,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
     }
     
     for (int i = startIndex; i < candidates.length; i++) {
-        // 跳過重複元素：避免在同一層遞歸中使用相同的元素
+        // 跳過重複元素：避免在同一層Recursion中使用相同的元素
         if (i > startIndex && candidates[i] == candidates[i - 1]) {
             continue; // 跳過重複元素
         }
@@ -340,7 +340,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
         // 做選擇
         currentPath.add(candidates[i]);
         
-        // 遞歸探索：傳入 i+1 確保每個元素只使用一次
+        // Recursion探索：傳入 i+1 確保每個元素只使用一次
         backtrack(result, currentPath, candidates, remainingTarget - candidates[i], i + 1);
         
         // 撤銷選擇
@@ -350,7 +350,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
 ```
 
 **與 Combination Sum 的差異**：
-- 遞歸時傳入 `i+1` 而非 `i`，每個元素只能使用一次
+- Recursion時傳入 `i+1` 而非 `i`，每個元素只能使用一次
 - 增加去重邏輯處理陣列中的重複元素
 
 
@@ -361,7 +361,7 @@ private void backtrack(List<List<Integer>> result, List<Integer> currentPath,
 **解題思路**：
 - 透過回溯法嘗試所有可能的分割點
 - 對於每個分割點，檢查子字串是否為回文
-- 只有當子字串是回文時，才繼續遞歸分割
+- 只有當子字串是回文時，才繼續Recursion分割
 
 ```java
 public List<List<String>> partition(String s) {
@@ -385,7 +385,7 @@ private void backtrack(List<List<String>> result, List<String> currentPath,
             // 做選擇：將回文子字串加入路徑
             currentPath.add(s.substring(startIndex, endIndex + 1));
             
-            // 遞歸探索：繼續分割剩餘部分
+            // Recursion探索：繼續分割剩餘部分
             backtrack(result, currentPath, s, endIndex + 1);
             
             // 撤銷選擇
@@ -444,12 +444,12 @@ private boolean[][] precomputePalindromes(String s) {
 ### 1. 剪枝優化
 - **提早終止**：當發現當前路徑不可能產生有效解時，立即返回
 - **排序優化**：對輸入進行排序，便於跳過重複元素和進行範圍剪枝
-- **邊界檢查**：在遞歸前檢查邊界條件，避免無效遞歸
+- **邊界檢查**：在Recursion前檢查邊界條件，避免無效Recursion
 
 ### 2. 去重技巧
 回溯問題中的去重通常有兩種情況：
 1. **樹枝去重**：避免在同一條路徑上重複使用同一個元素
-2. **樹層去重**：避免在同一層遞歸中產生重複的選擇
+2. **樹層去重**：避免在同一層Recursion中產生重複的選擇
 
 ```java
 // 樹層去重（適用於有重複元素的組合問題）
@@ -468,7 +468,7 @@ if (i > 0 && nums[i] == nums[i-1] && !used[i-1]) continue;
 
 1. **忘記撤銷選擇**：這是回溯演算法最常見的錯誤
 2. **重複解處理不當**：沒有正確實現去重邏輯
-3. **邊界條件錯誤**：遞歸終止條件設置不正確
+3. **邊界條件錯誤**：Recursion終止條件設置不正確
 4. **索引使用錯誤**：在組合和排列問題中混淆 `i` 和 `i+1` 的使用
 
 ## 總結
