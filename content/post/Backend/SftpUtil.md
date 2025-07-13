@@ -1,10 +1,10 @@
 ---
-title: "SftpUtil"
+title: "Spring Boot SFTP 工具類：安全文件傳輸協議實作與最佳實踐"
 author: Bill.Lin
 date: 2021-01-05T19:18:59+08:00
 draft: false
-tags: []
-Description: "Spring boot with sftp tool"
+tags: ["SFTP", "Spring Boot", "File Transfer", "JSch", "Security", "Java"]
+Description: "深入介紹在 Spring Boot 中實作 SFTP 文件傳輸工具類，包含連線管理、檔案操作與安全性配置"
 Categories: ["Backend"]
 DisableComments: false
 ---

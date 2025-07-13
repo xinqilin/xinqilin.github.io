@@ -1,10 +1,10 @@
 ---
-title: "RestTemplate"
+title: "Spring RestTemplate 完整使用指南：HTTP 客戶端操作與配置實戰"
 author: Bill.Lin
 date: 2021-06-30T19:39:44+08:00
 draft: false
-tags: []
-Description: ""
+tags: ["Spring", "RestTemplate", "HTTP Client", "Java", "Web Service", "REST API"]
+Description: "詳細介紹 Spring RestTemplate 的使用方法，包含配置、GET/POST 請求、exchange 方法與實際應用範例"
 Categories: ["Backend"]
 DisableComments: false
 ---

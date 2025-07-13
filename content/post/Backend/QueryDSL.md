@@ -1,10 +1,10 @@
 ---
-title: "QueryDSL"
+title: "QueryDSL 動態查詢框架：類型安全的 SQL 查詢建構器"
 author: Bill.Lin
 date: 2021-08-08T13:07:45+08:00
 draft: false
-tags: []
-Description: ""
+tags: ["QueryDSL", "JPA", "Spring Data", "Database", "Query Builder", "Type Safety"]
+Description: "深入介紹 QueryDSL 動態查詢框架的使用方法，包含配置、查詢建構與與 Spring Data JPA 的整合實戰"
 Categories: ["Backend"]
 DisableComments: false
 ---

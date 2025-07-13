@@ -1,10 +1,10 @@
 ---
-title: "SideProjectConfig"
+title: "Side Project 專案配置最佳實踐：開發環境設定與部署流程"
 author: Bill.Lin
 date: 2020-01-01T20:31:25+08:00
 draft: false
-tags: []
-Description: ""
+tags: ["Project Setup", "Configuration", "Development", "Best Practices", "Spring Boot"]
+Description: "分享 Side Project 開發的完整配置指南，包含開發環境設定、專案結構規劃與部署最佳實踐"
 Categories: ["Backend"]
 DisableComments: false
 ---

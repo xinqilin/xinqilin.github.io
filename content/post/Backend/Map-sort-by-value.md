@@ -1,10 +1,10 @@
 ---
-title: "Map Sort by Value"
+title: "Java Map 按 Value 排序：多種實作方式與效能比較"
 author: Bill.Lin
 date: 2021-03-28T15:10:59+08:00
 draft: false
-tags: ["Java"]
-Description: ""
+tags: ["Java", "Map", "Sorting", "Collections", "Stream API", "Performance"]
+Description: "詳細介紹 Java Map 按 Value 值進行排序的多種實作方法，包含 Stream API、Collections.sort 與效能分析"
 Categories: ["Backend"]
 DisableComments: false
 ---

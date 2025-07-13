@@ -1,10 +1,10 @@
 ---
-title: "JpaPageable"
+title: "Spring Data JPA Pageable 分頁查詢：完整實作與效能優化指南"
 author: Bill.Lin
 date: 2020-01-07T13:26:41+08:00
 draft: false
-tags: []
-Description: ""
+tags: ["Spring Data JPA", "Pageable", "Pagination", "Spring Boot", "Database", "Performance"]
+Description: "詳細介紹 Spring Data JPA 中 Pageable 分頁查詢的使用方法，包含自訂查詢、排序與效能優化技巧"
 Categories: ["Backend"]
 DisableComments: false
 ---

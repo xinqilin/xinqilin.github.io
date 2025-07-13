@@ -1,10 +1,10 @@
 ---
-title: "JWT"
+title: "JWT 認證機制完整實作：Spring Security 整合與最佳實踐"
 author: Bill.Lin
 date: 2021-07-01T23:39:52+08:00
 draft: false
-tags: []
-Description: ""
+tags: ["JWT", "Spring Security", "Authentication", "Java", "Spring Boot", "Security"]
+Description: "深入解析 JWT 認證機制在 Spring Boot 中的完整實作，包含 Token 生成、驗證、Filter 配置與安全性最佳實踐"
 Categories: ["Backend"]
 DisableComments: false
 ---

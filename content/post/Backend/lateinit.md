@@ -1,10 +1,10 @@
 ---
-title: "Lateinit"
+title: "Kotlin lateinit 關鍵字詳解：延遲初始化與使用最佳實踐"
 author: Bill.Lin
 date: 2021-08-05T21:07:54+08:00
 draft: false
-tags: []
-Description: ""
+tags: ["Kotlin", "lateinit", "Property", "Initialization", "Android"]
+Description: "深入探討 Kotlin lateinit 關鍵字的使用方式、適用場景與注意事項，包含與 lazy 的比較和最佳實踐"
 Categories: ["Backend"]
 DisableComments: false
 ---

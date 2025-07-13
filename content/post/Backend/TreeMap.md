@@ -1,10 +1,10 @@
 ---
-title: "TreeMap Method"
+title: "Java TreeMap 完整方法指南：NavigableMap 介面與紅黑樹實作"
 author: Bill.Lin
 date: 2021-10-31T19:16:31+08:00
 draft: false
-tags: ["Java", "Map", "TreeMap"]
-Description: "Map -> SortedMap -> NavigableMap -> TreeMap"
+tags: ["Java", "TreeMap", "NavigableMap", "Red-Black Tree", "Data Structure", "Sorting"]
+Description: "詳細介紹 Java TreeMap 的方法使用與內部實作，包含 NavigableMap 介面、排序機制與效能分析"
 Categories: ["Backend"]
 DisableComments: false
 ---
