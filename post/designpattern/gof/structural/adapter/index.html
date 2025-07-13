@@ -1,472 +1,169 @@
-<!DOCTYPE html>
-<html
-  dir="ltr"
-  lang="zh-tw"
-  data-theme="dark"
-><head>
-  <title>
-    
-      Bill.Lin の 成長之路 ©
-        |
-        DesignPattern - Structural - Adapter
-
-
-      
-
-
-    
-  </title>
-
-  
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta
-    name="description"
-    content="
-      後端工程師 Java, Kotlin 
-
-我的線上筆記
-
-Pleased to meet you!
-
-Where time is spend, there is success.
-
-
-
-    "
-  />
-  
-  
-  
-  <link
-    rel="stylesheet"
-    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
-    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  
-  <link
-    rel="stylesheet"
-    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
-    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-    crossorigin="anonymous"
-  />
-  
-  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
-
-  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/gof/structural/adapter/" />
-
-  
-  
-  
-  
-  <script
-    type="text/javascript"
-    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
-    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
-    crossorigin="anonymous"
-  ></script>
-
-  
-    
-    
-    <script
-      type="text/javascript"
-      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
-      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
-      crossorigin="anonymous"
-    ></script>
-
-  
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="DesignPattern - Structural - Adapter"/>
-<meta name="twitter:description" content="Adapter 將一個類別的介面 轉換成另一個類別的介面供客戶使用 讓介面不相容的類別可以合作
-有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。 顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。"/>
-
-
-
-  
-
-
-  
-  
-  
-  
-  <script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "BlogPosting",
-        "articleSection": "post",
-        "name": "DesignPattern - Structural - Adapter",
-        "headline": "DesignPattern - Structural - Adapter",
-        "alternativeHeadline": "",
-        "description": "
-      
-        Adapter 將一個類別的介面 轉換成另一個類別的介面供客戶使用 讓介面不相容的類別可以合作\n有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。 顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。
-
-
-      
-
-
-    ",
-        "inLanguage": "zh-tw",
-        "isFamilyFriendly": "true",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/structural\/adapter\/"
-        },
-        "author" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "creator" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "accountablePerson" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "copyrightHolder" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "copyrightYear" : "2018",
-        "dateCreated": "2018-08-07T12:12:36.00Z",
-        "datePublished": "2018-08-07T12:12:36.00Z",
-        "dateModified": "2018-08-07T12:12:36.00Z",
-        "publisher":{
-            "@type":"Organization",
-            "name": "Bill.Lin",
-            "url": "https://xinqilin.github.io/",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
-                "width":"32",
-                "height":"32"
-            }
-        },
-        "image": 
-      [
-      ]
-
-    ,
-        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/structural\/adapter\/",
-        "wordCount" : "256",
-        "genre" : [ 
-      
-      "DesignPattern"
-
-    ],
-        "keywords" : [ ]
-    }
-  </script>
-
-
-
-</head>
-<body>
-    <header><div
-  class="page-top 
-    animated fadeInDown
-
-  "
->
-  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
-    <span aria-hidden="true"></span>
-    <span aria-hidden="true"></span>
-    <span aria-hidden="true"></span>
-  </a>
-  <nav>
-    <ul class="nav__list" id="navMenu">
-      <div class="nav__links">
-        
-        
-          
-          <li>
-            <a
-              
-              href="/about/"
-              
-              title=""
-              >About</a
-            >
-          </li>
-
-        
-          
-          <li>
-            <a
-              
-              href="/"
-              
-              title=""
-              >Home</a
-            >
-          </li>
-
-        
-          
-          <li>
-            <a
-              
-              href="/post/"
-              
-              title=""
-              >Posts</a
-            >
-          </li>
-
-        
-      </div>
-      <ul>
-        
-        
-          <li>
-            <a class="theme-switch" title="Switch Theme">
-              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
-            </a>
-          </li>
-
-        
-      </ul>
-    </ul>
-  </nav>
-</div>
-</header>
-    <div class="wrapper">
-      <aside><div
-  class="sidebar
-    animated fadeInDown
-
-  "
->
-  <div class="sidebar__content">
-    <div class="logo-title">
-      <div class="title">
-        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
-        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
-        <div class="description">
-          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
-        </div>
-      </div>
-    </div>
-    <ul class="social-links">
-      
-    </ul>
-  </div><footer class="footer footer--sidebar">
-  <div class="by_farbox">
-    <ul class="footer__list">
-      <li class="footer__item">
-        &copy;
-        
-          Bill.Lin の 成長之路 ©
-          2023
-
-
-        
-      </li>
-      
-    </ul>
-  </div>
-</footer>
-  
-  <script
-    type="text/javascript"
-    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
-    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
-    crossorigin="anonymous"
-  ></script></div>
-</aside>
-      <main>
-        <div class="autopagerize_page_element">
-          <div class="content">
-  <div
-    class="post 
-      animated fadeInDown
-
-    "
-  >
-    <div class="post-content">
-      
-      <div class="post-title">
-        <h1>DesignPattern - Structural - Adapter</h1>
-        
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Tue, Aug 7, 2018
-
-
-              </span
-            >
-            <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 2 分鐘</span>
-          </div>
-
-        
-      </div><h1 id="adapter">Adapter</h1>
-<blockquote>
-<p>將一個類別的介面 轉換成另一個類別的介面供客戶使用 讓介面不相容的類別可以合作</p>
-</blockquote>
-<p>有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。
-顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。</p>
-<p>正如適配器一詞所暗示的那樣，適配器設計模式 是 使兩個不相關的接口協同工作的結構設計模式之一。此外，連接這些不相關接口的對象稱為適配器，就像中介一樣。</p>
-<p>在適配器模式中，一個包裝類（adapter）用於將請求從它轉換到另一個類（adoptee）。實際上，適配器提供了與被收養者不直接提供的特定交互。</p>
-<p>適配器模式可以採用兩種形式：繼承或組合形式。在第一種形式中，“類適配器”利用繼承。類適配器擴展了被收養類並將所需的方法添加到適配器中。
-這些方法可以在接口（即“目標”接口）中聲明。但是，在第二種形式中；&ldquo;對象 adapter&rdquo; 利用組合。對象 adapter 包含被收養者並實現目標接口以與被收養者交互。</p>
-<ul>
-<li>Client: 你使用Target介面</li>
-<li>Target: 定義 User 所呼叫的 interface</li>
-<li>Adaptor(core): 將 Adaptee 轉換成要用的介面</li>
-<li>Adaptee: 需要被轉換的介面</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Apple</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getAppleColor</span><span style="color:#f92672">(</span>String color<span style="color:#f92672">){</span>
-</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Apple color is : &#34;</span> <span style="color:#f92672">+</span>color<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Orange</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getOrangeColor</span><span style="color:#f92672">(</span>String color<span style="color:#f92672">){</span>
-</span></span><span style="display:flex;"><span>         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Orange color is : &#34;</span> <span style="color:#f92672">+</span>color<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppleAdapter</span> <span style="color:#66d9ef">extends</span> Apple <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">//The purpose of the sample problem is to adapt an orange as an apple.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">private</span> Orange orange<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// This is the main logic of Adapter pattern
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">AppleAdapter</span><span style="color:#f92672">(</span>Orange orange<span style="color:#f92672">){</span>
-</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">orange</span> <span style="color:#f92672">=</span> orange<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getColor</span><span style="color:#f92672">(</span>String color<span style="color:#f92672">){</span>
-</span></span><span style="display:flex;"><span>         orange<span style="color:#f92672">.</span><span style="color:#a6e22e">getOrangeColor</span><span style="color:#f92672">(</span>color<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AdapterPatternTest</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            Apple apple <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Apple<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>            apple<span style="color:#f92672">.</span><span style="color:#a6e22e">getAppleColor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;green&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            Orange orange <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Orange<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>            AppleAdapter adapter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AppleAdapter<span style="color:#f92672">(</span>orange<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            adapter<span style="color:#f92672">.</span><span style="color:#a6e22e">getAppleColor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;red&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span></code></pre></div><ul>
-<li>有一個現有的類，它的接口與需要的不匹配。</li>
-<li>想要創建一個可重用的類，它與不相關或不可預見的類（即不一定具有兼容接口的類）協作。</li>
-<li>有幾個現有的子類可供使用，但通過對每個子類進行子類化來調整它們的接口是不切實際的。對象適配器可以適配其父類的接口。</li>
-</ul>
-<h3 id="more-sample">more sample</h3>
-<p>Adapter 模式將 Adaptee 類別的 specificRequest() 方法包裝成 Target 接口的 request() 方法。<br>
-Client 類別可以通過呼叫 Target 接口的 request() 方法來發送請求，而不用知道底層使用的是 Adaptee 類別的 specificRequest() 方法。<br>
-通過使用 Adapter 模式，我們可以讓不兼容的類別一起工作，這對於在現有系統中加入新功能非常有用。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Target interface
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Target</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">request</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Adaptee class
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adaptee</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">specificRequest</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#75715e">// Perform some specific request
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Adapter class
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adapter</span> <span style="color:#66d9ef">implements</span> Target <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">private</span> Adaptee adaptee<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Adapter</span><span style="color:#f92672">(</span>Adaptee adaptee<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">adaptee</span> <span style="color:#f92672">=</span> adaptee<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">request</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>       adaptee<span style="color:#f92672">.</span><span style="color:#a6e22e">specificRequest</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Client
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">makeRequest</span><span style="color:#f92672">(</span>Target target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>       target<span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Usage
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   Adaptee adaptee <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Adaptee<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>   Target target <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Adapter<span style="color:#f92672">(</span>adaptee<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   Client client <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Client<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>   client<span style="color:#f92672">.</span><span style="color:#a6e22e">makeRequest</span><span style="color:#f92672">(</span>target<span style="color:#f92672">);</span>
-</span></span></code></pre></div></div>
-    <div class="post-footer">
-      <div class="info">
-        
-          <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
-
-
-
-
-        
-
-        
-      </div>
-    </div>
-
-    
-  </div>
-
-
-          </div>
-        </div>
-      </main>
-    </div><footer class="footer footer--base">
-  <div class="by_farbox">
-    <ul class="footer__list">
-      <li class="footer__item">
-        &copy;
-        
-          Bill.Lin の 成長之路 ©
-          2023
-
-
-        
-      </li>
-      
-    </ul>
-  </div>
-</footer>
-  
-  <script
-    type="text/javascript"
-    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
-    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
-    crossorigin="anonymous"
-  ></script></body>
-</html>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Structural - Adapter - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicon.ico><meta property="og:title" content="DesignPattern - Structural - Adapter"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/designpattern/gof/structural/adapter/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Structural - Adapter</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/designpattern class=category-link>DesignPattern</a></div></div></header><div class=post-content><h1 id=adapter>Adapter</h1><blockquote><p>將一個類別的介面 轉換成另一個類別的介面供客戶使用 讓介面不相容的類別可以合作</p></blockquote><p>有時，可能會出現兩個對像不適合在一起的情況，或者在代碼中更改第 3 方 API 時，可能會出現這種情況。
+顯然，這是由於兩個不適合在一起的對象的接口不兼容造成的。</p><p>正如適配器一詞所暗示的那樣，適配器設計模式 是 使兩個不相關的接口協同工作的結構設計模式之一。此外，連接這些不相關接口的對象稱為適配器，就像中介一樣。</p><p>在適配器模式中，一個包裝類（adapter）用於將請求從它轉換到另一個類（adoptee）。實際上，適配器提供了與被收養者不直接提供的特定交互。</p><p>適配器模式可以採用兩種形式：繼承或組合形式。在第一種形式中，“類適配器”利用繼承。類適配器擴展了被收養類並將所需的方法添加到適配器中。
+這些方法可以在接口（即“目標”接口）中聲明。但是，在第二種形式中；&ldquo;對象 adapter&rdquo; 利用組合。對象 adapter 包含被收養者並實現目標接口以與被收養者交互。</p><ul><li>Client: 你使用Target介面</li><li>Target: 定義 User 所呼叫的 interface</li><li>Adaptor(core): 將 Adaptee 轉換成要用的介面</li><li>Adaptee: 需要被轉換的介面</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Apple</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>getAppleColor</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>color</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Apple color is : &#34;</span><span class=w> </span><span class=o>+</span><span class=n>color</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Orange</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>getOrangeColor</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>color</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Orange color is : &#34;</span><span class=w> </span><span class=o>+</span><span class=n>color</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AppleAdapter</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Apple</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c1>//The purpose of the sample problem is to adapt an orange as an apple.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>private</span><span class=w> </span><span class=n>Orange</span><span class=w> </span><span class=n>orange</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c1>// This is the main logic of Adapter pattern</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=nf>AppleAdapter</span><span class=p>(</span><span class=n>Orange</span><span class=w> </span><span class=n>orange</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>this</span><span class=p>.</span><span class=na>orange</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orange</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>getColor</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>color</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>orange</span><span class=p>.</span><span class=na>getOrangeColor</span><span class=p>(</span><span class=n>color</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AdapterPatternTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Apple</span><span class=w> </span><span class=n>apple</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Apple</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>apple</span><span class=p>.</span><span class=na>getAppleColor</span><span class=p>(</span><span class=s>&#34;green&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Orange</span><span class=w> </span><span class=n>orange</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Orange</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>AppleAdapter</span><span class=w> </span><span class=n>adapter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AppleAdapter</span><span class=p>(</span><span class=n>orange</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>adapter</span><span class=p>.</span><span class=na>getAppleColor</span><span class=p>(</span><span class=s>&#34;red&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>有一個現有的類，它的接口與需要的不匹配。</li><li>想要創建一個可重用的類，它與不相關或不可預見的類（即不一定具有兼容接口的類）協作。</li><li>有幾個現有的子類可供使用，但通過對每個子類進行子類化來調整它們的接口是不切實際的。對象適配器可以適配其父類的接口。</li></ul><h3 id=more-sample>more sample</h3><p>Adapter 模式將 Adaptee 類別的 specificRequest() 方法包裝成 Target 接口的 request() 方法。<br>Client 類別可以通過呼叫 Target 接口的 request() 方法來發送請求，而不用知道底層使用的是 Adaptee 類別的 specificRequest() 方法。<br>通過使用 Adapter 模式，我們可以讓不兼容的類別一起工作，這對於在現有系統中加入新功能非常有用。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=c1>// Target interface</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>Target</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kt>void</span><span class=w> </span><span class=nf>request</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=c1>// Adaptee class</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Adaptee</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>specificRequest</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=c1>// Perform some specific request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=c1>// Adapter class</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Adapter</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>Target</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>private</span><span class=w> </span><span class=n>Adaptee</span><span class=w> </span><span class=n>adaptee</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=nf>Adapter</span><span class=p>(</span><span class=n>Adaptee</span><span class=w> </span><span class=n>adaptee</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>this</span><span class=p>.</span><span class=na>adaptee</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>adaptee</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>request</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>adaptee</span><span class=p>.</span><span class=na>specificRequest</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=c1>// Client</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Client</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>makeRequest</span><span class=p>(</span><span class=n>Target</span><span class=w> </span><span class=n>target</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>target</span><span class=p>.</span><span class=na>request</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=c1>// Usage</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=n>Adaptee</span><span class=w> </span><span class=n>adaptee</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Adaptee</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=n>Target</span><span class=w> </span><span class=n>target</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Adapter</span><span class=p>(</span><span class=n>adaptee</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=n>Client</span><span class=w> </span><span class=n>client</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Client</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=n>client</span><span class=p>.</span><span class=na>makeRequest</span><span class=p>(</span><span class=n>target</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/gof/basic/prototype/ class=post-nav-link>DesignPattern - Basic - Prototype</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/gof/structural/composite/ class=post-nav-link>DesignPattern - Structural - Composite</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

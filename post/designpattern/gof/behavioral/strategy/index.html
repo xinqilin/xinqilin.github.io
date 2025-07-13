@@ -1,432 +1,119 @@
-<!DOCTYPE html>
-<html
-  dir="ltr"
-  lang="zh-tw"
-  data-theme="dark"
-><head>
-  <title>
-    
-      Bill.Lin の 成長之路 ©
-        |
-        DesignPattern - Behavioral - Strategy
-
-
-      
-
-
-    
-  </title>
-
-  
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta
-    name="description"
-    content="
-      後端工程師 Java, Kotlin 
-
-我的線上筆記
-
-Pleased to meet you!
-
-Where time is spend, there is success.
-
-
-
-    "
-  />
-  
-  
-  
-  <link
-    rel="stylesheet"
-    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
-    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  
-  <link
-    rel="stylesheet"
-    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
-    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-    crossorigin="anonymous"
-  />
-  
-  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
-
-  <link rel="canonical" href="https://xinqilin.github.io/post/designpattern/gof/behavioral/strategy/" />
-
-  
-  
-  
-  
-  <script
-    type="text/javascript"
-    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
-    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
-    crossorigin="anonymous"
-  ></script>
-
-  
-    
-    
-    <script
-      type="text/javascript"
-      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
-      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
-      crossorigin="anonymous"
-    ></script>
-
-  
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="DesignPattern - Behavioral - Strategy"/>
-<meta name="twitter:description" content="Strategy 當存在一組相關算法並且客戶端對象需要能夠從該組中動態挑選適合其當前需求的算法時，策略設計模式很有用。策略模式建議將每個算法的實現保留在一個單獨的類中。封裝在單獨類中的每個此類算法稱為策略。使用 Strategy 對象的對象通常稱為上下文對象。
-當我們為特定任務有多種算法並且客戶端決定在運行時使用的實際實現時，我們使用策略模式。策略模式也稱為策略模式。我們定義了多種算法，並讓客戶端應用程序傳遞算法以用作參數。例如，此模式的最佳示例之一是 Collections.sort () 方法，該方法採用 Comparator 參數。基於 Comparator 接口的不同實現，對像以不同的方式排序。"/>
-
-
-
-  
-
-
-  
-  
-  
-  
-  <script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "BlogPosting",
-        "articleSection": "post",
-        "name": "DesignPattern - Behavioral - Strategy",
-        "headline": "DesignPattern - Behavioral - Strategy",
-        "alternativeHeadline": "",
-        "description": "
-      
-        Strategy 當存在一組相關算法並且客戶端對象需要能夠從該組中動態挑選適合其當前需求的算法時，策略設計模式很有用。策略模式建議將每個算法的實現保留在一個單獨的類中。封裝在單獨類中的每個此類算法稱為策略。使用 Strategy 對象的對象通常稱為上下文對象。\n當我們為特定任務有多種算法並且客戶端決定在運行時使用的實際實現時，我們使用策略模式。策略模式也稱為策略模式。我們定義了多種算法，並讓客戶端應用程序傳遞算法以用作參數。例如，此模式的最佳示例之一是 Collections.sort () 方法，該方法採用 Comparator 參數。基於 Comparator 接口的不同實現，對像以不同的方式排序。
-
-
-      
-
-
-    ",
-        "inLanguage": "zh-tw",
-        "isFamilyFriendly": "true",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/strategy\/"
-        },
-        "author" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "creator" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "accountablePerson" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "copyrightHolder" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "copyrightYear" : "2018",
-        "dateCreated": "2018-08-07T22:37:39.00Z",
-        "datePublished": "2018-08-07T22:37:39.00Z",
-        "dateModified": "2018-08-07T22:37:39.00Z",
-        "publisher":{
-            "@type":"Organization",
-            "name": "Bill.Lin",
-            "url": "https://xinqilin.github.io/",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
-                "width":"32",
-                "height":"32"
-            }
-        },
-        "image": 
-      [
-      ]
-
-    ,
-        "url" : "https:\/\/xinqilin.github.io\/post\/designpattern\/gof\/behavioral\/strategy\/",
-        "wordCount" : "136",
-        "genre" : [ 
-      
-      "DesignPattern"
-
-    ],
-        "keywords" : [ ]
-    }
-  </script>
-
-
-
-</head>
-<body>
-    <header><div
-  class="page-top 
-    animated fadeInDown
-
-  "
->
-  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
-    <span aria-hidden="true"></span>
-    <span aria-hidden="true"></span>
-    <span aria-hidden="true"></span>
-  </a>
-  <nav>
-    <ul class="nav__list" id="navMenu">
-      <div class="nav__links">
-        
-        
-          
-          <li>
-            <a
-              
-              href="/about/"
-              
-              title=""
-              >About</a
-            >
-          </li>
-
-        
-          
-          <li>
-            <a
-              
-              href="/"
-              
-              title=""
-              >Home</a
-            >
-          </li>
-
-        
-          
-          <li>
-            <a
-              
-              href="/post/"
-              
-              title=""
-              >Posts</a
-            >
-          </li>
-
-        
-      </div>
-      <ul>
-        
-        
-          <li>
-            <a class="theme-switch" title="Switch Theme">
-              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
-            </a>
-          </li>
-
-        
-      </ul>
-    </ul>
-  </nav>
-</div>
-</header>
-    <div class="wrapper">
-      <aside><div
-  class="sidebar
-    animated fadeInDown
-
-  "
->
-  <div class="sidebar__content">
-    <div class="logo-title">
-      <div class="title">
-        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
-        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
-        <div class="description">
-          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
-        </div>
-      </div>
-    </div>
-    <ul class="social-links">
-      
-    </ul>
-  </div><footer class="footer footer--sidebar">
-  <div class="by_farbox">
-    <ul class="footer__list">
-      <li class="footer__item">
-        &copy;
-        
-          Bill.Lin の 成長之路 ©
-          2023
-
-
-        
-      </li>
-      
-    </ul>
-  </div>
-</footer>
-  
-  <script
-    type="text/javascript"
-    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
-    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
-    crossorigin="anonymous"
-  ></script></div>
-</aside>
-      <main>
-        <div class="autopagerize_page_element">
-          <div class="content">
-  <div
-    class="post 
-      animated fadeInDown
-
-    "
-  >
-    <div class="post-content">
-      
-      <div class="post-title">
-        <h1>DesignPattern - Behavioral - Strategy</h1>
-        
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Tue, Aug 7, 2018
-
-
-              </span
-            >
-            <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 1 分鐘</span>
-          </div>
-
-        
-      </div><h1 id="strategy">Strategy</h1>
-<p>當存在一組相關算法並且客戶端對象需要能夠從該組中動態挑選適合其當前需求的算法時，策略設計模式很有用。策略模式建議將每個算法的實現保留在一個單獨的類中。封裝在單獨類中的每個此類算法稱為策略。使用 Strategy 對象的對象通常稱為上下文對象。</p>
-<p>當我們為特定任務有多種算法並且客戶端決定在運行時使用的實際實現時，我們使用策略模式。策略模式也稱為策略模式。我們定義了多種算法，並讓客戶端應用程序傳遞算法以用作參數。例如，此模式的最佳示例之一是 Collections.sort () 方法，該方法採用 Comparator 參數。基於 Comparator 接口的不同實現，對像以不同的方式排序。</p>
-<p>策略模式是我們可以使用組合作為子分類的替代方法的一種方式。策略模式不是通過子類覆蓋父類中的方法來提供不同的行為，而是允許將不同的行為放置在共享公共策略接口的具體策略類中。Context 對象包含對 Strategy 的引用。通過改變上下文的策略，我們可以獲得不同的行為。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CreditCardStrategy</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pay</span><span style="color:#f92672">(</span>BigDecimal money<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CTBC</span> <span style="color:#66d9ef">implements</span> CreditCardStrategy <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pay</span><span style="color:#f92672">(</span>BigDecimal money<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CTBC pay&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MEGA</span> <span style="color:#66d9ef">implements</span> CreditCardStrategy <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pay</span><span style="color:#f92672">(</span>BigDecimal money<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MEGA pay&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NCCC</span> <span style="color:#66d9ef">implements</span> CreditCardStrategy <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pay</span><span style="color:#f92672">(</span>BigDecimal money<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;NCCC pay&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// base
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Context</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">private</span> CreditCardStrategy strategy<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Context</span><span style="color:#f92672">(</span>CreditCardStrategy strategy<span style="color:#f92672">){</span>
-</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">strategy</span> <span style="color:#f92672">=</span> strategy<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>BigDecimal money<span style="color:#f92672">){</span>
-</span></span><span style="display:flex;"><span>         strategy<span style="color:#f92672">.</span><span style="color:#a6e22e">pay</span><span style="color:#f92672">(</span>money<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        var money <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BigDecimal<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;100&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>         <span style="color:#75715e">// DI 注入 （constructor or setter）
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Context ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Context<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> CTBC<span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>        ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">pay</span><span style="color:#f92672">(</span>money<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// change strategy
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Context<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MEGA<span style="color:#f92672">());</span> 
-</span></span><span style="display:flex;"><span>        ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">apu</span><span style="color:#f92672">(</span>money<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span></code></pre></div><ul>
-<li>為策略提供了一種使用多種行為之一配置類的方法。</li>
-<li>算法使用客戶不應該知道的數據。使用策略模式來避免暴露複雜的、特定於算法的數據結構。 （封裝時做的細節）</li>
-<li>一個類定義了許多行為，這些行為在其操作中表現為多個條件語句。將相關的條件分支移到它們自己的 Strategy 類中，而不是許多條件。</li>
-</ul>
-</div>
-    <div class="post-footer">
-      <div class="info">
-        
-          <span class="separator"><a class="category" href="/categories/designpattern/">DesignPattern</a></span>
-
-
-
-
-        
-
-        
-      </div>
-    </div>
-
-    
-  </div>
-
-
-          </div>
-        </div>
-      </main>
-    </div><footer class="footer footer--base">
-  <div class="by_farbox">
-    <ul class="footer__list">
-      <li class="footer__item">
-        &copy;
-        
-          Bill.Lin の 成長之路 ©
-          2023
-
-
-        
-      </li>
-      
-    </ul>
-  </div>
-</footer>
-  
-  <script
-    type="text/javascript"
-    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
-    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
-    crossorigin="anonymous"
-  ></script></body>
-</html>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Behavioral - Strategy - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicon.ico><meta property="og:title" content="DesignPattern - Behavioral - Strategy"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/designpattern/gof/behavioral/strategy/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Behavioral - Strategy</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/designpattern class=category-link>DesignPattern</a></div></div></header><div class=post-content><h1 id=strategy>Strategy</h1><p>當存在一組相關算法並且客戶端對象需要能夠從該組中動態挑選適合其當前需求的算法時，策略設計模式很有用。策略模式建議將每個算法的實現保留在一個單獨的類中。封裝在單獨類中的每個此類算法稱為策略。使用 Strategy 對象的對象通常稱為上下文對象。</p><p>當我們為特定任務有多種算法並且客戶端決定在運行時使用的實際實現時，我們使用策略模式。策略模式也稱為策略模式。我們定義了多種算法，並讓客戶端應用程序傳遞算法以用作參數。例如，此模式的最佳示例之一是 Collections.sort () 方法，該方法採用 Comparator 參數。基於 Comparator 接口的不同實現，對像以不同的方式排序。</p><p>策略模式是我們可以使用組合作為子分類的替代方法的一種方式。策略模式不是通過子類覆蓋父類中的方法來提供不同的行為，而是允許將不同的行為放置在共享公共策略接口的具體策略類中。Context 對象包含對 Strategy 的引用。通過改變上下文的策略，我們可以獲得不同的行為。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>CreditCardStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>pay</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>money</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CTBC</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>CreditCardStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>pay</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>money</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;CTBC pay&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>MEGA</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>CreditCardStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>pay</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>money</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;MEGA pay&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>NCCC</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>CreditCardStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>pay</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>money</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;NCCC pay&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// base</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Context</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>private</span><span class=w> </span><span class=n>CreditCardStrategy</span><span class=w> </span><span class=n>strategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=nf>Context</span><span class=p>(</span><span class=n>CreditCardStrategy</span><span class=w> </span><span class=n>strategy</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>this</span><span class=p>.</span><span class=na>strategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>strategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>apply</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>money</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>strategy</span><span class=p>.</span><span class=na>pay</span><span class=p>(</span><span class=n>money</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>var</span><span class=w> </span><span class=n>money</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>BigDecimal</span><span class=p>(</span><span class=s>&#34;100&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=c1>// DI 注入 （constructor or setter）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Context</span><span class=w> </span><span class=n>ctx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Context</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>CTBC</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ctx</span><span class=p>.</span><span class=na>pay</span><span class=p>(</span><span class=n>money</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// change strategy</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ctx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Context</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>MEGA</span><span class=p>());</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ctx</span><span class=p>.</span><span class=na>apu</span><span class=p>(</span><span class=n>money</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>為策略提供了一種使用多種行為之一配置類的方法。</li><li>算法使用客戶不應該知道的數據。使用策略模式來避免暴露複雜的、特定於算法的數據結構。 （封裝時做的細節）</li><li>一個類定義了許多行為，這些行為在其操作中表現為多個條件語句。將相關的條件分支移到它們自己的 Strategy 類中，而不是許多條件。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/gof/behavioral/observer/ class=post-nav-link>DesignPattern - Behavioral - Observer</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/gof/behavioral/command/ class=post-nav-link>DesignPattern - Behavioral - Command</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Script on Bill.Lin&#39;s Notes</title>
+    <link>https://xinqilin.github.io/tags/script/</link>
+    <description>Recent content in Script on Bill.Lin&#39;s Notes</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 28 Jun 2020 12:36:19 +0800</lastBuildDate>
+    <atom:link href="https://xinqilin.github.io/tags/script/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Deploy Hugo</title>
+      <link>https://xinqilin.github.io/post/script/deploy-hugo/</link>
+      <pubDate>Sun, 28 Jun 2020 12:36:19 +0800</pubDate>
+      <guid>https://xinqilin.github.io/post/script/deploy-hugo/</guid>
+      <description>&lt;h1 id=&#34;deploy-hugo&#34;&gt;Deploy Hugo&lt;/h1&gt;&#xA;&lt;p&gt;&#xA;設定好 hugo 後，new post 後通常都要 build 一次，讓 public 資料夾重新渲染一次獲得新的 html&#xA;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;go&#34;&gt;hugo -t &amp;lt;你的theme&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;p&gt;&#xA;再來因為有設定 submodule 的關係，所以要分別對這兩個不同的 git repository 做 add-commit-push 的動作，有時會敲一敲感覺很煩躁，那不如簡化這個流程吧 !&#xA;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h1 id=&#34;flow&#34;&gt;Flow&lt;/h1&gt;&#xA;&lt;p&gt;先確定一次流程&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;build 出 public 檔&lt;/li&gt;&#xA;&lt;li&gt;add-commit-push  -&amp;gt; static website repository&lt;/li&gt;&#xA;&lt;li&gt;add-commit-push -&amp;gt; backup repository&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;br&gt;&#xA;&lt;h1 id=&#34;製作-script&#34;&gt;製作 Script&lt;/h1&gt;&#xA;&lt;p&gt;先 touch 一個 &lt;strong&gt;deploy.sh&lt;/strong&gt;&#xA;上述其實就三個步驟，把它的 command line 都填入 &lt;strong&gt;deploy.sh&lt;/strong&gt;&#xA;&lt;br&gt;&lt;/p&gt;&#xA;&lt;p&gt;接著我想要執行這個 &lt;strong&gt;deploy.sh&lt;/strong&gt; 這個時順便填寫 git commit 的 message&#xA;&lt;br&gt;&lt;/p&gt;&#xA;&lt;p&gt;先宣告一個變數吧 &amp;lt;&lt;strong&gt;commit_message&lt;/strong&gt;&amp;gt;  =&amp;gt;&#xA;&lt;code&gt;commit_message = &amp;quot;$1&amp;quot;&lt;/code&gt;&#xA;接著在需要用的變數的地方就可以直接使用 &lt;code&gt;commit_message&lt;/code&gt; 來操縱&#xA;&lt;br&gt;&#xA;&lt;br&gt;&lt;/p&gt;&#xA;&lt;p&gt;完成版:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

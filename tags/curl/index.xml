@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CURL on Bill.Lin&#39;s Notes</title>
+    <link>https://xinqilin.github.io/tags/curl/</link>
+    <description>Recent content in CURL on Bill.Lin&#39;s Notes</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Tue, 03 Aug 2021 10:23:31 +0800</lastBuildDate>
+    <atom:link href="https://xinqilin.github.io/tags/curl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Curl</title>
+      <link>https://xinqilin.github.io/post/script/curl/</link>
+      <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
+      <guid>https://xinqilin.github.io/post/script/curl/</guid>
+      <description>&lt;h3 id=&#34;參數&#34;&gt;參數&lt;/h3&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    -X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request&#xA;    -H/--header                           設定 request 裡所攜帶的 header&#xA;    -i/--include                          在 output 顯示 response 的 header&#xA;    -d/--data                             攜帶 HTTP POST Data &#xA;    -v/--verbose                          輸出更多的訊息方便 debug / 顯示接收及發送的訊息&#xA;    - trace-ascii [fileName] [URL]        顯示更多詳細訊息&#xA;    -u/--user                             攜帶使用者帳號、密碼&#xA;    -b/--cookie                           攜帶 cookie（可以是參數或是檔案位置）&#xA;    -o [fileName] [URL]                   下載若沒填 [fileName] 會直接用 source 原名&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;常用&#34;&gt;常用&lt;/h3&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    curl [URL]&#xA;    curl -X POST/PUT [URL] -H &amp;#34;Content-Type: application/json&amp;#34; -d &amp;#39;{&amp;#34;key&amp;#34; : &amp;#34;value&amp;#34; }&amp;#39;&#xA;    curl -u [URL] &amp;lt;Account&amp;gt;:&amp;lt;Password&amp;gt;&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;reference:&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;https://blog.techbridge.cc/2019/02/01/linux-curl-command-tutorial/&#34;&gt;Linux Curl Command 指令與基本操作入門教學&lt;/a&gt;&lt;br&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

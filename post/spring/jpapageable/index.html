@@ -1,519 +1,251 @@
-<!DOCTYPE html>
-<html
-  dir="ltr"
-  lang="zh-tw"
-  data-theme="dark"
-><head>
-  <title>
-    
-      Bill.Lin の 成長之路 ©
-        |
-        JpaPageable
-
-
-      
-
-
-    
-  </title>
-
-  
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.112.5"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta
-    name="description"
-    content="
-      後端工程師 Java, Kotlin 
-
-我的線上筆記
-
-Pleased to meet you!
-
-Where time is spend, there is success.
-
-
-
-    "
-  />
-  
-  
-  
-  <link
-    rel="stylesheet"
-    href="/css/main.min.19429d906e749dd0b3c8d06a0eeb9f5f41ba8f9ae261a3d51243600be0fc8533.css"
-    integrity="sha256-GUKdkG50ndCzyNBqDuufX0G6j5riYaPVEkNgC&#43;D8hTM="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  
-  <link
-    rel="stylesheet"
-    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
-    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-    crossorigin="anonymous"
-  />
-  
-  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
-
-  <link rel="canonical" href="https://xinqilin.github.io/post/spring/jpapageable/" />
-
-  
-  
-  
-  
-  <script
-    type="text/javascript"
-    src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
-    integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
-    crossorigin="anonymous"
-  ></script>
-
-  
-    
-    
-    <script
-      type="text/javascript"
-      src="/js/anatole-theme-switcher.min.ea8ebe268922ef9849261a1312cd65b640595e65251ce4c00534a176afd1ac0c.js"
-      integrity="sha256-6o6&#43;Joki75hJJhoTEs1ltkBZXmUlHOTABTShdq/RrAw="
-      crossorigin="anonymous"
-    ></script>
-
-  
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="JpaPageable"/>
-<meta name="twitter:description" content="Specification CriteriaQuery介面： 代表一個specific的頂層查詢物件，它包含著查詢的各個部分，比如：select 、from、where、group by、order by等注意：CriteriaQuery物件只對實體型別或嵌入式型別的Criteria查詢起作用。
-Root: 代表Criteria查詢的根物件，Criteria查詢的查詢根定義了實體型別，能為將來導航獲得想要的結果，它與SQL查詢中的FROM子句類似。 Root範例是型別化的，且定義了查詢的FROM子句中能夠出現的型別。root代表查詢的實體類,query可以從中得到root物件,告訴jpa查詢哪一個實體類,還可以新增查詢條件,還可以結合EntityManager物件 得到最終查詢的 TypedQuery物件。"/>
-
-
-
-  
-
-
-  
-  
-  
-  
-  <script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "BlogPosting",
-        "articleSection": "post",
-        "name": "JpaPageable",
-        "headline": "JpaPageable",
-        "alternativeHeadline": "",
-        "description": "
-      
-        Specification CriteriaQuery介面： 代表一個specific的頂層查詢物件，它包含著查詢的各個部分，比如：select 、from、where、group by、order by等注意：CriteriaQuery物件只對實體型別或嵌入式型別的Criteria查詢起作用。\nRoot: 代表Criteria查詢的根物件，Criteria查詢的查詢根定義了實體型別，能為將來導航獲得想要的結果，它與SQL查詢中的FROM子句類似。 Root範例是型別化的，且定義了查詢的FROM子句中能夠出現的型別。root代表查詢的實體類,query可以從中得到root物件,告訴jpa查詢哪一個實體類,還可以新增查詢條件,還可以結合EntityManager物件 得到最終查詢的 TypedQuery物件。
-
-
-      
-
-
-    ",
-        "inLanguage": "zh-tw",
-        "isFamilyFriendly": "true",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https:\/\/xinqilin.github.io\/post\/spring\/jpapageable\/"
-        },
-        "author" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "creator" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "accountablePerson" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "copyrightHolder" : {
-            "@type": "Person",
-            "name": "Bill.Lin"
-        },
-        "copyrightYear" : "2020",
-        "dateCreated": "2020-01-07T13:26:41.00Z",
-        "datePublished": "2020-01-07T13:26:41.00Z",
-        "dateModified": "2020-01-07T13:26:41.00Z",
-        "publisher":{
-            "@type":"Organization",
-            "name": "Bill.Lin",
-            "url": "https://xinqilin.github.io/",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https:\/\/xinqilin.github.io\/favicons\/favicon-32x32.png",
-                "width":"32",
-                "height":"32"
-            }
-        },
-        "image": 
-      [
-      ]
-
-    ,
-        "url" : "https:\/\/xinqilin.github.io\/post\/spring\/jpapageable\/",
-        "wordCount" : "393",
-        "genre" : [ 
-      
-      "Spring"
-
-    
-      
-        ,
-
-      
-      "JPA"
-
-    ],
-        "keywords" : [ ]
-    }
-  </script>
-
-
-
-</head>
-<body>
-    <header><div
-  class="page-top 
-    animated fadeInDown
-
-  "
->
-  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
-    <span aria-hidden="true"></span>
-    <span aria-hidden="true"></span>
-    <span aria-hidden="true"></span>
-  </a>
-  <nav>
-    <ul class="nav__list" id="navMenu">
-      <div class="nav__links">
-        
-        
-          
-          <li>
-            <a
-              
-              href="/about/"
-              
-              title=""
-              >About</a
-            >
-          </li>
-
-        
-          
-          <li>
-            <a
-              
-              href="/"
-              
-              title=""
-              >Home</a
-            >
-          </li>
-
-        
-          
-          <li>
-            <a
-              
-              href="/post/"
-              
-              title=""
-              >Posts</a
-            >
-          </li>
-
-        
-      </div>
-      <ul>
-        
-        
-          <li>
-            <a class="theme-switch" title="Switch Theme">
-              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
-            </a>
-          </li>
-
-        
-      </ul>
-    </ul>
-  </nav>
-</div>
-</header>
-    <div class="wrapper">
-      <aside><div
-  class="sidebar
-    animated fadeInDown
-
-  "
->
-  <div class="sidebar__content">
-    <div class="logo-title">
-      <div class="title">
-        <img src="/images/Bill-and-Josh.jpg" alt="profile picture" />
-        <h3 title=""><a href="/">Bill.Lin の 成長之路</a></h3>
-        <div class="description">
-          <p>後端工程師 Java, Kotlin <br /><br />我的線上筆記<br /><br />Pleased to meet you!<br /><br />Where time is spend, there is success.<br /></p>
-        </div>
-      </div>
-    </div>
-    <ul class="social-links">
-      
-    </ul>
-  </div><footer class="footer footer--sidebar">
-  <div class="by_farbox">
-    <ul class="footer__list">
-      <li class="footer__item">
-        &copy;
-        
-          Bill.Lin の 成長之路 ©
-          2023
-
-
-        
-      </li>
-      
-    </ul>
-  </div>
-</footer>
-  
-  <script
-    type="text/javascript"
-    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
-    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
-    crossorigin="anonymous"
-  ></script></div>
-</aside>
-      <main>
-        <div class="autopagerize_page_element">
-          <div class="content">
-  <div
-    class="post 
-      animated fadeInDown
-
-    "
-  >
-    <div class="post-content">
-      
-      <div class="post-title">
-        <h1>JpaPageable</h1>
-        
-          <div class="info">
-            <em class="fas fa-calendar-day"></em>
-            <span class="date"
-              >
-                Tue, Jan 7, 2020
-
-
-              </span
-            >
-            <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">閱讀時間 2 分鐘</span>
-          </div>
-
-        
-      </div><h3 id="specification">Specification</h3>
-<ul>
-<li>CriteriaQuery介面：</li>
-</ul>
-<blockquote>
-<p>代表一個specific的頂層查詢物件，它包含著查詢的各個部分，比如：select 、from、where、group by、order by等注意：CriteriaQuery物件只對實體型別或嵌入式型別的Criteria查詢起作用。</p>
-</blockquote>
-<ul>
-<li>Root:</li>
-</ul>
-<blockquote>
-<p>代表Criteria查詢的根物件，Criteria查詢的查詢根定義了實體型別，能為將來導航獲得想要的結果，它與SQL查詢中的FROM子句類似。
-Root範例是型別化的，且定義了查詢的FROM子句中能夠出現的型別。root代表查詢的實體類,query可以從中得到root物件,告訴jpa查詢哪一個實體類,還可以新增查詢條件,還可以結合EntityManager物件 得到最終查詢的 TypedQuery物件。</p>
-</blockquote>
-<ul>
-<li>CriteriaBuilder介面：</li>
-</ul>
-<blockquote>
-<p>用來構建CritiaQuery的構建器物件Predicate：一個簡單或複雜的謂詞型別，其實就相當於條件或者是條件組合。 可通過 EntityManager.getCriteriaBuilder 而得。</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    var spec <span style="color:#f92672">=</span> Specification<span style="color:#f92672">.&lt;</span>User<span style="color:#f92672">&gt;</span>where<span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>user<span style="color:#f92672">.</span><span style="color:#a6e22e">getAccount</span><span style="color:#f92672">().</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        spec<span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">((</span>r<span style="color:#f92672">,</span> q<span style="color:#f92672">,</span> cb<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> cb<span style="color:#f92672">.</span><span style="color:#a6e22e">like</span><span style="color:#f92672">(</span>r<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;account&#34;</span><span style="color:#f92672">),</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">+</span> user<span style="color:#f92672">.</span><span style="color:#a6e22e">getAccount</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;%&#34;</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span></code></pre></div><h3 id="page">Page</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Specification<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getSpecificationByAccountAndPwd</span><span style="color:#f92672">(</span>String account<span style="color:#f92672">,</span> String pwd<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Specification<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;)</span> <span style="color:#f92672">(</span>root<span style="color:#f92672">,</span> criteriaQuery<span style="color:#f92672">,</span> criteriaBuilder<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 獲取比較的屬性
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            Path<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> compareAccount <span style="color:#f92672">=</span> root<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;account&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            Path<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> comparePwd <span style="color:#f92672">=</span> root<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            Predicate predicate1 <span style="color:#f92672">=</span> criteriaBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">equal</span><span style="color:#f92672">(</span>compareAccount<span style="color:#f92672">,</span> account<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            Predicate predicate2 <span style="color:#f92672">=</span> criteriaBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">equal</span><span style="color:#f92672">(</span>comparePwd<span style="color:#f92672">,</span> pwd<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// === and ===
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// criteriaBuilder.and(predicate01, predicate02)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// === or ===
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// criteriaBuilder.or(predicate01, predicate02)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> criteriaBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span>predicate1<span style="color:#f92672">,</span> predicate2<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">};</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Specification<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getSpecificationByAccountLike</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Specification<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;)</span> <span style="color:#f92672">(</span>root<span style="color:#f92672">,</span> criteriaQuery<span style="color:#f92672">,</span> criteriaBuilder<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 獲取比較的屬性
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            Path<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> compareAccount <span style="color:#f92672">=</span> root<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;account&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 模糊要求指定引數型別
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> criteriaBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">like</span><span style="color:#f92672">(</span>compareAccount<span style="color:#f92672">.</span><span style="color:#a6e22e">as</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">),</span> <span style="color:#e6db74">&#34;%test%&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">};</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Pageable pageable <span style="color:#f92672">=</span> PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>pageNum<span style="color:#f92672">,</span> rowCnt<span style="color:#f92672">,</span> Sort<span style="color:#f92672">.</span><span style="color:#a6e22e">Direction</span><span style="color:#f92672">.</span><span style="color:#a6e22e">DESC</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    Pageable pageable <span style="color:#f92672">=</span> PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>pageNum<span style="color:#f92672">,</span> rowCnt<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    Page<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> pageResult <span style="color:#f92672">=</span> userDao<span style="color:#f92672">.</span><span style="color:#a6e22e">findAll</span><span style="color:#f92672">(</span>getSpecificationByAccountLike<span style="color:#f92672">(),</span> pageable<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 全部頁數
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;getTotalPages(): &#34;</span> <span style="color:#f92672">+</span> pageResult<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalPages</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 全部筆數
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;getTotalElements(): &#34;</span> <span style="color:#f92672">+</span> pageResult<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalElements</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 每頁筆數
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;getSize(): &#34;</span> <span style="color:#f92672">+</span> pageResult<span style="color:#f92672">.</span><span style="color:#a6e22e">getSize</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 目前頁號，0為第一頁
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;getNumber(): &#34;</span> <span style="color:#f92672">+</span> pageResult<span style="color:#f92672">.</span><span style="color:#a6e22e">getNumber</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 目前頁筆數
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;getNumberOfElements(): &#34;</span> <span style="color:#f92672">+</span> pageResult<span style="color:#f92672">.</span><span style="color:#a6e22e">getNumberOfElements</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//result
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;getContent(): &#34;</span> <span style="color:#f92672">+</span> pageResult<span style="color:#f92672">.</span><span style="color:#a6e22e">getContent</span><span style="color:#f92672">());</span>
-</span></span></code></pre></div><h4 id="小試身手1">小試身手1</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * *
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param 第幾頁
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param 每頁數量有幾個
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span> 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>BigInteger<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getOrderInfo</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;page&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> page<span style="color:#f92672">,</span> <span style="color:#a6e22e">@PathVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;size&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> size<span style="color:#f92672">){</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        var custInfo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;bill&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Pageable pageable <span style="color:#f92672">=</span> PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>page<span style="color:#f92672">,</span> size<span style="color:#f92672">,</span> Sort<span style="color:#f92672">.</span><span style="color:#a6e22e">Direction</span><span style="color:#f92672">.</span><span style="color:#a6e22e">DESC</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;order_id&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        Page<span style="color:#f92672">&lt;</span>OrderMaster<span style="color:#f92672">&gt;</span> pageOrders <span style="color:#f92672">=</span> orderMasterRepository<span style="color:#f92672">.</span><span style="color:#a6e22e">findAll</span><span style="color:#f92672">(</span>getSpecialField<span style="color:#f92672">(</span>custInfo<span style="color:#f92672">),</span> pageable<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;pageOrders: {}&#34;</span><span style="color:#f92672">,</span> pageOrders<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;total counts: &#34;</span> <span style="color:#f92672">+</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalElements</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;total page: &#34;</span> <span style="color:#f92672">+</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalPages</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getContent</span><span style="color:#f92672">().</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>OrderMaster<span style="color:#f92672">::</span>getOrderId<span style="color:#f92672">).</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//   Predicate toPredicate(Root&lt;T&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb);
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> Specification<span style="color:#f92672">&lt;</span>OrderMaster<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getSpecialField</span><span style="color:#f92672">(</span>String custInfo<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>root<span style="color:#f92672">,</span> criteriaQuery<span style="color:#f92672">,</span> criteriaBuilder<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">//      Path&lt;Object&gt; comparePwd = root.get(&#34;custInfo&#34;);
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">//      Predicate predicate = criteriaBuilder.equal(comparePwd, custInfo);
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">//      return criteriaBuilder.and(predicate);
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">return</span> criteriaBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">equal</span><span style="color:#f92672">(</span>root<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;custInfo&#34;</span><span style="color:#f92672">),</span> custInfo<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">};</span>
-</span></span></code></pre></div><h4 id="小試身手2">小試身手2</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * *
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param 第幾頁
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param 每頁數量有幾個
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span> 
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>BigInteger<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getOrderInfo</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;page&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> page<span style="color:#f92672">,</span> <span style="color:#a6e22e">@PathVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;size&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> size<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    var custInfo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;bill&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Pageable pageable <span style="color:#f92672">=</span> PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>page<span style="color:#f92672">,</span> size<span style="color:#f92672">,</span> Sort<span style="color:#f92672">.</span><span style="color:#a6e22e">Direction</span><span style="color:#f92672">.</span><span style="color:#a6e22e">DESC</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;order_id&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Page<span style="color:#f92672">&lt;</span>OrderMaster<span style="color:#f92672">&gt;</span> pageOrders <span style="color:#f92672">=</span> orderMasterRepository<span style="color:#f92672">.</span><span style="color:#a6e22e">findAll</span><span style="color:#f92672">((</span>root<span style="color:#f92672">,</span> criteriaQuery<span style="color:#f92672">,</span> criteriaBuilder<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      Path<span style="color:#f92672">&lt;</span>Object<span style="color:#f92672">&gt;</span> comparePwd <span style="color:#f92672">=</span> root<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;custInfo&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      Predicate predicate <span style="color:#f92672">=</span> criteriaBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">equal</span><span style="color:#f92672">(</span>comparePwd<span style="color:#f92672">,</span> erpCustNo<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> criteriaBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span>predicate<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">},</span> pageable<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;pageOrders: {}&#34;</span><span style="color:#f92672">,</span> pageOrders<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;total counts: &#34;</span> <span style="color:#f92672">+</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalElements</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;total page: &#34;</span> <span style="color:#f92672">+</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalPages</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getContent</span><span style="color:#f92672">().</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>OrderMaster<span style="color:#f92672">::</span>getOrderId<span style="color:#f92672">).</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span></code></pre></div><h4 id="小試身手3">小試身手3</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * *
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param 第幾頁
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param 每頁數量有幾個
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span> 
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>BigInteger<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getOrderInfo</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;page&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> page<span style="color:#f92672">,</span> <span style="color:#a6e22e">@PathVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;size&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> size<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    var custInfo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;bill&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Pageable pageable <span style="color:#f92672">=</span> PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>page<span style="color:#f92672">,</span> size<span style="color:#f92672">,</span> Sort<span style="color:#f92672">.</span><span style="color:#a6e22e">Direction</span><span style="color:#f92672">.</span><span style="color:#a6e22e">DESC</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;order_id&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    Specification<span style="color:#f92672">&lt;</span>OrderMaster<span style="color:#f92672">&gt;</span> specification <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Specification<span style="color:#f92672">&lt;</span>OrderMaster<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> Predicate <span style="color:#a6e22e">toPredicate</span><span style="color:#f92672">(</span>Root<span style="color:#f92672">&lt;</span>OrderMaster<span style="color:#f92672">&gt;</span> root<span style="color:#f92672">,</span> CriteriaQuery<span style="color:#f92672">&lt;?&gt;</span> query<span style="color:#f92672">,</span> CriteriaBuilder criteriaBuilder<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> criteriaBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">equal</span><span style="color:#f92672">(</span>root<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;custInfo&#34;</span><span style="color:#f92672">),</span> erpCustNo<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">};</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Page<span style="color:#f92672">&lt;</span>OrderMaster<span style="color:#f92672">&gt;</span> pageOrders <span style="color:#f92672">=</span> orderMasterRepository<span style="color:#f92672">.</span><span style="color:#a6e22e">findAll</span><span style="color:#f92672">(</span>specification<span style="color:#f92672">,</span> pageable<span style="color:#f92672">);</span> 
-</span></span><span style="display:flex;"><span>    log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;pageOrders: {}&#34;</span><span style="color:#f92672">,</span> pageOrders<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;total counts: &#34;</span> <span style="color:#f92672">+</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalElements</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;total page: &#34;</span> <span style="color:#f92672">+</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getTotalPages</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> pageOrders<span style="color:#f92672">.</span><span style="color:#a6e22e">getContent</span><span style="color:#f92672">().</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>OrderMaster<span style="color:#f92672">::</span>getOrderId<span style="color:#f92672">).</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span></code></pre></div></div>
-    <div class="post-footer">
-      <div class="info">
-        
-          <span class="separator"><a class="category" href="/categories/spring/">Spring</a><a class="category" href="/categories/jpa/">JPA</a></span>
-
-
-
-
-        
-
-        
-      </div>
-    </div>
-
-    
-  </div>
-
-
-          </div>
-        </div>
-      </main>
-    </div><footer class="footer footer--base">
-  <div class="by_farbox">
-    <ul class="footer__list">
-      <li class="footer__item">
-        &copy;
-        
-          Bill.Lin の 成長之路 ©
-          2023
-
-
-        
-      </li>
-      
-    </ul>
-  </div>
-</footer>
-  
-  <script
-    type="text/javascript"
-    src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
-    integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
-    crossorigin="anonymous"
-  ></script></body>
-</html>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>JpaPageable - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicon.ico><meta property="og:title" content="JpaPageable"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/spring/jpapageable/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>JpaPageable</h1><div class=post-meta><div class=post-info><time class=post-date>2020年01月07日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>3 分鐘閱讀</span></div><div class=post-categories><a href=/categories/spring class=category-link>Spring</a>
+<a href=/categories/jpa class=category-link>JPA</a></div></div></header><div class=post-content><h3 id=specification>Specification</h3><ul><li>CriteriaQuery介面：</li></ul><blockquote><p>代表一個specific的頂層查詢物件，它包含著查詢的各個部分，比如：select 、from、where、group by、order by等注意：CriteriaQuery物件只對實體型別或嵌入式型別的Criteria查詢起作用。</p></blockquote><ul><li>Root:</li></ul><blockquote><p>代表Criteria查詢的根物件，Criteria查詢的查詢根定義了實體型別，能為將來導航獲得想要的結果，它與SQL查詢中的FROM子句類似。
+Root範例是型別化的，且定義了查詢的FROM子句中能夠出現的型別。root代表查詢的實體類,query可以從中得到root物件,告訴jpa查詢哪一個實體類,還可以新增查詢條件,還可以結合EntityManager物件 得到最終查詢的 TypedQuery物件。</p></blockquote><ul><li>CriteriaBuilder介面：</li></ul><blockquote><p>用來構建CritiaQuery的構建器物件Predicate：一個簡單或複雜的謂詞型別，其實就相當於條件或者是條件組合。 可通過 EntityManager.getCriteriaBuilder 而得。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>var</span><span class=w> </span><span class=n>spec</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Specification</span><span class=p>.</span><span class=o>&lt;</span><span class=n>User</span><span class=o>&gt;</span><span class=n>where</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>user</span><span class=p>.</span><span class=na>getAccount</span><span class=p>().</span><span class=na>isEmpty</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>spec</span><span class=p>.</span><span class=na>and</span><span class=p>((</span><span class=n>r</span><span class=p>,</span><span class=w> </span><span class=n>q</span><span class=p>,</span><span class=w> </span><span class=n>cb</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>cb</span><span class=p>.</span><span class=na>like</span><span class=p>(</span><span class=n>r</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;account&#34;</span><span class=p>),</span><span class=w> </span><span class=s>&#34;&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>user</span><span class=p>.</span><span class=na>getAccount</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;%&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=page>Page</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Specification</span><span class=o>&lt;</span><span class=n>User</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getSpecificationByAccountAndPwd</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>account</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>pwd</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>Specification</span><span class=o>&lt;</span><span class=n>User</span><span class=o>&gt;</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=n>criteriaQuery</span><span class=p>,</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 獲取比較的屬性</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Path</span><span class=o>&lt;</span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>compareAccount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>root</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;account&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Path</span><span class=o>&lt;</span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>comparePwd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>root</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;password&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Predicate</span><span class=w> </span><span class=n>predicate1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>.</span><span class=na>equal</span><span class=p>(</span><span class=n>compareAccount</span><span class=p>,</span><span class=w> </span><span class=n>account</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Predicate</span><span class=w> </span><span class=n>predicate2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>.</span><span class=na>equal</span><span class=p>(</span><span class=n>comparePwd</span><span class=p>,</span><span class=w> </span><span class=n>pwd</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// === and ===</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// criteriaBuilder.and(predicate01, predicate02)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// === or ===</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// criteriaBuilder.or(predicate01, predicate02)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>.</span><span class=na>and</span><span class=p>(</span><span class=n>predicate1</span><span class=p>,</span><span class=w> </span><span class=n>predicate2</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Specification</span><span class=o>&lt;</span><span class=n>User</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getSpecificationByAccountLike</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>Specification</span><span class=o>&lt;</span><span class=n>User</span><span class=o>&gt;</span><span class=p>)</span><span class=w> </span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=n>criteriaQuery</span><span class=p>,</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 獲取比較的屬性</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Path</span><span class=o>&lt;</span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>compareAccount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>root</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;account&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 模糊要求指定引數型別</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>.</span><span class=na>like</span><span class=p>(</span><span class=n>compareAccount</span><span class=p>.</span><span class=na>as</span><span class=p>(</span><span class=n>String</span><span class=p>.</span><span class=na>class</span><span class=p>),</span><span class=w> </span><span class=s>&#34;%test%&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>PageRequest</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=n>pageNum</span><span class=p>,</span><span class=w> </span><span class=n>rowCnt</span><span class=p>,</span><span class=w> </span><span class=n>Sort</span><span class=p>.</span><span class=na>Direction</span><span class=p>.</span><span class=na>DESC</span><span class=p>,</span><span class=w> </span><span class=s>&#34;id&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>PageRequest</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=n>pageNum</span><span class=p>,</span><span class=w> </span><span class=n>rowCnt</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Page</span><span class=o>&lt;</span><span class=n>User</span><span class=o>&gt;</span><span class=w> </span><span class=n>pageResult</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>userDao</span><span class=p>.</span><span class=na>findAll</span><span class=p>(</span><span class=n>getSpecificationByAccountLike</span><span class=p>(),</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 全部頁數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;getTotalPages(): &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageResult</span><span class=p>.</span><span class=na>getTotalPages</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 全部筆數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;getTotalElements(): &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageResult</span><span class=p>.</span><span class=na>getTotalElements</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 每頁筆數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;getSize(): &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageResult</span><span class=p>.</span><span class=na>getSize</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 目前頁號，0為第一頁</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;getNumber(): &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageResult</span><span class=p>.</span><span class=na>getNumber</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 目前頁筆數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;getNumberOfElements(): &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageResult</span><span class=p>.</span><span class=na>getNumberOfElements</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//result</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;getContent(): &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageResult</span><span class=p>.</span><span class=na>getContent</span><span class=p>());</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=小試身手1>小試身手1</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * *
+</span></span></span><span class=line><span class=cl><span class=cm>   * @param 第幾頁
+</span></span></span><span class=line><span class=cl><span class=cm>   * @param 每頁數量有幾個
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>BigInteger</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getOrderInfo</span><span class=p>(</span><span class=nd>@PathVariable</span><span class=p>(</span><span class=s>&#34;page&#34;</span><span class=p>)</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>page</span><span class=p>,</span><span class=w> </span><span class=nd>@PathVariable</span><span class=p>(</span><span class=s>&#34;size&#34;</span><span class=p>)</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>size</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>var</span><span class=w> </span><span class=n>custInfo</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;bill&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>PageRequest</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=n>page</span><span class=p>,</span><span class=w> </span><span class=n>size</span><span class=p>,</span><span class=w> </span><span class=n>Sort</span><span class=p>.</span><span class=na>Direction</span><span class=p>.</span><span class=na>DESC</span><span class=p>,</span><span class=w> </span><span class=s>&#34;order_id&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Page</span><span class=o>&lt;</span><span class=n>OrderMaster</span><span class=o>&gt;</span><span class=w> </span><span class=n>pageOrders</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderMasterRepository</span><span class=p>.</span><span class=na>findAll</span><span class=p>(</span><span class=n>getSpecialField</span><span class=p>(</span><span class=n>custInfo</span><span class=p>),</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>log</span><span class=p>.</span><span class=na>info</span><span class=p>(</span><span class=s>&#34;pageOrders: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>pageOrders</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;total counts: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getTotalElements</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;total page: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getTotalPages</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getContent</span><span class=p>().</span><span class=na>stream</span><span class=p>().</span><span class=na>map</span><span class=p>(</span><span class=n>OrderMaster</span><span class=p>::</span><span class=n>getOrderId</span><span class=p>).</span><span class=na>collect</span><span class=p>(</span><span class=n>Collectors</span><span class=p>.</span><span class=na>toList</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c1>//   Predicate toPredicate(Root&lt;T&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=kd>private</span><span class=w> </span><span class=n>Specification</span><span class=o>&lt;</span><span class=n>OrderMaster</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getSpecialField</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>custInfo</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=n>criteriaQuery</span><span class=p>,</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c1>//      Path&lt;Object&gt; comparePwd = root.get(&#34;custInfo&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c1>//      Predicate predicate = criteriaBuilder.equal(comparePwd, custInfo);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c1>//      return criteriaBuilder.and(predicate);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=k>return</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>.</span><span class=na>equal</span><span class=p>(</span><span class=n>root</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;custInfo&#34;</span><span class=p>),</span><span class=w> </span><span class=n>custInfo</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>};</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=小試身手2>小試身手2</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * *
+</span></span></span><span class=line><span class=cl><span class=cm>   * @param 第幾頁
+</span></span></span><span class=line><span class=cl><span class=cm>   * @param 每頁數量有幾個
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>BigInteger</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getOrderInfo</span><span class=p>(</span><span class=nd>@PathVariable</span><span class=p>(</span><span class=s>&#34;page&#34;</span><span class=p>)</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>page</span><span class=p>,</span><span class=w> </span><span class=nd>@PathVariable</span><span class=p>(</span><span class=s>&#34;size&#34;</span><span class=p>)</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>size</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>var</span><span class=w> </span><span class=n>custInfo</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;bill&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>PageRequest</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=n>page</span><span class=p>,</span><span class=w> </span><span class=n>size</span><span class=p>,</span><span class=w> </span><span class=n>Sort</span><span class=p>.</span><span class=na>Direction</span><span class=p>.</span><span class=na>DESC</span><span class=p>,</span><span class=w> </span><span class=s>&#34;order_id&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Page</span><span class=o>&lt;</span><span class=n>OrderMaster</span><span class=o>&gt;</span><span class=w> </span><span class=n>pageOrders</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderMasterRepository</span><span class=p>.</span><span class=na>findAll</span><span class=p>((</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=n>criteriaQuery</span><span class=p>,</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=n>Path</span><span class=o>&lt;</span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>comparePwd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>root</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;custInfo&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=n>Predicate</span><span class=w> </span><span class=n>predicate</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>.</span><span class=na>equal</span><span class=p>(</span><span class=n>comparePwd</span><span class=p>,</span><span class=w> </span><span class=n>erpCustNo</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=k>return</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>.</span><span class=na>and</span><span class=p>(</span><span class=n>predicate</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>},</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>log</span><span class=p>.</span><span class=na>info</span><span class=p>(</span><span class=s>&#34;pageOrders: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>pageOrders</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;total counts: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getTotalElements</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;total page: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getTotalPages</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getContent</span><span class=p>().</span><span class=na>stream</span><span class=p>().</span><span class=na>map</span><span class=p>(</span><span class=n>OrderMaster</span><span class=p>::</span><span class=n>getOrderId</span><span class=p>).</span><span class=na>collect</span><span class=p>(</span><span class=n>Collectors</span><span class=p>.</span><span class=na>toList</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=小試身手3>小試身手3</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * *
+</span></span></span><span class=line><span class=cl><span class=cm>   * @param 第幾頁
+</span></span></span><span class=line><span class=cl><span class=cm>   * @param 每頁數量有幾個
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>BigInteger</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getOrderInfo</span><span class=p>(</span><span class=nd>@PathVariable</span><span class=p>(</span><span class=s>&#34;page&#34;</span><span class=p>)</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>page</span><span class=p>,</span><span class=w> </span><span class=nd>@PathVariable</span><span class=p>(</span><span class=s>&#34;size&#34;</span><span class=p>)</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>size</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>var</span><span class=w> </span><span class=n>custInfo</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;bill&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>PageRequest</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=n>page</span><span class=p>,</span><span class=w> </span><span class=n>size</span><span class=p>,</span><span class=w> </span><span class=n>Sort</span><span class=p>.</span><span class=na>Direction</span><span class=p>.</span><span class=na>DESC</span><span class=p>,</span><span class=w> </span><span class=s>&#34;order_id&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Specification</span><span class=o>&lt;</span><span class=n>OrderMaster</span><span class=o>&gt;</span><span class=w> </span><span class=n>specification</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Specification</span><span class=o>&lt;</span><span class=n>OrderMaster</span><span class=o>&gt;</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=n>Predicate</span><span class=w> </span><span class=nf>toPredicate</span><span class=p>(</span><span class=n>Root</span><span class=o>&lt;</span><span class=n>OrderMaster</span><span class=o>&gt;</span><span class=w> </span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=n>CriteriaQuery</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>query</span><span class=p>,</span><span class=w> </span><span class=n>CriteriaBuilder</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>criteriaBuilder</span><span class=p>.</span><span class=na>equal</span><span class=p>(</span><span class=n>root</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;custInfo&#34;</span><span class=p>),</span><span class=w> </span><span class=n>erpCustNo</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Page</span><span class=o>&lt;</span><span class=n>OrderMaster</span><span class=o>&gt;</span><span class=w> </span><span class=n>pageOrders</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderMasterRepository</span><span class=p>.</span><span class=na>findAll</span><span class=p>(</span><span class=n>specification</span><span class=p>,</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>log</span><span class=p>.</span><span class=na>info</span><span class=p>(</span><span class=s>&#34;pageOrders: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>pageOrders</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;total counts: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getTotalElements</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;total page: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getTotalPages</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>pageOrders</span><span class=p>.</span><span class=na>getContent</span><span class=p>().</span><span class=na>stream</span><span class=p>().</span><span class=na>map</span><span class=p>(</span><span class=n>OrderMaster</span><span class=p>::</span><span class=n>getOrderId</span><span class=p>).</span><span class=na>collect</span><span class=p>(</span><span class=n>Collectors</span><span class=p>.</span><span class=na>toList</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/spring/sideprojectconfig/ class=post-nav-link>SideProjectConfig</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/script/deploy-hugo/ class=post-nav-link>Deploy Hugo</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

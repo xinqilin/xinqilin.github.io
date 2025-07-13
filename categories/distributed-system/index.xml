@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Distributed System on Bill.Lin&#39;s Notes</title>
+    <link>https://xinqilin.github.io/categories/distributed-system/</link>
+    <description>Recent content in Distributed System on Bill.Lin&#39;s Notes</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Tue, 13 Sep 2022 23:05:38 +0800</lastBuildDate>
+    <atom:link href="https://xinqilin.github.io/categories/distributed-system/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SnowFlake DistributionKey</title>
+      <link>https://xinqilin.github.io/post/distributedsystem/snowflake-distributionkey/</link>
+      <pubDate>Tue, 13 Sep 2022 23:05:38 +0800</pubDate>
+      <guid>https://xinqilin.github.io/post/distributedsystem/snowflake-distributionkey/</guid>
+      <description>&lt;h1 id=&#34;snowflake---distribution-key&#34;&gt;Snowflake - Distribution Key&lt;/h1&gt;&#xA;&lt;h3 id=&#34;單體式-id&#34;&gt;單體式 ID&lt;/h3&gt;&#xA;&lt;p&gt;一般單體式 UUID(Universally Unique identifier)&#xA;8-4-4-4-12 總共 32 個 16 進位&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;UUID&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;randomUUID&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 80e06459-942d-4a63-9fd4-81691b127363&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;ul&gt;&#xA;&lt;li&gt;優點&#xA;&lt;ul&gt;&#xA;&lt;li&gt;性能高&lt;/li&gt;&#xA;&lt;li&gt;本地生成&lt;/li&gt;&#xA;&lt;li&gt;無網路延遲&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;缺點&#xA;&lt;ul&gt;&#xA;&lt;li&gt;無順序性&lt;/li&gt;&#xA;&lt;li&gt;字串不適合存 db 當 index or PK 且 32 長度太長&lt;/li&gt;&#xA;&lt;li&gt;因無序 所以對 b+ Tree 來說 插入時效能低&lt;/li&gt;&#xA;&lt;li&gt;極小機會但 會重複&#xA;=&amp;gt; ＤＢ 解法: replace into &lt;br&gt;&#xA;跟insert功能類似, 但 replace into 會檢查是否存在, 如存在則先刪除, 再插入, 否则直接插入&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;分佈式-id&#34;&gt;分佈式 ID&lt;/h3&gt;&#xA;&lt;p&gt;twitter 開發的 雪花算法 - snowflake&#xA;總共 64 bit&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;1bit&#xA;不用，因為二進制中最高位是符號位，1表示負數，0表示正數。&#xA;生成的id一般都是用整數，所以最高位固定為0。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
