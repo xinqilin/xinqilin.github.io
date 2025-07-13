@@ -12,16 +12,12 @@ DisableComments: false
 ### Dependency
 
 ```groovy
-
 implementation 'commons-net:commons-net:{version}'
-
-
 ```
 
 ### Util
 
 ```java
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -96,5 +92,4 @@ public class FtpUtils {
         }
     }
 }
-
 ```
