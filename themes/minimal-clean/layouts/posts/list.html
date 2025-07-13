@@ -1,0 +1,46 @@
+{{ define "main" }}
+<div class="tech-posts-page">
+    <header class="tech-header">
+        <h1 class="tech-title">{{ .Title }}</h1>
+        <div class="tech-count">{{ len (where .Site.RegularPages "Section" "post") }} articles</div>
+    </header>
+
+    {{ $posts := where .Site.RegularPages "Section" "post" }}
+    {{ $posts := $posts.ByDate.Reverse }}
+
+    {{ if $posts }}
+    <div class="tech-posts-container">
+        {{ range $posts }}
+        <a href="{{ .Permalink }}" class="tech-post-card-link">
+            <article class="tech-post-card">
+                <div class="tech-post-content">
+                    <h2 class="tech-post-title">{{ .Title }}</h2>
+                    
+                    {{ if .Description }}
+                    <p class="tech-post-description">{{ .Description }}</p>
+                    {{ else if .Summary }}
+                    <p class="tech-post-description">{{ .Summary | truncate 120 }}</p>
+                    {{ end }}
+                    
+                    <div class="tech-post-meta">
+                        <time class="tech-post-date">{{ .Date.Format "Jan 2, 2006" }}</time>
+                        {{ if .Params.categories }}
+                        <div class="tech-post-categories">
+                            {{ range .Params.categories }}
+                            <span class="tech-category-tag">{{ . }}</span>
+                            {{ end }}
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+            </article>
+        </a>
+        {{ end }}
+    </div>
+    {{ else }}
+    <div class="tech-no-posts">
+        <p>No articles yet.</p>
+    </div>
+    {{ end }}
+</div>
+{{ end }}

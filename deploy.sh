@@ -1,5 +1,5 @@
 # build public/
-hugo -t anatole
+hugo
 
 
 commit_message="$1"
