@@ -23,7 +23,7 @@ echo "✅ Hugo 建構完成"
 
 # 在 public/ 資料夾中提交並推送 html 網站到 GitHub Pages 
 cd public
-git add .
+git add -A .
 git commit -m "$commit_message"
 git push origin master
 
@@ -31,7 +31,7 @@ git push origin master
 # 推送 source code 到 GitHub
 cd ..
 echo "正在備份 hugo source code..."
-git add . -A
+git add -A .
 git commit -m "$commit_message"
 git push
 
