@@ -2,962 +2,962 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Bill.Lin&#39;s Notes</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://xinqilin.github.io/tags/</link>
     <description>Recent content in Tags on Bill.Lin&#39;s Notes</description>
     <generator>Hugo</generator>
     <language>zh-tw</language>
     <lastBuildDate>Thu, 05 Jan 2023 23:45:46 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://xinqilin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Commons-Net</title>
-      <link>http://localhost:1313/tags/commons-net/</link>
+      <link>https://xinqilin.github.io/tags/commons-net/</link>
       <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
-      <guid>http://localhost:1313/tags/commons-net/</guid>
+      <guid>https://xinqilin.github.io/tags/commons-net/</guid>
       <description></description>
     </item>
     <item>
       <title>FileTransfer</title>
-      <link>http://localhost:1313/tags/filetransfer/</link>
+      <link>https://xinqilin.github.io/tags/filetransfer/</link>
       <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
-      <guid>http://localhost:1313/tags/filetransfer/</guid>
+      <guid>https://xinqilin.github.io/tags/filetransfer/</guid>
       <description></description>
     </item>
     <item>
       <title>FTP</title>
-      <link>http://localhost:1313/tags/ftp/</link>
+      <link>https://xinqilin.github.io/tags/ftp/</link>
       <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
-      <guid>http://localhost:1313/tags/ftp/</guid>
+      <guid>https://xinqilin.github.io/tags/ftp/</guid>
       <description></description>
     </item>
     <item>
       <title>Java</title>
-      <link>http://localhost:1313/tags/java/</link>
+      <link>https://xinqilin.github.io/tags/java/</link>
       <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
-      <guid>http://localhost:1313/tags/java/</guid>
+      <guid>https://xinqilin.github.io/tags/java/</guid>
       <description></description>
     </item>
     <item>
       <title>Security</title>
-      <link>http://localhost:1313/tags/security/</link>
+      <link>https://xinqilin.github.io/tags/security/</link>
       <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
-      <guid>http://localhost:1313/tags/security/</guid>
+      <guid>https://xinqilin.github.io/tags/security/</guid>
       <description></description>
     </item>
     <item>
       <title>Spring</title>
-      <link>http://localhost:1313/tags/spring/</link>
+      <link>https://xinqilin.github.io/tags/spring/</link>
       <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
-      <guid>http://localhost:1313/tags/spring/</guid>
+      <guid>https://xinqilin.github.io/tags/spring/</guid>
       <description></description>
     </item>
     <item>
       <title>Database</title>
-      <link>http://localhost:1313/tags/database/</link>
+      <link>https://xinqilin.github.io/tags/database/</link>
       <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
-      <guid>http://localhost:1313/tags/database/</guid>
+      <guid>https://xinqilin.github.io/tags/database/</guid>
       <description></description>
     </item>
     <item>
       <title>Enum</title>
-      <link>http://localhost:1313/tags/enum/</link>
+      <link>https://xinqilin.github.io/tags/enum/</link>
       <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
-      <guid>http://localhost:1313/tags/enum/</guid>
+      <guid>https://xinqilin.github.io/tags/enum/</guid>
       <description></description>
     </item>
     <item>
       <title>Hibernate</title>
-      <link>http://localhost:1313/tags/hibernate/</link>
+      <link>https://xinqilin.github.io/tags/hibernate/</link>
       <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
-      <guid>http://localhost:1313/tags/hibernate/</guid>
+      <guid>https://xinqilin.github.io/tags/hibernate/</guid>
       <description></description>
     </item>
     <item>
       <title>JPA</title>
-      <link>http://localhost:1313/tags/jpa/</link>
+      <link>https://xinqilin.github.io/tags/jpa/</link>
       <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
-      <guid>http://localhost:1313/tags/jpa/</guid>
+      <guid>https://xinqilin.github.io/tags/jpa/</guid>
       <description></description>
     </item>
     <item>
       <title>MySQL</title>
-      <link>http://localhost:1313/tags/mysql/</link>
+      <link>https://xinqilin.github.io/tags/mysql/</link>
       <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
-      <guid>http://localhost:1313/tags/mysql/</guid>
+      <guid>https://xinqilin.github.io/tags/mysql/</guid>
       <description></description>
     </item>
     <item>
       <title>ORM</title>
-      <link>http://localhost:1313/tags/orm/</link>
+      <link>https://xinqilin.github.io/tags/orm/</link>
       <pubDate>Thu, 05 Jan 2023 23:18:48 +0800</pubDate>
-      <guid>http://localhost:1313/tags/orm/</guid>
+      <guid>https://xinqilin.github.io/tags/orm/</guid>
       <description></description>
     </item>
     <item>
       <title>Command Line</title>
-      <link>http://localhost:1313/tags/command-line/</link>
+      <link>https://xinqilin.github.io/tags/command-line/</link>
       <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/command-line/</guid>
+      <guid>https://xinqilin.github.io/tags/command-line/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>http://localhost:1313/tags/linux/</link>
+      <link>https://xinqilin.github.io/tags/linux/</link>
       <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/linux/</guid>
+      <guid>https://xinqilin.github.io/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Parallel Processing</title>
-      <link>http://localhost:1313/tags/parallel-processing/</link>
+      <link>https://xinqilin.github.io/tags/parallel-processing/</link>
       <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/parallel-processing/</guid>
+      <guid>https://xinqilin.github.io/tags/parallel-processing/</guid>
       <description></description>
     </item>
     <item>
       <title>Pipe</title>
-      <link>http://localhost:1313/tags/pipe/</link>
+      <link>https://xinqilin.github.io/tags/pipe/</link>
       <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/pipe/</guid>
+      <guid>https://xinqilin.github.io/tags/pipe/</guid>
       <description></description>
     </item>
     <item>
       <title>Shell</title>
-      <link>http://localhost:1313/tags/shell/</link>
+      <link>https://xinqilin.github.io/tags/shell/</link>
       <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/shell/</guid>
+      <guid>https://xinqilin.github.io/tags/shell/</guid>
       <description></description>
     </item>
     <item>
       <title>Unix</title>
-      <link>http://localhost:1313/tags/unix/</link>
+      <link>https://xinqilin.github.io/tags/unix/</link>
       <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/unix/</guid>
+      <guid>https://xinqilin.github.io/tags/unix/</guid>
       <description></description>
     </item>
     <item>
       <title>Xargs</title>
-      <link>http://localhost:1313/tags/xargs/</link>
+      <link>https://xinqilin.github.io/tags/xargs/</link>
       <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/xargs/</guid>
+      <guid>https://xinqilin.github.io/tags/xargs/</guid>
       <description></description>
     </item>
     <item>
       <title>File Search</title>
-      <link>http://localhost:1313/tags/file-search/</link>
+      <link>https://xinqilin.github.io/tags/file-search/</link>
       <pubDate>Tue, 01 Nov 2022 21:59:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/file-search/</guid>
+      <guid>https://xinqilin.github.io/tags/file-search/</guid>
       <description></description>
     </item>
     <item>
       <title>Find</title>
-      <link>http://localhost:1313/tags/find/</link>
+      <link>https://xinqilin.github.io/tags/find/</link>
       <pubDate>Tue, 01 Nov 2022 21:59:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/find/</guid>
+      <guid>https://xinqilin.github.io/tags/find/</guid>
       <description></description>
     </item>
     <item>
       <title>System Administration</title>
-      <link>http://localhost:1313/tags/system-administration/</link>
+      <link>https://xinqilin.github.io/tags/system-administration/</link>
       <pubDate>Tue, 01 Nov 2022 21:59:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/system-administration/</guid>
+      <guid>https://xinqilin.github.io/tags/system-administration/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
-      <link>http://localhost:1313/tags/docker/</link>
+      <link>https://xinqilin.github.io/tags/docker/</link>
       <pubDate>Sat, 29 Oct 2022 00:10:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/docker/</guid>
+      <guid>https://xinqilin.github.io/tags/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>Package Management</title>
-      <link>http://localhost:1313/tags/package-management/</link>
+      <link>https://xinqilin.github.io/tags/package-management/</link>
       <pubDate>Sat, 29 Oct 2022 00:10:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/package-management/</guid>
+      <guid>https://xinqilin.github.io/tags/package-management/</guid>
       <description></description>
     </item>
     <item>
       <title>Server</title>
-      <link>http://localhost:1313/tags/server/</link>
+      <link>https://xinqilin.github.io/tags/server/</link>
       <pubDate>Sat, 29 Oct 2022 00:10:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/server/</guid>
+      <guid>https://xinqilin.github.io/tags/server/</guid>
       <description></description>
     </item>
     <item>
       <title>Ubuntu</title>
-      <link>http://localhost:1313/tags/ubuntu/</link>
+      <link>https://xinqilin.github.io/tags/ubuntu/</link>
       <pubDate>Sat, 29 Oct 2022 00:10:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/ubuntu/</guid>
+      <guid>https://xinqilin.github.io/tags/ubuntu/</guid>
       <description></description>
     </item>
     <item>
       <title>Collections</title>
-      <link>http://localhost:1313/tags/collections/</link>
+      <link>https://xinqilin.github.io/tags/collections/</link>
       <pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
-      <guid>http://localhost:1313/tags/collections/</guid>
+      <guid>https://xinqilin.github.io/tags/collections/</guid>
       <description></description>
     </item>
     <item>
       <title>Data Structure</title>
-      <link>http://localhost:1313/tags/data-structure/</link>
+      <link>https://xinqilin.github.io/tags/data-structure/</link>
       <pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
-      <guid>http://localhost:1313/tags/data-structure/</guid>
+      <guid>https://xinqilin.github.io/tags/data-structure/</guid>
       <description></description>
     </item>
     <item>
       <title>Red-Black Tree</title>
-      <link>http://localhost:1313/tags/red-black-tree/</link>
+      <link>https://xinqilin.github.io/tags/red-black-tree/</link>
       <pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
-      <guid>http://localhost:1313/tags/red-black-tree/</guid>
+      <guid>https://xinqilin.github.io/tags/red-black-tree/</guid>
       <description></description>
     </item>
     <item>
       <title>Sorting</title>
-      <link>http://localhost:1313/tags/sorting/</link>
+      <link>https://xinqilin.github.io/tags/sorting/</link>
       <pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
-      <guid>http://localhost:1313/tags/sorting/</guid>
+      <guid>https://xinqilin.github.io/tags/sorting/</guid>
       <description></description>
     </item>
     <item>
       <title>TreeSet</title>
-      <link>http://localhost:1313/tags/treeset/</link>
+      <link>https://xinqilin.github.io/tags/treeset/</link>
       <pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
-      <guid>http://localhost:1313/tags/treeset/</guid>
+      <guid>https://xinqilin.github.io/tags/treeset/</guid>
       <description></description>
     </item>
     <item>
       <title>Bash</title>
-      <link>http://localhost:1313/tags/bash/</link>
+      <link>https://xinqilin.github.io/tags/bash/</link>
       <pubDate>Sat, 01 Oct 2022 21:25:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/bash/</guid>
+      <guid>https://xinqilin.github.io/tags/bash/</guid>
       <description></description>
     </item>
     <item>
       <title>File System</title>
-      <link>http://localhost:1313/tags/file-system/</link>
+      <link>https://xinqilin.github.io/tags/file-system/</link>
       <pubDate>Sat, 01 Oct 2022 21:25:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/file-system/</guid>
+      <guid>https://xinqilin.github.io/tags/file-system/</guid>
       <description></description>
     </item>
     <item>
       <title>Scripting</title>
-      <link>http://localhost:1313/tags/scripting/</link>
+      <link>https://xinqilin.github.io/tags/scripting/</link>
       <pubDate>Sat, 01 Oct 2022 21:25:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/scripting/</guid>
+      <guid>https://xinqilin.github.io/tags/scripting/</guid>
       <description></description>
     </item>
     <item>
       <title>Algorithm</title>
-      <link>http://localhost:1313/tags/algorithm/</link>
+      <link>https://xinqilin.github.io/tags/algorithm/</link>
       <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
-      <guid>http://localhost:1313/tags/algorithm/</guid>
+      <guid>https://xinqilin.github.io/tags/algorithm/</guid>
       <description></description>
     </item>
     <item>
       <title>LinkedList</title>
-      <link>http://localhost:1313/tags/linkedlist/</link>
+      <link>https://xinqilin.github.io/tags/linkedlist/</link>
       <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
-      <guid>http://localhost:1313/tags/linkedlist/</guid>
+      <guid>https://xinqilin.github.io/tags/linkedlist/</guid>
       <description></description>
     </item>
     <item>
       <title>Pointer</title>
-      <link>http://localhost:1313/tags/pointer/</link>
+      <link>https://xinqilin.github.io/tags/pointer/</link>
       <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
-      <guid>http://localhost:1313/tags/pointer/</guid>
+      <guid>https://xinqilin.github.io/tags/pointer/</guid>
       <description></description>
     </item>
     <item>
       <title>Recursion</title>
-      <link>http://localhost:1313/tags/recursion/</link>
+      <link>https://xinqilin.github.io/tags/recursion/</link>
       <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
-      <guid>http://localhost:1313/tags/recursion/</guid>
+      <guid>https://xinqilin.github.io/tags/recursion/</guid>
       <description></description>
     </item>
     <item>
       <title>DisjointSet</title>
-      <link>http://localhost:1313/tags/disjointset/</link>
+      <link>https://xinqilin.github.io/tags/disjointset/</link>
       <pubDate>Mon, 26 Sep 2022 22:15:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/disjointset/</guid>
+      <guid>https://xinqilin.github.io/tags/disjointset/</guid>
       <description></description>
     </item>
     <item>
       <title>Graph</title>
-      <link>http://localhost:1313/tags/graph/</link>
+      <link>https://xinqilin.github.io/tags/graph/</link>
       <pubDate>Mon, 26 Sep 2022 22:15:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/graph/</guid>
+      <guid>https://xinqilin.github.io/tags/graph/</guid>
       <description></description>
     </item>
     <item>
       <title>UnionFind</title>
-      <link>http://localhost:1313/tags/unionfind/</link>
+      <link>https://xinqilin.github.io/tags/unionfind/</link>
       <pubDate>Mon, 26 Sep 2022 22:15:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/unionfind/</guid>
+      <guid>https://xinqilin.github.io/tags/unionfind/</guid>
       <description></description>
     </item>
     <item>
       <title>Backtracking</title>
-      <link>http://localhost:1313/tags/backtracking/</link>
+      <link>https://xinqilin.github.io/tags/backtracking/</link>
       <pubDate>Tue, 10 May 2022 23:34:53 +0800</pubDate>
-      <guid>http://localhost:1313/tags/backtracking/</guid>
+      <guid>https://xinqilin.github.io/tags/backtracking/</guid>
       <description></description>
     </item>
     <item>
       <title>Containerization</title>
-      <link>http://localhost:1313/tags/containerization/</link>
+      <link>https://xinqilin.github.io/tags/containerization/</link>
       <pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/containerization/</guid>
+      <guid>https://xinqilin.github.io/tags/containerization/</guid>
       <description></description>
     </item>
     <item>
       <title>DevOps</title>
-      <link>http://localhost:1313/tags/devops/</link>
+      <link>https://xinqilin.github.io/tags/devops/</link>
       <pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/devops/</guid>
+      <guid>https://xinqilin.github.io/tags/devops/</guid>
       <description></description>
     </item>
     <item>
       <title>BFS</title>
-      <link>http://localhost:1313/tags/bfs/</link>
+      <link>https://xinqilin.github.io/tags/bfs/</link>
       <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
-      <guid>http://localhost:1313/tags/bfs/</guid>
+      <guid>https://xinqilin.github.io/tags/bfs/</guid>
       <description></description>
     </item>
     <item>
       <title>DFS</title>
-      <link>http://localhost:1313/tags/dfs/</link>
+      <link>https://xinqilin.github.io/tags/dfs/</link>
       <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
-      <guid>http://localhost:1313/tags/dfs/</guid>
+      <guid>https://xinqilin.github.io/tags/dfs/</guid>
       <description></description>
     </item>
     <item>
       <title>TopologicalSort</title>
-      <link>http://localhost:1313/tags/topologicalsort/</link>
+      <link>https://xinqilin.github.io/tags/topologicalsort/</link>
       <pubDate>Sun, 26 Dec 2021 12:53:14 +0800</pubDate>
-      <guid>http://localhost:1313/tags/topologicalsort/</guid>
+      <guid>https://xinqilin.github.io/tags/topologicalsort/</guid>
       <description></description>
     </item>
     <item>
       <title>Async</title>
-      <link>http://localhost:1313/tags/async/</link>
+      <link>https://xinqilin.github.io/tags/async/</link>
       <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
-      <guid>http://localhost:1313/tags/async/</guid>
+      <guid>https://xinqilin.github.io/tags/async/</guid>
       <description></description>
     </item>
     <item>
       <title>Flux</title>
-      <link>http://localhost:1313/tags/flux/</link>
+      <link>https://xinqilin.github.io/tags/flux/</link>
       <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
-      <guid>http://localhost:1313/tags/flux/</guid>
+      <guid>https://xinqilin.github.io/tags/flux/</guid>
       <description></description>
     </item>
     <item>
       <title>Mono</title>
-      <link>http://localhost:1313/tags/mono/</link>
+      <link>https://xinqilin.github.io/tags/mono/</link>
       <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
-      <guid>http://localhost:1313/tags/mono/</guid>
+      <guid>https://xinqilin.github.io/tags/mono/</guid>
       <description></description>
     </item>
     <item>
       <title>Reactive</title>
-      <link>http://localhost:1313/tags/reactive/</link>
+      <link>https://xinqilin.github.io/tags/reactive/</link>
       <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
-      <guid>http://localhost:1313/tags/reactive/</guid>
+      <guid>https://xinqilin.github.io/tags/reactive/</guid>
       <description></description>
     </item>
     <item>
       <title>Reactor</title>
-      <link>http://localhost:1313/tags/reactor/</link>
+      <link>https://xinqilin.github.io/tags/reactor/</link>
       <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
-      <guid>http://localhost:1313/tags/reactor/</guid>
+      <guid>https://xinqilin.github.io/tags/reactor/</guid>
       <description></description>
     </item>
     <item>
       <title>WebFlux</title>
-      <link>http://localhost:1313/tags/webflux/</link>
+      <link>https://xinqilin.github.io/tags/webflux/</link>
       <pubDate>Wed, 01 Dec 2021 22:13:40 +0800</pubDate>
-      <guid>http://localhost:1313/tags/webflux/</guid>
+      <guid>https://xinqilin.github.io/tags/webflux/</guid>
       <description></description>
     </item>
     <item>
       <title>Tree</title>
-      <link>http://localhost:1313/tags/tree/</link>
+      <link>https://xinqilin.github.io/tags/tree/</link>
       <pubDate>Sun, 21 Nov 2021 20:11:03 +0800</pubDate>
-      <guid>http://localhost:1313/tags/tree/</guid>
+      <guid>https://xinqilin.github.io/tags/tree/</guid>
       <description></description>
     </item>
     <item>
       <title>遞歸</title>
-      <link>http://localhost:1313/tags/%E9%81%9E%E6%AD%B8/</link>
+      <link>https://xinqilin.github.io/tags/%E9%81%9E%E6%AD%B8/</link>
       <pubDate>Sun, 21 Nov 2021 20:11:03 +0800</pubDate>
-      <guid>http://localhost:1313/tags/%E9%81%9E%E6%AD%B8/</guid>
+      <guid>https://xinqilin.github.io/tags/%E9%81%9E%E6%AD%B8/</guid>
       <description></description>
     </item>
     <item>
       <title>NavigableMap</title>
-      <link>http://localhost:1313/tags/navigablemap/</link>
+      <link>https://xinqilin.github.io/tags/navigablemap/</link>
       <pubDate>Sun, 31 Oct 2021 19:16:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/navigablemap/</guid>
+      <guid>https://xinqilin.github.io/tags/navigablemap/</guid>
       <description></description>
     </item>
     <item>
       <title>TreeMap</title>
-      <link>http://localhost:1313/tags/treemap/</link>
+      <link>https://xinqilin.github.io/tags/treemap/</link>
       <pubDate>Sun, 31 Oct 2021 19:16:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/treemap/</guid>
+      <guid>https://xinqilin.github.io/tags/treemap/</guid>
       <description></description>
     </item>
     <item>
       <title>Query Builder</title>
-      <link>http://localhost:1313/tags/query-builder/</link>
+      <link>https://xinqilin.github.io/tags/query-builder/</link>
       <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
-      <guid>http://localhost:1313/tags/query-builder/</guid>
+      <guid>https://xinqilin.github.io/tags/query-builder/</guid>
       <description></description>
     </item>
     <item>
       <title>QueryDSL</title>
-      <link>http://localhost:1313/tags/querydsl/</link>
+      <link>https://xinqilin.github.io/tags/querydsl/</link>
       <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
-      <guid>http://localhost:1313/tags/querydsl/</guid>
+      <guid>https://xinqilin.github.io/tags/querydsl/</guid>
       <description></description>
     </item>
     <item>
       <title>Spring Data</title>
-      <link>http://localhost:1313/tags/spring-data/</link>
+      <link>https://xinqilin.github.io/tags/spring-data/</link>
       <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
-      <guid>http://localhost:1313/tags/spring-data/</guid>
+      <guid>https://xinqilin.github.io/tags/spring-data/</guid>
       <description></description>
     </item>
     <item>
       <title>Type Safety</title>
-      <link>http://localhost:1313/tags/type-safety/</link>
+      <link>https://xinqilin.github.io/tags/type-safety/</link>
       <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
-      <guid>http://localhost:1313/tags/type-safety/</guid>
+      <guid>https://xinqilin.github.io/tags/type-safety/</guid>
       <description></description>
     </item>
     <item>
       <title>Android</title>
-      <link>http://localhost:1313/tags/android/</link>
+      <link>https://xinqilin.github.io/tags/android/</link>
       <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
-      <guid>http://localhost:1313/tags/android/</guid>
+      <guid>https://xinqilin.github.io/tags/android/</guid>
       <description></description>
     </item>
     <item>
       <title>Initialization</title>
-      <link>http://localhost:1313/tags/initialization/</link>
+      <link>https://xinqilin.github.io/tags/initialization/</link>
       <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
-      <guid>http://localhost:1313/tags/initialization/</guid>
+      <guid>https://xinqilin.github.io/tags/initialization/</guid>
       <description></description>
     </item>
     <item>
       <title>Kotlin</title>
-      <link>http://localhost:1313/tags/kotlin/</link>
+      <link>https://xinqilin.github.io/tags/kotlin/</link>
       <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
-      <guid>http://localhost:1313/tags/kotlin/</guid>
+      <guid>https://xinqilin.github.io/tags/kotlin/</guid>
       <description></description>
     </item>
     <item>
       <title>Lateinit</title>
-      <link>http://localhost:1313/tags/lateinit/</link>
+      <link>https://xinqilin.github.io/tags/lateinit/</link>
       <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
-      <guid>http://localhost:1313/tags/lateinit/</guid>
+      <guid>https://xinqilin.github.io/tags/lateinit/</guid>
       <description></description>
     </item>
     <item>
       <title>Property</title>
-      <link>http://localhost:1313/tags/property/</link>
+      <link>https://xinqilin.github.io/tags/property/</link>
       <pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
-      <guid>http://localhost:1313/tags/property/</guid>
+      <guid>https://xinqilin.github.io/tags/property/</guid>
       <description></description>
     </item>
     <item>
       <title>API</title>
-      <link>http://localhost:1313/tags/api/</link>
+      <link>https://xinqilin.github.io/tags/api/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/api/</guid>
+      <guid>https://xinqilin.github.io/tags/api/</guid>
       <description></description>
     </item>
     <item>
       <title>CURL</title>
-      <link>http://localhost:1313/tags/curl/</link>
+      <link>https://xinqilin.github.io/tags/curl/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/curl/</guid>
+      <guid>https://xinqilin.github.io/tags/curl/</guid>
       <description></description>
     </item>
     <item>
       <title>HTTP</title>
-      <link>http://localhost:1313/tags/http/</link>
+      <link>https://xinqilin.github.io/tags/http/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/http/</guid>
+      <guid>https://xinqilin.github.io/tags/http/</guid>
       <description></description>
     </item>
     <item>
       <title>Network</title>
-      <link>http://localhost:1313/tags/network/</link>
+      <link>https://xinqilin.github.io/tags/network/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/network/</guid>
+      <guid>https://xinqilin.github.io/tags/network/</guid>
       <description></description>
     </item>
     <item>
       <title>REST</title>
-      <link>http://localhost:1313/tags/rest/</link>
+      <link>https://xinqilin.github.io/tags/rest/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/rest/</guid>
+      <guid>https://xinqilin.github.io/tags/rest/</guid>
       <description></description>
     </item>
     <item>
       <title>Web Development</title>
-      <link>http://localhost:1313/tags/web-development/</link>
+      <link>https://xinqilin.github.io/tags/web-development/</link>
       <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/web-development/</guid>
+      <guid>https://xinqilin.github.io/tags/web-development/</guid>
       <description></description>
     </item>
     <item>
       <title>Bridge</title>
-      <link>http://localhost:1313/tags/bridge/</link>
+      <link>https://xinqilin.github.io/tags/bridge/</link>
       <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/bridge/</guid>
+      <guid>https://xinqilin.github.io/tags/bridge/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker Compose</title>
-      <link>http://localhost:1313/tags/docker-compose/</link>
+      <link>https://xinqilin.github.io/tags/docker-compose/</link>
       <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/docker-compose/</guid>
+      <guid>https://xinqilin.github.io/tags/docker-compose/</guid>
       <description></description>
     </item>
     <item>
       <title>Host</title>
-      <link>http://localhost:1313/tags/host/</link>
+      <link>https://xinqilin.github.io/tags/host/</link>
       <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/host/</guid>
+      <guid>https://xinqilin.github.io/tags/host/</guid>
       <description></description>
     </item>
     <item>
       <title>Microservices</title>
-      <link>http://localhost:1313/tags/microservices/</link>
+      <link>https://xinqilin.github.io/tags/microservices/</link>
       <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/microservices/</guid>
+      <guid>https://xinqilin.github.io/tags/microservices/</guid>
       <description></description>
     </item>
     <item>
       <title>YAML</title>
-      <link>http://localhost:1313/tags/yaml/</link>
+      <link>https://xinqilin.github.io/tags/yaml/</link>
       <pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/yaml/</guid>
+      <guid>https://xinqilin.github.io/tags/yaml/</guid>
       <description></description>
     </item>
     <item>
       <title>Cross-Platform</title>
-      <link>http://localhost:1313/tags/cross-platform/</link>
+      <link>https://xinqilin.github.io/tags/cross-platform/</link>
       <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/cross-platform/</guid>
+      <guid>https://xinqilin.github.io/tags/cross-platform/</guid>
       <description></description>
     </item>
     <item>
       <title>Dockerfile</title>
-      <link>http://localhost:1313/tags/dockerfile/</link>
+      <link>https://xinqilin.github.io/tags/dockerfile/</link>
       <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/dockerfile/</guid>
+      <guid>https://xinqilin.github.io/tags/dockerfile/</guid>
       <description></description>
     </item>
     <item>
       <title>Multi-Stage Build</title>
-      <link>http://localhost:1313/tags/multi-stage-build/</link>
+      <link>https://xinqilin.github.io/tags/multi-stage-build/</link>
       <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/multi-stage-build/</guid>
+      <guid>https://xinqilin.github.io/tags/multi-stage-build/</guid>
       <description></description>
     </item>
     <item>
       <title>Node.js</title>
-      <link>http://localhost:1313/tags/node.js/</link>
+      <link>https://xinqilin.github.io/tags/node.js/</link>
       <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/node.js/</guid>
+      <guid>https://xinqilin.github.io/tags/node.js/</guid>
       <description></description>
     </item>
     <item>
       <title>Selenium</title>
-      <link>http://localhost:1313/tags/selenium/</link>
+      <link>https://xinqilin.github.io/tags/selenium/</link>
       <pubDate>Sun, 25 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/selenium/</guid>
+      <guid>https://xinqilin.github.io/tags/selenium/</guid>
       <description></description>
     </item>
     <item>
       <title>Image Build</title>
-      <link>http://localhost:1313/tags/image-build/</link>
+      <link>https://xinqilin.github.io/tags/image-build/</link>
       <pubDate>Sat, 24 Jul 2021 02:21:13 +0800</pubDate>
-      <guid>http://localhost:1313/tags/image-build/</guid>
+      <guid>https://xinqilin.github.io/tags/image-build/</guid>
       <description></description>
     </item>
     <item>
       <title>Autowired</title>
-      <link>http://localhost:1313/tags/autowired/</link>
+      <link>https://xinqilin.github.io/tags/autowired/</link>
       <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
-      <guid>http://localhost:1313/tags/autowired/</guid>
+      <guid>https://xinqilin.github.io/tags/autowired/</guid>
       <description></description>
     </item>
     <item>
       <title>Best Practices</title>
-      <link>http://localhost:1313/tags/best-practices/</link>
+      <link>https://xinqilin.github.io/tags/best-practices/</link>
       <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
-      <guid>http://localhost:1313/tags/best-practices/</guid>
+      <guid>https://xinqilin.github.io/tags/best-practices/</guid>
       <description></description>
     </item>
     <item>
       <title>Constructor</title>
-      <link>http://localhost:1313/tags/constructor/</link>
+      <link>https://xinqilin.github.io/tags/constructor/</link>
       <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
-      <guid>http://localhost:1313/tags/constructor/</guid>
+      <guid>https://xinqilin.github.io/tags/constructor/</guid>
       <description></description>
     </item>
     <item>
       <title>DI</title>
-      <link>http://localhost:1313/tags/di/</link>
+      <link>https://xinqilin.github.io/tags/di/</link>
       <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
-      <guid>http://localhost:1313/tags/di/</guid>
+      <guid>https://xinqilin.github.io/tags/di/</guid>
       <description></description>
     </item>
     <item>
       <title>IoC</title>
-      <link>http://localhost:1313/tags/ioc/</link>
+      <link>https://xinqilin.github.io/tags/ioc/</link>
       <pubDate>Sat, 10 Jul 2021 20:27:20 +0800</pubDate>
-      <guid>http://localhost:1313/tags/ioc/</guid>
+      <guid>https://xinqilin.github.io/tags/ioc/</guid>
       <description></description>
     </item>
     <item>
       <title>Clean Code</title>
-      <link>http://localhost:1313/tags/clean-code/</link>
+      <link>https://xinqilin.github.io/tags/clean-code/</link>
       <pubDate>Thu, 08 Jul 2021 21:20:39 +0800</pubDate>
-      <guid>http://localhost:1313/tags/clean-code/</guid>
+      <guid>https://xinqilin.github.io/tags/clean-code/</guid>
       <description></description>
     </item>
     <item>
       <title>Design Principles</title>
-      <link>http://localhost:1313/tags/design-principles/</link>
+      <link>https://xinqilin.github.io/tags/design-principles/</link>
       <pubDate>Thu, 08 Jul 2021 21:20:39 +0800</pubDate>
-      <guid>http://localhost:1313/tags/design-principles/</guid>
+      <guid>https://xinqilin.github.io/tags/design-principles/</guid>
       <description></description>
     </item>
     <item>
       <title>OOP</title>
-      <link>http://localhost:1313/tags/oop/</link>
+      <link>https://xinqilin.github.io/tags/oop/</link>
       <pubDate>Thu, 08 Jul 2021 21:20:39 +0800</pubDate>
-      <guid>http://localhost:1313/tags/oop/</guid>
+      <guid>https://xinqilin.github.io/tags/oop/</guid>
       <description></description>
     </item>
     <item>
       <title>Software Architecture</title>
-      <link>http://localhost:1313/tags/software-architecture/</link>
+      <link>https://xinqilin.github.io/tags/software-architecture/</link>
       <pubDate>Thu, 08 Jul 2021 21:20:39 +0800</pubDate>
-      <guid>http://localhost:1313/tags/software-architecture/</guid>
+      <guid>https://xinqilin.github.io/tags/software-architecture/</guid>
       <description></description>
     </item>
     <item>
       <title>SOLID</title>
-      <link>http://localhost:1313/tags/solid/</link>
+      <link>https://xinqilin.github.io/tags/solid/</link>
       <pubDate>Thu, 08 Jul 2021 21:20:39 +0800</pubDate>
-      <guid>http://localhost:1313/tags/solid/</guid>
+      <guid>https://xinqilin.github.io/tags/solid/</guid>
       <description></description>
     </item>
     <item>
       <title>Authentication</title>
-      <link>http://localhost:1313/tags/authentication/</link>
+      <link>https://xinqilin.github.io/tags/authentication/</link>
       <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
-      <guid>http://localhost:1313/tags/authentication/</guid>
+      <guid>https://xinqilin.github.io/tags/authentication/</guid>
       <description></description>
     </item>
     <item>
       <title>JWT</title>
-      <link>http://localhost:1313/tags/jwt/</link>
+      <link>https://xinqilin.github.io/tags/jwt/</link>
       <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
-      <guid>http://localhost:1313/tags/jwt/</guid>
+      <guid>https://xinqilin.github.io/tags/jwt/</guid>
       <description></description>
     </item>
     <item>
       <title>Spring Boot</title>
-      <link>http://localhost:1313/tags/spring-boot/</link>
+      <link>https://xinqilin.github.io/tags/spring-boot/</link>
       <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
-      <guid>http://localhost:1313/tags/spring-boot/</guid>
+      <guid>https://xinqilin.github.io/tags/spring-boot/</guid>
       <description></description>
     </item>
     <item>
       <title>Spring Security</title>
-      <link>http://localhost:1313/tags/spring-security/</link>
+      <link>https://xinqilin.github.io/tags/spring-security/</link>
       <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
-      <guid>http://localhost:1313/tags/spring-security/</guid>
+      <guid>https://xinqilin.github.io/tags/spring-security/</guid>
       <description></description>
     </item>
     <item>
       <title>Documentation</title>
-      <link>http://localhost:1313/tags/documentation/</link>
+      <link>https://xinqilin.github.io/tags/documentation/</link>
       <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
-      <guid>http://localhost:1313/tags/documentation/</guid>
+      <guid>https://xinqilin.github.io/tags/documentation/</guid>
       <description></description>
     </item>
     <item>
       <title>OpenAPI</title>
-      <link>http://localhost:1313/tags/openapi/</link>
+      <link>https://xinqilin.github.io/tags/openapi/</link>
       <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
-      <guid>http://localhost:1313/tags/openapi/</guid>
+      <guid>https://xinqilin.github.io/tags/openapi/</guid>
       <description></description>
     </item>
     <item>
       <title>SpringBoot</title>
-      <link>http://localhost:1313/tags/springboot/</link>
+      <link>https://xinqilin.github.io/tags/springboot/</link>
       <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
-      <guid>http://localhost:1313/tags/springboot/</guid>
+      <guid>https://xinqilin.github.io/tags/springboot/</guid>
       <description></description>
     </item>
     <item>
       <title>Swagger</title>
-      <link>http://localhost:1313/tags/swagger/</link>
+      <link>https://xinqilin.github.io/tags/swagger/</link>
       <pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
-      <guid>http://localhost:1313/tags/swagger/</guid>
+      <guid>https://xinqilin.github.io/tags/swagger/</guid>
       <description></description>
     </item>
     <item>
       <title>HTTP Client</title>
-      <link>http://localhost:1313/tags/http-client/</link>
+      <link>https://xinqilin.github.io/tags/http-client/</link>
       <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/http-client/</guid>
+      <guid>https://xinqilin.github.io/tags/http-client/</guid>
       <description></description>
     </item>
     <item>
       <title>REST API</title>
-      <link>http://localhost:1313/tags/rest-api/</link>
+      <link>https://xinqilin.github.io/tags/rest-api/</link>
       <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/rest-api/</guid>
+      <guid>https://xinqilin.github.io/tags/rest-api/</guid>
       <description></description>
     </item>
     <item>
       <title>RestTemplate</title>
-      <link>http://localhost:1313/tags/resttemplate/</link>
+      <link>https://xinqilin.github.io/tags/resttemplate/</link>
       <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/resttemplate/</guid>
+      <guid>https://xinqilin.github.io/tags/resttemplate/</guid>
       <description></description>
     </item>
     <item>
       <title>Web Service</title>
-      <link>http://localhost:1313/tags/web-service/</link>
+      <link>https://xinqilin.github.io/tags/web-service/</link>
       <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/web-service/</guid>
+      <guid>https://xinqilin.github.io/tags/web-service/</guid>
       <description></description>
     </item>
     <item>
       <title>Configuration</title>
-      <link>http://localhost:1313/tags/configuration/</link>
+      <link>https://xinqilin.github.io/tags/configuration/</link>
       <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/configuration/</guid>
+      <guid>https://xinqilin.github.io/tags/configuration/</guid>
       <description></description>
     </item>
     <item>
       <title>Kubernetes</title>
-      <link>http://localhost:1313/tags/kubernetes/</link>
+      <link>https://xinqilin.github.io/tags/kubernetes/</link>
       <pubDate>Tue, 29 Jun 2021 13:45:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/kubernetes/</guid>
+      <guid>https://xinqilin.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     <item>
       <title>Map</title>
-      <link>http://localhost:1313/tags/map/</link>
+      <link>https://xinqilin.github.io/tags/map/</link>
       <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
-      <guid>http://localhost:1313/tags/map/</guid>
+      <guid>https://xinqilin.github.io/tags/map/</guid>
       <description></description>
     </item>
     <item>
       <title>Performance</title>
-      <link>http://localhost:1313/tags/performance/</link>
+      <link>https://xinqilin.github.io/tags/performance/</link>
       <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
-      <guid>http://localhost:1313/tags/performance/</guid>
+      <guid>https://xinqilin.github.io/tags/performance/</guid>
       <description></description>
     </item>
     <item>
       <title>Stream API</title>
-      <link>http://localhost:1313/tags/stream-api/</link>
+      <link>https://xinqilin.github.io/tags/stream-api/</link>
       <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
-      <guid>http://localhost:1313/tags/stream-api/</guid>
+      <guid>https://xinqilin.github.io/tags/stream-api/</guid>
       <description></description>
     </item>
     <item>
       <title>Debugging</title>
-      <link>http://localhost:1313/tags/debugging/</link>
+      <link>https://xinqilin.github.io/tags/debugging/</link>
       <pubDate>Fri, 08 Jan 2021 21:39:14 +0800</pubDate>
-      <guid>http://localhost:1313/tags/debugging/</guid>
+      <guid>https://xinqilin.github.io/tags/debugging/</guid>
       <description></description>
     </item>
     <item>
       <title>Dig</title>
-      <link>http://localhost:1313/tags/dig/</link>
+      <link>https://xinqilin.github.io/tags/dig/</link>
       <pubDate>Fri, 08 Jan 2021 21:39:14 +0800</pubDate>
-      <guid>http://localhost:1313/tags/dig/</guid>
+      <guid>https://xinqilin.github.io/tags/dig/</guid>
       <description></description>
     </item>
     <item>
       <title>DNS</title>
-      <link>http://localhost:1313/tags/dns/</link>
+      <link>https://xinqilin.github.io/tags/dns/</link>
       <pubDate>Fri, 08 Jan 2021 21:39:14 +0800</pubDate>
-      <guid>http://localhost:1313/tags/dns/</guid>
+      <guid>https://xinqilin.github.io/tags/dns/</guid>
       <description></description>
     </item>
     <item>
       <title>File Transfer</title>
-      <link>http://localhost:1313/tags/file-transfer/</link>
+      <link>https://xinqilin.github.io/tags/file-transfer/</link>
       <pubDate>Tue, 05 Jan 2021 19:18:59 +0800</pubDate>
-      <guid>http://localhost:1313/tags/file-transfer/</guid>
+      <guid>https://xinqilin.github.io/tags/file-transfer/</guid>
       <description></description>
     </item>
     <item>
       <title>JSch</title>
-      <link>http://localhost:1313/tags/jsch/</link>
+      <link>https://xinqilin.github.io/tags/jsch/</link>
       <pubDate>Tue, 05 Jan 2021 19:18:59 +0800</pubDate>
-      <guid>http://localhost:1313/tags/jsch/</guid>
+      <guid>https://xinqilin.github.io/tags/jsch/</guid>
       <description></description>
     </item>
     <item>
       <title>SFTP</title>
-      <link>http://localhost:1313/tags/sftp/</link>
+      <link>https://xinqilin.github.io/tags/sftp/</link>
       <pubDate>Tue, 05 Jan 2021 19:18:59 +0800</pubDate>
-      <guid>http://localhost:1313/tags/sftp/</guid>
+      <guid>https://xinqilin.github.io/tags/sftp/</guid>
       <description></description>
     </item>
     <item>
       <title>Pageable</title>
-      <link>http://localhost:1313/tags/pageable/</link>
+      <link>https://xinqilin.github.io/tags/pageable/</link>
       <pubDate>Tue, 07 Jan 2020 13:26:41 +0800</pubDate>
-      <guid>http://localhost:1313/tags/pageable/</guid>
+      <guid>https://xinqilin.github.io/tags/pageable/</guid>
       <description></description>
     </item>
     <item>
       <title>Pagination</title>
-      <link>http://localhost:1313/tags/pagination/</link>
+      <link>https://xinqilin.github.io/tags/pagination/</link>
       <pubDate>Tue, 07 Jan 2020 13:26:41 +0800</pubDate>
-      <guid>http://localhost:1313/tags/pagination/</guid>
+      <guid>https://xinqilin.github.io/tags/pagination/</guid>
       <description></description>
     </item>
     <item>
       <title>Spring Data JPA</title>
-      <link>http://localhost:1313/tags/spring-data-jpa/</link>
+      <link>https://xinqilin.github.io/tags/spring-data-jpa/</link>
       <pubDate>Tue, 07 Jan 2020 13:26:41 +0800</pubDate>
-      <guid>http://localhost:1313/tags/spring-data-jpa/</guid>
+      <guid>https://xinqilin.github.io/tags/spring-data-jpa/</guid>
       <description></description>
     </item>
     <item>
       <title>Development</title>
-      <link>http://localhost:1313/tags/development/</link>
+      <link>https://xinqilin.github.io/tags/development/</link>
       <pubDate>Wed, 01 Jan 2020 20:31:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/development/</guid>
+      <guid>https://xinqilin.github.io/tags/development/</guid>
       <description></description>
     </item>
     <item>
       <title>Project Setup</title>
-      <link>http://localhost:1313/tags/project-setup/</link>
+      <link>https://xinqilin.github.io/tags/project-setup/</link>
       <pubDate>Wed, 01 Jan 2020 20:31:25 +0800</pubDate>
-      <guid>http://localhost:1313/tags/project-setup/</guid>
+      <guid>https://xinqilin.github.io/tags/project-setup/</guid>
       <description></description>
     </item>
     <item>
       <title>Annotation</title>
-      <link>http://localhost:1313/tags/annotation/</link>
+      <link>https://xinqilin.github.io/tags/annotation/</link>
       <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
-      <guid>http://localhost:1313/tags/annotation/</guid>
+      <guid>https://xinqilin.github.io/tags/annotation/</guid>
       <description></description>
     </item>
     <item>
       <title>Data</title>
-      <link>http://localhost:1313/tags/data/</link>
+      <link>https://xinqilin.github.io/tags/data/</link>
       <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
-      <guid>http://localhost:1313/tags/data/</guid>
+      <guid>https://xinqilin.github.io/tags/data/</guid>
       <description></description>
     </item>
     <item>
       <title>Web</title>
-      <link>http://localhost:1313/tags/web/</link>
+      <link>https://xinqilin.github.io/tags/web/</link>
       <pubDate>Thu, 05 Sep 2019 23:50:29 +0800</pubDate>
-      <guid>http://localhost:1313/tags/web/</guid>
+      <guid>https://xinqilin.github.io/tags/web/</guid>
       <description></description>
     </item>
     <item>
       <title>AWK</title>
-      <link>http://localhost:1313/tags/awk/</link>
+      <link>https://xinqilin.github.io/tags/awk/</link>
       <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/awk/</guid>
+      <guid>https://xinqilin.github.io/tags/awk/</guid>
       <description></description>
     </item>
     <item>
       <title>Data Analysis</title>
-      <link>http://localhost:1313/tags/data-analysis/</link>
+      <link>https://xinqilin.github.io/tags/data-analysis/</link>
       <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/data-analysis/</guid>
+      <guid>https://xinqilin.github.io/tags/data-analysis/</guid>
       <description></description>
     </item>
     <item>
       <title>Pattern Scanning</title>
-      <link>http://localhost:1313/tags/pattern-scanning/</link>
+      <link>https://xinqilin.github.io/tags/pattern-scanning/</link>
       <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/pattern-scanning/</guid>
+      <guid>https://xinqilin.github.io/tags/pattern-scanning/</guid>
       <description></description>
     </item>
     <item>
       <title>Text Processing</title>
-      <link>http://localhost:1313/tags/text-processing/</link>
+      <link>https://xinqilin.github.io/tags/text-processing/</link>
       <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
-      <guid>http://localhost:1313/tags/text-processing/</guid>
+      <guid>https://xinqilin.github.io/tags/text-processing/</guid>
       <description></description>
     </item>
     <item>
       <title>HashMap</title>
-      <link>http://localhost:1313/tags/hashmap/</link>
+      <link>https://xinqilin.github.io/tags/hashmap/</link>
       <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
-      <guid>http://localhost:1313/tags/hashmap/</guid>
+      <guid>https://xinqilin.github.io/tags/hashmap/</guid>
       <description></description>
     </item>
     <item>
       <title>Regular Expression</title>
-      <link>http://localhost:1313/tags/regular-expression/</link>
+      <link>https://xinqilin.github.io/tags/regular-expression/</link>
       <pubDate>Fri, 18 Jan 2019 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/regular-expression/</guid>
+      <guid>https://xinqilin.github.io/tags/regular-expression/</guid>
       <description></description>
     </item>
     <item>
       <title>Sed</title>
-      <link>http://localhost:1313/tags/sed/</link>
+      <link>https://xinqilin.github.io/tags/sed/</link>
       <pubDate>Fri, 18 Jan 2019 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/sed/</guid>
+      <guid>https://xinqilin.github.io/tags/sed/</guid>
       <description></description>
     </item>
     <item>
       <title>Stream Editor</title>
-      <link>http://localhost:1313/tags/stream-editor/</link>
+      <link>https://xinqilin.github.io/tags/stream-editor/</link>
       <pubDate>Fri, 18 Jan 2019 10:23:31 +0800</pubDate>
-      <guid>http://localhost:1313/tags/stream-editor/</guid>
+      <guid>https://xinqilin.github.io/tags/stream-editor/</guid>
       <description></description>
     </item>
     <item>
       <title>Creational Pattern</title>
-      <link>http://localhost:1313/tags/creational-pattern/</link>
+      <link>https://xinqilin.github.io/tags/creational-pattern/</link>
       <pubDate>Mon, 06 Aug 2018 23:05:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/creational-pattern/</guid>
+      <guid>https://xinqilin.github.io/tags/creational-pattern/</guid>
       <description></description>
     </item>
     <item>
       <title>Design Pattern</title>
-      <link>http://localhost:1313/tags/design-pattern/</link>
+      <link>https://xinqilin.github.io/tags/design-pattern/</link>
       <pubDate>Mon, 06 Aug 2018 23:05:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/design-pattern/</guid>
+      <guid>https://xinqilin.github.io/tags/design-pattern/</guid>
       <description></description>
     </item>
     <item>
       <title>Singleton</title>
-      <link>http://localhost:1313/tags/singleton/</link>
+      <link>https://xinqilin.github.io/tags/singleton/</link>
       <pubDate>Mon, 06 Aug 2018 23:05:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/singleton/</guid>
+      <guid>https://xinqilin.github.io/tags/singleton/</guid>
       <description></description>
     </item>
     <item>
       <title>Thread Safety</title>
-      <link>http://localhost:1313/tags/thread-safety/</link>
+      <link>https://xinqilin.github.io/tags/thread-safety/</link>
       <pubDate>Mon, 06 Aug 2018 23:05:44 +0800</pubDate>
-      <guid>http://localhost:1313/tags/thread-safety/</guid>
+      <guid>https://xinqilin.github.io/tags/thread-safety/</guid>
       <description></description>
     </item>
   </channel>
