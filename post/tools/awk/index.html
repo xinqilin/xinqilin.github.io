@@ -1,38 +1,93 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Awk - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Awk"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/awk/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Awk</h1><div class=post-meta><div class=post-info><time class=post-date>2019年04月06日</time>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>AWK 程式設計完整指南：Linux 文本處理與資料分析利器 - Bill.Lin's Notes</title><meta name=description content="深入解析 AWK 程式語言的完整用法，包含模式匹配、資料處理、內建變數與實戰應用場景"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="AWK 程式設計完整指南：Linux 文本處理與資料分析利器"><meta property="og:description" content="深入解析 AWK 程式語言的完整用法，包含模式匹配、資料處理、內建變數與實戰應用場景"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/awk/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>AWK 程式設計完整指南：Linux 文本處理與資料分析利器</h1><div class=post-meta><div class=post-info><time class=post-date>2019年04月06日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h3 id=awk>Awk</h3><blockquote><p>&lsquo;{print}&rsquo; 指令</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    awk <span class=s1>&#39;{print}&#39;</span> fileName
-</span></span></code></pre></td></tr></table></div></div><p>&lsquo;$0&rsquo;,&rsquo;$1&rsquo;~&rsquo;$N&rsquo; (N 為欄位數)
-$0: 一整行</p><p>example:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+<span class=reading-time>15 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>AWK 是一種強大的模式掃描和處理語言，由 Alfred Aho、Peter Weinberger 和 Brian Kernighan 於 1977 年在貝爾實驗室開發。AWK 特別適合處理結構化文本資料，能夠進行複雜的文本分析、報表生成和資料提取。</p><h3 id=核心特徵>核心特徵</h3><ul><li><strong>模式-動作程式設計</strong>：基於模式匹配執行相應動作</li><li><strong>自動欄位分割</strong>：自動將輸入行分割為欄位</li><li><strong>強大的內建變數</strong>：提供豐富的環境資訊</li><li><strong>數學運算能力</strong>：支援完整的算術和字串操作</li><li><strong>正規表達式支援</strong>：強大的模式匹配功能</li></ul><h2 id=基本語法>基本語法</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>    ls -l <span class=p>|</span> awk <span class=s1>&#39;{print $3,$9}&#39;</span>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>awk <span class=s1>&#39;pattern { action }&#39;</span> file<span class=o>(</span>s<span class=o>)</span>
+</span></span><span class=line><span class=cl>awk -f script.awk file<span class=o>(</span>s<span class=o>)</span>
+</span></span><span class=line><span class=cl><span class=nb>command</span> <span class=p>|</span> awk <span class=s1>&#39;pattern { action }&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=awk-程式結構>AWK 程式結構</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>awk <span class=s1>&#39;BEGIN { 初始化動作 } 
+</span></span></span><span class=line><span class=cl><span class=s1>     pattern { 主要處理動作 } 
+</span></span></span><span class=line><span class=cl><span class=s1>     END { 結束動作 }&#39;</span> file
+</span></span></code></pre></td></tr></table></div></div><h3 id=基本範例>基本範例</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 列印整個檔案</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print}&#39;</span> file.txt              <span class=c1># 等同於 awk &#39;{print $0}&#39; file.txt</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqi Applications</span>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqi Desktop</span>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqi Documents</span>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqi Downloads</span>
-</span></span></code></pre></td></tr></table></div></div><p>, => 空格</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span><span class=line><span class=cl><span class=c1># 列印特定欄位</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print $1, $3}&#39;</span> file.txt       <span class=c1># 列印第1和第3欄位</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 簡單過濾</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/pattern/ {print}&#39;</span> file.txt    <span class=c1># 列印包含 pattern 的行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 計算統計</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{sum += $1} END {print sum}&#39;</span> file.txt  <span class=c1># 計算第1欄位總和</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=欄位和記錄>欄位和記錄</h2><h3 id=欄位處理>欄位處理</h3><p>AWK 自動將每行輸入分割為欄位，預設分隔符為空白字元：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 欄位變數</span>
+</span></span><span class=line><span class=cl><span class=nv>$0</span>      <span class=c1># 整行內容</span>
+</span></span><span class=line><span class=cl><span class=nv>$1</span>      <span class=c1># 第1個欄位</span>
+</span></span><span class=line><span class=cl><span class=nv>$2</span>      <span class=c1># 第2個欄位</span>
+</span></span><span class=line><span class=cl><span class=nv>$NF</span>     <span class=c1># 最後一個欄位</span>
+</span></span><span class=line><span class=cl><span class=k>$(</span>NF-1<span class=k>)</span> <span class=c1># 倒數第2個欄位</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 實際範例</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;apple banana cherry&#34;</span> <span class=p>|</span> awk <span class=s1>&#39;{print $2}&#39;</span>        <span class=c1># banana</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;1 2 3 4 5&#34;</span> <span class=p>|</span> awk <span class=s1>&#39;{print $NF}&#39;</span>                 <span class=c1># 5</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;a:b:c:d&#34;</span> <span class=p>|</span> awk -F: <span class=s1>&#39;{print $3}&#39;</span>                <span class=c1># c</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=自訂分隔符>自訂分隔符</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
 </span><span class=lnt>7
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>    ls -l <span class=p>|</span> awk <span class=s1>&#39;{print $3 $9}&#39;</span>
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用 -F 選項</span>
+</span></span><span class=line><span class=cl>awk -F: <span class=s1>&#39;{print $1, $3}&#39;</span> /etc/passwd                 <span class=c1># 使用冒號作分隔符</span>
+</span></span><span class=line><span class=cl>awk -F<span class=s1>&#39;,&#39;</span> <span class=s1>&#39;{print $2}&#39;</span> data.csv                      <span class=c1># CSV 檔案處理</span>
+</span></span><span class=line><span class=cl>awk -F<span class=s1>&#39;[,:]&#39;</span> <span class=s1>&#39;{print $1, $3}&#39;</span> file.txt               <span class=c1># 多個分隔符</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqiApplications</span>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqiDesktop</span>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqiDocuments</span>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqiDownloads</span>
-</span></span><span class=line><span class=cl>    <span class=c1># linxinqiLibrary</span>
-</span></span></code></pre></td></tr></table></div></div><p>自訂格式化輸出, 也可做數學運算</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span><span class=line><span class=cl><span class=c1># 在程式中設定</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;BEGIN {FS=&#34;,&#34;} {print $1, $2}&#39;</span> data.csv         <span class=c1># 在 BEGIN 中設定</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{FS=&#34;,&#34;} NR&gt;1 {print $1, $2}&#39;</span> data.csv          <span class=c1># 動態改變分隔符</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=輸出欄位分隔符>輸出欄位分隔符</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 設定輸出分隔符</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;BEGIN {OFS=&#34;\t&#34;} {print $1, $2, $3}&#39;</span> file.txt   <span class=c1># 使用 tab 分隔輸出</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;BEGIN {OFS=&#34; | &#34;} {print $1, $2}&#39;</span> file.txt      <span class=c1># 使用 &#34; | &#34; 分隔</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重建行</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{$1=$1; print}&#39;</span> file.txt                        <span class=c1># 重新格式化空白</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;BEGIN {OFS=&#34;,&#34;} {$1=$1; print}&#39;</span> file.txt        <span class=c1># 轉換為 CSV 格式</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=內建變數>內建變數</h2><h3 id=核心內建變數>核心內建變數</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -44,54 +99,1347 @@ $0: 一整行</p><p>example:</p><div class=highlight><div class=chroma><table cl
 </span><span class=lnt>10
 </span><span class=lnt>11
 </span><span class=lnt>12
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1># awk &#39;{print $1 &#34;\t&#34; $3}&#39; =&gt; 可輸出特殊格式字元</span>
-</span></span><span class=line><span class=cl>    ll <span class=p>|</span> awk <span class=s1>&#39;{print &#34;userName: &#34;, $3, &#34;fileName: &#34;, $9}&#39;</span>
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 記錄相關</span>
+</span></span><span class=line><span class=cl>NR      <span class=c1># 總記錄數（行號）</span>
+</span></span><span class=line><span class=cl>FNR     <span class=c1># 當前檔案的記錄數</span>
+</span></span><span class=line><span class=cl>NF      <span class=c1># 當前記錄的欄位數</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1># userName:  linxinqi fileName:  Applications</span>
-</span></span><span class=line><span class=cl>    <span class=c1># userName:  linxinqi fileName:  Desktop</span>
-</span></span><span class=line><span class=cl>    <span class=c1># userName:  linxinqi fileName:  Documents</span>
-</span></span><span class=line><span class=cl>    <span class=c1># userName:  linxinqi fileName:  Downloads</span>
+</span></span><span class=line><span class=cl><span class=c1># 分隔符相關</span>
+</span></span><span class=line><span class=cl>FS      <span class=c1># 輸入欄位分隔符</span>
+</span></span><span class=line><span class=cl>OFS     <span class=c1># 輸出欄位分隔符</span>
+</span></span><span class=line><span class=cl>RS      <span class=c1># 輸入記錄分隔符</span>
+</span></span><span class=line><span class=cl>ORS     <span class=c1># 輸出記錄分隔符</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    awk <span class=s1>&#39;{print $1 + $2}&#39;</span> -    <span class=c1>#  &#39;-&#39; 叫鍵盤出來</span>
-</span></span><span class=line><span class=cl>    <span class=c1># 1 2</span>
-</span></span><span class=line><span class=cl>    <span class=c1># 3</span>
-</span></span></code></pre></td></tr></table></div></div><p>使用外部 script</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>    ls -l <span class=p>|</span> awk -f <span class=o>{</span>sciptFileName<span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><p>＝＝＝＝＝ advanced ＝＝＝＝＝</p><p>awk &lsquo;BEGIN{statement} {main statement} END{statement}&rsquo;<br>BEGIN, END 執行一次 main 可多次</p><p>String ~ /regex/[actions] => String match regex, then execute actions
-String !~ /regex/[actions] => String not match regex, then execute actions
-/regex/[actions] file => file match regex, then execute actions
-!/regex/[actions] file => file not match regex, then execute actions</p><blockquote><p>&ldquo;NF&rdquo; => Number of Fields
-印有幾段</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>    awk <span class=s1>&#39;{print NF}&#39;</span>  xxx.txt  
-</span></span></code></pre></td></tr></table></div></div><blockquote><p>&ldquo;NR&rdquo; => Number of Records
-可用來判斷條件</p></blockquote><p>若是第七行, 則整行印出來</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>    awk <span class=s1>&#39;NR == 7{print NR, $0}&#39;</span>
-</span></span></code></pre></td></tr></table></div></div><blockquote><p>&ldquo;ARGC&rdquo; => number of arguments
-<code>awk 'BEGIN {print "Arguments =", ARGC}' One Two Three Four</code> => Arguments = 5</p></blockquote><blockquote><p>&ldquo;ARGV&rdquo; => input arguments in vector</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span><span class=line><span class=cl><span class=c1># 檔案相關</span>
+</span></span><span class=line><span class=cl>FILENAME    <span class=c1># 當前處理的檔案名</span>
+</span></span><span class=line><span class=cl>ARGC        <span class=c1># 命令行參數個數</span>
+</span></span><span class=line><span class=cl>ARGV        <span class=c1># 命令行參數陣列</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=實用範例>實用範例</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用 NR 添加行號</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print NR, $0}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用 NF 檢查欄位數</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;NF != 3 {print &#34;Line &#34; NR &#34; has &#34; NF &#34; fields&#34;}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 處理多個檔案時使用 FNR</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print FILENAME, FNR, $0}&#39;</span> file1.txt file2.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用 ARGC 和 ARGV</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;BEGIN {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Total arguments:&#34;, ARGC
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i=0; i&lt;ARGC; i++) print &#34;ARGV[&#34; i &#34;]:&#34;, ARGV[i]
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file1 file2
+</span></span></code></pre></td></tr></table></div></div><h3 id=特殊變數>特殊變數</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 數字格式</span>
+</span></span><span class=line><span class=cl>OFMT        <span class=c1># 數字輸出格式（預設 &#34;%.6g&#34;）</span>
+</span></span><span class=line><span class=cl>CONVFMT     <span class=c1># 字串轉換格式</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 模式匹配</span>
+</span></span><span class=line><span class=cl>RSTART      <span class=c1># match() 函數匹配的起始位置</span>
+</span></span><span class=line><span class=cl>RLENGTH     <span class=c1># match() 函數匹配的長度</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 其他</span>
+</span></span><span class=line><span class=cl>SUBSEP      <span class=c1># 下標分隔符（用於多維陣列）</span>
+</span></span><span class=line><span class=cl>ENVIRON     <span class=c1># 環境變數陣列</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=模式匹配>模式匹配</h2><h3 id=基本模式>基本模式</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 正規表達式模式</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/pattern/ {print}&#39;</span> file.txt              <span class=c1># 匹配包含 pattern 的行</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/^[0-9]/ {print}&#39;</span> file.txt               <span class=c1># 匹配以數字開頭的行</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/\.txt$/ {print}&#39;</span> file.txt               <span class=c1># 匹配以 .txt 結尾的行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 關係表達式模式</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;$1 &gt; 100 {print}&#39;</span> file.txt               <span class=c1># 第1欄位 &gt; 100</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;NF == 5 {print}&#39;</span> file.txt                <span class=c1># 有5個欄位的行</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;length($0) &gt; 80 {print}&#39;</span> file.txt        <span class=c1># 行長度 &gt; 80</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 範圍模式</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/start/,/end/ {print}&#39;</span> file.txt          <span class=c1># 從 start 到 end 的行</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;NR==5,NR==10 {print}&#39;</span> file.txt           <span class=c1># 第5到10行</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=進階模式>進階模式</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 組合模式</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/error/ &amp;&amp; $3 &gt; 100 {print}&#39;</span> file.txt    <span class=c1># AND 條件</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/warn/ || /error/ {print}&#39;</span> file.txt      <span class=c1># OR 條件</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;!/debug/ {print}&#39;</span> file.txt               <span class=c1># NOT 條件</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 欄位模式匹配</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;$2 ~ /pattern/ {print}&#39;</span> file.txt         <span class=c1># 第2欄位匹配 pattern</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;$1 !~ /^[0-9]/ {print}&#39;</span> file.txt         <span class=c1># 第1欄位不以數字開頭</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 複雜條件</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;$1==&#34;ERROR&#34; &amp;&amp; $3&gt;threshold {count++} END {print count}&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h2 id=動作和控制結構>動作和控制結構</h2><h3 id=基本動作>基本動作</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>    awk <span class=s1>&#39;BEGIN { 
-</span></span></span><span class=line><span class=cl><span class=s1>    for (i = 0; i &lt; ARGC - 1; ++i) { 
-</span></span></span><span class=line><span class=cl><span class=s1>        printf &#34;ARGV[%d] = %s\n&#34;, i, ARGV[i] 
-</span></span></span><span class=line><span class=cl><span class=s1>    } 
-</span></span></span><span class=line><span class=cl><span class=s1>    }&#39;</span> one two three four
-</span></span></code></pre></td></tr></table></div></div><blockquote><p>正則 /regularExpress/
-前綴符合 /^abc/
-後綴符合 /abc$/
-跳脫 //abc/
-跟java 一樣 /a[a-z]{3}c/
-^否定pattern /a[^a-z]c/ => abc -> 不合, aBc -> 符合</p><ul><li>=> 可出現次數 0 ~ 無限 /a*b/</li></ul><ul><li>=> 可出現次數 1 ~ 無限 /a+b/
-? => 可有可沒有 /a?b/</li></ul></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>    awk <span class=s1>&#39;/abc/{print $0}&#39;</span> data.txt
-</span></span></code></pre></td></tr></table></div></div><blockquote><p>&ldquo;FNR&rdquo; => record number in current file
-&ldquo;IGNORECASE&rdquo; => ignore case
-&ldquo;OFMT&rdquo; => output format for numbers
-&ldquo;RSTART&rdquo; => index of first character matched by match
-&ldquo;RLENGTH&rdquo; => match length of string matched by match</p></blockquote><p>reference:
-<a href=https://www.hy-star.com.tw/tech/linux/awk/awk.html#awk_basic alt="awk basic" target=_blank>awk basic</a>
-<a href=https://www.tutorialspoint.com/awk/awk_built_in_variables.htm alt="awk tutorial" target=_blank>awk tutorial</a></p></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 列印動作</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print}&#39;</span> file.txt                        <span class=c1># 列印整行</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print $1, $2}&#39;</span> file.txt                 <span class=c1># 列印特定欄位</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{printf &#34;%s: %d\n&#34;, $1, $2}&#39;</span> file.txt    <span class=c1># 格式化列印</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 賦值動作</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{$1=&#34;NEW&#34;; print}&#39;</span> file.txt              <span class=c1># 修改欄位值</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{sum += $1} END {print sum}&#39;</span> file.txt    <span class=c1># 累加計算</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=控制結構>控制結構</h3><h4 id=if-else-語句>if-else 語句</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本 if 語句</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    if ($1 &gt; 100) 
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;Large:&#34;, $0
+</span></span></span><span class=line><span class=cl><span class=s1>    else 
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;Small:&#34;, $0
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 多重條件</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    if ($1 &gt;= 90) grade = &#34;A&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    else if ($1 &gt;= 80) grade = &#34;B&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    else if ($1 &gt;= 70) grade = &#34;C&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    else grade = &#34;F&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    print $0, grade
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> scores.txt
+</span></span></code></pre></td></tr></table></div></div><h4 id=迴圈結構>迴圈結構</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># for 迴圈</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i=1; i&lt;=NF; i++) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;Field &#34; i &#34;:&#34;, $i
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># while 迴圈</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    i = 1
+</span></span></span><span class=line><span class=cl><span class=s1>    while (i &lt;= NF) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print $i
+</span></span></span><span class=line><span class=cl><span class=s1>        i++
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># for-in 迴圈（陣列）</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i in array) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print i, array[i]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h2 id=函數應用>函數應用</h2><h3 id=字串函數>字串函數</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># length() - 字串長度</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print length($0)}&#39;</span> file.txt                     <span class=c1># 每行長度</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;length($0) &gt; 80&#39;</span> file.txt                        <span class=c1># 長度超過80的行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># substr() - 子字串</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print substr($1, 1, 3)}&#39;</span> file.txt               <span class=c1># 第1欄位前3個字元</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print substr($0, 5)}&#39;</span> file.txt                  <span class=c1># 從第5個字元開始</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># index() - 查找位置</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print index($0, &#34;pattern&#34;)}&#39;</span> file.txt           <span class=c1># pattern 的位置</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># split() - 分割字串</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{n=split($0, array, &#34;,&#34;); print n}&#39;</span> file.txt     <span class=c1># 用逗號分割</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># gsub() 和 sub() - 替換</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{gsub(/old/, &#34;new&#34;); print}&#39;</span> file.txt            <span class=c1># 全域替換</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{sub(/old/, &#34;new&#34;); print}&#39;</span> file.txt             <span class=c1># 只替換第一個</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># tolower() 和 toupper() - 大小寫轉換</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print tolower($0)}&#39;</span> file.txt                    <span class=c1># 轉小寫</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print toupper($1)}&#39;</span> file.txt                    <span class=c1># 第1欄位轉大寫</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=數學函數>數學函數</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本數學函數</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print sqrt($1)}&#39;</span> file.txt                       <span class=c1># 平方根</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print int($1)}&#39;</span> file.txt                        <span class=c1># 取整數</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print sin($1), cos($1)}&#39;</span> file.txt               <span class=c1># 三角函數</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 統計函數</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    sum += $1
+</span></span></span><span class=line><span class=cl><span class=s1>    count++
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Average:&#34;, sum/count
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Total:&#34;, sum
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 最大值和最小值</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    if (NR==1 || $1 &gt; max) max = $1
+</span></span></span><span class=line><span class=cl><span class=s1>    if (NR==1 || $1 &lt; min) min = $1
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Max:&#34;, max, &#34;Min:&#34;, min
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h3 id=自訂函數>自訂函數</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 定義函數</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>function factorial(n) {
+</span></span></span><span class=line><span class=cl><span class=s1>    if (n &lt;= 1) return 1
+</span></span></span><span class=line><span class=cl><span class=s1>    return n * factorial(n-1)
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>{
+</span></span></span><span class=line><span class=cl><span class=s1>    print $1, factorial($1)
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 字串處理函數</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>function trim(str) {
+</span></span></span><span class=line><span class=cl><span class=s1>    gsub(/^[ \t]+|[ \t]+$/, &#34;&#34;, str)
+</span></span></span><span class=line><span class=cl><span class=s1>    return str
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>{
+</span></span></span><span class=line><span class=cl><span class=s1>    print trim($0)
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h2 id=陣列應用>陣列應用</h2><h3 id=一維陣列>一維陣列</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本陣列操作</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    arr[NR] = $0
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i=1; i&lt;=NR; i++) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print i, arr[i]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 關聯陣列</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    count[$1]++
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    for (item in count) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print item, count[item]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 陣列排序</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    arr[NR] = $1
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    n = asort(arr)  # 排序值
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i=1; i&lt;=n; i++) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print arr[i]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h3 id=多維陣列>多維陣列</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用 SUBSEP 分隔多維索引</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;BEGIN {SUBSEP = &#34;:&#34;} {
+</span></span></span><span class=line><span class=cl><span class=s1>    matrix[$1,$2] = $3
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    for (key in matrix) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print key, matrix[key]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 二維統計</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    sales[$1][$2] += $3
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    for (region in sales) {
+</span></span></span><span class=line><span class=cl><span class=s1>        for (product in sales[region]) {
+</span></span></span><span class=line><span class=cl><span class=s1>            print region, product, sales[region][product]
+</span></span></span><span class=line><span class=cl><span class=s1>        }
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> sales_data.txt
+</span></span></code></pre></td></tr></table></div></div><h2 id=實戰應用場景>實戰應用場景</h2><h3 id=1-日誌分析>1. 日誌分析</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 存取日誌分析</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    # 統計狀態碼
+</span></span></span><span class=line><span class=cl><span class=s1>    status[$9]++
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    # 統計 IP 地址
+</span></span></span><span class=line><span class=cl><span class=s1>    ip[$1]++
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    # 計算總流量
+</span></span></span><span class=line><span class=cl><span class=s1>    if ($10 != &#34;-&#34;) bytes += $10
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;=== Status Code Statistics ===&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (code in status) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print code, status[code]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;\n=== Top 10 IP Addresses ===&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    PROCINFO[&#34;sorted_in&#34;] = &#34;@val_num_desc&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    n = 0
+</span></span></span><span class=line><span class=cl><span class=s1>    for (addr in ip) {
+</span></span></span><span class=line><span class=cl><span class=s1>        if (++n &lt;= 10) print addr, ip[addr]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;\nTotal Bytes:&#34;, bytes
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> access.log
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 錯誤日誌監控</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>BEGIN { print &#34;Error Analysis Report&#34; }
+</span></span></span><span class=line><span class=cl><span class=s1>/ERROR|FATAL/ {
+</span></span></span><span class=line><span class=cl><span class=s1>    split($1, date, &#34;-&#34;)
+</span></span></span><span class=line><span class=cl><span class=s1>    errors[date[1] &#34;-&#34; date[2]]++
+</span></span></span><span class=line><span class=cl><span class=s1>    error_details[NR] = $0
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Errors by Month:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (month in errors) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print month, errors[month]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> error.log
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-資料處理和統計>2. 資料處理和統計</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># CSV 資料分析</span>
+</span></span><span class=line><span class=cl>awk -F, <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>NR==1 { 
+</span></span></span><span class=line><span class=cl><span class=s1>    # 跳過標題行
+</span></span></span><span class=line><span class=cl><span class=s1>    next 
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>{
+</span></span></span><span class=line><span class=cl><span class=s1>    # 銷售資料統計
+</span></span></span><span class=line><span class=cl><span class=s1>    total_sales += $3
+</span></span></span><span class=line><span class=cl><span class=s1>    sales_by_region[$2] += $3
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    if ($3 &gt; max_sale) {
+</span></span></span><span class=line><span class=cl><span class=s1>        max_sale = $3
+</span></span></span><span class=line><span class=cl><span class=s1>        max_sale_record = $0
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Total Sales: $&#34; total_sales
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Average Sale: $&#34; total_sales/(NR-1)
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Largest Sale: $&#34; max_sale
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Record:&#34;, max_sale_record
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;\nSales by Region:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (region in sales_by_region) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print region &#34;: $&#34; sales_by_region[region]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> sales.csv
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 成績統計</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    # 計算每個學生的平均分
+</span></span></span><span class=line><span class=cl><span class=s1>    sum = 0
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i=2; i&lt;=NF; i++) {
+</span></span></span><span class=line><span class=cl><span class=s1>        sum += $i
+</span></span></span><span class=line><span class=cl><span class=s1>        subject_total[i-1] += $i
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    avg = sum / (NF-1)
+</span></span></span><span class=line><span class=cl><span class=s1>    print $1, avg
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    if (avg &gt;= 90) grade_count[&#34;A&#34;]++
+</span></span></span><span class=line><span class=cl><span class=s1>    else if (avg &gt;= 80) grade_count[&#34;B&#34;]++
+</span></span></span><span class=line><span class=cl><span class=s1>    else if (avg &gt;= 70) grade_count[&#34;C&#34;]++
+</span></span></span><span class=line><span class=cl><span class=s1>    else grade_count[&#34;F&#34;]++
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    student_count++
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;\nGrade Distribution:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (grade in grade_count) {
+</span></span></span><span class=line><span class=cl><span class=s1>        printf &#34;%s: %d (%.1f%%)\n&#34;, grade, grade_count[grade], 
+</span></span></span><span class=line><span class=cl><span class=s1>               grade_count[grade]/student_count*100
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> grades.txt
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-系統監控>3. 系統監控</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 程序監控</span>
+</span></span><span class=line><span class=cl>ps aux <span class=p>|</span> awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>NR&gt;1 {
+</span></span></span><span class=line><span class=cl><span class=s1>    # 跳過標題行
+</span></span></span><span class=line><span class=cl><span class=s1>    cpu[$11] += $3  # 依程式名稱累加 CPU 使用率
+</span></span></span><span class=line><span class=cl><span class=s1>    mem[$11] += $4  # 依程式名稱累加記憶體使用率
+</span></span></span><span class=line><span class=cl><span class=s1>    proc_count[$11]++
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Process Resource Usage:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;%-20s %s %s %s\n&#34;, &#34;PROCESS&#34;, &#34;COUNT&#34;, &#34;CPU%&#34;, &#34;MEM%&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (proc in cpu) {
+</span></span></span><span class=line><span class=cl><span class=s1>        printf &#34;%-20s %5d %6.1f %6.1f\n&#34;, proc, proc_count[proc], cpu[proc], mem[proc]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 磁碟使用分析</span>
+</span></span><span class=line><span class=cl>df -h <span class=p>|</span> awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>NR&gt;1 {
+</span></span></span><span class=line><span class=cl><span class=s1>    # 解析使用百分比
+</span></span></span><span class=line><span class=cl><span class=s1>    gsub(/%/, &#34;&#34;, $5)
+</span></span></span><span class=line><span class=cl><span class=s1>    usage = $5
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    if (usage &gt;= 90) {
+</span></span></span><span class=line><span class=cl><span class=s1>        critical[++crit_count] = $6 &#34; (&#34; usage &#34;%)&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    } else if (usage &gt;= 80) {
+</span></span></span><span class=line><span class=cl><span class=s1>        warning[++warn_count] = $6 &#34; (&#34; usage &#34;%)&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    if (crit_count &gt; 0) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;CRITICAL: High disk usage detected!&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>        for (i=1; i&lt;=crit_count; i++) {
+</span></span></span><span class=line><span class=cl><span class=s1>            print &#34;  &#34; critical[i]
+</span></span></span><span class=line><span class=cl><span class=s1>        }
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    if (warn_count &gt; 0) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;WARNING: Moderate disk usage:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>        for (i=1; i&lt;=warn_count; i++) {
+</span></span></span><span class=line><span class=cl><span class=s1>            print &#34;  &#34; warning[i]
+</span></span></span><span class=line><span class=cl><span class=s1>        }
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=4-文件格式轉換>4. 文件格式轉換</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># JSON 簡單生成</span>
+</span></span><span class=line><span class=cl>awk -F, <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>BEGIN { print &#34;{&#34; }
+</span></span></span><span class=line><span class=cl><span class=s1>NR&gt;1 {
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;  \&#34;%s\&#34;: {\n&#34;, $1
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;    \&#34;name\&#34;: \&#34;%s\&#34;,\n&#34;, $2
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;    \&#34;age\&#34;: %d,\n&#34;, $3
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;    \&#34;city\&#34;: \&#34;%s\&#34;\n&#34;, $4
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;  }%s\n&#34;, (NR&lt;total_lines ? &#34;,&#34; : &#34;&#34;)
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END { print &#34;}&#34; }&#39;</span> data.csv
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># HTML 表格生成</span>
+</span></span><span class=line><span class=cl>awk -F, <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>BEGIN {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;&lt;table border=\&#34;1\&#34;&gt;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>NR==1 {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;&lt;tr&gt;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i=1; i&lt;=NF; i++) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;&lt;th&gt;&#34; $i &#34;&lt;/th&gt;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;&lt;/tr&gt;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>NR&gt;1 {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;&lt;tr&gt;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i=1; i&lt;=NF; i++) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;&lt;td&gt;&#34; $i &#34;&lt;/td&gt;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;&lt;/tr&gt;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;&lt;/table&gt;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> data.csv
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置檔轉換</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>/^[^#]/ &amp;&amp; /=/ {
+</span></span></span><span class=line><span class=cl><span class=s1>    split($0, pair, &#34;=&#34;)
+</span></span></span><span class=line><span class=cl><span class=s1>    key = pair[1]
+</span></span></span><span class=line><span class=cl><span class=s1>    value = pair[2]
+</span></span></span><span class=line><span class=cl><span class=s1>    gsub(/^[ \t]+|[ \t]+$/, &#34;&#34;, key)   # trim
+</span></span></span><span class=line><span class=cl><span class=s1>    gsub(/^[ \t]+|[ \t]+$/, &#34;&#34;, value)
+</span></span></span><span class=line><span class=cl><span class=s1>    print key &#34;: \&#34;&#34; value &#34;\&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> config.ini
+</span></span></code></pre></td></tr></table></div></div><h3 id=5-報表生成>5. 報表生成</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 銷售報表</span>
+</span></span><span class=line><span class=cl>awk -F, <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>BEGIN {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Sales Report&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;============&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    total = 0
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>NR&gt;1 {
+</span></span></span><span class=line><span class=cl><span class=s1>    date = $1
+</span></span></span><span class=line><span class=cl><span class=s1>    product = $2
+</span></span></span><span class=line><span class=cl><span class=s1>    amount = $3
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    # 按日期統計
+</span></span></span><span class=line><span class=cl><span class=s1>    daily_sales[date] += amount
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    # 按產品統計
+</span></span></span><span class=line><span class=cl><span class=s1>    product_sales[product] += amount
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    total += amount
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;\nDaily Sales:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    PROCINFO[&#34;sorted_in&#34;] = &#34;@ind_str_asc&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (date in daily_sales) {
+</span></span></span><span class=line><span class=cl><span class=s1>        printf &#34;%-12s: $%8.2f\n&#34;, date, daily_sales[date]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;\nProduct Sales:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    PROCINFO[&#34;sorted_in&#34;] = &#34;@val_num_desc&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (product in product_sales) {
+</span></span></span><span class=line><span class=cl><span class=s1>        printf &#34;%-15s: $%8.2f (%4.1f%%)\n&#34;, 
+</span></span></span><span class=line><span class=cl><span class=s1>               product, product_sales[product], 
+</span></span></span><span class=line><span class=cl><span class=s1>               product_sales[product]/total*100
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;\nTotal Sales: $%.2f\n&#34;, total
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> sales.csv
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 網站流量報表</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    # 解析日期時間
+</span></span></span><span class=line><span class=cl><span class=s1>    gsub(/\[|\]/, &#34;&#34;, $4)
+</span></span></span><span class=line><span class=cl><span class=s1>    split($4, datetime, &#34;:&#34;)
+</span></span></span><span class=line><span class=cl><span class=s1>    date = datetime[1]
+</span></span></span><span class=line><span class=cl><span class=s1>    hour = datetime[2]
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    # 統計
+</span></span></span><span class=line><span class=cl><span class=s1>    daily_hits[date]++
+</span></span></span><span class=line><span class=cl><span class=s1>    hourly_hits[hour]++
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    if ($9 == &#34;404&#34;) not_found++
+</span></span></span><span class=line><span class=cl><span class=s1>    if ($9 ~ /^[45]/) errors++
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    total_hits++
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Website Traffic Report&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;=====================&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;\nDaily Traffic:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (date in daily_hits) {
+</span></span></span><span class=line><span class=cl><span class=s1>        printf &#34;%s: %d hits\n&#34;, date, daily_hits[date]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;\nHourly Distribution:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    for (h=0; h&lt;24; h++) {
+</span></span></span><span class=line><span class=cl><span class=s1>        printf &#34;%02d:00: %d hits\n&#34;, h, hourly_hits[h]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>    
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;\nError Summary:\n&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;404 Errors: %d (%.1f%%)\n&#34;, not_found, not_found/total_hits*100
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;5xx Errors: %d (%.1f%%)\n&#34;, errors, errors/total_hits*100
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> access.log
+</span></span></code></pre></td></tr></table></div></div><h2 id=進階技巧>進階技巧</h2><h3 id=1-多檔案處理>1. 多檔案處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 比較兩個檔案</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>FNR==NR {
+</span></span></span><span class=line><span class=cl><span class=s1>    # 處理第一個檔案
+</span></span></span><span class=line><span class=cl><span class=s1>    file1[FNR] = $0
+</span></span></span><span class=line><span class=cl><span class=s1>    next
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>{
+</span></span></span><span class=line><span class=cl><span class=s1>    # 處理第二個檔案
+</span></span></span><span class=line><span class=cl><span class=s1>    if (file1[FNR] != $0) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;Line &#34; FNR &#34; differs:&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;File1: &#34; file1[FNR]
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;File2: &#34; $0
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file1.txt file2.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 合併檔案資料</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>FNR==NR {
+</span></span></span><span class=line><span class=cl><span class=s1>    # 第一個檔案：建立索引
+</span></span></span><span class=line><span class=cl><span class=s1>    lookup[$1] = $2
+</span></span></span><span class=line><span class=cl><span class=s1>    next
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>{
+</span></span></span><span class=line><span class=cl><span class=s1>    # 第二個檔案：查找並合併
+</span></span></span><span class=line><span class=cl><span class=s1>    if ($1 in lookup) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print $0, lookup[$1]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> lookup.txt data.txt
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-複雜文本解析>2. 複雜文本解析</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># XML 簡單解析</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>/&lt;([^&gt;]+)&gt;([^&lt;]*)&lt;\/\1&gt;/ {
+</span></span></span><span class=line><span class=cl><span class=s1>    match($0, /&lt;([^&gt;]+)&gt;([^&lt;]*)&lt;\/\1&gt;/, arr)
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Tag:&#34;, arr[1], &#34;Content:&#34;, arr[2]
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> simple.xml
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置檔解析</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>/^\[.*\]$/ {
+</span></span></span><span class=line><span class=cl><span class=s1>    # 區段標題
+</span></span></span><span class=line><span class=cl><span class=s1>    gsub(/\[|\]/, &#34;&#34;)
+</span></span></span><span class=line><span class=cl><span class=s1>    section = $0
+</span></span></span><span class=line><span class=cl><span class=s1>    next
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>/^[^#].*=/ {
+</span></span></span><span class=line><span class=cl><span class=s1>    # 鍵值對
+</span></span></span><span class=line><span class=cl><span class=s1>    split($0, kv, &#34;=&#34;)
+</span></span></span><span class=line><span class=cl><span class=s1>    key = kv[1]
+</span></span></span><span class=line><span class=cl><span class=s1>    value = kv[2]
+</span></span></span><span class=line><span class=cl><span class=s1>    gsub(/^[ \t]+|[ \t]+$/, &#34;&#34;, key)
+</span></span></span><span class=line><span class=cl><span class=s1>    gsub(/^[ \t]+|[ \t]+$/, &#34;&#34;, value)
+</span></span></span><span class=line><span class=cl><span class=s1>    config[section][key] = value
+</span></span></span><span class=line><span class=cl><span class=s1>}
+</span></span></span><span class=line><span class=cl><span class=s1>END {
+</span></span></span><span class=line><span class=cl><span class=s1>    for (sect in config) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;[&#34; sect &#34;]&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>        for (k in config[sect]) {
+</span></span></span><span class=line><span class=cl><span class=s1>            print k &#34; = &#34; config[sect][k]
+</span></span></span><span class=line><span class=cl><span class=s1>        }
+</span></span></span><span class=line><span class=cl><span class=s1>        print &#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> config.ini
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-效能優化>3. 效能優化</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 避免重複計算</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    # 好的做法：儲存計算結果
+</span></span></span><span class=line><span class=cl><span class=s1>    len = length($0)
+</span></span></span><span class=line><span class=cl><span class=s1>    if (len &gt; max_len) {
+</span></span></span><span class=line><span class=cl><span class=s1>        max_len = len
+</span></span></span><span class=line><span class=cl><span class=s1>        longest_line = $0
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用陣列而非字串連接</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    # 好的做法：使用陣列
+</span></span></span><span class=line><span class=cl><span class=s1>    lines[NR] = $0
+</span></span></span><span class=line><span class=cl><span class=s1>} END {
+</span></span></span><span class=line><span class=cl><span class=s1>    for (i=NR; i&gt;=1; i--) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print lines[i]
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 提早退出</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    if (found_count &gt;= 10) exit
+</span></span></span><span class=line><span class=cl><span class=s1>    if (/pattern/) {
+</span></span></span><span class=line><span class=cl><span class=s1>        print
+</span></span></span><span class=line><span class=cl><span class=s1>        found_count++
+</span></span></span><span class=line><span class=cl><span class=s1>    }
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> large_file.txt
+</span></span></code></pre></td></tr></table></div></div><h2 id=腳本檔案>腳本檔案</h2><p>建立 <code>script.awk</code> 檔案：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-awk data-lang=awk><span class=line><span class=cl><span class=c1>#!/usr/bin/awk -f</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>BEGIN</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>FS</span> <span class=o>=</span> <span class=s2>&#34;,&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>OFS</span> <span class=o>=</span> <span class=s2>&#34;\t&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=kr>print</span> <span class=s2>&#34;Processing CSV file...&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 跳過空行</span>
+</span></span><span class=line><span class=cl><span class=sr>/^$/</span> <span class=p>{</span> <span class=nx>next</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 處理標題行</span>
+</span></span><span class=line><span class=cl><span class=nb>NR</span> <span class=o>==</span> <span class=mi>1</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>print</span> <span class=s2>&#34;Headers:&#34;</span><span class=p>,</span> <span class=o>$</span><span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=nx>next</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 主要處理邏輯</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 資料驗證</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nb>NF</span> <span class=o>!=</span> <span class=mi>4</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kr>print</span> <span class=s2>&#34;Warning: Line &#34;</span> <span class=nb>NR</span> <span class=s2>&#34; has &#34;</span> <span class=nb>NF</span> <span class=s2>&#34; fields&#34;</span> <span class=o>&gt;</span> <span class=s2>&#34;/dev/stderr&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nx>next</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 處理資料</span>
+</span></span><span class=line><span class=cl>    <span class=nx>name</span> <span class=o>=</span> <span class=o>$</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=nx>age</span> <span class=o>=</span> <span class=o>$</span><span class=mi>2</span>
+</span></span><span class=line><span class=cl>    <span class=nx>salary</span> <span class=o>=</span> <span class=o>$</span><span class=mi>3</span>
+</span></span><span class=line><span class=cl>    <span class=nx>department</span> <span class=o>=</span> <span class=o>$</span><span class=mi>4</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 統計</span>
+</span></span><span class=line><span class=cl>    <span class=nx>total_salary</span> <span class=o>+=</span> <span class=nx>salary</span>
+</span></span><span class=line><span class=cl>    <span class=nx>dept_count</span><span class=p>[</span><span class=nx>department</span><span class=p>]</span><span class=o>++</span>
+</span></span><span class=line><span class=cl>    <span class=nx>employee_count</span><span class=o>++</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 輸出處理結果</span>
+</span></span><span class=line><span class=cl>    <span class=kr>print</span> <span class=nx>name</span><span class=p>,</span> <span class=nx>age</span><span class=p>,</span> <span class=nx>salary</span><span class=p>,</span> <span class=nx>department</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>END</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>print</span> <span class=s2>&#34;\n=== Summary ===&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=kr>print</span> <span class=s2>&#34;Total employees:&#34;</span><span class=p>,</span> <span class=nx>employee_count</span>
+</span></span><span class=line><span class=cl>    <span class=kr>print</span> <span class=s2>&#34;Average salary:&#34;</span><span class=p>,</span> <span class=nx>total_salary</span><span class=o>/</span><span class=nx>employee_count</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=kr>print</span> <span class=s2>&#34;\nDepartment distribution:&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=nx>dept</span> <span class=o>in</span> <span class=nx>dept_count</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kr>printf</span> <span class=s2>&#34;%-15s: %d\n&#34;</span><span class=p>,</span> <span class=nx>dept</span><span class=p>,</span> <span class=nx>dept_count</span><span class=p>[</span><span class=nx>dept</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>使用腳本：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>chmod +x script.awk
+</span></span><span class=line><span class=cl>./script.awk data.csv
+</span></span><span class=line><span class=cl><span class=c1># 或</span>
+</span></span><span class=line><span class=cl>awk -f script.awk data.csv
+</span></span></code></pre></td></tr></table></div></div><h2 id=常見錯誤與除錯>常見錯誤與除錯</h2><h3 id=1-常見錯誤>1. 常見錯誤</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 錯誤：字串比較使用數值運算子</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;$1 &gt; &#34;50&#34;&#39;</span> file.txt           <span class=c1># 錯誤：字串比較</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;$1 + 0 &gt; 50&#39;</span> file.txt         <span class=c1># 正確：強制數值比較</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 錯誤：陣列索引問題</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{arr[0] = $1}&#39;</span> file.txt       <span class=c1># 注意：AWK 陣列從1開始習慣使用</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 錯誤：未初始化變數</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{sum += $1} END {print sum/count}&#39;</span> file.txt  <span class=c1># count 未初始化</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{sum += $1; count++} END {print sum/count}&#39;</span> file.txt  <span class=c1># 正確</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-除錯技巧>2. 除錯技巧</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 添加除錯輸出</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;Debug: NR=&#34; NR &#34;, NF=&#34; NF &#34;, $0=&#34; $0 &gt; &#34;/dev/stderr&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>    # 主要邏輯
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用條件除錯</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    if (debug) print &#34;Processing:&#34;, $0
+</span></span></span><span class=line><span class=cl><span class=s1>    # 主要邏輯
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> <span class=nv>debug</span><span class=o>=</span><span class=m>1</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 分步驗證</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print &#34;Line &#34; NR &#34;: &#34; $1}&#39;</span> file.txt <span class=p>|</span> head -5
+</span></span></code></pre></td></tr></table></div></div><h2 id=與其他工具整合>與其他工具整合</h2><h3 id=1-與-grep-和-sed-組合>1. 與 grep 和 sed 組合</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 過濾後處理</span>
+</span></span><span class=line><span class=cl>grep <span class=s2>&#34;ERROR&#34;</span> log.txt <span class=p>|</span> awk <span class=s1>&#39;{print $1, $3}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 多步處理</span>
+</span></span><span class=line><span class=cl>cat data.txt <span class=p>|</span> grep -v <span class=s2>&#34;^#&#34;</span> <span class=p>|</span> sed <span class=s1>&#39;s/,/ /g&#39;</span> <span class=p>|</span> awk <span class=s1>&#39;{print $1, $2}&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-與-sort-組合>2. 與 sort 組合</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 排序後統計</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print $1}&#39;</span> file.txt <span class=p>|</span> sort <span class=p>|</span> uniq -c <span class=p>|</span> awk <span class=s1>&#39;{print $2, $1}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 管道處理</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print $3, $0}&#39;</span> file.txt <span class=p>|</span> sort -nr <span class=p>|</span> awk <span class=s1>&#39;{$1=&#34;&#34;; print}&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-與資料庫整合>3. 與資料庫整合</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 生成 SQL 插入語句</span>
+</span></span><span class=line><span class=cl>awk -F, <span class=s1>&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>NR&gt;1 {
+</span></span></span><span class=line><span class=cl><span class=s1>    printf &#34;INSERT INTO users (name, age, city) VALUES (\&#34;%s\&#34;, %d, \&#34;%s\&#34;);\n&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>           $1, $2, $3
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> data.csv
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 生成批次更新腳本</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    print &#34;UPDATE table SET status=1 WHERE id=&#34; $1 &#34;;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>}&#39;</span> ids.txt
+</span></span></code></pre></td></tr></table></div></div><h2 id=總結>總結</h2><h3 id=核心優勢>核心優勢</h3><ol><li><strong>強大的模式匹配</strong>：支援複雜的正規表達式</li><li><strong>豐富的內建功能</strong>：字串處理、數學運算、陣列操作</li><li><strong>高效的文本處理</strong>：適合大量資料處理</li><li><strong>靈活的程式結構</strong>：支援完整的程式設計概念</li></ol><h3 id=最佳實踐>最佳實踐</h3><ol><li><strong>善用 BEGIN 和 END</strong>：初始化和清理工作</li><li><strong>合理使用陣列</strong>：避免記憶體過度使用</li><li><strong>模式化程式設計</strong>：將常用邏輯封裝為函數</li><li><strong>輸入驗證</strong>：檢查資料格式和欄位數量</li><li><strong>錯誤處理</strong>：適當的錯誤檢查和恢復機制</li></ol><h3 id=學習路徑>學習路徑</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基礎階段</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{print $1}&#39;</span> file.txt                    <span class=c1># 欄位處理</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/pattern/ {print}&#39;</span> file.txt             <span class=c1># 模式匹配</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;{sum += $1} END {print sum}&#39;</span> file.txt   <span class=c1># 基本統計</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 進階階段</span>
+</span></span><span class=line><span class=cl>awk -F, <span class=s1>&#39;{arr[$1] += $2} END {for(i in arr) print i, arr[i]}&#39;</span> file.csv  <span class=c1># 陣列應用</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;function f(x) {return x*x} {print f($1)}&#39;</span> file.txt  <span class=c1># 自訂函數</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 專家階段</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;/start/,/end/ {if(/important/) print}&#39;</span> file.txt  <span class=c1># 複雜模式</span>
+</span></span><span class=line><span class=cl>awk <span class=s1>&#39;BEGIN{PROCINFO[&#34;sorted_in&#34;]=&#34;@val_num_desc&#34;} ...&#39;</span>  <span class=c1># 高級特性</span>
+</span></span></code></pre></td></tr></table></div></div><p>AWK 是文本處理和資料分析的強大工具，掌握其核心概念和常用技巧，能夠大幅提升資料處理的效率和準確性。記住：AWK 的核心在於模式-動作程式設計思維，善用這個特性能夠解決複雜的文本處理問題。</p><h2 id=參考資料>參考資料</h2><ul><li><a href=https://www.gnu.org/software/gawk/manual/gawk.html>GAWK Manual</a></li><li><a href=https://www.amazon.com/AWK-Programming-Language-Alfred-Aho/dp/020107981X>The AWK Programming Language</a></li><li><a href=https://tldp.org/LDP/abs/html/>Advanced Bash-Scripting Guide</a></li><li><a href=https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html>POSIX AWK Specification</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/linux class=tag-link>#Linux</a>
+<a href=/tags/awk class=tag-link>#AWK</a>
+<a href=/tags/text-processing class=tag-link>#Text Processing</a>
+<a href=/tags/data-analysis class=tag-link>#Data Analysis</a>
+<a href=/tags/pattern-scanning class=tag-link>#Pattern Scanning</a>
+<a href=/tags/shell class=tag-link>#Shell</a>
+<a href=/tags/unix class=tag-link>#Unix</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
 <a href=https://xinqilin.github.io/post/backend/mapcompute/ class=post-nav-link>Java Map 計算方法詳解：putIfAbsent、compute、computeIfAbsent 使用指南</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
 <a href=https://xinqilin.github.io/post/backend/springannotation/ class=post-nav-link>Spring Framework 註解完整指南：從基礎到進階應用</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

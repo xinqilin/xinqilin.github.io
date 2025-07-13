@@ -1,7 +1,83 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Ubuntu - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Ubuntu"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/ubuntu/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Ubuntu</h1><div class=post-meta><div class=post-info><time class=post-date>2022年10月29日</time>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Ubuntu 系統管理完整指南：Linux 入門到進階實戰 - Bill.Lin's Notes</title><meta name=description content="深入解析 Ubuntu 系統的完整使用方法，包含安裝配置、套件管理、系統維護與 Docker 容器化應用"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Ubuntu 系統管理完整指南：Linux 入門到進階實戰"><meta property="og:description" content="深入解析 Ubuntu 系統的完整使用方法，包含安裝配置、套件管理、系統維護與 Docker 容器化應用"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/ubuntu/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Ubuntu 系統管理完整指南：Linux 入門到進階實戰</h1><div class=post-meta><div class=post-info><time class=post-date>2022年10月29日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h3 id=ubuntu-env>Ubuntu env</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+<span class=reading-time>14 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>Ubuntu 是基於 Debian 的 Linux 發行版，以其穩定性、易用性和豐富的軟體生態系統而聞名。它是雲端運算、伺服器部署和開發環境的首選平台，提供長期支援（LTS）版本和定期更新的標準版本。</p><h3 id=核心特徵>核心特徵</h3><ul><li><strong>穩定可靠</strong>：基於 Debian 穩定分支，經過嚴格測試</li><li><strong>套件豐富</strong>：APT 套件管理系統，數萬個軟體包</li><li><strong>社群支援</strong>：活躍的開發者和使用者社群</li><li><strong>容器友好</strong>：優秀的 Docker 和容器化支援</li><li><strong>雲端整合</strong>：原生支援各大雲端平台</li></ul><h2 id=系統安裝與初始設置>系統安裝與初始設置</h2><h3 id=基本安裝>基本安裝</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 檢查系統版本</span>
+</span></span><span class=line><span class=cl>lsb_release -a
+</span></span><span class=line><span class=cl>cat /etc/os-release
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查硬體資訊</span>
+</span></span><span class=line><span class=cl>uname -a
+</span></span><span class=line><span class=cl>lscpu
+</span></span><span class=line><span class=cl>free -h
+</span></span><span class=line><span class=cl>df -h
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查網路狀態</span>
+</span></span><span class=line><span class=cl>ip addr show
+</span></span><span class=line><span class=cl>netstat -tuln
+</span></span></code></pre></td></tr></table></div></div><h3 id=系統更新>系統更新</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 更新套件列表</span>
+</span></span><span class=line><span class=cl>sudo apt update
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 升級已安裝的套件</span>
+</span></span><span class=line><span class=cl>sudo apt upgrade -y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 完整系統升級</span>
+</span></span><span class=line><span class=cl>sudo apt full-upgrade -y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 清理不需要的套件</span>
+</span></span><span class=line><span class=cl>sudo apt autoremove -y
+</span></span><span class=line><span class=cl>sudo apt autoclean
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查可升級的套件</span>
+</span></span><span class=line><span class=cl>apt list --upgradable
+</span></span></code></pre></td></tr></table></div></div><h3 id=時區和語言設定>時區和語言設定</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 設定時區</span>
+</span></span><span class=line><span class=cl>sudo timedatectl set-timezone Asia/Taipei
+</span></span><span class=line><span class=cl>timedatectl status
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 語言和地區設定</span>
+</span></span><span class=line><span class=cl>sudo locale-gen zh_TW.UTF-8
+</span></span><span class=line><span class=cl>sudo update-locale <span class=nv>LANG</span><span class=o>=</span>zh_TW.UTF-8
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查當前語言設定</span>
+</span></span><span class=line><span class=cl>locale
+</span></span></code></pre></td></tr></table></div></div><h2 id=套件管理系統>套件管理系統</h2><h3 id=apt-基本操作>APT 基本操作</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -17,22 +93,1425 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span><span class=lnt>14
 </span><span class=lnt>15
 </span><span class=lnt>16
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    docker pull ubuntu
-</span></span><span class=line><span class=cl>    docker network create ubuntu-n
-</span></span><span class=line><span class=cl>    docker run -dit -p 2222:22 -p 8000:8000 --network ubuntu-n --name ubuntu-c ubuntu
-</span></span><span class=line><span class=cl>    docker <span class=nb>exec</span> -it ubuntu-c bash
-</span></span><span class=line><span class=cl>    yes <span class=p>|</span> unminimize <span class=o>&amp;&amp;</span> apt install curl gawk git htop less lsof man-db rsync strace tmux vim ssh -y
-</span></span><span class=line><span class=cl>    apt install jq -y
-</span></span><span class=line><span class=cl>    apt install pip -y
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 搜尋套件</span>
+</span></span><span class=line><span class=cl>apt search keyword
+</span></span><span class=line><span class=cl>apt-cache search keyword
 </span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查看套件資訊</span>
+</span></span><span class=line><span class=cl>apt show package-name
+</span></span><span class=line><span class=cl>apt-cache show package-name
 </span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝套件</span>
+</span></span><span class=line><span class=cl>sudo apt install package-name
+</span></span><span class=line><span class=cl>sudo apt install package1 package2 package3
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    docker stop ubuntu-c
-</span></span><span class=line><span class=cl>    docker rm ubuntu-c
+</span></span><span class=line><span class=cl><span class=c1># 重新安裝套件</span>
+</span></span><span class=line><span class=cl>sudo apt reinstall package-name
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1># restart</span>
-</span></span><span class=line><span class=cl>    docker start ubuntu-c
-</span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
-<a href=https://xinqilin.github.io/post/backend/treeset/ class=post-nav-link>TreeSet</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
-<a href=https://xinqilin.github.io/post/tools/find/ class=post-nav-link>Find</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
+</span></span><span class=line><span class=cl><span class=c1># 移除套件</span>
+</span></span><span class=line><span class=cl>sudo apt remove package-name           <span class=c1># 保留配置檔案</span>
+</span></span><span class=line><span class=cl>sudo apt purge package-name            <span class=c1># 完全移除</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查依賴關係</span>
+</span></span><span class=line><span class=cl>apt depends package-name
+</span></span><span class=line><span class=cl>apt rdepends package-name
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 列出已安裝套件</span>
+</span></span><span class=line><span class=cl>dpkg -l
+</span></span><span class=line><span class=cl>apt list --installed
+</span></span></code></pre></td></tr></table></div></div><h3 id=套件庫管理>套件庫管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 添加 PPA 套件庫</span>
+</span></span><span class=line><span class=cl>sudo add-apt-repository ppa:user/ppa-name
+</span></span><span class=line><span class=cl>sudo apt update
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 移除 PPA</span>
+</span></span><span class=line><span class=cl>sudo add-apt-repository --remove ppa:user/ppa-name
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 管理套件庫金鑰</span>
+</span></span><span class=line><span class=cl>wget -qO - https://example.com/key.gpg <span class=p>|</span> sudo apt-key add -
+</span></span><span class=line><span class=cl>sudo apt-key list
+</span></span><span class=line><span class=cl>sudo apt-key del KEY_ID
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 編輯套件來源</span>
+</span></span><span class=line><span class=cl>sudo nano /etc/apt/sources.list
+</span></span><span class=line><span class=cl>ls /etc/apt/sources.list.d/
+</span></span></code></pre></td></tr></table></div></div><h3 id=deb-套件處理>DEB 套件處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 安裝本地 DEB 套件</span>
+</span></span><span class=line><span class=cl>sudo dpkg -i package.deb
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 修復依賴問題</span>
+</span></span><span class=line><span class=cl>sudo apt install -f
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 移除 DEB 套件</span>
+</span></span><span class=line><span class=cl>sudo dpkg -r package-name
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查詢 DEB 套件內容</span>
+</span></span><span class=line><span class=cl>dpkg -L package-name
+</span></span><span class=line><span class=cl>dpkg -c package.deb
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查詢檔案屬於哪個套件</span>
+</span></span><span class=line><span class=cl>dpkg -S /path/to/file
+</span></span></code></pre></td></tr></table></div></div><h2 id=必備軟體安裝>必備軟體安裝</h2><h3 id=開發工具>開發工具</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本開發工具</span>
+</span></span><span class=line><span class=cl>sudo apt install build-essential git vim curl wget htop tree
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 程式語言環境</span>
+</span></span><span class=line><span class=cl>sudo apt install python3 python3-pip nodejs npm default-jdk
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 版本控制</span>
+</span></span><span class=line><span class=cl>sudo apt install git subversion
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 編輯器和 IDE</span>
+</span></span><span class=line><span class=cl>sudo apt install vim neovim emacs code
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 資料庫工具</span>
+</span></span><span class=line><span class=cl>sudo apt install mysql-client postgresql-client redis-tools
+</span></span></code></pre></td></tr></table></div></div><h3 id=系統監控工具>系統監控工具</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 系統監控</span>
+</span></span><span class=line><span class=cl>sudo apt install htop iotop iftop nethogs
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 系統資訊</span>
+</span></span><span class=line><span class=cl>sudo apt install neofetch screenfetch inxi
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 網路工具</span>
+</span></span><span class=line><span class=cl>sudo apt install net-tools traceroute nmap tcpdump wireshark
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 效能分析</span>
+</span></span><span class=line><span class=cl>sudo apt install sysstat dstat glances
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 日誌分析</span>
+</span></span><span class=line><span class=cl>sudo apt install logwatch fail2ban
+</span></span></code></pre></td></tr></table></div></div><h3 id=媒體和辦公軟體>媒體和辦公軟體</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 媒體播放</span>
+</span></span><span class=line><span class=cl>sudo apt install vlc audacity gimp
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 辦公軟體</span>
+</span></span><span class=line><span class=cl>sudo apt install libreoffice thunderbird firefox
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 壓縮工具</span>
+</span></span><span class=line><span class=cl>sudo apt install zip unzip rar unrar 7zip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 文件處理</span>
+</span></span><span class=line><span class=cl>sudo apt install pandoc texlive-full
+</span></span></code></pre></td></tr></table></div></div><h2 id=docker-環境設置>Docker 環境設置</h2><h3 id=docker-安裝與配置>Docker 安裝與配置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 移除舊版本</span>
+</span></span><span class=line><span class=cl>sudo apt remove docker docker-engine docker.io containerd runc
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝依賴</span>
+</span></span><span class=line><span class=cl>sudo apt update
+</span></span><span class=line><span class=cl>sudo apt install apt-transport-https ca-certificates curl gnupg lsb-release
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 添加 Docker 官方 GPG 金鑰</span>
+</span></span><span class=line><span class=cl>curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class=p>|</span> sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 添加套件庫</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;deb [arch=</span><span class=k>$(</span>dpkg --print-architecture<span class=k>)</span><span class=s2> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu </span><span class=k>$(</span>lsb_release -cs<span class=k>)</span><span class=s2> stable&#34;</span> <span class=p>|</span> sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝 Docker Engine</span>
+</span></span><span class=line><span class=cl>sudo apt update
+</span></span><span class=line><span class=cl>sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 啟動並啟用 Docker 服務</span>
+</span></span><span class=line><span class=cl>sudo systemctl start docker
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> docker
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 將使用者加入 docker 群組</span>
+</span></span><span class=line><span class=cl>sudo usermod -aG docker <span class=nv>$USER</span>
+</span></span><span class=line><span class=cl>newgrp docker
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 驗證安裝</span>
+</span></span><span class=line><span class=cl>docker --version
+</span></span><span class=line><span class=cl>docker run hello-world
+</span></span></code></pre></td></tr></table></div></div><h3 id=ubuntu-docker-容器設置>Ubuntu Docker 容器設置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 拉取 Ubuntu 映像</span>
+</span></span><span class=line><span class=cl>docker pull ubuntu:latest
+</span></span><span class=line><span class=cl>docker pull ubuntu:20.04
+</span></span><span class=line><span class=cl>docker pull ubuntu:22.04
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 建立 Docker 網路</span>
+</span></span><span class=line><span class=cl>docker network create ubuntu-network
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 啟動 Ubuntu 容器</span>
+</span></span><span class=line><span class=cl>docker run -dit <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --name ubuntu-container <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  --network ubuntu-network <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -p 2222:22 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -p 8080:8080 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -v <span class=k>$(</span><span class=nb>pwd</span><span class=k>)</span>/workspace:/workspace <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  ubuntu:latest
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 進入容器</span>
+</span></span><span class=line><span class=cl>docker <span class=nb>exec</span> -it ubuntu-container bash
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 容器內初始化</span>
+</span></span><span class=line><span class=cl>apt update <span class=o>&amp;&amp;</span> apt upgrade -y
+</span></span><span class=line><span class=cl>yes <span class=p>|</span> unminimize
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝基本工具</span>
+</span></span><span class=line><span class=cl>apt install -y <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  curl <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  wget <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  git <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  vim <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  nano <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  htop <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  tree <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  less <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  man-db <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  openssh-server <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  sudo <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  zip <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  unzip <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  jq <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  python3 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  python3-pip <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  nodejs <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  npm
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 設定 SSH 服務</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;PermitRootLogin yes&#39;</span> &gt;&gt; /etc/ssh/sshd_config
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;PasswordAuthentication yes&#39;</span> &gt;&gt; /etc/ssh/sshd_config
+</span></span><span class=line><span class=cl>service ssh start
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 建立使用者</span>
+</span></span><span class=line><span class=cl>useradd -m -s /bin/bash developer
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;developer:password&#39;</span> <span class=p>|</span> chpasswd
+</span></span><span class=line><span class=cl>usermod -aG sudo developer
+</span></span></code></pre></td></tr></table></div></div><h3 id=容器管理腳本>容器管理腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># ubuntu_container_manager.sh - Ubuntu 容器管理腳本</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>CONTAINER_NAME</span><span class=o>=</span><span class=s2>&#34;ubuntu-dev&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>NETWORK_NAME</span><span class=o>=</span><span class=s2>&#34;ubuntu-network&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>IMAGE</span><span class=o>=</span><span class=s2>&#34;ubuntu:22.04&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>start_container<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Starting Ubuntu development container...&#34;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 檢查網路是否存在</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> ! docker network ls <span class=p>|</span> grep -q <span class=s2>&#34;</span><span class=nv>$NETWORK_NAME</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;Creating network: </span><span class=nv>$NETWORK_NAME</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        docker network create <span class=s2>&#34;</span><span class=nv>$NETWORK_NAME</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 檢查容器是否已存在</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> docker ps -a <span class=p>|</span> grep -q <span class=s2>&#34;</span><span class=nv>$CONTAINER_NAME</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;Starting existing container...&#34;</span>
+</span></span><span class=line><span class=cl>        docker start <span class=s2>&#34;</span><span class=nv>$CONTAINER_NAME</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;Creating new container...&#34;</span>
+</span></span><span class=line><span class=cl>        docker run -dit <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>            --name <span class=s2>&#34;</span><span class=nv>$CONTAINER_NAME</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>            --network <span class=s2>&#34;</span><span class=nv>$NETWORK_NAME</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>            -p 2222:22 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>            -p 8080:8080 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>            -p 3000:3000 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>            -v <span class=s2>&#34;</span><span class=k>$(</span><span class=nb>pwd</span><span class=k>)</span><span class=s2>/workspace:/workspace&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>            -v <span class=s2>&#34;</span><span class=k>$(</span><span class=nb>pwd</span><span class=k>)</span><span class=s2>/config:/config&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>            <span class=s2>&#34;</span><span class=nv>$IMAGE</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=c1># 初始化容器</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;Initializing container...&#34;</span>
+</span></span><span class=line><span class=cl>        docker <span class=nb>exec</span> <span class=s2>&#34;</span><span class=nv>$CONTAINER_NAME</span><span class=s2>&#34;</span> bash -c <span class=s2>&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>            apt update &amp;&amp; apt upgrade -y
+</span></span></span><span class=line><span class=cl><span class=s2>            yes | unminimize
+</span></span></span><span class=line><span class=cl><span class=s2>            apt install -y curl wget git vim htop tree less man-db openssh-server sudo zip unzip jq python3 python3-pip nodejs npm
+</span></span></span><span class=line><span class=cl><span class=s2>            echo &#39;PermitRootLogin yes&#39; &gt;&gt; /etc/ssh/sshd_config
+</span></span></span><span class=line><span class=cl><span class=s2>            echo &#39;PasswordAuthentication yes&#39; &gt;&gt; /etc/ssh/sshd_config
+</span></span></span><span class=line><span class=cl><span class=s2>            service ssh start
+</span></span></span><span class=line><span class=cl><span class=s2>            useradd -m -s /bin/bash developer
+</span></span></span><span class=line><span class=cl><span class=s2>            echo &#39;developer:developer&#39; | chpasswd
+</span></span></span><span class=line><span class=cl><span class=s2>            usermod -aG sudo developer
+</span></span></span><span class=line><span class=cl><span class=s2>        &#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Container started successfully!&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;SSH: ssh -p 2222 developer@localhost&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Enter: docker exec -it </span><span class=nv>$CONTAINER_NAME</span><span class=s2> bash&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>stop_container<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Stopping container...&#34;</span>
+</span></span><span class=line><span class=cl>    docker stop <span class=s2>&#34;</span><span class=nv>$CONTAINER_NAME</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>remove_container<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Removing container...&#34;</span>
+</span></span><span class=line><span class=cl>    docker stop <span class=s2>&#34;</span><span class=nv>$CONTAINER_NAME</span><span class=s2>&#34;</span> 2&gt;/dev/null <span class=o>||</span> <span class=nb>true</span>
+</span></span><span class=line><span class=cl>    docker rm <span class=s2>&#34;</span><span class=nv>$CONTAINER_NAME</span><span class=s2>&#34;</span> 2&gt;/dev/null <span class=o>||</span> <span class=nb>true</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>status_container<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Container status:&#34;</span>
+</span></span><span class=line><span class=cl>    docker ps -a <span class=p>|</span> grep <span class=s2>&#34;</span><span class=nv>$CONTAINER_NAME</span><span class=s2>&#34;</span> <span class=o>||</span> <span class=nb>echo</span> <span class=s2>&#34;Container not found&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>case</span> <span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span> in
+</span></span><span class=line><span class=cl>    start<span class=o>)</span>
+</span></span><span class=line><span class=cl>        start_container
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    stop<span class=o>)</span>
+</span></span><span class=line><span class=cl>        stop_container
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    remove<span class=o>)</span>
+</span></span><span class=line><span class=cl>        remove_container
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    status<span class=o>)</span>
+</span></span><span class=line><span class=cl>        status_container
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    restart<span class=o>)</span>
+</span></span><span class=line><span class=cl>        stop_container
+</span></span><span class=line><span class=cl>        sleep <span class=m>2</span>
+</span></span><span class=line><span class=cl>        start_container
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    *<span class=o>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;Usage: </span><span class=nv>$0</span><span class=s2> {start|stop|remove|status|restart}&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl><span class=k>esac</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=系統管理與維護>系統管理與維護</h2><h3 id=服務管理>服務管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 檢查服務狀態</span>
+</span></span><span class=line><span class=cl>sudo systemctl status service-name
+</span></span><span class=line><span class=cl>sudo systemctl list-units --type<span class=o>=</span>service
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 啟動/停止/重啟服務</span>
+</span></span><span class=line><span class=cl>sudo systemctl start service-name
+</span></span><span class=line><span class=cl>sudo systemctl stop service-name
+</span></span><span class=line><span class=cl>sudo systemctl restart service-name
+</span></span><span class=line><span class=cl>sudo systemctl reload service-name
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 啟用/停用服務</span>
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> service-name
+</span></span><span class=line><span class=cl>sudo systemctl disable service-name
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查服務日誌</span>
+</span></span><span class=line><span class=cl>sudo journalctl -u service-name
+</span></span><span class=line><span class=cl>sudo journalctl -u service-name -f  <span class=c1># 即時日誌</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查開機啟動的服務</span>
+</span></span><span class=line><span class=cl>sudo systemctl list-unit-files --state<span class=o>=</span>enabled
+</span></span></code></pre></td></tr></table></div></div><h3 id=使用者和權限管理>使用者和權限管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用者管理</span>
+</span></span><span class=line><span class=cl>sudo useradd -m -s /bin/bash username
+</span></span><span class=line><span class=cl>sudo passwd username
+</span></span><span class=line><span class=cl>sudo userdel username
+</span></span><span class=line><span class=cl>sudo usermod -aG group username
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 群組管理</span>
+</span></span><span class=line><span class=cl>sudo groupadd groupname
+</span></span><span class=line><span class=cl>sudo groupdel groupname
+</span></span><span class=line><span class=cl>groups username
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 權限管理</span>
+</span></span><span class=line><span class=cl>chmod <span class=m>755</span> file
+</span></span><span class=line><span class=cl>chmod u+x file
+</span></span><span class=line><span class=cl>chown user:group file
+</span></span><span class=line><span class=cl>sudo chown -R user:group directory/
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查看使用者資訊</span>
+</span></span><span class=line><span class=cl>id username
+</span></span><span class=line><span class=cl>who
+</span></span><span class=line><span class=cl>w
+</span></span><span class=line><span class=cl>last
+</span></span></code></pre></td></tr></table></div></div><h3 id=系統監控>系統監控</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># CPU 和記憶體使用率</span>
+</span></span><span class=line><span class=cl>top
+</span></span><span class=line><span class=cl>htop
+</span></span><span class=line><span class=cl>free -h
+</span></span><span class=line><span class=cl>cat /proc/meminfo
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 磁碟使用情況</span>
+</span></span><span class=line><span class=cl>df -h
+</span></span><span class=line><span class=cl>du -sh directory/
+</span></span><span class=line><span class=cl>lsblk
+</span></span><span class=line><span class=cl>fdisk -l
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 網路狀態</span>
+</span></span><span class=line><span class=cl>netstat -tuln
+</span></span><span class=line><span class=cl>ss -tuln
+</span></span><span class=line><span class=cl>iftop
+</span></span><span class=line><span class=cl>nethogs
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 系統負載</span>
+</span></span><span class=line><span class=cl>uptime
+</span></span><span class=line><span class=cl>cat /proc/loadavg
+</span></span><span class=line><span class=cl>vmstat <span class=m>1</span> <span class=m>5</span>
+</span></span><span class=line><span class=cl>iostat <span class=m>1</span> <span class=m>5</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=日誌管理>日誌管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 系統日誌</span>
+</span></span><span class=line><span class=cl>sudo journalctl
+</span></span><span class=line><span class=cl>sudo journalctl -f                    <span class=c1># 即時日誌</span>
+</span></span><span class=line><span class=cl>sudo journalctl --since <span class=s2>&#34;1 hour ago&#34;</span>
+</span></span><span class=line><span class=cl>sudo journalctl --until <span class=s2>&#34;2023-01-01&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 日誌大小管理</span>
+</span></span><span class=line><span class=cl>sudo journalctl --disk-usage
+</span></span><span class=line><span class=cl>sudo journalctl --vacuum-size<span class=o>=</span>100M
+</span></span><span class=line><span class=cl>sudo journalctl --vacuum-time<span class=o>=</span>30d
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 傳統日誌檔案</span>
+</span></span><span class=line><span class=cl>tail -f /var/log/syslog
+</span></span><span class=line><span class=cl>tail -f /var/log/auth.log
+</span></span><span class=line><span class=cl>tail -f /var/log/apache2/access.log
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 日誌輪轉</span>
+</span></span><span class=line><span class=cl>sudo logrotate -d /etc/logrotate.conf
+</span></span><span class=line><span class=cl>sudo logrotate -f /etc/logrotate.conf
+</span></span></code></pre></td></tr></table></div></div><h2 id=網路配置>網路配置</h2><h3 id=網路接口管理>網路接口管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 檢查網路接口</span>
+</span></span><span class=line><span class=cl>ip addr show
+</span></span><span class=line><span class=cl>ip link show
+</span></span><span class=line><span class=cl>ifconfig
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 網路配置（Netplan）</span>
+</span></span><span class=line><span class=cl>sudo nano /etc/netplan/00-installer-config.yaml
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 範例 Netplan 配置</span>
+</span></span><span class=line><span class=cl>network:
+</span></span><span class=line><span class=cl>  version: <span class=m>2</span>
+</span></span><span class=line><span class=cl>  renderer: networkd
+</span></span><span class=line><span class=cl>  ethernets:
+</span></span><span class=line><span class=cl>    enp0s3:
+</span></span><span class=line><span class=cl>      dhcp4: <span class=nb>true</span>
+</span></span><span class=line><span class=cl>    enp0s8:
+</span></span><span class=line><span class=cl>      addresses:
+</span></span><span class=line><span class=cl>        - 192.168.1.100/24
+</span></span><span class=line><span class=cl>      gateway4: 192.168.1.1
+</span></span><span class=line><span class=cl>      nameservers:
+</span></span><span class=line><span class=cl>        addresses: <span class=o>[</span>8.8.8.8, 1.1.1.1<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 應用網路配置</span>
+</span></span><span class=line><span class=cl>sudo netplan try
+</span></span><span class=line><span class=cl>sudo netplan apply
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重啟網路服務</span>
+</span></span><span class=line><span class=cl>sudo systemctl restart networking
+</span></span><span class=line><span class=cl>sudo systemctl restart systemd-networkd
+</span></span></code></pre></td></tr></table></div></div><h3 id=防火牆設定>防火牆設定</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># UFW 防火牆</span>
+</span></span><span class=line><span class=cl>sudo ufw status
+</span></span><span class=line><span class=cl>sudo ufw <span class=nb>enable</span>
+</span></span><span class=line><span class=cl>sudo ufw disable
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 開放連接埠</span>
+</span></span><span class=line><span class=cl>sudo ufw allow 22/tcp
+</span></span><span class=line><span class=cl>sudo ufw allow 80/tcp
+</span></span><span class=line><span class=cl>sudo ufw allow 443/tcp
+</span></span><span class=line><span class=cl>sudo ufw allow from 192.168.1.0/24
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 拒絕連接</span>
+</span></span><span class=line><span class=cl>sudo ufw deny 23/tcp
+</span></span><span class=line><span class=cl>sudo ufw deny from 192.168.2.100
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查規則</span>
+</span></span><span class=line><span class=cl>sudo ufw status numbered
+</span></span><span class=line><span class=cl>sudo ufw delete <span class=m>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重設防火牆</span>
+</span></span><span class=line><span class=cl>sudo ufw --force reset
+</span></span></code></pre></td></tr></table></div></div><h3 id=ssh-配置>SSH 配置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 安裝和啟動 SSH</span>
+</span></span><span class=line><span class=cl>sudo apt install openssh-server
+</span></span><span class=line><span class=cl>sudo systemctl start ssh
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> ssh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># SSH 配置</span>
+</span></span><span class=line><span class=cl>sudo nano /etc/ssh/sshd_config
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重要 SSH 設定</span>
+</span></span><span class=line><span class=cl>Port <span class=m>22</span>
+</span></span><span class=line><span class=cl>PermitRootLogin no
+</span></span><span class=line><span class=cl>PasswordAuthentication yes
+</span></span><span class=line><span class=cl>PubkeyAuthentication yes
+</span></span><span class=line><span class=cl>AllowUsers username
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重啟 SSH 服務</span>
+</span></span><span class=line><span class=cl>sudo systemctl restart ssh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># SSH 金鑰管理</span>
+</span></span><span class=line><span class=cl>ssh-keygen -t rsa -b <span class=m>4096</span>
+</span></span><span class=line><span class=cl>ssh-copy-id user@host
+</span></span></code></pre></td></tr></table></div></div><h2 id=安全加固>安全加固</h2><h3 id=系統安全設定>系統安全設定</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 更新系統</span>
+</span></span><span class=line><span class=cl>sudo apt update <span class=o>&amp;&amp;</span> sudo apt upgrade -y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝安全工具</span>
+</span></span><span class=line><span class=cl>sudo apt install fail2ban ufw rkhunter chkrootkit
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 設定 fail2ban</span>
+</span></span><span class=line><span class=cl>sudo nano /etc/fail2ban/jail.local
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>DEFAULT<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>bantime</span> <span class=o>=</span> <span class=m>3600</span>
+</span></span><span class=line><span class=cl><span class=nv>findtime</span> <span class=o>=</span> <span class=m>600</span>
+</span></span><span class=line><span class=cl><span class=nv>maxretry</span> <span class=o>=</span> <span class=m>3</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>sshd<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>enabled</span> <span class=o>=</span> <span class=nb>true</span>
+</span></span><span class=line><span class=cl><span class=nv>port</span> <span class=o>=</span> ssh
+</span></span><span class=line><span class=cl><span class=nv>filter</span> <span class=o>=</span> sshd
+</span></span><span class=line><span class=cl><span class=nv>logpath</span> <span class=o>=</span> /var/log/auth.log
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo systemctl restart fail2ban
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查安全狀態</span>
+</span></span><span class=line><span class=cl>sudo rkhunter --check
+</span></span><span class=line><span class=cl>sudo chkrootkit
+</span></span></code></pre></td></tr></table></div></div><h3 id=檔案系統安全>檔案系統安全</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 設定適當的檔案權限</span>
+</span></span><span class=line><span class=cl>sudo chmod <span class=m>644</span> /etc/passwd
+</span></span><span class=line><span class=cl>sudo chmod <span class=m>600</span> /etc/shadow
+</span></span><span class=line><span class=cl>sudo chmod <span class=m>644</span> /etc/group
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查找具有特殊權限的檔案</span>
+</span></span><span class=line><span class=cl>find / -perm -4000 -type f 2&gt;/dev/null  <span class=c1># SUID</span>
+</span></span><span class=line><span class=cl>find / -perm -2000 -type f 2&gt;/dev/null  <span class=c1># SGID</span>
+</span></span><span class=line><span class=cl>find / -perm -1000 -type d 2&gt;/dev/null  <span class=c1># Sticky bit</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檔案系統掃描</span>
+</span></span><span class=line><span class=cl>sudo find / -nouser -print 2&gt;/dev/null
+</span></span><span class=line><span class=cl>sudo find / -nogroup -print 2&gt;/dev/null
+</span></span></code></pre></td></tr></table></div></div><h2 id=效能調整與最佳化>效能調整與最佳化</h2><h3 id=系統效能監控>系統效能監控</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 系統效能監控腳本</span>
+</span></span><span class=line><span class=cl><span class=c1>#!/bin/bash</span>
+</span></span><span class=line><span class=cl><span class=c1># system_monitor.sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;=== System Performance Monitor ===&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Timestamp: </span><span class=k>$(</span>date<span class=k>)</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;=== CPU Information ===&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;CPU Usage:&#34;</span>
+</span></span><span class=line><span class=cl>top -bn1 <span class=p>|</span> grep <span class=s2>&#34;Cpu(s)&#34;</span> <span class=p>|</span> awk <span class=s1>&#39;{print &#34;CPU Load: &#34; $2}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> -e <span class=s2>&#34;\nCPU Cores:&#34;</span>
+</span></span><span class=line><span class=cl>nproc
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;=== Memory Information ===&#34;</span>
+</span></span><span class=line><span class=cl>free -h
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> -e <span class=s2>&#34;\n=== Disk Usage ===&#34;</span>
+</span></span><span class=line><span class=cl>df -h <span class=p>|</span> grep -E <span class=s1>&#39;^/dev/&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> -e <span class=s2>&#34;\n=== Network Statistics ===&#34;</span>
+</span></span><span class=line><span class=cl>ss -tuln <span class=p>|</span> wc -l <span class=p>|</span> awk <span class=s1>&#39;{print &#34;Active Connections: &#34; $1}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> -e <span class=s2>&#34;\n=== System Load ===&#34;</span>
+</span></span><span class=line><span class=cl>uptime
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> -e <span class=s2>&#34;\n=== Top Processes by CPU ===&#34;</span>
+</span></span><span class=line><span class=cl>ps aux --sort<span class=o>=</span>-%cpu <span class=p>|</span> head -6
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> -e <span class=s2>&#34;\n=== Top Processes by Memory ===&#34;</span>
+</span></span><span class=line><span class=cl>ps aux --sort<span class=o>=</span>-%mem <span class=p>|</span> head -6
+</span></span></code></pre></td></tr></table></div></div><h3 id=系統清理>系統清理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># system_cleanup.sh - 系統清理腳本</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Starting system cleanup...&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 清理套件快取</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Cleaning package cache...&#34;</span>
+</span></span><span class=line><span class=cl>sudo apt autoclean
+</span></span><span class=line><span class=cl>sudo apt autoremove -y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 清理日誌檔案</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Cleaning log files...&#34;</span>
+</span></span><span class=line><span class=cl>sudo journalctl --vacuum-time<span class=o>=</span>30d
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 清理暫存檔案</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Cleaning temporary files...&#34;</span>
+</span></span><span class=line><span class=cl>sudo rm -rf /tmp/*
+</span></span><span class=line><span class=cl>sudo rm -rf /var/tmp/*
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 清理使用者暫存</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Cleaning user cache...&#34;</span>
+</span></span><span class=line><span class=cl>rm -rf ~/.cache/*
+</span></span><span class=line><span class=cl>rm -rf ~/.local/share/Trash/*
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 清理舊核心</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Cleaning old kernels...&#34;</span>
+</span></span><span class=line><span class=cl>dpkg -l <span class=p>|</span> grep linux-image <span class=p>|</span> awk <span class=s1>&#39;{print $2}&#39;</span> <span class=p>|</span> sort -V <span class=p>|</span> head -n -2 <span class=p>|</span> xargs sudo apt purge -y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查磁碟空間</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Disk space after cleanup:&#34;</span>
+</span></span><span class=line><span class=cl>df -h
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;System cleanup completed!&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=備份與恢復>備份與恢復</h2><h3 id=系統備份>系統備份</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># backup_system.sh - 系統備份腳本</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>BACKUP_DIR</span><span class=o>=</span><span class=s2>&#34;/backup&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>DATE</span><span class=o>=</span><span class=k>$(</span>date +%Y%m%d_%H%M%S<span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=nv>HOSTNAME</span><span class=o>=</span><span class=k>$(</span>hostname<span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>mkdir -p <span class=s2>&#34;</span><span class=nv>$BACKUP_DIR</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Starting system backup...&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 備份重要配置檔案</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Backing up configuration files...&#34;</span>
+</span></span><span class=line><span class=cl>tar -czf <span class=s2>&#34;</span><span class=nv>$BACKUP_DIR</span><span class=s2>/config_</span><span class=nv>$HOSTNAME_$DATE</span><span class=s2>.tar.gz&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    /etc <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    /var/log <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    /home <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --exclude<span class=o>=</span>/home/*/.cache <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --exclude<span class=o>=</span>/home/*/Downloads
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 備份已安裝套件列表</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Backing up package list...&#34;</span>
+</span></span><span class=line><span class=cl>dpkg --get-selections &gt; <span class=s2>&#34;</span><span class=nv>$BACKUP_DIR</span><span class=s2>/packages_</span><span class=nv>$HOSTNAME_$DATE</span><span class=s2>.txt&#34;</span>
+</span></span><span class=line><span class=cl>apt-mark showmanual &gt; <span class=s2>&#34;</span><span class=nv>$BACKUP_DIR</span><span class=s2>/manual_packages_</span><span class=nv>$HOSTNAME_$DATE</span><span class=s2>.txt&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 備份系統資訊</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Backing up system information...&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;=== System Information ===&#34;</span>
+</span></span><span class=line><span class=cl>    uname -a
+</span></span><span class=line><span class=cl>    lsb_release -a
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> -e <span class=s2>&#34;\n=== Hardware Information ===&#34;</span>
+</span></span><span class=line><span class=cl>    lscpu
+</span></span><span class=line><span class=cl>    free -h
+</span></span><span class=line><span class=cl>    df -h
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> -e <span class=s2>&#34;\n=== Network Configuration ===&#34;</span>
+</span></span><span class=line><span class=cl>    ip addr show
+</span></span><span class=line><span class=cl><span class=o>}</span> &gt; <span class=s2>&#34;</span><span class=nv>$BACKUP_DIR</span><span class=s2>/system_info_</span><span class=nv>$HOSTNAME_$DATE</span><span class=s2>.txt&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Backup completed: </span><span class=nv>$BACKUP_DIR</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>ls -la <span class=s2>&#34;</span><span class=nv>$BACKUP_DIR</span><span class=s2>&#34;</span>/*<span class=nv>$DATE</span>*
+</span></span></code></pre></td></tr></table></div></div><h3 id=系統恢復>系統恢復</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># restore_system.sh - 系統恢復腳本</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>BACKUP_FILE</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -z <span class=s2>&#34;</span><span class=nv>$BACKUP_FILE</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Usage: </span><span class=nv>$0</span><span class=s2> &lt;backup_file.tar.gz&gt;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> ! -f <span class=s2>&#34;</span><span class=nv>$BACKUP_FILE</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Backup file not found: </span><span class=nv>$BACKUP_FILE</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;WARNING: This will restore system files from backup.&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Backup file: </span><span class=nv>$BACKUP_FILE</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>read</span> -p <span class=s2>&#34;Continue? (y/N): &#34;</span> confirm
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[[</span> <span class=nv>$confirm</span> !<span class=o>=</span> <span class=o>[</span>yY<span class=o>]</span> <span class=o>]]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Restore cancelled.&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Starting system restore...&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 備份當前配置</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Backing up current configuration...&#34;</span>
+</span></span><span class=line><span class=cl>sudo tar -czf <span class=s2>&#34;/tmp/current_config_</span><span class=k>$(</span>date +%Y%m%d_%H%M%S<span class=k>)</span><span class=s2>.tar.gz&#34;</span> /etc
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 恢復檔案</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Restoring files...&#34;</span>
+</span></span><span class=line><span class=cl>sudo tar -xzf <span class=s2>&#34;</span><span class=nv>$BACKUP_FILE</span><span class=s2>&#34;</span> -C /
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Restore completed. Please reboot the system.&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=自動化腳本>自動化腳本</h2><h3 id=系統初始化腳本>系統初始化腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># ubuntu_setup.sh - Ubuntu 系統初始化腳本</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>set</span> -e
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;=== Ubuntu System Setup Script ===&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 更新系統</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Updating system...&#34;</span>
+</span></span><span class=line><span class=cl>sudo apt update <span class=o>&amp;&amp;</span> sudo apt upgrade -y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝基本工具</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Installing essential tools...&#34;</span>
+</span></span><span class=line><span class=cl>sudo apt install -y <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    curl <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    wget <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    git <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    vim <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    htop <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    tree <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    unzip <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    zip <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    jq <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    build-essential <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    software-properties-common <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    apt-transport-https <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    ca-certificates <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    gnupg <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    lsb-release
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝開發工具</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Installing development tools...&#34;</span>
+</span></span><span class=line><span class=cl>sudo apt install -y <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    python3 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    python3-pip <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    nodejs <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    npm <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    default-jdk <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    golang-go
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝 Docker</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Installing Docker...&#34;</span>
+</span></span><span class=line><span class=cl>curl -fsSL https://get.docker.com <span class=p>|</span> sh
+</span></span><span class=line><span class=cl>sudo usermod -aG docker <span class=nv>$USER</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置 Git</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Configuring Git...&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>read</span> -p <span class=s2>&#34;Enter your Git username: &#34;</span> git_username
+</span></span><span class=line><span class=cl><span class=nb>read</span> -p <span class=s2>&#34;Enter your Git email: &#34;</span> git_email
+</span></span><span class=line><span class=cl>git config --global user.name <span class=s2>&#34;</span><span class=nv>$git_username</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>git config --global user.email <span class=s2>&#34;</span><span class=nv>$git_email</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 設定 SSH</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Setting up SSH...&#34;</span>
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> ssh
+</span></span><span class=line><span class=cl>sudo systemctl start ssh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安裝常用軟體</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Installing common applications...&#34;</span>
+</span></span><span class=line><span class=cl>sudo apt install -y <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    firefox <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    vlc <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    gimp <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    libreoffice <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    thunderbird
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 清理</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Cleaning up...&#34;</span>
+</span></span><span class=line><span class=cl>sudo apt autoremove -y
+</span></span><span class=line><span class=cl>sudo apt autoclean
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;=== Setup completed! ===&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Please reboot the system to ensure all changes take effect.&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=故障排除>故障排除</h2><h3 id=常見問題解決>常見問題解決</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 套件管理問題</span>
+</span></span><span class=line><span class=cl>sudo apt update --fix-missing
+</span></span><span class=line><span class=cl>sudo dpkg --configure -a
+</span></span><span class=line><span class=cl>sudo apt install -f
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 網路連接問題</span>
+</span></span><span class=line><span class=cl>sudo systemctl restart networking
+</span></span><span class=line><span class=cl>sudo systemctl restart systemd-resolved
+</span></span><span class=line><span class=cl>sudo dhclient -r <span class=o>&amp;&amp;</span> sudo dhclient
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># SSH 連接問題</span>
+</span></span><span class=line><span class=cl>sudo systemctl status ssh
+</span></span><span class=line><span class=cl>sudo systemctl restart ssh
+</span></span><span class=line><span class=cl>sudo tail -f /var/log/auth.log
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 磁碟空間不足</span>
+</span></span><span class=line><span class=cl>sudo du -sh /* <span class=p>|</span> sort -hr
+</span></span><span class=line><span class=cl>sudo find / -type f -size +100M
+</span></span><span class=line><span class=cl>sudo apt autoremove
+</span></span><span class=line><span class=cl>sudo apt autoclean
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 記憶體不足</span>
+</span></span><span class=line><span class=cl>free -h
+</span></span><span class=line><span class=cl>sudo swapoff -a <span class=o>&amp;&amp;</span> sudo swapon -a
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=m>3</span> <span class=p>|</span> sudo tee /proc/sys/vm/drop_caches
+</span></span></code></pre></td></tr></table></div></div><h2 id=總結>總結</h2><h3 id=核心優勢>核心優勢</h3><ol><li><strong>穩定可靠</strong>：企業級穩定性和長期支援</li><li><strong>易於使用</strong>：友好的使用者介面和豐富的文檔</li><li><strong>套件豐富</strong>：強大的 APT 套件管理系統</li><li><strong>社群支援</strong>：活躍的開發者和使用者社群</li><li><strong>容器化友好</strong>：優秀的 Docker 和雲端支援</li></ol><h3 id=最佳實踐>最佳實踐</h3><ol><li><strong>定期更新</strong>：保持系統和軟體包的最新狀態</li><li><strong>安全加固</strong>：配置防火牆、fail2ban 和適當的使用者權限</li><li><strong>監控系統</strong>：定期檢查系統效能和資源使用情況</li><li><strong>備份重要資料</strong>：建立定期備份策略</li><li><strong>文檔記錄</strong>：記錄系統配置和變更</li></ol><h3 id=學習路徑>學習路徑</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 初學者階段</span>
+</span></span><span class=line><span class=cl>sudo apt update <span class=o>&amp;&amp;</span> sudo apt upgrade    <span class=c1># 系統更新</span>
+</span></span><span class=line><span class=cl>sudo apt install package-name          <span class=c1># 軟體安裝</span>
+</span></span><span class=line><span class=cl>systemctl status service-name          <span class=c1># 服務管理</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 進階階段</span>
+</span></span><span class=line><span class=cl>docker run -it ubuntu:latest           <span class=c1># 容器化應用</span>
+</span></span><span class=line><span class=cl>sudo ufw allow 80/tcp                  <span class=c1># 防火牆配置</span>
+</span></span><span class=line><span class=cl>sudo journalctl -u service-name        <span class=c1># 日誌分析</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 專家階段</span>
+</span></span><span class=line><span class=cl>netplan apply                           <span class=c1># 網路配置</span>
+</span></span><span class=line><span class=cl>systemctl edit service-name            <span class=c1># 服務自定義</span>
+</span></span><span class=line><span class=cl>crontab -e                             <span class=c1># 自動化任務</span>
+</span></span></code></pre></td></tr></table></div></div><p>Ubuntu 是現代 Linux 發行版的代表，掌握其使用技巧能夠大幅提升系統管理和開發效率。記住：理解 Linux 基礎概念是有效使用 Ubuntu 的關鍵，善用社群資源和文檔可以解決大部分問題。</p><h2 id=參考資料>參考資料</h2><ul><li><a href=https://ubuntu.com/server/docs>Ubuntu Official Documentation</a></li><li><a href=https://help.ubuntu.com/>Ubuntu Community Help Wiki</a></li><li><a href=https://www.debian.org/doc/manuals/apt-guide/>APT User&rsquo;s Guide</a></li><li><a href=https://systemd.io/>systemd Documentation</a></li><li><a href=https://docs.docker.com/engine/install/ubuntu/>Docker on Ubuntu</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/ubuntu class=tag-link>#Ubuntu</a>
+<a href=/tags/linux class=tag-link>#Linux</a>
+<a href=/tags/system-administration class=tag-link>#System Administration</a>
+<a href=/tags/package-management class=tag-link>#Package Management</a>
+<a href=/tags/docker class=tag-link>#Docker</a>
+<a href=/tags/server class=tag-link>#Server</a>
+<a href=/tags/command-line class=tag-link>#Command Line</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/backend/treeset/ class=post-nav-link>Java TreeSet 資料結構詳解：排序集合與紅黑樹實作原理</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/tools/find/ class=post-nav-link>Find 命令完整指南：Linux 檔案搜尋與管理的瑞士軍刀</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

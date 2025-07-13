@@ -1,7 +1,283 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Curl - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Curl"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/curl/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Curl</h1><div class=post-meta><div class=post-info><time class=post-date>2021年08月03日</time>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>cURL 完整指南：HTTP 客戶端工具與 API 測試利器 - Bill.Lin's Notes</title><meta name=description content="深入解析 cURL 工具的完整用法，包含 HTTP 請求、API 測試、檔案傳輸與網路除錯的專業應用"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="cURL 完整指南：HTTP 客戶端工具與 API 測試利器"><meta property="og:description" content="深入解析 cURL 工具的完整用法，包含 HTTP 請求、API 測試、檔案傳輸與網路除錯的專業應用"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/curl/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>cURL 完整指南：HTTP 客戶端工具與 API 測試利器</h1><div class=post-meta><div class=post-info><time class=post-date>2021年08月03日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h3 id=參數>參數</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+<span class=reading-time>13 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p>cURL（Client URL）是一個功能強大的命令行工具和函式庫，用於傳輸各種網路協定的資料。它支援 HTTP、HTTPS、FTP、SFTP、TELNET 等多種協定，是開發者進行 API 測試、網路除錯和自動化腳本的必備工具。</p><h3 id=核心特徵>核心特徵</h3><ul><li><strong>多協定支援</strong>：HTTP/HTTPS、FTP、SFTP、SMTP、POP3 等</li><li><strong>豐富的選項</strong>：支援各種 HTTP 方法、標頭、認證方式</li><li><strong>跨平台</strong>：適用於 Linux、macOS、Windows 等系統</li><li><strong>腳本友好</strong>：輸出格式化，適合自動化處理</li><li><strong>安全性</strong>：支援 SSL/TLS、各種認證機制</li></ul><h2 id=基本語法>基本語法</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl <span class=o>[</span>選項<span class=o>]</span> <span class=o>[</span>URL<span class=o>]</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=簡單範例>簡單範例</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本 GET 請求</span>
+</span></span><span class=line><span class=cl>curl https://httpbin.org/get
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查看 HTTP 響應標頭</span>
+</span></span><span class=line><span class=cl>curl -I https://google.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 下載檔案</span>
+</span></span><span class=line><span class=cl>curl -o filename.html https://example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 靜默模式</span>
+</span></span><span class=line><span class=cl>curl -s https://api.github.com/users/octocat
+</span></span></code></pre></td></tr></table></div></div><h2 id=核心選項詳解>核心選項詳解</h2><h3 id=基本操作選項>基本操作選項</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 輸出控制</span>
+</span></span><span class=line><span class=cl>-o, --output &lt;file&gt;         <span class=c1># 將輸出寫入檔案</span>
+</span></span><span class=line><span class=cl>-O, --remote-name          <span class=c1># 使用遠程檔案名稱儲存</span>
+</span></span><span class=line><span class=cl>-s, --silent               <span class=c1># 靜默模式，不顯示進度</span>
+</span></span><span class=line><span class=cl>-S, --show-error           <span class=c1># 顯示錯誤訊息</span>
+</span></span><span class=line><span class=cl>-v, --verbose              <span class=c1># 詳細輸出模式</span>
+</span></span><span class=line><span class=cl>-w, --write-out &lt;format&gt;   <span class=c1># 自訂輸出格式</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 基本範例</span>
+</span></span><span class=line><span class=cl>curl -o index.html https://example.com
+</span></span><span class=line><span class=cl>curl -O https://example.com/file.zip
+</span></span><span class=line><span class=cl>curl -s https://api.example.com/data
+</span></span><span class=line><span class=cl>curl -v https://httpbin.org/get
+</span></span></code></pre></td></tr></table></div></div><h3 id=http-方法選項>HTTP 方法選項</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 請求方法</span>
+</span></span><span class=line><span class=cl>-X, --request &lt;method&gt;     <span class=c1># 指定 HTTP 方法</span>
+</span></span><span class=line><span class=cl>-G, --get                  <span class=c1># 強制使用 GET 方法</span>
+</span></span><span class=line><span class=cl>-I, --head                 <span class=c1># 只獲取 HTTP 標頭 (HEAD 方法)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 範例</span>
+</span></span><span class=line><span class=cl>curl -X POST https://httpbin.org/post
+</span></span><span class=line><span class=cl>curl -X PUT https://httpbin.org/put
+</span></span><span class=line><span class=cl>curl -X DELETE https://httpbin.org/delete
+</span></span><span class=line><span class=cl>curl -X PATCH https://httpbin.org/patch
+</span></span><span class=line><span class=cl>curl -I https://httpbin.org/headers
+</span></span></code></pre></td></tr></table></div></div><h3 id=資料傳送選項>資料傳送選項</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 資料傳送</span>
+</span></span><span class=line><span class=cl>-d, --data &lt;data&gt;          <span class=c1># 發送 POST 資料</span>
+</span></span><span class=line><span class=cl>-d @filename               <span class=c1># 從檔案讀取資料</span>
+</span></span><span class=line><span class=cl>-F, --form &lt;<span class=nv>name</span><span class=o>=</span>content&gt;  <span class=c1># 表單資料 (multipart/form-data)</span>
+</span></span><span class=line><span class=cl>-T, --upload-file &lt;file&gt;   <span class=c1># 上傳檔案</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># JSON 資料範例</span>
+</span></span><span class=line><span class=cl>curl -X POST https://httpbin.org/post <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s1>&#39;{&#34;name&#34;: &#34;John&#34;, &#34;age&#34;: 30}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 表單資料範例</span>
+</span></span><span class=line><span class=cl>curl -X POST https://httpbin.org/post <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -F <span class=s2>&#34;name=John&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -F <span class=s2>&#34;file=@upload.txt&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 從檔案讀取資料</span>
+</span></span><span class=line><span class=cl>curl -X POST https://httpbin.org/post <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d @data.json
+</span></span></code></pre></td></tr></table></div></div><h3 id=http-標頭選項>HTTP 標頭選項</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 標頭設定</span>
+</span></span><span class=line><span class=cl>-H, --header &lt;header&gt;      <span class=c1># 添加自訂標頭</span>
+</span></span><span class=line><span class=cl>-A, --user-agent &lt;agent&gt;   <span class=c1># 設定 User-Agent</span>
+</span></span><span class=line><span class=cl>-e, --referer &lt;URL&gt;        <span class=c1># 設定 Referer</span>
+</span></span><span class=line><span class=cl>-i, --include              <span class=c1># 在輸出中包含響應標頭</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 範例</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;Authorization: Bearer token123&#34;</span> https://api.example.com
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     -H <span class=s2>&#34;Accept: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://api.example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>curl -A <span class=s2>&#34;MyApp/1.0&#34;</span> https://httpbin.org/user-agent
+</span></span><span class=line><span class=cl>curl -e <span class=s2>&#34;https://google.com&#34;</span> https://httpbin.org/headers
+</span></span><span class=line><span class=cl>curl -i https://httpbin.org/get
+</span></span></code></pre></td></tr></table></div></div><h2 id=http-方法應用>HTTP 方法應用</h2><h3 id=get-請求>GET 請求</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本 GET 請求</span>
+</span></span><span class=line><span class=cl>curl https://jsonplaceholder.typicode.com/posts
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 帶查詢參數的 GET</span>
+</span></span><span class=line><span class=cl>curl <span class=s2>&#34;https://jsonplaceholder.typicode.com/posts?userId=1&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用 -G 和 -d 構建查詢字串</span>
+</span></span><span class=line><span class=cl>curl -G -d <span class=s2>&#34;userId=1&#34;</span> -d <span class=s2>&#34;id=1&#34;</span> https://jsonplaceholder.typicode.com/posts
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 帶認證的 GET</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;Authorization: Bearer your-token&#34;</span> https://api.example.com/user
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 自訂 User-Agent</span>
+</span></span><span class=line><span class=cl>curl -A <span class=s2>&#34;Mozilla/5.0 (Custom Agent)&#34;</span> https://httpbin.org/user-agent
+</span></span></code></pre></td></tr></table></div></div><h3 id=post-請求>POST 請求</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># JSON 資料 POST</span>
+</span></span><span class=line><span class=cl>curl -X POST https://jsonplaceholder.typicode.com/posts <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;title&#34;: &#34;New Post&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;body&#34;: &#34;This is the content&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;userId&#34;: 1
+</span></span></span><span class=line><span class=cl><span class=s1>  }&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 表單資料 POST</span>
+</span></span><span class=line><span class=cl>curl -X POST https://httpbin.org/post <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s2>&#34;username=john&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s2>&#34;password=secret&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檔案上傳 POST</span>
+</span></span><span class=line><span class=cl>curl -X POST https://httpbin.org/post <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -F <span class=s2>&#34;file=@document.pdf&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -F <span class=s2>&#34;description=Important document&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># URL 編碼資料</span>
+</span></span><span class=line><span class=cl>curl -X POST https://httpbin.org/post <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/x-www-form-urlencoded&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s2>&#34;name=John%20Doe&amp;email=john%40example.com&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=put-和-patch-請求>PUT 和 PATCH 請求</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># PUT 更新資源</span>
+</span></span><span class=line><span class=cl>curl -X PUT https://jsonplaceholder.typicode.com/posts/1 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;id&#34;: 1,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;title&#34;: &#34;Updated Title&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;body&#34;: &#34;Updated content&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;userId&#34;: 1
+</span></span></span><span class=line><span class=cl><span class=s1>  }&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># PATCH 部分更新</span>
+</span></span><span class=line><span class=cl>curl -X PATCH https://jsonplaceholder.typicode.com/posts/1 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s1>&#39;{&#34;title&#34;: &#34;Partially Updated Title&#34;}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檔案替換上傳</span>
+</span></span><span class=line><span class=cl>curl -X PUT https://api.example.com/files/document.pdf <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -T document.pdf <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Authorization: Bearer token&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=delete-請求>DELETE 請求</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本 DELETE</span>
+</span></span><span class=line><span class=cl>curl -X DELETE https://jsonplaceholder.typicode.com/posts/1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 帶認證的 DELETE</span>
+</span></span><span class=line><span class=cl>curl -X DELETE https://api.example.com/users/123 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Authorization: Bearer your-token&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 帶確認資料的 DELETE</span>
+</span></span><span class=line><span class=cl>curl -X DELETE https://api.example.com/dangerous-action <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s1>&#39;{&#34;confirm&#34;: true, &#34;reason&#34;: &#34;No longer needed&#34;}&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=認證與安全>認證與安全</h2><h3 id=基本認證>基本認證</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -10,22 +286,1060 @@ Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.
 </span><span class=lnt>7
 </span><span class=lnt>8
 </span><span class=lnt>9
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    -X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request
-</span></span><span class=line><span class=cl>    -H/--header                           設定 request 裡所攜帶的 header
-</span></span><span class=line><span class=cl>    -i/--include                          在 output 顯示 response 的 header
-</span></span><span class=line><span class=cl>    -d/--data                             攜帶 HTTP POST Data 
-</span></span><span class=line><span class=cl>    -v/--verbose                          輸出更多的訊息方便 debug / 顯示接收及發送的訊息
-</span></span><span class=line><span class=cl>    - trace-ascii [fileName] [URL]        顯示更多詳細訊息
-</span></span><span class=line><span class=cl>    -u/--user                             攜帶使用者帳號、密碼
-</span></span><span class=line><span class=cl>    -b/--cookie                           攜帶 cookie（可以是參數或是檔案位置）
-</span></span><span class=line><span class=cl>    -o [fileName] [URL]                   下載若沒填 [fileName] 會直接用 source 原名
-</span></span></code></pre></td></tr></table></div></div><h3 id=常用>常用</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># HTTP Basic Authentication</span>
+</span></span><span class=line><span class=cl>curl -u username:password https://httpbin.org/basic-auth/username/password
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 從提示輸入密碼</span>
+</span></span><span class=line><span class=cl>curl -u username https://httpbin.org/basic-auth/username/password
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用 Base64 編碼</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;Authorization: Basic </span><span class=k>$(</span><span class=nb>echo</span> -n username:password <span class=p>|</span> base64<span class=k>)</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://httpbin.org/basic-auth/username/password
+</span></span></code></pre></td></tr></table></div></div><h3 id=bearer-token-認證>Bearer Token 認證</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    curl [URL]
-</span></span><span class=line><span class=cl>    curl -X POST/PUT [URL] -H &#34;Content-Type: application/json&#34; -d &#39;{&#34;key&#34; : &#34;value&#34; }&#39;
-</span></span><span class=line><span class=cl>    curl -u [URL] &lt;Account&gt;:&lt;Password&gt;
-</span></span></code></pre></td></tr></table></div></div><p>reference:<br><a href=https://blog.techbridge.cc/2019/02/01/linux-curl-command-tutorial/>Linux Curl Command 指令與基本操作入門教學</a><br></p><p><a href=https://miahsuwork.medium.com/curl-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E8%88%87%E6%8C%87%E4%BB%A4-%E6%90%AD%E9%85%8D-lidemy-http-challenge-%E5%AF%A6%E4%BD%9C-39b79511eb9e>[curl] 基本操作與指令 — 搭配 Lidemy HTTP Challenge 實作</a></p></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
-<a href=/tags/curl class=tag-link>#CURL</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># JWT Token</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://api.example.com/protected
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># API Key in Header</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;X-API-Key: your-api-key&#34;</span> https://api.example.com/data
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># API Key in Query</span>
+</span></span><span class=line><span class=cl>curl <span class=s2>&#34;https://api.example.com/data?api_key=your-api-key&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=oauth-20>OAuth 2.0</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 獲取存取令牌</span>
+</span></span><span class=line><span class=cl>curl -X POST https://oauth.example.com/token <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/x-www-form-urlencoded&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s2>&#34;grant_type=client_credentials&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s2>&#34;client_id=your-client-id&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s2>&#34;client_secret=your-client-secret&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用存取令牌</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;Authorization: Bearer access-token&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://api.example.com/protected-resource
+</span></span></code></pre></td></tr></table></div></div><h3 id=ssltls-選項>SSL/TLS 選項</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># SSL 相關選項</span>
+</span></span><span class=line><span class=cl>-k, --insecure             <span class=c1># 允許不安全的 SSL 連接</span>
+</span></span><span class=line><span class=cl>--cert &lt;certificate&gt;       <span class=c1># 客戶端證書</span>
+</span></span><span class=line><span class=cl>--key &lt;private-key&gt;        <span class=c1># 私鑰檔案</span>
+</span></span><span class=line><span class=cl>--cacert &lt;CA-certificate&gt;  <span class=c1># CA 證書檔案</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 範例</span>
+</span></span><span class=line><span class=cl>curl -k https://self-signed.example.com
+</span></span><span class=line><span class=cl>curl --cert client.crt --key client.key https://secure.example.com
+</span></span><span class=line><span class=cl>curl --cacert ca-bundle.crt https://secure.example.com
+</span></span></code></pre></td></tr></table></div></div><h2 id=cookie-處理>Cookie 處理</h2><h3 id=cookie-基本操作>Cookie 基本操作</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 發送 Cookie</span>
+</span></span><span class=line><span class=cl>curl -b <span class=s2>&#34;session=abc123; user=john&#34;</span> https://httpbin.org/cookies
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 從檔案讀取 Cookie</span>
+</span></span><span class=line><span class=cl>curl -b cookies.txt https://httpbin.org/cookies
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 儲存 Cookie 到檔案</span>
+</span></span><span class=line><span class=cl>curl -c cookies.txt https://httpbin.org/cookies/set/session/abc123
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 同時讀取和儲存 Cookie</span>
+</span></span><span class=line><span class=cl>curl -b cookies.txt -c cookies.txt https://example.com/login
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Cookie Jar 格式</span>
+</span></span><span class=line><span class=cl>curl -b cookie-jar.txt -c cookie-jar.txt https://example.com
+</span></span></code></pre></td></tr></table></div></div><h3 id=會話管理>會話管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 登入並保持會話</span>
+</span></span><span class=line><span class=cl>curl -c session.txt -d <span class=s2>&#34;username=john&amp;password=secret&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://example.com/login
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用會話訪問受保護頁面</span>
+</span></span><span class=line><span class=cl>curl -b session.txt https://example.com/dashboard
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 登出並清除會話</span>
+</span></span><span class=line><span class=cl>curl -b session.txt -c /dev/null https://example.com/logout
+</span></span></code></pre></td></tr></table></div></div><h2 id=檔案傳輸>檔案傳輸</h2><h3 id=檔案下載>檔案下載</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本下載</span>
+</span></span><span class=line><span class=cl>curl -O https://example.com/file.zip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 自訂檔案名</span>
+</span></span><span class=line><span class=cl>curl -o myfile.zip https://example.com/file.zip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 斷點續傳</span>
+</span></span><span class=line><span class=cl>curl -C - -O https://example.com/largefile.zip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 限制下載速度</span>
+</span></span><span class=line><span class=cl>curl --limit-rate 100k -O https://example.com/file.zip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 下載多個檔案</span>
+</span></span><span class=line><span class=cl>curl -O https://example.com/file1.zip -O https://example.com/file2.zip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用範圍下載</span>
+</span></span><span class=line><span class=cl>curl -r 0-1023 https://example.com/file.txt  <span class=c1># 下載前 1024 位元組</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=檔案上傳>檔案上傳</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># FTP 上傳</span>
+</span></span><span class=line><span class=cl>curl -T localfile.txt ftp://ftp.example.com/remote/
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># HTTP PUT 上傳</span>
+</span></span><span class=line><span class=cl>curl -T document.pdf https://api.example.com/upload
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 表單檔案上傳</span>
+</span></span><span class=line><span class=cl>curl -F <span class=s2>&#34;file=@document.pdf&#34;</span> -F <span class=s2>&#34;title=My Document&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://example.com/upload
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 多檔案上傳</span>
+</span></span><span class=line><span class=cl>curl -F <span class=s2>&#34;file1=@doc1.pdf&#34;</span> -F <span class=s2>&#34;file2=@doc2.pdf&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://example.com/upload
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 帶進度條的上傳</span>
+</span></span><span class=line><span class=cl>curl -# -T largefile.zip https://api.example.com/upload
+</span></span></code></pre></td></tr></table></div></div><h2 id=進階功能>進階功能</h2><h3 id=輸出格式化>輸出格式化</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 自訂輸出格式</span>
+</span></span><span class=line><span class=cl>curl -w <span class=s2>&#34;Status: %{http_code}\nTime: %{time_total}s\nSize: %{size_download} bytes\n&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     -o /dev/null -s https://example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 常用格式變數</span>
+</span></span><span class=line><span class=cl>%<span class=o>{</span>http_code<span class=o>}</span>           <span class=c1># HTTP 狀態碼</span>
+</span></span><span class=line><span class=cl>%<span class=o>{</span>time_total<span class=o>}</span>          <span class=c1># 總耗時</span>
+</span></span><span class=line><span class=cl>%<span class=o>{</span>time_connect<span class=o>}</span>        <span class=c1># 連接時間</span>
+</span></span><span class=line><span class=cl>%<span class=o>{</span>time_starttransfer<span class=o>}</span>  <span class=c1># 開始傳輸時間</span>
+</span></span><span class=line><span class=cl>%<span class=o>{</span>size_download<span class=o>}</span>       <span class=c1># 下載大小</span>
+</span></span><span class=line><span class=cl>%<span class=o>{</span>size_upload<span class=o>}</span>         <span class=c1># 上傳大小</span>
+</span></span><span class=line><span class=cl>%<span class=o>{</span>speed_download<span class=o>}</span>      <span class=c1># 下載速度</span>
+</span></span><span class=line><span class=cl>%<span class=o>{</span>speed_upload<span class=o>}</span>        <span class=c1># 上傳速度</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 效能測試範例</span>
+</span></span><span class=line><span class=cl>curl -w <span class=s2>&#34;@curl-format.txt&#34;</span> -o /dev/null -s https://example.com
+</span></span></code></pre></td></tr></table></div></div><p>建立 <code>curl-format.txt</code> 檔案：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>     time_namelookup:  %{time_namelookup}s\n
+</span></span><span class=line><span class=cl>        time_connect:  %{time_connect}s\n
+</span></span><span class=line><span class=cl>     time_appconnect:  %{time_appconnect}s\n
+</span></span><span class=line><span class=cl>    time_pretransfer:  %{time_pretransfer}s\n
+</span></span><span class=line><span class=cl>       time_redirect:  %{time_redirect}s\n
+</span></span><span class=line><span class=cl>  time_starttransfer:  %{time_starttransfer}s\n
+</span></span><span class=line><span class=cl>                     ----------\n
+</span></span><span class=line><span class=cl>          time_total:  %{time_total}s\n
+</span></span></code></pre></td></tr></table></div></div><h3 id=重定向處理>重定向處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 跟隨重定向</span>
+</span></span><span class=line><span class=cl>curl -L https://bit.ly/shortened-url
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 限制重定向次數</span>
+</span></span><span class=line><span class=cl>curl -L --max-redirs <span class=m>5</span> https://example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 顯示重定向過程</span>
+</span></span><span class=line><span class=cl>curl -L -v https://bit.ly/shortened-url
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 不跟隨重定向（預設）</span>
+</span></span><span class=line><span class=cl>curl https://bit.ly/shortened-url
+</span></span></code></pre></td></tr></table></div></div><h3 id=代理設定>代理設定</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># HTTP 代理</span>
+</span></span><span class=line><span class=cl>curl --proxy http://proxy.example.com:8080 https://httpbin.org/ip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># SOCKS 代理</span>
+</span></span><span class=line><span class=cl>curl --socks5 localhost:1080 https://httpbin.org/ip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 代理認證</span>
+</span></span><span class=line><span class=cl>curl --proxy-user username:password <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     --proxy http://proxy.example.com:8080 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://httpbin.org/ip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 排除代理</span>
+</span></span><span class=line><span class=cl>curl --noproxy localhost,127.0.0.1 https://localhost:8080/api
+</span></span></code></pre></td></tr></table></div></div><h3 id=並行請求>並行請求</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 背景執行</span>
+</span></span><span class=line><span class=cl>curl https://api1.example.com <span class=p>&amp;</span>
+</span></span><span class=line><span class=cl>curl https://api2.example.com <span class=p>&amp;</span>
+</span></span><span class=line><span class=cl>curl https://api3.example.com <span class=p>&amp;</span>
+</span></span><span class=line><span class=cl><span class=nb>wait</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用 xargs 並行</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> -e <span class=s2>&#34;https://api1.example.com\nhttps://api2.example.com&#34;</span> <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>xargs -n <span class=m>1</span> -P <span class=m>2</span> curl -s
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 循環請求</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> i in <span class=o>{</span>1..5<span class=o>}</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>  curl -s <span class=s2>&#34;https://api.example.com/data/</span><span class=nv>$i</span><span class=s2>&#34;</span> <span class=p>&amp;</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl><span class=nb>wait</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=api-測試實戰>API 測試實戰</h2><h3 id=rest-api-測試>REST API 測試</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用者管理 API 測試</span>
+</span></span><span class=line><span class=cl><span class=nv>BASE_URL</span><span class=o>=</span><span class=s2>&#34;https://jsonplaceholder.typicode.com&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 1. 獲取所有使用者</span>
+</span></span><span class=line><span class=cl>curl -s <span class=s2>&#34;</span><span class=nv>$BASE_URL</span><span class=s2>/users&#34;</span> <span class=p>|</span> jq <span class=s1>&#39;.[0:3]&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 2. 獲取特定使用者</span>
+</span></span><span class=line><span class=cl>curl -s <span class=s2>&#34;</span><span class=nv>$BASE_URL</span><span class=s2>/users/1&#34;</span> <span class=p>|</span> jq <span class=s1>&#39;.&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 3. 創建新使用者</span>
+</span></span><span class=line><span class=cl>curl -X POST <span class=s2>&#34;</span><span class=nv>$BASE_URL</span><span class=s2>/users&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;name&#34;: &#34;John Doe&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;username&#34;: &#34;johndoe&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;email&#34;: &#34;john@example.com&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>  }&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;.&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 4. 更新使用者</span>
+</span></span><span class=line><span class=cl>curl -X PUT <span class=s2>&#34;</span><span class=nv>$BASE_URL</span><span class=s2>/users/1&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s1>&#39;{
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;id&#34;: 1,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;name&#34;: &#34;Jane Doe&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;username&#34;: &#34;janedoe&#34;,
+</span></span></span><span class=line><span class=cl><span class=s1>    &#34;email&#34;: &#34;jane@example.com&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>  }&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;.&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 5. 刪除使用者</span>
+</span></span><span class=line><span class=cl>curl -X DELETE <span class=s2>&#34;</span><span class=nv>$BASE_URL</span><span class=s2>/users/1&#34;</span> -w <span class=s2>&#34;Status: %{http_code}\n&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=api-效能測試>API 效能測試</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 響應時間測試</span>
+</span></span><span class=line><span class=cl>test_api_performance<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>url</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>requests</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;Testing </span><span class=nv>$url</span><span class=s2> with </span><span class=nv>$requests</span><span class=s2> requests...&#34;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=k>for</span> i in <span class=k>$(</span>seq <span class=m>1</span> <span class=nv>$requests</span><span class=k>)</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    curl -w <span class=s2>&#34;%{time_total}\n&#34;</span> -o /dev/null -s <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=k>done</span> <span class=p>|</span> awk <span class=s1>&#39;{sum+=$1; count++} END {print &#34;Average:&#34;, sum/count &#34;s&#34;}&#39;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>test_api_performance <span class=s2>&#34;https://httpbin.org/delay/1&#34;</span> <span class=m>5</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 並發測試</span>
+</span></span><span class=line><span class=cl>concurrent_test<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>url</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>concurrent</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>total</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$3</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;Concurrent test: </span><span class=nv>$concurrent</span><span class=s2> parallel requests, </span><span class=nv>$total</span><span class=s2> total&#34;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  seq <span class=m>1</span> <span class=nv>$total</span> <span class=p>|</span> xargs -n <span class=m>1</span> -P <span class=nv>$concurrent</span> -I <span class=o>{}</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    curl -w <span class=s2>&#34;Request {}: %{time_total}s\n&#34;</span> -o /dev/null -s <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>concurrent_test <span class=s2>&#34;https://httpbin.org/delay/1&#34;</span> <span class=m>3</span> <span class=m>10</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=api-健康檢查>API 健康檢查</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># api_health_check.sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>check_api_health<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>url</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>expected_status</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$3</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> -n <span class=s2>&#34;Checking </span><span class=nv>$name</span><span class=s2>... &#34;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=nv>response</span><span class=o>=</span><span class=k>$(</span>curl -s -w <span class=s2>&#34;HTTPSTATUS:%{http_code}&#34;</span> <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>  <span class=nv>http_code</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$response</span><span class=s2>&#34;</span> <span class=p>|</span> tr -d <span class=s1>&#39;\n&#39;</span> <span class=p>|</span> sed -E <span class=s1>&#39;s/.*HTTPSTATUS:([0-9]{3})$/\1/&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>  <span class=nv>body</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$response</span><span class=s2>&#34;</span> <span class=p>|</span> sed -E <span class=s1>&#39;s/HTTPSTATUS:[0-9]{3}$//&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$http_code</span><span class=s2>&#34;</span> -eq <span class=s2>&#34;</span><span class=nv>$expected_status</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;✓ OK (HTTP </span><span class=nv>$http_code</span><span class=s2>)&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl>  <span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;✗ FAIL (HTTP </span><span class=nv>$http_code</span><span class=s2>)&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Response: </span><span class=nv>$body</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>  <span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 健康檢查</span>
+</span></span><span class=line><span class=cl>check_api_health <span class=s2>&#34;Main API&#34;</span> <span class=s2>&#34;https://api.example.com/health&#34;</span> <span class=m>200</span>
+</span></span><span class=line><span class=cl>check_api_health <span class=s2>&#34;User Service&#34;</span> <span class=s2>&#34;https://api.example.com/users/1&#34;</span> <span class=m>200</span>
+</span></span><span class=line><span class=cl>check_api_health <span class=s2>&#34;Auth Service&#34;</span> <span class=s2>&#34;https://api.example.com/auth/status&#34;</span> <span class=m>200</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=除錯與監控>除錯與監控</h2><h3 id=詳細除錯>詳細除錯</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 詳細模式</span>
+</span></span><span class=line><span class=cl>curl -v https://httpbin.org/get
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 追蹤 ASCII 格式</span>
+</span></span><span class=line><span class=cl>curl --trace-ascii debug.txt https://httpbin.org/get
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 追蹤二進位格式</span>
+</span></span><span class=line><span class=cl>curl --trace debug.bin https://httpbin.org/get
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 只顯示標頭</span>
+</span></span><span class=line><span class=cl>curl -I https://httpbin.org/get
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 顯示請求和響應標頭</span>
+</span></span><span class=line><span class=cl>curl -D headers.txt https://httpbin.org/get
+</span></span></code></pre></td></tr></table></div></div><h3 id=網路診斷>網路診斷</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># DNS 解析時間</span>
+</span></span><span class=line><span class=cl>curl -w <span class=s2>&#34;DNS lookup: %{time_namelookup}s\n&#34;</span> -o /dev/null -s https://example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 連接時間分析</span>
+</span></span><span class=line><span class=cl>curl -w <span class=s2>&#34;Connect: %{time_connect}s, Start transfer: %{time_starttransfer}s, Total: %{time_total}s\n&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     -o /dev/null -s https://example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查 SSL 證書</span>
+</span></span><span class=line><span class=cl>curl -vI https://example.com 2&gt;<span class=p>&amp;</span><span class=m>1</span> <span class=p>|</span> grep -E <span class=s2>&#34;(SSL|TLS|certificate)&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 測試不同 HTTP 版本</span>
+</span></span><span class=line><span class=cl>curl --http1.1 -I https://example.com
+</span></span><span class=line><span class=cl>curl --http2 -I https://example.com
+</span></span></code></pre></td></tr></table></div></div><h3 id=錯誤處理>錯誤處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本錯誤處理</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> curl -s --fail https://api.example.com/data<span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;Request successful&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;Request failed with exit code </span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 詳細錯誤資訊</span>
+</span></span><span class=line><span class=cl>curl -s -w <span class=s2>&#34;Status: %{http_code}, Exit: %{exitcode}\n&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://httpbin.org/status/404
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重試機制</span>
+</span></span><span class=line><span class=cl>retry_curl<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>url</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>max_attempts</span><span class=o>=</span><span class=m>3</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>attempt</span><span class=o>=</span><span class=m>1</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=k>while</span> <span class=o>[</span> <span class=nv>$attempt</span> -le <span class=nv>$max_attempts</span> <span class=o>]</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Attempt </span><span class=nv>$attempt</span><span class=s2> of </span><span class=nv>$max_attempts</span><span class=s2>...&#34;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>if</span> curl -s --fail <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>      <span class=nb>echo</span> <span class=s2>&#34;Success on attempt </span><span class=nv>$attempt</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Failed attempt </span><span class=nv>$attempt</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=o>((</span>attempt++<span class=o>))</span>
+</span></span><span class=line><span class=cl>    sleep <span class=m>2</span>
+</span></span><span class=line><span class=cl>  <span class=k>done</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;All attempts failed&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>retry_curl <span class=s2>&#34;https://unstable-api.example.com&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=實用腳本範例>實用腳本範例</h2><h3 id=1-api-批次測試腳本>1. API 批次測試腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># api_batch_test.sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>API_BASE</span><span class=o>=</span><span class=s2>&#34;https://jsonplaceholder.typicode.com&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>AUTH_TOKEN</span><span class=o>=</span><span class=s2>&#34;your-auth-token&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 測試配置</span>
+</span></span><span class=line><span class=cl><span class=nb>declare</span> -A <span class=nv>TESTS</span><span class=o>=(</span>
+</span></span><span class=line><span class=cl>  <span class=o>[</span><span class=s2>&#34;GET /users&#34;</span><span class=o>]=</span><span class=s2>&#34;</span><span class=nv>$API_BASE</span><span class=s2>/users&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>[</span><span class=s2>&#34;GET /posts&#34;</span><span class=o>]=</span><span class=s2>&#34;</span><span class=nv>$API_BASE</span><span class=s2>/posts&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>[</span><span class=s2>&#34;GET /user/1&#34;</span><span class=o>]=</span><span class=s2>&#34;</span><span class=nv>$API_BASE</span><span class=s2>/users/1&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=o>[</span><span class=s2>&#34;POST /posts&#34;</span><span class=o>]=</span><span class=s2>&#34;</span><span class=nv>$API_BASE</span><span class=s2>/posts&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 執行測試</span>
+</span></span><span class=line><span class=cl>run_tests<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;Starting API batch tests...&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;==========================&#34;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>passed</span><span class=o>=</span><span class=m>0</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>failed</span><span class=o>=</span><span class=m>0</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=k>for</span> test_name in <span class=s2>&#34;</span><span class=si>${</span><span class=p>!TESTS[@]</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nb>local</span> <span class=nv>url</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>TESTS</span><span class=p>[</span><span class=nv>$test_name</span><span class=p>]</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> -n <span class=s2>&#34;Testing </span><span class=nv>$test_name</span><span class=s2>... &#34;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>[[</span> <span class=s2>&#34;</span><span class=nv>$test_name</span><span class=s2>&#34;</span> <span class=o>==</span> <span class=s2>&#34;POST&#34;</span>* <span class=o>]]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>      <span class=c1># POST 測試</span>
+</span></span><span class=line><span class=cl>      <span class=nv>response</span><span class=o>=</span><span class=k>$(</span>curl -s -w <span class=s2>&#34;HTTPSTATUS:%{http_code}&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>        -X POST <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>        -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>        -H <span class=s2>&#34;Authorization: Bearer </span><span class=nv>$AUTH_TOKEN</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>        -d <span class=s1>&#39;{&#34;title&#34;:&#34;Test&#34;,&#34;body&#34;:&#34;Test content&#34;,&#34;userId&#34;:1}&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>      <span class=c1># GET 測試</span>
+</span></span><span class=line><span class=cl>      <span class=nv>response</span><span class=o>=</span><span class=k>$(</span>curl -s -w <span class=s2>&#34;HTTPSTATUS:%{http_code}&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>        -H <span class=s2>&#34;Authorization: Bearer </span><span class=nv>$AUTH_TOKEN</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>        <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nv>http_code</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$response</span><span class=s2>&#34;</span> <span class=p>|</span> tr -d <span class=s1>&#39;\n&#39;</span> <span class=p>|</span> sed -E <span class=s1>&#39;s/.*HTTPSTATUS:([0-9]{3})$/\1/&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>[[</span> <span class=s2>&#34;</span><span class=nv>$http_code</span><span class=s2>&#34;</span> -ge <span class=m>200</span> <span class=o>&amp;&amp;</span> <span class=s2>&#34;</span><span class=nv>$http_code</span><span class=s2>&#34;</span> -lt <span class=m>300</span> <span class=o>]]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>      <span class=nb>echo</span> <span class=s2>&#34;✓ PASS (HTTP </span><span class=nv>$http_code</span><span class=s2>)&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=o>((</span>passed++<span class=o>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>      <span class=nb>echo</span> <span class=s2>&#34;✗ FAIL (HTTP </span><span class=nv>$http_code</span><span class=s2>)&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=o>((</span>failed++<span class=o>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>  <span class=k>done</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;==========================&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;Results: </span><span class=nv>$passed</span><span class=s2> passed, </span><span class=nv>$failed</span><span class=s2> failed&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>run_tests
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-檔案同步腳本>2. 檔案同步腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># file_sync.sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>LOCAL_DIR</span><span class=o>=</span><span class=s2>&#34;./local_files&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>REMOTE_BASE</span><span class=o>=</span><span class=s2>&#34;https://api.example.com/files&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>AUTH_TOKEN</span><span class=o>=</span><span class=s2>&#34;your-token&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sync_files<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;Starting file synchronization...&#34;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=c1># 獲取遠程檔案列表</span>
+</span></span><span class=line><span class=cl>  <span class=nv>remote_files</span><span class=o>=</span><span class=k>$(</span>curl -s -H <span class=s2>&#34;Authorization: Bearer </span><span class=nv>$AUTH_TOKEN</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=s2>&#34;</span><span class=nv>$REMOTE_BASE</span><span class=s2>&#34;</span> <span class=p>|</span> jq -r <span class=s1>&#39;.[].filename&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=k>for</span> file in <span class=nv>$remote_files</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nv>local_file</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$LOCAL_DIR</span><span class=s2>/</span><span class=nv>$file</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nv>remote_url</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$REMOTE_BASE</span><span class=s2>/</span><span class=nv>$file</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> -n <span class=s2>&#34;Checking </span><span class=nv>$file</span><span class=s2>... &#34;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>[</span> -f <span class=s2>&#34;</span><span class=nv>$local_file</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>      <span class=c1># 比較檔案雜湊</span>
+</span></span><span class=line><span class=cl>      <span class=nv>local_hash</span><span class=o>=</span><span class=k>$(</span>sha256sum <span class=s2>&#34;</span><span class=nv>$local_file</span><span class=s2>&#34;</span> <span class=p>|</span> cut -d<span class=s1>&#39; &#39;</span> -f1<span class=k>)</span>
+</span></span><span class=line><span class=cl>      <span class=nv>remote_hash</span><span class=o>=</span><span class=k>$(</span>curl -s -I -H <span class=s2>&#34;Authorization: Bearer </span><span class=nv>$AUTH_TOKEN</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>        <span class=s2>&#34;</span><span class=nv>$remote_url</span><span class=s2>&#34;</span> <span class=p>|</span> grep -i <span class=s2>&#34;x-file-hash&#34;</span> <span class=p>|</span> cut -d<span class=s1>&#39; &#39;</span> -f2 <span class=p>|</span> tr -d <span class=s1>&#39;\r&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>      
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$local_hash</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;</span><span class=nv>$remote_hash</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;✓ Up to date&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=k>continue</span>
+</span></span><span class=line><span class=cl>      <span class=k>fi</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 下載檔案</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;⬇ Downloading...&#34;</span>
+</span></span><span class=line><span class=cl>    curl -s -H <span class=s2>&#34;Authorization: Bearer </span><span class=nv>$AUTH_TOKEN</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>      -o <span class=s2>&#34;</span><span class=nv>$local_file</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$remote_url</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>[</span> <span class=nv>$?</span> -eq <span class=m>0</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>      <span class=nb>echo</span> <span class=s2>&#34;✓ Downloaded successfully&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>      <span class=nb>echo</span> <span class=s2>&#34;✗ Download failed&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>  <span class=k>done</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>mkdir -p <span class=s2>&#34;</span><span class=nv>$LOCAL_DIR</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>sync_files
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-網站監控腳本>3. 網站監控腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># website_monitor.sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>SITES</span><span class=o>=(</span>
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;https://example.com&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;https://api.example.com/health&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;https://cdn.example.com&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>TIMEOUT</span><span class=o>=</span><span class=m>10</span>
+</span></span><span class=line><span class=cl><span class=nv>LOG_FILE</span><span class=o>=</span><span class=s2>&#34;/var/log/website_monitor.log&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>log_message<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;</span><span class=k>$(</span>date <span class=s1>&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class=k>)</span><span class=s2> - </span><span class=nv>$1</span><span class=s2>&#34;</span> <span class=p>|</span> tee -a <span class=s2>&#34;</span><span class=nv>$LOG_FILE</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>check_site<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>url</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>local</span> <span class=nv>name</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span> <span class=p>|</span> sed <span class=s1>&#39;s|https\?://||&#39;</span> <span class=p>|</span> sed <span class=s1>&#39;s|/.*||&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=nv>response</span><span class=o>=</span><span class=k>$(</span>curl -s -w <span class=s2>&#34;HTTPSTATUS:%{http_code};TIME:%{time_total}&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --max-time <span class=s2>&#34;</span><span class=nv>$TIMEOUT</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=o>[</span> <span class=nv>$?</span> -eq <span class=m>0</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nv>http_code</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$response</span><span class=s2>&#34;</span> <span class=p>|</span> grep -o <span class=s2>&#34;HTTPSTATUS:[0-9]*&#34;</span> <span class=p>|</span> cut -d: -f2<span class=k>)</span>
+</span></span><span class=line><span class=cl>    <span class=nv>time_total</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$response</span><span class=s2>&#34;</span> <span class=p>|</span> grep -o <span class=s2>&#34;TIME:[0-9.]*&#34;</span> <span class=p>|</span> cut -d: -f2<span class=k>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$http_code</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;200&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>      log_message <span class=s2>&#34;✓ </span><span class=nv>$name</span><span class=s2> - OK (</span><span class=si>${</span><span class=nv>time_total</span><span class=si>}</span><span class=s2>s)&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>      log_message <span class=s2>&#34;⚠ </span><span class=nv>$name</span><span class=s2> - HTTP </span><span class=nv>$http_code</span><span class=s2> (</span><span class=si>${</span><span class=nv>time_total</span><span class=si>}</span><span class=s2>s)&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl>  <span class=k>else</span>
+</span></span><span class=line><span class=cl>    log_message <span class=s2>&#34;✗ </span><span class=nv>$name</span><span class=s2> - TIMEOUT or ERROR&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>log_message <span class=s2>&#34;Starting website monitoring...&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> site in <span class=s2>&#34;</span><span class=si>${</span><span class=nv>SITES</span><span class=p>[@]</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>  check_site <span class=s2>&#34;</span><span class=nv>$site</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>log_message <span class=s2>&#34;Monitoring completed&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=效能最佳化>效能最佳化</h2><h3 id=連接重用>連接重用</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># HTTP/1.1 Keep-Alive</span>
+</span></span><span class=line><span class=cl>curl --keepalive-time <span class=m>30</span> https://api.example.com/endpoint1
+</span></span><span class=line><span class=cl>curl --keepalive-time <span class=m>30</span> https://api.example.com/endpoint2
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># HTTP/2 多路復用</span>
+</span></span><span class=line><span class=cl>curl --http2 https://example.com/resource1
+</span></span><span class=line><span class=cl>curl --http2 https://example.com/resource2
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 連接池配置</span>
+</span></span><span class=line><span class=cl>curl --max-time <span class=m>30</span> --connect-timeout <span class=m>10</span> https://api.example.com
+</span></span></code></pre></td></tr></table></div></div><h3 id=快取與壓縮>快取與壓縮</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 啟用壓縮</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;Accept-Encoding: gzip, deflate&#34;</span> https://example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 條件請求</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;If-Modified-Since: Wed, 21 Oct 2015 07:28:00 GMT&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://example.com/data
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ETag 支援</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;If-None-Match: \&#34;33a64df551425fcc55e4d42a148795d9f25f89d4\&#34;&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://example.com/resource
+</span></span></code></pre></td></tr></table></div></div><h3 id=批次優化>批次優化</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 並行下載</span>
+</span></span><span class=line><span class=cl><span class=nv>urls</span><span class=o>=(</span>
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;https://api.example.com/data1&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;https://api.example.com/data2&#34;</span>  
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;https://api.example.com/data3&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> url in <span class=s2>&#34;</span><span class=si>${</span><span class=nv>urls</span><span class=p>[@]</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>  curl -s <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span> &gt; <span class=s2>&#34;</span><span class=k>$(</span>basename <span class=s2>&#34;</span><span class=nv>$url</span><span class=s2>&#34;</span><span class=k>)</span><span class=s2>.json&#34;</span> <span class=p>&amp;</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl><span class=nb>wait</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 限制並行數</span>
+</span></span><span class=line><span class=cl><span class=nb>printf</span> <span class=s2>&#34;%s\n&#34;</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>urls</span><span class=p>[@]</span><span class=si>}</span><span class=s2>&#34;</span> <span class=p>|</span> xargs -n <span class=m>1</span> -P <span class=m>3</span> -I <span class=o>{}</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  sh -c <span class=s1>&#39;curl -s &#34;{}&#34; &gt; &#34;$(basename &#34;{}&#34;).json&#34;&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=常見問題與解決方案>常見問題與解決方案</h2><h3 id=ssltls-問題>SSL/TLS 問題</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 證書驗證問題</span>
+</span></span><span class=line><span class=cl>curl -k https://self-signed.example.com  <span class=c1># 跳過驗證（不推薦）</span>
+</span></span><span class=line><span class=cl>curl --cacert /path/to/ca-bundle.crt https://example.com  <span class=c1># 指定 CA</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查證書資訊</span>
+</span></span><span class=line><span class=cl>curl -vI https://example.com 2&gt;<span class=p>&amp;</span><span class=m>1</span> <span class=p>|</span> grep -A <span class=m>10</span> <span class=s2>&#34;Server certificate&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 測試 SSL 配置</span>
+</span></span><span class=line><span class=cl>curl --tlsv1.2 --ciphers HIGH https://example.com
+</span></span></code></pre></td></tr></table></div></div><h3 id=編碼問題>編碼問題</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># UTF-8 編碼</span>
+</span></span><span class=line><span class=cl>curl -H <span class=s2>&#34;Accept-Charset: utf-8&#34;</span> https://example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># URL 編碼</span>
+</span></span><span class=line><span class=cl>curl <span class=s2>&#34;https://example.com/search?q=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s1>&#39;中文查詢&#39;</span> <span class=p>|</span> curl -Gso /dev/null -w %<span class=o>{</span>url_effective<span class=o>}</span> --data-urlencode @- <span class=p>|</span> cut -c3-<span class=k>)</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 處理特殊字元</span>
+</span></span><span class=line><span class=cl>curl -G -d <span class=s2>&#34;query=hello world&#34;</span> https://example.com/search
+</span></span></code></pre></td></tr></table></div></div><h3 id=超時與重試>超時與重試</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 超時設定</span>
+</span></span><span class=line><span class=cl>curl --connect-timeout <span class=m>10</span> --max-time <span class=m>30</span> https://slow-api.example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 自動重試</span>
+</span></span><span class=line><span class=cl>curl --retry <span class=m>3</span> --retry-delay <span class=m>5</span> https://unstable-api.example.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 指數退避</span>
+</span></span><span class=line><span class=cl>curl --retry <span class=m>3</span> --retry-delay <span class=m>1</span> --retry-max-time <span class=m>60</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>     https://api.example.com
+</span></span></code></pre></td></tr></table></div></div><h2 id=總結>總結</h2><h3 id=核心優勢>核心優勢</h3><ol><li><strong>多功能性</strong>：支援多種協定和操作方式</li><li><strong>靈活性</strong>：豐富的選項和配置能力</li><li><strong>可程式性</strong>：適合自動化和腳本處理</li><li><strong>跨平台</strong>：在各種系統上表現一致</li><li><strong>效能</strong>：高效的網路通訊和傳輸</li></ol><h3 id=最佳實踐>最佳實踐</h3><ol><li><strong>安全第一</strong>：正確處理認證和 SSL 驗證</li><li><strong>錯誤處理</strong>：實作適當的重試和錯誤恢復機制</li><li><strong>效能優化</strong>：使用連接重用和並行處理</li><li><strong>日誌記錄</strong>：保留詳細的請求和響應日誌</li><li><strong>測試自動化</strong>：將 API 測試整合到 CI/CD 流程</li></ol><h3 id=常用模式記憶>常用模式記憶</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># API 測試基本模式</span>
+</span></span><span class=line><span class=cl>curl -X POST https://api.example.com/resource <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Content-Type: application/json&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -H <span class=s2>&#34;Authorization: Bearer token&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  -d <span class=s1>&#39;{&#34;key&#34;: &#34;value&#34;}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檔案操作模式</span>
+</span></span><span class=line><span class=cl>curl -O https://example.com/file.zip           <span class=c1># 下載</span>
+</span></span><span class=line><span class=cl>curl -T file.txt https://api.example.com/upload <span class=c1># 上傳</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 除錯模式</span>
+</span></span><span class=line><span class=cl>curl -v -I https://example.com                 <span class=c1># 詳細標頭</span>
+</span></span><span class=line><span class=cl>curl -w <span class=s2>&#34;%{http_code}\n&#34;</span> https://example.com   <span class=c1># 狀態碼</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 效能測試模式</span>
+</span></span><span class=line><span class=cl>curl -w <span class=s2>&#34;@curl-format.txt&#34;</span> -o /dev/null -s https://example.com
+</span></span></code></pre></td></tr></table></div></div><p>cURL 是現代開發者工具箱中不可或缺的利器，掌握其核心功能和進階技巧，能夠大幅提升 API 開發、測試和維護的效率。記住：實務中最重要的是理解 HTTP 協定基礎，並善用 cURL 的豐富選項來解決實際問題。</p><h2 id=參考資料>參考資料</h2><ul><li><a href=https://curl.se/docs/>cURL 官方文檔</a></li><li><a href=https://curl.se/docs/tutorial.html>cURL Tutorial</a></li><li><a href=https://tools.ietf.org/html/rfc7231>HTTP/1.1 規範</a></li><li><a href=https://restfulapi.net/>REST API 設計指南</a></li><li><a href=https://jsonapi.org/>JSON API 規範</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/curl class=tag-link>#cURL</a>
+<a href=/tags/http class=tag-link>#HTTP</a>
+<a href=/tags/api class=tag-link>#API</a>
+<a href=/tags/rest class=tag-link>#REST</a>
+<a href=/tags/web-development class=tag-link>#Web Development</a>
+<a href=/tags/command-line class=tag-link>#Command Line</a>
+<a href=/tags/network class=tag-link>#Network</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
 <a href=https://xinqilin.github.io/post/devops/docker-compose/ class=post-nav-link>Docker Compose</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
-<a href=https://xinqilin.github.io/post/backend/lateinit/ class=post-nav-link>Lateinit</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
+<a href=https://xinqilin.github.io/post/backend/lateinit/ class=post-nav-link>Kotlin lateinit 關鍵字詳解：延遲初始化與使用最佳實踐</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

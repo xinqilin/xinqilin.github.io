@@ -1,8 +1,629 @@
-<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>sed - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="sed"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/sed/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
-Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>sed</h1><div class=post-meta><div class=post-info><time class=post-date>2019年01月18日</time>
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Sed 流編輯器完整指南：Linux 文本處理的強大工具 - Bill.Lin's Notes</title><meta name=description content="深入解析 sed 流編輯器的完整用法，包含文本替換、行操作、正規表達式與實戰應用場景"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Sed 流編輯器完整指南：Linux 文本處理的強大工具"><meta property="og:description" content="深入解析 sed 流編輯器的完整用法，包含文本替換、行操作、正規表達式與實戰應用場景"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/sed/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></div></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Sed 流編輯器完整指南：Linux 文本處理的強大工具</h1><div class=post-meta><div class=post-info><time class=post-date>2019年01月18日</time>
 <span class=post-author>by Bill.Lin</span>
-<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h3 id=sed>sed</h3><p>sed [options] &lsquo;[地址定界] command&rsquo; file(s)
-sed -e &lsquo;1,8 s/ [Tt]he/ THE/ g&rsquo; MyFile.txt</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+<span class=reading-time>8 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h2 id=概述>概述</h2><p><code>sed</code>（Stream Editor，流編輯器）是 Unix/Linux 系統中功能強大的文本處理工具。它能夠對文本流進行非互動式的編輯操作，包括搜尋、替換、插入、刪除等功能。作為管道處理的重要工具，sed 在自動化腳本和批次文本處理中扮演關鍵角色。</p><h3 id=核心特徵>核心特徵</h3><ul><li><strong>流式處理</strong>：逐行處理文本，適合大檔案操作</li><li><strong>非互動式</strong>：可在腳本中自動執行</li><li><strong>正規表達式</strong>：支援強大的模式匹配</li><li><strong>原地編輯</strong>：可直接修改原始檔案</li><li><strong>管道友好</strong>：適合與其他命令組合使用</li></ul><h2 id=基本語法>基本語法</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sed <span class=o>[</span>選項<span class=o>]</span> <span class=s1>&#39;地址定界command&#39;</span> file<span class=o>(</span>s<span class=o>)</span>
+</span></span><span class=line><span class=cl>sed <span class=o>[</span>選項<span class=o>]</span> -e <span class=s1>&#39;script1&#39;</span> -e <span class=s1>&#39;script2&#39;</span> file<span class=o>(</span>s<span class=o>)</span>
+</span></span><span class=line><span class=cl>sed <span class=o>[</span>選項<span class=o>]</span> -f script.sed file<span class=o>(</span>s<span class=o>)</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=常用選項>常用選項</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>-n          <span class=c1># 安靜模式，不自動列印處理結果</span>
+</span></span><span class=line><span class=cl>-e script   <span class=c1># 指定要執行的腳本命令</span>
+</span></span><span class=line><span class=cl>-f file     <span class=c1># 從檔案讀取腳本命令</span>
+</span></span><span class=line><span class=cl>-i<span class=o>[</span>suffix<span class=o>]</span>  <span class=c1># 直接修改檔案（可選備份後綴）</span>
+</span></span><span class=line><span class=cl>-r 或 -E    <span class=c1># 使用擴展正規表達式</span>
+</span></span><span class=line><span class=cl>-s          <span class=c1># 將多個檔案視為獨立處理</span>
+</span></span><span class=line><span class=cl>--debug     <span class=c1># 偵錯模式，顯示執行過程</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=基本範例>基本範例</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本文本替換</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/old/new/&#39;</span> file.txt          <span class=c1># 替換每行第一個匹配</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/old/new/g&#39;</span> file.txt         <span class=c1># 替換所有匹配</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/old/new/2&#39;</span> file.txt         <span class=c1># 替換每行第二個匹配</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 直接修改檔案</span>
+</span></span><span class=line><span class=cl>sed -i <span class=s1>&#39;s/old/new/g&#39;</span> file.txt      <span class=c1># 直接修改原檔案</span>
+</span></span><span class=line><span class=cl>sed -i.bak <span class=s1>&#39;s/old/new/g&#39;</span> file.txt  <span class=c1># 修改前先備份</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=地址定界>地址定界</h2><p>地址定界用於指定 sed 命令作用的行範圍：</p><h3 id=基本地址類型>基本地址類型</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 行號地址</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3d&#39;</span> file.txt                  <span class=c1># 刪除第3行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1,5d&#39;</span> file.txt               <span class=c1># 刪除第1到5行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3,$d&#39;</span> file.txt               <span class=c1># 刪除第3行到檔案結尾</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 模式地址</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/d&#39;</span> file.txt         <span class=c1># 刪除包含pattern的行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/start/,/end/d&#39;</span> file.txt     <span class=c1># 刪除從start到end之間的行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 特殊地址</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;$d&#39;</span> file.txt                 <span class=c1># 刪除最後一行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;0,/pattern/d&#39;</span> file.txt       <span class=c1># 刪除到第一個匹配pattern的行</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=進階地址定界>進階地址定界</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 步進地址</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;1~2p&#39;</span> file.txt            <span class=c1># 列印奇數行（從第1行開始，每2行一次）</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;2~2p&#39;</span> file.txt            <span class=c1># 列印偶數行</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;1~3p&#39;</span> file.txt            <span class=c1># 每三行列印一次</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 地址取反</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3!d&#39;</span> file.txt                <span class=c1># 刪除除第3行外的所有行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/!d&#39;</span> file.txt        <span class=c1># 只保留包含pattern的行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 複雜地址組合</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1,3d; 5,7d&#39;</span> file.txt         <span class=c1># 刪除1-3行和5-7行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/^#/d; /^$/d&#39;</span> file.txt       <span class=c1># 刪除註釋行和空行</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=核心命令詳解>核心命令詳解</h2><h3 id=1-替換命令-s>1. 替換命令 (s)</h3><p>sed 最常用的命令，語法：<code>s/pattern/replacement/flags</code></p><h4 id=基本替換>基本替換</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本替換語法</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/pattern/replacement/&#39;</span> file.txt          <span class=c1># 替換每行第一個匹配</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/pattern/replacement/g&#39;</span> file.txt         <span class=c1># 全域替換</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/pattern/replacement/2&#39;</span> file.txt         <span class=c1># 替換第二個匹配</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/pattern/replacement/2g&#39;</span> file.txt        <span class=c1># 從第二個開始全部替換</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用不同分隔符</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s#/old/path#/new/path#g&#39;</span> file.txt         <span class=c1># 使用 # 作為分隔符</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s|old|new|g&#39;</span> file.txt                     <span class=c1># 使用 | 作為分隔符</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s@old@new@g&#39;</span> file.txt                     <span class=c1># 使用 @ 作為分隔符</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=進階替換功能>進階替換功能</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 大小寫轉換</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/.*/\U&amp;/&#39;</span> file.txt                       <span class=c1># 全部轉大寫</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/.*/\L&amp;/&#39;</span> file.txt                       <span class=c1># 全部轉小寫</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/\([a-z]\)/\U\1/g&#39;</span> file.txt             <span class=c1># 每個字母轉大寫</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/\b\w/\U&amp;/g&#39;</span> file.txt                   <span class=c1># 單詞首字母大寫</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用捕獲群組</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/\([0-9]*\)-\([0-9]*\)/\2-\1/&#39;</span> file.txt <span class=c1># 交換數字順序</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/\(.*\): \(.*\)/\2 - \1/&#39;</span> file.txt      <span class=c1># 重新排列格式</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 條件替換</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/s/old/new/g&#39;</span> file.txt            <span class=c1># 只在包含pattern的行中替換</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1,10s/old/new/g&#39;</span> file.txt                 <span class=c1># 只在第1-10行中替換</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-刪除命令-d>2. 刪除命令 (d)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本刪除</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3d&#39;</span> file.txt                              <span class=c1># 刪除第3行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1,5d&#39;</span> file.txt                            <span class=c1># 刪除第1-5行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;$d&#39;</span> file.txt                              <span class=c1># 刪除最後一行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 模式刪除</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/d&#39;</span> file.txt                      <span class=c1># 刪除包含pattern的行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/^$/d&#39;</span> file.txt                           <span class=c1># 刪除空行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/^#/d&#39;</span> file.txt                           <span class=c1># 刪除註釋行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/^[[:space:]]*$/d&#39;</span> file.txt               <span class=c1># 刪除空行和只有空白的行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 範圍刪除</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/start/,/end/d&#39;</span> file.txt                  <span class=c1># 刪除start到end之間的行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/BEGIN/,/END/d&#39;</span> file.txt                  <span class=c1># 刪除BEGIN到END區塊</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-列印命令-p>3. 列印命令 (p)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本列印（通常與-n一起使用）</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;3p&#39;</span> file.txt                           <span class=c1># 只列印第3行</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;1,5p&#39;</span> file.txt                         <span class=c1># 只列印第1-5行</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;$p&#39;</span> file.txt                           <span class=c1># 只列印最後一行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 模式列印</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;/pattern/p&#39;</span> file.txt                   <span class=c1># 只列印包含pattern的行</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;/^#/p&#39;</span> file.txt                        <span class=c1># 只列印註釋行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 複製列印</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;p&#39;</span> file.txt                               <span class=c1># 每行列印兩次</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/p&#39;</span> file.txt                      <span class=c1># 匹配行列印兩次</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=4-插入和附加命令-i-a-c>4. 插入和附加命令 (i, a, c)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 插入命令 (i) - 在指定行前插入</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3i\New line before line 3&#39;</span> file.txt      <span class=c1># 在第3行前插入</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/i\New line&#39;</span> file.txt            <span class=c1># 在匹配行前插入</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 附加命令 (a) - 在指定行後附加</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3a\New line after line 3&#39;</span> file.txt       <span class=c1># 在第3行後附加</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/a\New line&#39;</span> file.txt            <span class=c1># 在匹配行後附加</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;$a\Last line&#39;</span> file.txt                   <span class=c1># 在檔案末尾附加</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 替換命令 (c) - 替換整行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3c\Replacement line&#39;</span> file.txt            <span class=c1># 替換第3行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/c\New content&#39;</span> file.txt         <span class=c1># 替換匹配行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 多行操作</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3i\Line 1\nLine 2\nLine 3&#39;</span> file.txt      <span class=c1># 插入多行</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=5-檔案操作命令-r-w>5. 檔案操作命令 (r, w)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 讀取檔案 (r)</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3r insert.txt&#39;</span> file.txt                  <span class=c1># 在第3行後插入檔案內容</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/r header.txt&#39;</span> file.txt          <span class=c1># 在匹配行後插入檔案</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 寫入檔案 (w)</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;1,10w output.txt&#39;</span> file.txt            <span class=c1># 將第1-10行寫入檔案</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;/pattern/w matches.txt&#39;</span> file.txt      <span class=c1># 將匹配行寫入檔案</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/ERROR/w errors.log&#39;</span> file.txt            <span class=c1># 將錯誤行寫入日誌</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=正規表達式進階應用>正規表達式進階應用</h2><h3 id=基本正規表達式-bre>基本正規表達式 (BRE)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本元字元</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/^/&gt; /&#39;</span> file.txt                         <span class=c1># 在每行開頭加上 &#34;&gt; &#34;</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/$/!/&#39;</span> file.txt                          <span class=c1># 在每行結尾加上 &#34;!&#34;</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/./X/g&#39;</span> file.txt                         <span class=c1># 將每個字元替換為X</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 字元類別</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/[0-9]/X/g&#39;</span> file.txt                     <span class=c1># 替換所有數字</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/[a-zA-Z]/X/g&#39;</span> file.txt                  <span class=c1># 替換所有字母</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/[[:digit:]]/X/g&#39;</span> file.txt               <span class=c1># 使用POSIX字元類別</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=擴展正規表達式-ere>擴展正規表達式 (ERE)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用 -E 或 -r 選項</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/([0-9]+)-([0-9]+)/\2-\1/&#39;</span> file.txt   <span class=c1># 交換連字號分隔的數字</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/\b[a-z]+/\U&amp;/g&#39;</span> file.txt             <span class=c1># 單詞首字母大寫</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/(.*\.)(jpg|png)/\1webp/&#39;</span> file.txt    <span class=c1># 改變檔案副檔名</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 量詞使用</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/a+/A/g&#39;</span> file.txt                     <span class=c1># 一個或多個a</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/a?/A/g&#39;</span> file.txt                     <span class=c1># 零個或一個a</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/a{3}/AAA/g&#39;</span> file.txt                 <span class=c1># 恰好三個a</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/a{2,4}/A/g&#39;</span> file.txt                 <span class=c1># 2到4個a</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=實戰應用場景>實戰應用場景</h2><h3 id=1-檔案內容清理>1. 檔案內容清理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 清理空行和註釋</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/^$/d; /^#/d&#39;</span> file.txt                    <span class=c1># 刪除空行和註釋行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/^[[:space:]]*$/d&#39;</span> file.txt               <span class=c1># 刪除空行和只有空白的行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/[[:space:]]*$//&#39;</span> file.txt               <span class=c1># 刪除行尾空白</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/^[[:space:]]*//&#39;</span> file.txt               <span class=c1># 刪除行首空白</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 清理特殊字元</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/\r$//&#39;</span> file.txt                         <span class=c1># 刪除Windows換行符</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/\t/ /g&#39;</span> file.txt                        <span class=c1># 將tab替換為空格</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/[[:cntrl:]]//g&#39;</span> file.txt                <span class=c1># 刪除控制字元</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-資料格式轉換>2. 資料格式轉換</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># CSV處理</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/,/\t/g&#39;</span> data.csv                        <span class=c1># CSV轉TSV</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/;/,/g&#39;</span> file.csv                         <span class=c1># 更改分隔符</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1d&#39;</span> data.csv                              <span class=c1># 刪除標題行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 日期格式轉換</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/([0-9]{4})-([0-9]{2})-([0-9]{2})/\3\/\2\/\1/g&#39;</span> file.txt
+</span></span><span class=line><span class=cl><span class=c1># 2023-12-25 -&gt; 25/12/2023</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 電話號碼格式化</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/([0-9]{3})([0-9]{3})([0-9]{4})/(\1) \2-\3/&#39;</span> file.txt
+</span></span><span class=line><span class=cl><span class=c1># 1234567890 -&gt; (123) 456-7890</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-程式碼處理>3. 程式碼處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 批次重構程式碼</span>
+</span></span><span class=line><span class=cl>find . -name <span class=s2>&#34;*.java&#34;</span> -exec sed -i <span class=s1>&#39;s/oldClassName/newClassName/g&#39;</span> <span class=o>{}</span> <span class=se>\;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 移除偵錯程式碼</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/console\.log/d&#39;</span> script.js                <span class=c1># 刪除console.log行</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/DEBUG/,/END_DEBUG/d&#39;</span> code.c              <span class=c1># 刪除DEBUG區塊</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 添加授權標題</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1i\// Copyright 2023 Company Name&#39;</span> *.js   <span class=c1># 在每個JS檔案開頭添加版權</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=4-日誌分析>4. 日誌分析</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 提取特定時間範圍的日誌</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;/2023-12-01/,/2023-12-31/p&#39;</span> access.log
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 過濾錯誤日誌</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;/ERROR\|FATAL/p&#39;</span> application.log       <span class=c1># 只顯示錯誤和致命錯誤</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/INFO\|DEBUG/d&#39;</span> application.log           <span class=c1># 隱藏資訊和偵錯訊息</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 日誌格式化</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/\[\([^]]*\)\]/\1/g&#39;</span> syslog              <span class=c1># 移除方括號</span>
+</span></span><span class=line><span class=cl>sed -E <span class=s1>&#39;s/^([^ ]+) ([^ ]+)/[\1] \2:/&#39;</span> log.txt   <span class=c1># 重新格式化時間戳</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=5-設定檔管理>5. 設定檔管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 修改設定值</span>
+</span></span><span class=line><span class=cl>sed -i <span class=s1>&#39;s/^port=.*/port=8080/&#39;</span> config.ini      <span class=c1># 修改連接埠設定</span>
+</span></span><span class=line><span class=cl>sed -i <span class=s1>&#39;/^#.*debug/s/^#//&#39;</span> config.conf         <span class=c1># 取消註釋debug設定</span>
+</span></span><span class=line><span class=cl>sed -i <span class=s1>&#39;/^debug=/s/false/true/&#39;</span> config.conf    <span class=c1># 啟用debug模式</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 添加設定項目</span>
+</span></span><span class=line><span class=cl>sed -i <span class=s1>&#39;/\[database\]/a\timeout=30&#39;</span> config.ini <span class=c1># 在[database]段落後添加設定</span>
+</span></span><span class=line><span class=cl>sed -i <span class=s1>&#39;$a\new_setting=value&#39;</span> config.conf      <span class=c1># 在檔案末尾添加設定</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=進階技巧>進階技巧</h2><h3 id=1-多命令處理>1. 多命令處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用分號分隔命令</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1d; s/old/new/g; $a\EOF&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用-e選項</span>
+</span></span><span class=line><span class=cl>sed -e <span class=s1>&#39;1d&#39;</span> -e <span class=s1>&#39;s/old/new/g&#39;</span> -e <span class=s1>&#39;$a\EOF&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用大括號組合命令</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/{s/old/new/; p;}&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-條件處理>2. 條件處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 分支和標籤</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;:label; s/\([0-9]*\),\([0-9]\)/\1\2,/; t label&#39;</span> file.txt  <span class=c1># 移除數字中的逗號</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 測試命令</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/old/new/; t end; s/fallback/replacement/; :end&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 複雜條件邏輯</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern1/{s/old/new/; b}; /pattern2/s/old/different/&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-保持空間-hold-space>3. 保持空間 (Hold Space)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 基本保持空間操作</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;1h; 2g; 2p&#39;</span> file.txt                   <span class=c1># 將第1行複製到第2行位置顯示</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;1h; 1!H; $!d; x; p&#39;</span> file.txt           <span class=c1># 反轉檔案行順序</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 複雜的保持空間範例</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;/pattern/{h; n; s/old/new/; H; x; s/\n/ - /; p;}&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h3 id=4-腳本檔案>4. 腳本檔案</h3><p>建立 <code>script.sed</code> 檔案：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sed data-lang=sed><span class=line><span class=cl><span class=c1># 這是一個sed腳本檔案</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1># 刪除空行</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>/</span><span class=sr>^$</span><span class=p>/</span><span class=k>d</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1># 刪除註釋行</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>/</span><span class=sr>^#</span><span class=p>/</span><span class=k>d</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1># 替換特定模式</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>s</span><span class=p>/</span><span class=sr>old_pattern</span><span class=p>/</span><span class=s1>new_pattern</span><span class=p>/</span><span class=k>g</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1># 在檔案末尾添加內容</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>$</span><span class=k>a</span><span class=s2>\
+</span></span></span><span class=line><span class=cl><span class=s2>Processing completed.</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>使用腳本：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sed -f script.sed input.txt
+</span></span></code></pre></td></tr></table></div></div><h2 id=效能優化與最佳實踐>效能優化與最佳實踐</h2><h3 id=1-效能優化技巧>1. 效能優化技巧</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用quit命令提早退出</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;10q&#39;</span> file.txt                             <span class=c1># 只處理前10行後退出</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/q&#39;</span> file.txt                      <span class=c1># 找到匹配後立即退出</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 避免不必要的處理</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;/pattern/p&#39;</span> file.txt                   <span class=c1># 使用-n避免自動列印</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;/pattern/!d&#39;</span> file.txt                     <span class=c1># 只保留匹配行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 組合多個操作</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/old1/new1/g; s/old2/new2/g&#39;</span> file.txt   <span class=c1># 一次執行多個替換</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-記憶體使用優化>2. 記憶體使用優化</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 處理大檔案時的注意事項</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1,1000d&#39;</span> hugefile.txt &gt; output.txt        <span class=c1># 分段處理大檔案</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;1000,2000p&#39;</span> hugefile.txt               <span class=c1># 只處理特定範圍</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用管道減少中間檔案</span>
+</span></span><span class=line><span class=cl>cat input.txt <span class=p>|</span> sed <span class=s1>&#39;s/old/new/g&#39;</span> <span class=p>|</span> sed <span class=s1>&#39;/pattern/d&#39;</span> &gt; output.txt
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-錯誤處理>3. 錯誤處理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 備份重要檔案</span>
+</span></span><span class=line><span class=cl>sed -i.backup <span class=s1>&#39;s/old/new/g&#39;</span> important.txt      <span class=c1># 自動備份</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 測試命令</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/old/new/g&#39;</span> file.txt &gt; test_output.txt   <span class=c1># 先測試輸出</span>
+</span></span><span class=line><span class=cl>diff file.txt test_output.txt                  <span class=c1># 檢查差異</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檢查檔案存在</span>
+</span></span><span class=line><span class=cl><span class=o>[</span> -f file.txt <span class=o>]</span> <span class=o>&amp;&amp;</span> sed -i <span class=s1>&#39;s/old/new/g&#39;</span> file.txt
+</span></span></code></pre></td></tr></table></div></div><h2 id=常見錯誤與除錯>常見錯誤與除錯</h2><h3 id=1-常見錯誤>1. 常見錯誤</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 錯誤：未轉義特殊字元</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/file.txt/newfile.txt/&#39;</span> file             <span class=c1># 錯誤：.匹配任意字元</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/file\.txt/newfile.txt/&#39;</span> file            <span class=c1># 正確：轉義.字元</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 錯誤：地址範圍問題</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1,$s/old/new/&#39;</span> file.txt                   <span class=c1># 可能造成混淆</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;1,$ s/old/new/&#39;</span> file.txt                  <span class=c1># 更清楚的寫法</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 錯誤：忘記分隔符轉義</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/http://old.com/http://new.com/&#39;</span> file    <span class=c1># 錯誤：分隔符衝突</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s#http://old.com#http://new.com#&#39;</span> file    <span class=c1># 正確：使用不同分隔符</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-除錯技巧>2. 除錯技巧</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 使用偵錯模式</span>
+</span></span><span class=line><span class=cl>sed --debug <span class=s1>&#39;s/old/new/g&#39;</span> file.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 逐步測試</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;l&#39;</span> file.txt                            <span class=c1># 顯示不可見字元</span>
+</span></span><span class=line><span class=cl><span class=nv>sed</span> <span class=o>=</span> file.txt <span class=p>|</span> sed <span class=s1>&#39;N; s/\n/\t/&#39;</span>             <span class=c1># 顯示行號</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 測試正規表達式</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;test string&#34;</span> <span class=p>|</span> sed <span class=s1>&#39;s/pattern/replacement/&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=與其他工具整合>與其他工具整合</h2><h3 id=1-與-find-組合>1. 與 find 組合</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 批次處理檔案</span>
+</span></span><span class=line><span class=cl>find . -name <span class=s2>&#34;*.txt&#34;</span> -exec sed -i <span class=s1>&#39;s/old/new/g&#39;</span> <span class=o>{}</span> <span class=se>\;</span>
+</span></span><span class=line><span class=cl>find . -name <span class=s2>&#34;*.conf&#34;</span> -exec sed -i <span class=s1>&#39;/^#/d&#39;</span> <span class=o>{}</span> <span class=se>\;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 使用 xargs 提升效能</span>
+</span></span><span class=line><span class=cl>find . -name <span class=s2>&#34;*.txt&#34;</span> <span class=p>|</span> xargs sed -i <span class=s1>&#39;s/old/new/g&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-與-awk-組合>2. 與 awk 組合</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># sed處理格式，awk處理邏輯</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/,/ /g&#39;</span> data.csv <span class=p>|</span> awk <span class=s1>&#39;{print $1, $3}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 管道組合處理</span>
+</span></span><span class=line><span class=cl>cat log.txt <span class=p>|</span> sed <span class=s1>&#39;/ERROR/!d&#39;</span> <span class=p>|</span> awk <span class=s1>&#39;{print $1, $4}&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-與-grep-組合>3. 與 grep 組合</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 先過濾再處理</span>
+</span></span><span class=line><span class=cl>grep <span class=s2>&#34;pattern&#34;</span> file.txt <span class=p>|</span> sed <span class=s1>&#39;s/old/new/g&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 組合條件處理</span>
+</span></span><span class=line><span class=cl>sed -n <span class=s1>&#39;/start/,/end/p&#39;</span> file.txt <span class=p>|</span> grep <span class=s2>&#34;important&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=實用腳本範例>實用腳本範例</h2><h3 id=1-日誌清理腳本>1. 日誌清理腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># log_cleanup.sh - 清理和格式化日誌檔案</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>LOG_FILE</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>OUTPUT_FILE</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>LOG_FILE</span><span class=si>}</span><span class=s2>.clean&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sed -e <span class=s1>&#39;/^$/d&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s1>&#39;/^#/d&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s1>&#39;s/[[:space:]]*$//&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s1>&#39;s/\t/ /g&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s1>&#39;/DEBUG/d&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=s2>&#34;</span><span class=nv>$LOG_FILE</span><span class=s2>&#34;</span> &gt; <span class=s2>&#34;</span><span class=nv>$OUTPUT_FILE</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;清理完成：</span><span class=nv>$OUTPUT_FILE</span><span class=s2>&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-設定檔更新腳本>2. 設定檔更新腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># config_update.sh - 批次更新設定檔</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>CONFIG_DIR</span><span class=o>=</span><span class=s2>&#34;/etc/myapp&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>BACKUP_DIR</span><span class=o>=</span><span class=s2>&#34;/etc/myapp/backup&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 備份設定檔</span>
+</span></span><span class=line><span class=cl>mkdir -p <span class=s2>&#34;</span><span class=nv>$BACKUP_DIR</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>cp <span class=s2>&#34;</span><span class=nv>$CONFIG_DIR</span><span class=s2>&#34;</span>/*.conf <span class=s2>&#34;</span><span class=nv>$BACKUP_DIR</span><span class=s2>&#34;</span>/
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 更新設定</span>
+</span></span><span class=line><span class=cl>find <span class=s2>&#34;</span><span class=nv>$CONFIG_DIR</span><span class=s2>&#34;</span> -name <span class=s2>&#34;*.conf&#34;</span> -exec sed -i <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s1>&#39;s/^port=.*/port=8080/&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s1>&#39;s/^debug=false/debug=true/&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s1>&#39;/^#.*logging/s/^#//&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=o>{}</span> <span class=se>\;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;設定更新完成&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-程式碼重構腳本>3. 程式碼重構腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -21,91 +642,46 @@ sed -e &lsquo;1,8 s/ [Tt]he/ THE/ g&rsquo; MyFile.txt</p><div class=highlight><d
 </span><span class=lnt>17
 </span><span class=lnt>18
 </span><span class=lnt>19
-</span><span class=lnt>20
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>   -n：不輸出模式空間內容到螢幕，即不自動列印，只列印匹配到的行
-</span></span><span class=line><span class=cl>   -e：參數指定要執行的編輯指令
-</span></span><span class=line><span class=cl>   -f：把Script寫到檔案當中，在執行sed時-f 指定檔案路徑，如果是多個Script，換行寫
-</span></span><span class=line><span class=cl>   -r：支援擴充套件的正則表達式
-</span></span><span class=line><span class=cl>   -i：直接處理檔案
-</span></span><span class=line><span class=cl>   -i.bak：在將處理的結果寫入檔案之前備份一份
-</span></span><span class=line><span class=cl>   
-</span></span><span class=line><span class=cl>   不給地址：對全文進行處理
-</span></span><span class=line><span class=cl>   單地址：
-</span></span><span class=line><span class=cl>   #: 指定的行
-</span></span><span class=line><span class=cl>   /pattern/：被此處模式所能夠匹配到的每一行
-</span></span><span class=line><span class=cl>   地址範圍：
-</span></span><span class=line><span class=cl>   #,#
-</span></span><span class=line><span class=cl>   #,+#
-</span></span><span class=line><span class=cl>   /pat1/,/pat2/
-</span></span><span class=line><span class=cl>   #,/pat1/
-</span></span><span class=line><span class=cl>   ~：步進
-</span></span><span class=line><span class=cl>    sed -n &#39;1~2p&#39;  只列印奇數行 （1~2 從第1行，一次加2行）
-</span></span><span class=line><span class=cl>    sed -n &#39;2~2p&#39;  只列印偶數行
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>   d：刪除模式空間匹配的行，並立即啓用下一輪回圈
-</span></span><span class=line><span class=cl>   p：列印當前模式空間內容，追加到預設輸出之後
-</span></span><span class=line><span class=cl>   a：在指定行後面追加文字，支援使用\n實現多行追加
-</span></span><span class=line><span class=cl>   i：在行前面插入文字，支援使用\n實現多行追加
-</span></span><span class=line><span class=cl>   c：替換行爲單行或多行文字，支援使用\n實現多行追加
-</span></span><span class=line><span class=cl>   w：儲存模式匹配的行至指定檔案
-</span></span><span class=line><span class=cl>   r：讀取指定檔案的文字至模式空間中匹配到的行後
-</span></span><span class=line><span class=cl>   =：爲模式空間中的行列印行號
-</span></span><span class=line><span class=cl>   !：模式空間中匹配行取反處理
-</span></span><span class=line><span class=cl>   s///：查詢替換，支援使用其它分隔符，如：s@@@，s###；
-</span></span><span class=line><span class=cl>   加g表示行內全域性替換；
-</span></span><span class=line><span class=cl>   在替換時，可以加一下命令，實現大小寫轉換
-</span></span><span class=line><span class=cl>   \l：把下個字元轉換成小寫。
-</span></span><span class=line><span class=cl>   \L：把replacement字母轉換成小寫，直到\U或\E出現。
-</span></span><span class=line><span class=cl>   \u：把下個字元轉換成大寫。
-</span></span><span class=line><span class=cl>   \U：把replacement字母轉換成大寫，直到\L或\E出現。
-</span></span><span class=line><span class=cl>   \E：停止以\L或\U開始的大小寫轉換
-</span></span></code></pre></td></tr></table></div></div><h3 id=example>example</h3><p>sed -e &rsquo;s/word1/word2/g&rsquo;</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=c1># s/find/replace/g</span>
-</span></span><span class=line><span class=cl><span class=c1># s: 5s 只處理第五行, 5,10s 五到十行</span>
-</span></span><span class=line><span class=cl><span class=c1># g: 全部, 不打: 只換第一個, 2: 換第二個, gi: ignore case</span>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># refactor.sh - 批次重構程式碼</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>sed -i -e <span class=s1>&#39;s/word1/word2/g&#39;</span> input.txt
+</span></span><span class=line><span class=cl><span class=nv>OLD_CLASS</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>NEW_CLASS</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$2</span><span class=s2>&#34;</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=c1># 將所有英文字轉為大寫</span>
-</span></span><span class=line><span class=cl>sed -i -e <span class=s1>&#39;s/.*/\U&amp;/&#39;</span> input.txt
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=nv>$#</span> -ne <span class=m>2</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;用法: </span><span class=nv>$0</span><span class=s2> &lt;舊類別名&gt; &lt;新類別名&gt;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=c1># 將所有英文字轉為小寫</span>
-</span></span><span class=line><span class=cl>sed -i -e <span class=s1>&#39;s/.*/\L&amp;/&#39;</span> input.txt
+</span></span><span class=line><span class=cl><span class=c1># 更新Java檔案</span>
+</span></span><span class=line><span class=cl>find . -name <span class=s2>&#34;*.java&#34;</span> -exec sed -i <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s2>&#34;s/class </span><span class=nv>$OLD_CLASS</span><span class=s2>/class </span><span class=nv>$NEW_CLASS</span><span class=s2>/g&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s2>&#34;s/new </span><span class=nv>$OLD_CLASS</span><span class=s2>(/new </span><span class=nv>$NEW_CLASS</span><span class=s2>(/g&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s2>&#34;s/</span><span class=nv>$OLD_CLASS</span><span class=s2>\.class/</span><span class=nv>$NEW_CLASS</span><span class=s2>.class/g&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=o>{}</span> <span class=se>\;</span>
 </span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>find . -name <span class=s1>&#39;*.ts&#39;</span> -type f -exec sed -i <span class=s1>&#39;s/pattern\([s]\)/要換的字\1/g&#39;</span> <span class=s1>&#39;{}&#39;</span> <span class=se>\;</span>
-</span></span></code></pre></td></tr></table></div></div><p>reference:
-<a href=https://tw511.com/a/01/11537.html alt=TW511教學網 target=_blank>TW511教學網</a>
-<a href=https://officeguide.cc/linux-sed-find-and-replace-text-in-file-tutorial-examples/ alt=office target=_blank>office</a></p></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;重構完成：</span><span class=nv>$OLD_CLASS</span><span class=s2> -&gt; </span><span class=nv>$NEW_CLASS</span><span class=s2>&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=總結>總結</h2><h3 id=核心優勢>核心優勢</h3><ol><li><strong>高效率</strong>：流式處理，記憶體使用量小</li><li><strong>靈活性</strong>：支援複雜的文本操作</li><li><strong>自動化</strong>：適合腳本和批次處理</li><li><strong>標準化</strong>：跨平台一致性好</li></ol><h3 id=最佳實踐>最佳實踐</h3><ol><li><strong>測試先行</strong>：重要操作前先測試輸出</li><li><strong>備份重要檔案</strong>：使用 <code>-i.backup</code> 選項</li><li><strong>善用正規表達式</strong>：提升處理效率</li><li><strong>組合工具</strong>：與其他命令協作使用</li><li><strong>腳本化</strong>：將複雜操作封裝為腳本</li></ol><h3 id=學習建議>學習建議</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 常用操作記憶口訣</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;s/old/new/g&#39;</span>     <span class=c1># 替換：substitute</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3d&#39;</span>              <span class=c1># 刪除：delete  </span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3p&#39;</span>              <span class=c1># 列印：print</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3a\text&#39;</span>         <span class=c1># 附加：append</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3i\text&#39;</span>         <span class=c1># 插入：insert</span>
+</span></span><span class=line><span class=cl>sed <span class=s1>&#39;3c\text&#39;</span>         <span class=c1># 改變：change</span>
+</span></span></code></pre></td></tr></table></div></div><p>sed 是文本處理的瑞士軍刀，掌握其核心概念和常用操作，能夠大幅提升 Linux 系統管理和自動化腳本的效率。記住：實務中最重要的是理解模式空間的概念，並善用地址定界來精確控制操作範圍。</p><h2 id=參考資料>參考資料</h2><ul><li><a href=https://www.gnu.org/software/sed/manual/sed.html>GNU sed Manual</a></li><li><a href=https://www.oreilly.com/library/view/sed-awk/1565922255/>sed & awk by O&rsquo;Reilly</a></li><li><a href=https://tldp.org/LDP/abs/html/>Advanced Bash-Scripting Guide</a></li><li><a href=https://www.regular-expressions.info/>Regular Expressions Info</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/linux class=tag-link>#Linux</a>
+<a href=/tags/sed class=tag-link>#Sed</a>
+<a href=/tags/stream-editor class=tag-link>#Stream Editor</a>
+<a href=/tags/text-processing class=tag-link>#Text Processing</a>
+<a href=/tags/regular-expression class=tag-link>#Regular Expression</a>
+<a href=/tags/shell class=tag-link>#Shell</a>
+<a href=/tags/unix class=tag-link>#Unix</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
 <a href=https://xinqilin.github.io/post/architecture/memento/ class=post-nav-link>DesignPattern - Behavioral - Memento</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
 <a href=https://xinqilin.github.io/post/backend/mapcompute/ class=post-nav-link>Java Map 計算方法詳解：putIfAbsent、compute、computeIfAbsent 使用指南</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
