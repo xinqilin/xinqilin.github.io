@@ -408,6 +408,27 @@
       <description></description>
     </item>
     <item>
+      <title>Criteria API</title>
+      <link>https://xinqilin.github.io/tags/criteria-api/</link>
+      <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/criteria-api/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dynamic Query</title>
+      <link>https://xinqilin.github.io/tags/dynamic-query/</link>
+      <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/dynamic-query/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Performance</title>
+      <link>https://xinqilin.github.io/tags/performance/</link>
+      <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/performance/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Query Builder</title>
       <link>https://xinqilin.github.io/tags/query-builder/</link>
       <pubDate>Sun, 08 Aug 2021 13:07:45 +0800</pubDate>
@@ -674,6 +695,13 @@
       <description></description>
     </item>
     <item>
+      <title>REST API</title>
+      <link>https://xinqilin.github.io/tags/rest-api/</link>
+      <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/rest-api/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Spring Boot</title>
       <link>https://xinqilin.github.io/tags/spring-boot/</link>
       <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
@@ -685,6 +713,13 @@
       <link>https://xinqilin.github.io/tags/spring-security/</link>
       <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/spring-security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Token</title>
+      <link>https://xinqilin.github.io/tags/token/</link>
+      <pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/token/</guid>
       <description></description>
     </item>
     <item>
@@ -716,17 +751,17 @@
       <description></description>
     </item>
     <item>
+      <title>Error Handling</title>
+      <link>https://xinqilin.github.io/tags/error-handling/</link>
+      <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/error-handling/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>HTTP Client</title>
       <link>https://xinqilin.github.io/tags/http-client/</link>
       <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/http-client/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>REST API</title>
-      <link>https://xinqilin.github.io/tags/rest-api/</link>
-      <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/rest-api/</guid>
       <description></description>
     </item>
     <item>
@@ -737,10 +772,17 @@
       <description></description>
     </item>
     <item>
-      <title>Web Service</title>
-      <link>https://xinqilin.github.io/tags/web-service/</link>
+      <title>Testing</title>
+      <link>https://xinqilin.github.io/tags/testing/</link>
       <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/web-service/</guid>
+      <guid>https://xinqilin.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>WebClient</title>
+      <link>https://xinqilin.github.io/tags/webclient/</link>
+      <pubDate>Wed, 30 Jun 2021 19:39:44 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/webclient/</guid>
       <description></description>
     </item>
     <item>
@@ -758,17 +800,31 @@
       <description></description>
     </item>
     <item>
+      <title>Comparator</title>
+      <link>https://xinqilin.github.io/tags/comparator/</link>
+      <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/comparator/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lambda</title>
+      <link>https://xinqilin.github.io/tags/lambda/</link>
+      <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/lambda/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LinkedHashMap</title>
+      <link>https://xinqilin.github.io/tags/linkedhashmap/</link>
+      <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/linkedhashmap/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Map</title>
       <link>https://xinqilin.github.io/tags/map/</link>
       <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/map/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Performance</title>
-      <link>https://xinqilin.github.io/tags/performance/</link>
-      <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/performance/</guid>
       <description></description>
     </item>
     <item>
@@ -832,6 +888,13 @@
       <link>https://xinqilin.github.io/tags/pagination/</link>
       <pubDate>Tue, 07 Jan 2020 13:26:41 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/pagination/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Specification</title>
+      <link>https://xinqilin.github.io/tags/specification/</link>
+      <pubDate>Tue, 07 Jan 2020 13:26:41 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/specification/</guid>
       <description></description>
     </item>
     <item>
@@ -905,10 +968,31 @@
       <description></description>
     </item>
     <item>
+      <title>Atomic Operations</title>
+      <link>https://xinqilin.github.io/tags/atomic-operations/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/atomic-operations/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ConcurrentHashMap</title>
+      <link>https://xinqilin.github.io/tags/concurrenthashmap/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/concurrenthashmap/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>HashMap</title>
       <link>https://xinqilin.github.io/tags/hashmap/</link>
       <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/hashmap/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Thread Safety</title>
+      <link>https://xinqilin.github.io/tags/thread-safety/</link>
+      <pubDate>Wed, 20 Mar 2019 20:58:17 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/thread-safety/</guid>
       <description></description>
     </item>
     <item>
@@ -951,13 +1035,6 @@
       <link>https://xinqilin.github.io/tags/singleton/</link>
       <pubDate>Mon, 06 Aug 2018 23:05:44 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/singleton/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Thread Safety</title>
-      <link>https://xinqilin.github.io/tags/thread-safety/</link>
-      <pubDate>Mon, 06 Aug 2018 23:05:44 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/thread-safety/</guid>
       <description></description>
     </item>
   </channel>
