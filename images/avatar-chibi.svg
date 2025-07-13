@@ -1,0 +1,35 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Q版頭像背景圓圈 -->
+  <circle cx="32" cy="32" r="30" fill="#f0f8ff" stroke="#4a90e2" stroke-width="2"/>
+  
+  <!-- 臉部 -->
+  <circle cx="32" cy="30" r="22" fill="#fdbcb4"/>
+  
+  <!-- 頭髮 -->
+  <path d="M12 25 Q32 8 52 25 Q50 15 32 12 Q14 15 12 25" fill="#2c3e50"/>
+  
+  <!-- 眼睛 -->
+  <circle cx="24" cy="26" r="3" fill="#2c3e50"/>
+  <circle cx="40" cy="26" r="3" fill="#2c3e50"/>
+  <circle cx="25" cy="25" r="1" fill="white"/>
+  <circle cx="41" cy="25" r="1" fill="white"/>
+  
+  <!-- 鼻子 -->
+  <circle cx="32" cy="32" r="1" fill="#f4a6a6"/>
+  
+  <!-- 嘴巴 -->
+  <path d="M28 38 Q32 42 36 38" stroke="#2c3e50" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- 眉毛 -->
+  <path d="M20 22 L28 20" stroke="#2c3e50" stroke-width="2" stroke-linecap="round"/>
+  <path d="M36 20 L44 22" stroke="#2c3e50" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- 腮紅 -->
+  <circle cx="18" cy="34" r="2" fill="#f4a6a6" opacity="0.6"/>
+  <circle cx="46" cy="34" r="2" fill="#f4a6a6" opacity="0.6"/>
+  
+  <!-- 眼鏡框（可選） -->
+  <circle cx="24" cy="26" r="6" fill="none" stroke="#666" stroke-width="1" opacity="0.7"/>
+  <circle cx="40" cy="26" r="6" fill="none" stroke="#666" stroke-width="1" opacity="0.7"/>
+  <path d="M30 26 L34 26" stroke="#666" stroke-width="1" opacity="0.7"/>
+</svg>
