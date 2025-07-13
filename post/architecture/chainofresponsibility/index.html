@@ -1,0 +1,201 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Behavioral - Chain Of Responsibility - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicons/favicon.ico><meta property="og:title" content="DesignPattern - Behavioral - Chain Of Responsibility"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/chainofresponsibility/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Behavioral - Chain Of Responsibility</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=chain-of-responsibility>Chain Of Responsibility</h1><p>當有多個對象可以處理或滿足客戶端請求時，責任鏈模式建議給這些對像中的每一個以某種順序處理請求的機會。在這種情況下應用該模式，這些潛在的處理程序中的每一個都可以以鏈的形式排列，每個對像都具有對鏈中下一個對象的引用。鏈中的第一個對象接收請求並決定處理請求或將其傳遞給鏈中的下一個對象。請求一個接一個地流過鏈中的所有對象，直到請求被鏈中的一個處理程序處理或請求到達鏈的末端而沒有得到處理。</p><p>顯然，責任鏈模式用於在軟件設計中實現鬆散耦合，其中來自客戶端的請求被傳遞到對象鏈以處理它們。然後鏈中的對象將自行決定誰將處理請求以及是否需要將請求發送到鏈中的下一個對象。</p><ul><li>多個類別繼承或實作抽象, 並使用, 實作中不是自己的就 next 下去, 是自己的就 action</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// This&#39;s the request object.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Number</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>number</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>getNumber</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>number</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=nf>Number</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>num</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>number</span><span class=o>=</span><span class=n>num</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// interface that acts as a chain link.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>Chain</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setNext</span><span class=p>(</span><span class=n>Chain</span><span class=w> </span><span class=n>nextInChain</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>process</span><span class=p>(</span><span class=n>Number</span><span class=w> </span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>   
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>PositiveNumberProcessor</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>Chain</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>private</span><span class=w> </span><span class=n>Chain</span><span class=w> </span><span class=n>nextInChain</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setNext</span><span class=p>(</span><span class=n>Chain</span><span class=w> </span><span class=n>c</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>nextInChain</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>process</span><span class=p>(</span><span class=n>Number</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>request</span><span class=p>.</span><span class=na>getNumber</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;PositiveNumberProcessor : &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getNumber</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>nextInChain</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>NegativeNumberProcessor</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>Chain</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>private</span><span class=w> </span><span class=n>Chain</span><span class=w> </span><span class=n>nextInChain</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setNext</span><span class=p>(</span><span class=n>Chain</span><span class=w> </span><span class=n>c</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>nextInChain</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>process</span><span class=p>(</span><span class=n>Number</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>request</span><span class=p>.</span><span class=na>getNumber</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;NegativeNumberProcessor : &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getNumber</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>             </span><span class=n>nextInChain</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ZeroProcessor</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>Chain</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>private</span><span class=w> </span><span class=n>Chain</span><span class=w> </span><span class=n>nextInChain</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setNext</span><span class=p>(</span><span class=n>Chain</span><span class=w> </span><span class=n>c</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>nextInChain</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>process</span><span class=p>(</span><span class=n>Number</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>request</span><span class=p>.</span><span class=na>getNumber</span><span class=p>()</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;ZeroProcessor : &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getNumber</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>nextInChain</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//  Chain c1 = new NegativeNumberProcessor();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//  Chain c2 = new ZeroProcessor();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//  Chain c3 = new PositiveNumberProcessor();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//  c1.setNext(c2);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//  c2.setNext(c3);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// chain</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Chain</span><span class=w> </span><span class=n>c</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Chain</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>NegativeNumberProcessor</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ZeroProcessor</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>PositiveNumberProcessor</span><span class=p>())))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//calling chain of responsibility</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>c1</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Number</span><span class=p>(</span><span class=n>99</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>c1</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Number</span><span class=p>(</span><span class=o>-</span><span class=n>30</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>c1</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Number</span><span class=p>(</span><span class=n>0</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=n>c1</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Number</span><span class=p>(</span><span class=n>100</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>多個對象可以處理一個請求，並且處理程序是先驗未知的。應自動確定處理程序。</li><li>您想向多個對象之一發出請求，而不明確指定接收者。</li><li>應該動態指定可以處理請求的對象集。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/architecture/mediator/ class=post-nav-link>DesignPattern - Behavioral - Mediator</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/architecture/observer/ class=post-nav-link>DesignPattern - Behavioral - Observer</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

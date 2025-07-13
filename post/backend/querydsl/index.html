@@ -1,0 +1,210 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>QueryDSL - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicons/favicon.ico><meta property="og:title" content="QueryDSL"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/backend/querydsl/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>QueryDSL</h1><div class=post-meta><div class=post-info><time class=post-date>2021年08月08日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h3 id=maven-integration>Maven integration</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>com.querydsl<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>querydsl-apt<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>${querydsl.version}<span class=nt>&lt;/version&gt;</span>  <span class=c>&lt;!-- //可不寫，由 spring 自動判斷 --&gt;</span> 
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;scope&gt;</span>provided<span class=nt>&lt;/scope&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>com.querydsl<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>querydsl-jpa<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>${querydsl.version}<span class=nt>&lt;/version&gt;</span>   <span class=c>&lt;!-- //可不寫，由 spring 自動判斷 --&gt;</span> 
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- 會在 target/generated-sources/kotlin 生成 @Entity 的 Q類別 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;project&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;build&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;plugins&gt;</span>
+</span></span><span class=line><span class=cl>                ...
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;plugin&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;groupId&gt;</span>com.mysema.maven<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;artifactId&gt;</span>apt-maven-plugin<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;version&gt;</span>1.1.3<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;executions&gt;</span>
+</span></span><span class=line><span class=cl>                    <span class=nt>&lt;execution&gt;</span>
+</span></span><span class=line><span class=cl>                    <span class=nt>&lt;goals&gt;</span>
+</span></span><span class=line><span class=cl>                        <span class=nt>&lt;goal&gt;</span>process<span class=nt>&lt;/goal&gt;</span>
+</span></span><span class=line><span class=cl>                    <span class=nt>&lt;/goals&gt;</span>
+</span></span><span class=line><span class=cl>                    <span class=nt>&lt;configuration&gt;</span>
+</span></span><span class=line><span class=cl>                        <span class=nt>&lt;outputDirectory&gt;</span>target/generated-sources/kotlin<span class=nt>&lt;/outputDirectory&gt;</span>
+</span></span><span class=line><span class=cl>                        <span class=nt>&lt;processor&gt;</span>com.querydsl.apt.jpa.JPAAnnotationProcessor<span class=nt>&lt;/processor&gt;</span>
+</span></span><span class=line><span class=cl>                    <span class=nt>&lt;/configuration&gt;</span>
+</span></span><span class=line><span class=cl>                    <span class=nt>&lt;/execution&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;/executions&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;/plugin&gt;</span>
+</span></span><span class=line><span class=cl>                ...
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/plugins&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/build&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/project&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=產生-q-類>產生 Q 類</h3><pre tabindex=0><code>    mvn clean compile
+</code></pre><h2 id=使用>使用</h2><h3 id=select>select</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-kotlin data-lang=kotlin><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nd>@Autowired</span>
+</span></span><span class=line><span class=cl>    <span class=k>lateinit</span> <span class=k>var</span> <span class=py>queryFactory</span><span class=p>:</span> <span class=n>JPAQueryFactory</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>val</span> <span class=py>qadmin</span><span class=p>:</span> <span class=nc>QAdmin</span><span class=p>.</span><span class=n>admin</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>bill</span> <span class=p>=</span> <span class=n>queryFactory</span><span class=p>.</span><span class=n>selectFrom</span><span class=p>(</span><span class=n>qadmin</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>.</span><span class=k>where</span><span class=p>(</span><span class=n>qadmin</span><span class=p>.</span><span class=n>account</span><span class=p>.</span><span class=n>eq</span><span class=p>(</span><span class=s2>&#34;Bill&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=p>.</span><span class=n>and</span><span class=p>(</span><span class=n>qadmin</span><span class=p>.</span><span class=n>password</span><span class=p>.</span><span class=n>ed</span><span class=p>(</span><span class=s2>&#34;password&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=p>.</span><span class=n>fetchOne</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=join>join</h3><p>===== 以下 官網 java 範例 =====</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>JPAQueryFactory</span><span class=w> </span><span class=n>queryFactory</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>QCat</span><span class=w> </span><span class=n>cat</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>QCat</span><span class=p>.</span><span class=na>cat</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>QCat</span><span class=w> </span><span class=n>mate</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>QCat</span><span class=p>(</span><span class=s>&#34;mate&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>QCat</span><span class=w> </span><span class=n>kitten</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>QCat</span><span class=p>(</span><span class=s>&#34;kitten&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>selectFrom</span><span class=p>(</span><span class=n>cat</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>innerJoin</span><span class=p>(</span><span class=n>cat</span><span class=p>.</span><span class=na>mate</span><span class=p>,</span><span class=w> </span><span class=n>mate</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>leftJoin</span><span class=p>(</span><span class=n>cat</span><span class=p>.</span><span class=na>kittens</span><span class=p>,</span><span class=w> </span><span class=n>kitten</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>fetch</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>selectFrom</span><span class=p>(</span><span class=n>cat</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>leftJoin</span><span class=p>(</span><span class=n>cat</span><span class=p>.</span><span class=na>kittens</span><span class=p>,</span><span class=w> </span><span class=n>kitten</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>on</span><span class=p>(</span><span class=n>kitten</span><span class=p>.</span><span class=na>bodyWeight</span><span class=p>.</span><span class=na>gt</span><span class=p>(</span><span class=n>10</span><span class=p>.</span><span class=na>0</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>fetch</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=update>update</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=n>QCustomer</span><span class=w> </span><span class=n>customer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>QCustomer</span><span class=p>.</span><span class=na>customer</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// rename customers named Bob to Bobby</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>update</span><span class=p>(</span><span class=n>customer</span><span class=p>).</span><span class=na>where</span><span class=p>(</span><span class=n>customer</span><span class=p>.</span><span class=na>name</span><span class=p>.</span><span class=na>eq</span><span class=p>(</span><span class=s>&#34;Bob&#34;</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>set</span><span class=p>(</span><span class=n>customer</span><span class=p>.</span><span class=na>name</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Bobby&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>execute</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=delete>delete</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=n>QCustomer</span><span class=w> </span><span class=n>customer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>QCustomer</span><span class=p>.</span><span class=na>customer</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// delete all customers</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>delete</span><span class=p>(</span><span class=n>customer</span><span class=p>).</span><span class=na>execute</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// delete all customers with a level less than 3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>delete</span><span class=p>(</span><span class=n>customer</span><span class=p>).</span><span class=na>where</span><span class=p>(</span><span class=n>customer</span><span class=p>.</span><span class=na>level</span><span class=p>.</span><span class=na>lt</span><span class=p>(</span><span class=n>3</span><span class=p>)).</span><span class=na>execute</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=子查詢>子查詢</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=n>QDepartment</span><span class=w> </span><span class=n>department</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>QDepartment</span><span class=p>.</span><span class=na>department</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>QDepartment</span><span class=w> </span><span class=n>d</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>QDepartment</span><span class=p>(</span><span class=s>&#34;d&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>selectFrom</span><span class=p>(</span><span class=n>department</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>where</span><span class=p>(</span><span class=n>department</span><span class=p>.</span><span class=na>size</span><span class=p>.</span><span class=na>eq</span><span class=p>(</span><span class=n>JPAExpressions</span><span class=p>.</span><span class=na>select</span><span class=p>(</span><span class=n>d</span><span class=p>.</span><span class=na>size</span><span class=p>.</span><span class=na>max</span><span class=p>()).</span><span class=na>from</span><span class=p>(</span><span class=n>d</span><span class=p>)))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>fetch</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=c1>//----------</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>QEmployee</span><span class=w> </span><span class=n>employee</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>QEmployee</span><span class=p>.</span><span class=na>employee</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>QEmployee</span><span class=w> </span><span class=n>e</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>QEmployee</span><span class=p>(</span><span class=s>&#34;e&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>selectFrom</span><span class=p>(</span><span class=n>employee</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>where</span><span class=p>(</span><span class=n>employee</span><span class=p>.</span><span class=na>weeklyhours</span><span class=p>.</span><span class=na>gt</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>JPAExpressions</span><span class=p>.</span><span class=na>select</span><span class=p>(</span><span class=n>e</span><span class=p>.</span><span class=na>weeklyhours</span><span class=p>.</span><span class=na>avg</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>from</span><span class=p>(</span><span class=n>employee</span><span class=p>.</span><span class=na>department</span><span class=p>.</span><span class=na>employees</span><span class=p>,</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>where</span><span class=p>(</span><span class=n>e</span><span class=p>.</span><span class=na>manager</span><span class=p>.</span><span class=na>eq</span><span class=p>(</span><span class=n>employee</span><span class=p>.</span><span class=na>manager</span><span class=p>))))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>fetch</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=order-by>order by</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=n>QCustomer</span><span class=w> </span><span class=n>customer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>QCustomer</span><span class=p>.</span><span class=na>customer</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>selectFrom</span><span class=p>(</span><span class=n>customer</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>orderBy</span><span class=p>(</span><span class=n>customer</span><span class=p>.</span><span class=na>lastName</span><span class=p>.</span><span class=na>asc</span><span class=p>(),</span><span class=w> </span><span class=n>customer</span><span class=p>.</span><span class=na>firstName</span><span class=p>.</span><span class=na>desc</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>fetch</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=group-by>group by</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=n>QCustomer</span><span class=w> </span><span class=n>customer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>QCustomer</span><span class=p>.</span><span class=na>customer</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>queryFactory</span><span class=p>.</span><span class=na>select</span><span class=p>(</span><span class=n>customer</span><span class=p>.</span><span class=na>lastName</span><span class=p>).</span><span class=na>from</span><span class=p>(</span><span class=n>customer</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>groupBy</span><span class=p>(</span><span class=n>customer</span><span class=p>.</span><span class=na>lastName</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>.</span><span class=na>fetch</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Reference :<br><a href=https://querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration>官網範例 請點我!</a></p></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/backend/lateinit/ class=post-nav-link>Lateinit</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/backend/treemap/ class=post-nav-link>TreeMap Method</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

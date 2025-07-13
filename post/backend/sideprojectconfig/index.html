@@ -1,0 +1,575 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>SideProjectConfig - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicons/favicon.ico><meta property="og:title" content="SideProjectConfig"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/backend/sideprojectconfig/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>SideProjectConfig</h1><div class=post-meta><div class=post-info><time class=post-date>2020年01月01日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>4 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h1 id=side-project-常用功能紀錄方便以後快速-setup-環境>Side Project 常用功能，紀錄，方便以後快速 setup 環境</h1><h3 id=di>DI</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--  Lombok--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>lombok<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;optional&gt;</span>true<span class=nt>&lt;/optional&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--    Test Swagger with GraphQL --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>io.springfox<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>springfox-swagger2<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>2.9.2<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>io.springfox<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>springfox-swagger-ui<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>2.9.2<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--        StringUtil--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.apache.commons<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>commons-lang3<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>3.11<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--        Validate--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>javax.validation<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>validation-api<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>2.0.1.Final<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- JSON --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=nt>&lt;groupId&gt;</span>com.fasterxml.jackson.core<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=nt>&lt;artifactId&gt;</span>jackson-core<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=nt>&lt;version&gt;</span>2.9.8<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=nt>&lt;groupId&gt;</span>com.fasterxml.jackson.core<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=nt>&lt;artifactId&gt;</span>jackson-databind<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=nt>&lt;version&gt;</span>2.10.0<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- logstash --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>net.logstash.logback<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>logstash-logback-encoder<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>5.2<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- guava --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>com.google.guava<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>guava<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>30.1.1-jre<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=properties-or-yaml>Properties or Yaml</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-properties data-lang=properties><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=na>server.port</span> <span class=o>=</span> <span class=s>808x</span>
+</span></span><span class=line><span class=cl>    <span class=na>server.servlet.context-path</span> <span class=o>=</span> <span class=s>/name</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>#mysql-8 </span>
+</span></span><span class=line><span class=cl>    <span class=na>spring.datasource.username</span> <span class=o>=</span> <span class=s>root</span>
+</span></span><span class=line><span class=cl>    <span class=na>spring.datasource.password</span> <span class=o>=</span> <span class=s>mysql</span>
+</span></span><span class=line><span class=cl>    <span class=na>spring.datasource.url</span> <span class=o>=</span> <span class=s>jdbc:mysql://localhost:3306/&lt;name&gt;?serverTimezone=Asia/Taipei&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false</span>
+</span></span><span class=line><span class=cl>    <span class=na>spring.datasource.driver-class-name</span> <span class=o>=</span> <span class=s>com.mysql.cj.jdbc.Driver</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>#JPA</span>
+</span></span><span class=line><span class=cl>    <span class=na>spring.jpa.hibernate.ddl-auto</span> <span class=o>=</span> <span class=s>update</span>
+</span></span><span class=line><span class=cl>    <span class=na>spring.jpa.show-sql</span> <span class=o>=</span> <span class=s>true</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>server</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=l>808x</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>servlet</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>context-path</span><span class=p>:</span><span class=w> </span><span class=l>/name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spring</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>thymeleaf</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>cache</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#mysql-8 </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>datasource</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>driver-class-name</span><span class=p>:</span><span class=w> </span><span class=l>com.mysql.cj.jdbc.Driver</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>url</span><span class=p>:</span><span class=w> </span><span class=l>jdbc:mysql://localhost:3306/&lt;name&gt;?characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=Asia/Taipei</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>username</span><span class=p>:</span><span class=w> </span><span class=l>root</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>mysql</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>hikari</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>minimum-idle</span><span class=p>:</span><span class=w> </span><span class=m>5</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>maximum-pool-size</span><span class=p>:</span><span class=w> </span><span class=m>15</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>idle-timeout</span><span class=p>:</span><span class=w> </span><span class=m>30000</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pool-name</span><span class=p>:</span><span class=w> </span><span class=l>hikariCP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>connection-timeout</span><span class=p>:</span><span class=w> </span><span class=m>30000</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>max-lifetime</span><span class=p>:</span><span class=w> </span><span class=m>1800000</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>jpa</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>hibernate</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>ddl-auto</span><span class=p>:</span><span class=w> </span><span class=l>update</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>show-sql</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=config>Config</h3><p>Swagger2Config</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>    * @author Bill.Lin 
+</span></span></span><span class=line><span class=cl><span class=cm>    */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@EnableSwagger2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Swagger2Config</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Docket</span><span class=w> </span><span class=nf>api</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Docket</span><span class=p>(</span><span class=n>DocumentationType</span><span class=p>.</span><span class=na>SWAGGER_2</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>select</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>apis</span><span class=p>(</span><span class=n>RequestHandlerSelectors</span><span class=p>.</span><span class=na>any</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>paths</span><span class=p>(</span><span class=n>PathSelectors</span><span class=p>.</span><span class=na>any</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>build</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>RestTemplateConfig</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>RestTemplateConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=n>RestTemplate</span><span class=w> </span><span class=nf>restTemplate</span><span class=p>(</span><span class=n>ClientHttpRequestFactory</span><span class=w> </span><span class=n>factory</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RestTemplate</span><span class=p>(</span><span class=n>factory</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=n>ClientHttpRequestFactory</span><span class=w> </span><span class=nf>simpleClientHttpRequestFactory</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>SimpleClientHttpRequestFactory</span><span class=w> </span><span class=n>factory</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SimpleClientHttpRequestFactory</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>factory</span><span class=p>.</span><span class=na>setReadTimeout</span><span class=p>(</span><span class=n>3000</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>factory</span><span class=p>.</span><span class=na>setConnectTimeout</span><span class=p>(</span><span class=n>3000</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>factory</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=docker-compose>docker-compose</h3><p>kafka</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;3&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>services</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>zookeeper1</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>wurstmeister/zookeeper</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=m>2181</span><span class=p>:</span><span class=m>2181</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>zookeeper</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>kafka1</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>wurstmeister/kafka</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>kafka</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=m>9092</span><span class=p>:</span><span class=m>9092</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>environment</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>KAFKA_ADVERTISED_HOST_NAME</span><span class=p>:</span><span class=w> </span><span class=m>192.168.99.100</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>KAFKA_ZOOKEEPER_CONNECT</span><span class=p>:</span><span class=w> </span><span class=l>zookeeper:2181</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>KAFKA_CREATE_TOPIC</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;bill:1:3&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>redis</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>redis:&lt;tag&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>expose</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>6379</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;6379:6379&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>networks</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>rabbitmq</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>rabbitmq:3-management</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>environment</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>RABBITMQ_DEFAULT_USER=rabbitmq</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>RABBITMQ_DEFAULT_PASS=rabbitmq</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;15672:15672&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;5672:5672&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>networks</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>mysql</span><span class=p>:</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>mysql:5.7</span><span class=w> </span><span class=c># 或 8</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>environment</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>MYSQL_ROOT_PASSWORD=mysql</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>expose</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>3306</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;3306:3306&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>networks</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>mongo</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>mongo:4.1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restart</span><span class=p>:</span><span class=w> </span><span class=l>always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>expose</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>27017</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>27017</span><span class=p>:</span><span class=m>27017</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>environment</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>MONGO_INITDB_DATABASE</span><span class=p>:</span><span class=w> </span><span class=l>db</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>MONGO_INITDB_ROOT_USERNAME</span><span class=p>:</span><span class=w> </span><span class=l>root</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>MONGO_INITDB_ROOT_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=l>mongo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>networks</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>mongo-express</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>mongo-express</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restart</span><span class=p>:</span><span class=w> </span><span class=l>always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>8081</span><span class=p>:</span><span class=m>8081</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>environment</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>ME_CONFIG_MONGODB_SERVER</span><span class=p>:</span><span class=w> </span><span class=l>mongo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>ME_CONFIG_MONGODB_ADMINUSERNAME</span><span class=p>:</span><span class=w> </span><span class=l>root</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>ME_CONFIG_MONGODB_ADMINPASSWORD</span><span class=p>:</span><span class=w> </span><span class=l>mongo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>depends_on</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>mongo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>networks</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>default</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=logstash-config-resource>logstash config (resource)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;configuration&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;conversionRule</span> <span class=na>conversionWord=</span><span class=s>&#34;clr&#34;</span> <span class=na>converterClass=</span><span class=s>&#34;org.springframework.boot.logging.logback.ColorConverter&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;conversionRule</span> <span class=na>conversionWord=</span><span class=s>&#34;wex&#34;</span> <span class=na>converterClass=</span><span class=s>&#34;org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;conversionRule</span> <span class=na>conversionWord=</span><span class=s>&#34;wEx&#34;</span> <span class=na>converterClass=</span><span class=s>&#34;org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;CONSOLE_LOG_PATTERN&#34;</span> <span class=na>value=</span><span class=s>&#34;${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;appender</span> <span class=na>name=</span><span class=s>&#34;STDOUT&#34;</span> <span class=na>class=</span><span class=s>&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;layout</span> <span class=na>class=</span><span class=s>&#34;ch.qos.logback.classic.PatternLayout&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;pattern&gt;</span>${CONSOLE_LOG_PATTERN}<span class=nt>&lt;/pattern&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/layout&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/appender&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;logger</span> <span class=na>name=</span><span class=s>&#34;com.bill.xx&#34;</span> <span class=na>level=</span><span class=s>&#34;info&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;root</span> <span class=na>level=</span><span class=s>&#34;info&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;appender-ref</span> <span class=na>ref=</span><span class=s>&#34;STDOUT&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/root&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;LOGS&#34;</span> <span class=na>value=</span><span class=s>&#34;./logs&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;springProfile</span> <span class=na>name=</span><span class=s>&#34;indev, staging&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;LOGS&#34;</span> <span class=na>value=</span><span class=s>&#34;IDC 目錄&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;appender</span> <span class=na>name=</span><span class=s>&#34;RollingFile&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=na>class=</span><span class=s>&#34;ch.qos.logback.core.rolling.RollingFileAppender&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;file&gt;</span>${LOGS}/ma-pos.log<span class=nt>&lt;/file&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;encoder</span>
+</span></span><span class=line><span class=cl>                <span class=na>class=</span><span class=s>&#34;ch.qos.logback.classic.encoder.PatternLayoutEncoder&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;Pattern&gt;</span>%d %p %C{1.} [%t] %m%n<span class=nt>&lt;/Pattern&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/encoder&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;rollingPolicy</span>
+</span></span><span class=line><span class=cl>                <span class=na>class=</span><span class=s>&#34;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=c>&lt;!-- rollover daily and when the file reaches 10 MegaBytes --&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;fileNamePattern&gt;</span>${LOGS}/archived/ma-pos-%d{yyyy-MM-dd}.%i.log
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;/fileNamePattern&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;timeBasedFileNamingAndTriggeringPolicy</span>
+</span></span><span class=line><span class=cl>                    <span class=na>class=</span><span class=s>&#34;ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>                    <span class=nt>&lt;maxFileSize&gt;</span>10MB<span class=nt>&lt;/maxFileSize&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;/timeBasedFileNamingAndTriggeringPolicy&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/rollingPolicy&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/appender&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;appender</span> <span class=na>name=</span><span class=s>&#34;LogstashFile&#34;</span> <span class=na>class=</span><span class=s>&#34;ch.qos.logback.core.rolling.RollingFileAppender&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;file&gt;</span>${LOGS}/logstash/logstash.log<span class=nt>&lt;/file&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;rollingPolicy</span> <span class=na>class=</span><span class=s>&#34;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;fileNamePattern&gt;</span>${LOGS}/logstash/logstash.%d{yyyy-MM-dd}.log<span class=nt>&lt;/fileNamePattern&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;maxHistory&gt;</span>7<span class=nt>&lt;/maxHistory&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/rollingPolicy&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;encoder</span> <span class=na>class=</span><span class=s>&#34;net.logstash.logback.encoder.LogstashEncoder&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/appender&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;root</span> <span class=na>level=</span><span class=s>&#34;info&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;appender-ref</span> <span class=na>ref=</span><span class=s>&#34;RollingFile&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;appender-ref</span> <span class=na>ref=</span><span class=s>&#34;LogstashFile&#34;</span> <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/root&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/springProfile&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/configuration&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=other>Other</h3><p>banner.txt</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      ,.  - · - .,  &#39;             ,.-·.              ,.  &#39;                ,.  &#39;
+</span></span><span class=line><span class=cl>,·&#39;´,.-,   ,. -.,   `&#39;;,&#39;         /    ;&#39;\&#39;          /   &#39;;\              /   &#39;;\
+</span></span><span class=line><span class=cl> \::\.&#39;´  ;&#39;\::::;:&#39;  ,·&#39;:\&#39;      ;    ;:::\       ,&#39;   ,&#39;::&#39;\           ,&#39;   ,&#39;::&#39;\
+</span></span><span class=line><span class=cl>  &#39;\:&#39;;   ;:;:·&#39;´,.·&#39;´\::::&#39;;    &#39;;    ;::::;&#39;     ,&#39;    ;:::&#39;;&#39;         ,&#39;    ;:::&#39;;&#39;
+</span></span><span class=line><span class=cl>  ,.·&#39;   ,.·:&#39;´:::::::&#39;\;·´      ;   ;::::;      &#39;;   ,&#39;:::;&#39;          &#39;;   ,&#39;:::;&#39;
+</span></span><span class=line><span class=cl>  &#39;·,   ,.`&#39; ·- :;:;·&#39;´         &#39;;  ;&#39;::::;       ;  ,&#39;:::;&#39; &#39;          ;  ,&#39;:::;&#39; &#39;
+</span></span><span class=line><span class=cl>     ;  &#39;;:\:`*·,  &#39;`·,  °     ;  &#39;;:::&#39;;       ,&#39;  ,&#39;::;&#39;            ,&#39;  ,&#39;::;&#39;
+</span></span><span class=line><span class=cl>     ;  ;:;:&#39;-·&#39;´  ,.·&#39;:\       &#39;;  ;::::;&#39;      ;  &#39;;_:,.-·´&#39;;\‘     ;  &#39;;_:,.-·´&#39;;\‘
+</span></span><span class=line><span class=cl>  ,·&#39;,  ,. -~:*&#39;´\:::::&#39;\‘      \*´\:::;‘      &#39;,   _,.-·&#39;´:\:\‘    &#39;,   _,.-·&#39;´:\:\‘
+</span></span><span class=line><span class=cl>   \:\`&#39;´\:::::::::&#39;\;:·&#39;´        &#39;\::\:;&#39;        \¨:::::::::::\&#39;;     \¨:::::::::::\&#39;;
+</span></span><span class=line><span class=cl>    &#39;\;\:::\;: -~*´‘              `*´‘          &#39;\;::_;:-·&#39;´‘        &#39;\;::_;:-·&#39;´‘
+</span></span><span class=line><span class=cl>             &#39;                                     &#39;¨                   &#39;¨
+</span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/backend/springannotation/ class=post-nav-link>Spring Annotation</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/backend/jpapageable/ class=post-nav-link>JpaPageable</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

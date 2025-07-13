@@ -1,0 +1,156 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Basic - Singleton - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicons/favicon.ico><meta property="og:title" content="DesignPattern - Basic - Singleton"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/singleton/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Basic - Singleton</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月06日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=singleton>Singleton</h1><p>確保在 java 虛擬機中只存在該類的一個實例。單例類必須提供一個全局訪問點來獲取類的實例。</p><ul><li>一個類應該只允許一個實例，</li><li>應該允許全局訪問該單個實例。</li><li>用於限制從其他類實例化類的私有構造函數。</li><li>同一類的私有靜態變量，是該類的唯一實例。</li><li>公共靜態方法，返回類的實例，這是外部世界獲取單例類實例的全局訪問點。</li></ul><h3 id=reflection-clone-序列化反序列化-違反-singleton>Reflection, Clone, 序列化/反序列化 違反 Singleton</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>Singleton</span><span class=w> </span><span class=n>instance</span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Singleton</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>private</span><span class=w> </span><span class=nf>Singleton</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;creating instance.....&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>Singleton</span><span class=w> </span><span class=nf>getInstance</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=k>return</span><span class=w> </span><span class=n>instance</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>SingletonS</span><span class=w> </span><span class=n>s1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>SingletonS</span><span class=p>.</span><span class=na>getInstance</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>SingletonS</span><span class=w> </span><span class=n>s2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>SingletonS</span><span class=p>.</span><span class=na>getInstance</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Hashcode of Object s1: &#34;</span><span class=w> </span><span class=o>+</span><span class=n>s1</span><span class=p>.</span><span class=na>hashCode</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Hashcode of Object s2: &#34;</span><span class=w> </span><span class=o>+</span><span class=n>s2</span><span class=p>.</span><span class=na>hashCode</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=c1>// Reflection</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>Class</span><span class=w> </span><span class=n>clazz</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Class</span><span class=p>.</span><span class=na>forName</span><span class=p>(</span><span class=s>&#34;com.dev.dp.creational.singleton.SingletonR&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>Constructor</span><span class=o>&lt;</span><span class=n>SingletonR</span><span class=o>&gt;</span><span class=w> </span><span class=n>ctr</span><span class=o>=</span><span class=w> </span><span class=n>clazz</span><span class=p>.</span><span class=na>getDeclaredConstructor</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>ctr</span><span class=p>.</span><span class=na>setAccessible</span><span class=p>(</span><span class=kc>true</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>SingletonR</span><span class=w> </span><span class=n>s3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ctr</span><span class=p>.</span><span class=na>newInstance</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Hashcode of Object s3: &#34;</span><span class=w> </span><span class=o>+</span><span class=n>s3</span><span class=p>.</span><span class=na>hashCode</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=c1>// Clone</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>Singleton</span><span class=w> </span><span class=n>s3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>Singleton</span><span class=p>)</span><span class=n>s2</span><span class=p>.</span><span class=na>clone</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Hashcode of Object s3: &#34;</span><span class=w> </span><span class=o>+</span><span class=n>s3</span><span class=p>.</span><span class=na>hashCode</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=c1>// Serialization / Deserialization</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>ObjectOutputStream</span><span class=w> </span><span class=n>oos</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ObjectOutputStream</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>FileOutputStream</span><span class=p>(</span><span class=s>&#34;D:/tmp/s2.ser&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>oos</span><span class=p>.</span><span class=na>writeObject</span><span class=p>(</span><span class=n>s2</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>ObjectInputStream</span><span class=w> </span><span class=n>ois</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ObjectInputStream</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>FileInputStream</span><span class=p>(</span><span class=s>&#34;D:/tmp/s2.ser&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>SingletonS</span><span class=w> </span><span class=n>s3</span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>SingletonS</span><span class=p>)</span><span class=n>ois</span><span class=p>.</span><span class=na>readObject</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   	
+</span></span></span><span class=line><span class=cl><span class=w>   	</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Hashcode of Object s3: &#34;</span><span class=w> </span><span class=o>+</span><span class=n>s3</span><span class=p>.</span><span class=na>hashCode</span><span class=p>());</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=修復>修復</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=p>(</span><span class=n>instance</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RuntimeException</span><span class=p>(</span><span class=s>&#34;無法創造新 instance&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>Singleton</span><span class=p>.</span><span class=na>getInstance</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=多執行緒-eager--lazy-init>多執行緒 eager / lazy init</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 可加 volatile 關鍵字 , write the main memory, 可減少開銷</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=kd>private</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>SingletonT</span><span class=w> </span><span class=n>instance</span><span class=o>=</span><span class=kc>null</span><span class=p>;</span><span class=w> </span><span class=c1>//lazy initialization</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=kd>private</span><span class=w> </span><span class=nf>SingletonT</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Creating...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// double check lock</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>SingletonT</span><span class=w> </span><span class=nf>getInstance</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>instance</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>   </span><span class=c1>//check1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=kd>synchronized</span><span class=w> </span><span class=p>(</span><span class=n>SingletonT</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>instance</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>   </span><span class=c1>//check2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>					</span><span class=n>instance</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SingletonT</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=k>return</span><span class=w> </span><span class=n>instance</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>useSingleton</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=n>SingletonT</span><span class=w> </span><span class=n>singleton</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>SingletonT</span><span class=p>.</span><span class=na>getInstance</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Hashcode of Singleton Object: &#34;</span><span class=o>+</span><span class=n>singleton</span><span class=p>.</span><span class=na>hashCode</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=n>ExecutorService</span><span class=w> </span><span class=n>service</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Executors</span><span class=p>.</span><span class=na>newFixedThreadPool</span><span class=p>(</span><span class=n>2</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=n>service</span><span class=p>.</span><span class=na>submit</span><span class=p>(</span><span class=n>SingletonT</span><span class=p>::</span><span class=n>useSingleton</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=n>service</span><span class=p>.</span><span class=na>submit</span><span class=p>(</span><span class=n>SingletonT</span><span class=p>::</span><span class=n>useSingleton</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=n>service</span><span class=p>.</span><span class=na>shutdown</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=p>}</span><span class=w>	
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=singleton-目的>Singleton 目的</h3><p>一次只能有一個實例（對象）的類是單例類。如果我們第二次嘗試實例化 Singleton 類，新變量也指向之前創建的實例。因此，無論我們通過任何實例對類內的任何變量進行任何修改，都會影響創建的單個實例的變量。例如，Runtime 類、Action Servlet、Service Locator 是一些 Singleton 類。私有構造函數和工廠方法也屬於單例類的例子。</p><p>創建 Singleton 類的主要目的是限制創建對象的數量。此外，通過使用 Singleton 類，每次發出新請求時都不會創建對象。相反，將重複使用單個對象。這就是 Java 中的 Singleton 模式主要用於多線程和數據庫應用程序的原因。例如，我們在創建數據庫連接時使用了單例類的概念。在這種情況下，我們通過不創建多個數據庫連接來限制內存浪費。</p><h3 id=note>Note</h3><ul><li>用private關鍵字聲明Singleton類的構造函數。通過將構造函數設為私有，沒有其他類可以從它實例化或生成對象。如果類中有多個構造函數，請將它們全部設為私有。</li><li>同一類的私有靜態變量，它是該類的唯一實例。</li><li>聲明一個返回類型為這個單例類的對象的靜態方法。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/architecture/factory/ class=post-nav-link>DesignPattern - Basic - Factory</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

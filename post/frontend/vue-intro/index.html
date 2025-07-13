@@ -1,0 +1,270 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Vue Intro - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicons/favicon.ico><meta property="og:title" content="Vue Intro"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/frontend/vue-intro/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Vue Intro</h1><div class=post-meta><div class=post-info><time class=post-date>2021年07月04日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/frontend class=category-link>Frontend</a></div></div></header><div class=post-content><h1 id=筆記-vue-未整理-version>筆記 Vue 未整理 version</h1><h3 id=套件>套件</h3><p>vetur
+vue2 snippets
+webpack -> npm install webpack -g
+vue -> npm install -g @vue/cli-init
+chrome: vue plugin</p><h3 id=快速開始>快速開始</h3><p>vue init webpack &lt;你的app名字></p><p><code>npm run dev</code></p><p>main.js -> 路由 index.js 在 [router 內]</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>export</span> <span class=k>default</span> <span class=k>new</span> <span class=nx>Router</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>    <span class=nx>routes</span><span class=o>:</span><span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>path</span><span class=o>:</span> <span class=s1>&#39;/&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>name</span><span class=o>:</span> <span class=s1>&#39;HelloWorld&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>component</span><span class=o>:</span> <span class=nx>HelloWorld</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>HelloWorld.vue 內容 在 [components內]</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=kr>export</span> <span class=k>default</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>data</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=nx>name</span><span class=o>:</span> <span class=s1>&#39;Bill&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>style</span><span class=p>&gt;&lt;/</span><span class=nt>style</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>跳頁</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>router-link</span> <span class=na>to</span><span class=o>=</span><span class=s>&#34;/HelloWorld&#34;</span><span class=p>&gt;</span>go to hello world<span class=p>&lt;/</span><span class=nt>router-link</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=單向綁定>單向綁定</h3><pre tabindex=0><code>
+v-text v-html
+v-bind:href=&#34;link&#34;   vue instance 內的 method 的 data:{link}
+(v-bind:href 可縮寫:href)
+</code></pre><h3 id=雙向綁定>雙向綁定</h3><p>v-model</p><h3 id=綁定事件>綁定事件</h3><pre tabindex=0><code>
+v-on:click=&#34;num++&#34;   =   @click
+
+v-on 防止事件冒泡{
+`.stop`: 阻止事件冒泡倒父層 
+`.prevent`: 阻止默認(預設) 事件發生
+`.capture`: 阻止事件捕獲模式
+`.self`: 只有自身觸發事件才執行
+`.once`: 只執行一次
+}
+</code></pre><h3 id=按鍵修飾符-v-onkeyup13>按鍵修飾符 v-on:keyup.13</h3><pre tabindex=0><code>
+13 是鍵碼
+v-on 按鍵修飾符 懶人包{
+`.enter`
+`.tab`
+`.delete`
+`.esc`
+`.space`
+`.up`
+`.down`
+`.left`
+`.right`
+}
+</code></pre><h3 id=v-for>v-for</h3><pre tabindex=0><code>v-for = &#34;user in users&#34;  或 v-for=&#34;(user, index) in users&#34;
+v-for = &#34;(value, key, index) in users&#34;  {{value}} {{key}} {{index}}
+ 
+v-for 增加 :key = &#34;&#34;  可增加效率 最主要是是別惟一值 :key 是 v-bind縮寫
+
+v-if  裡面都填boolean
+整個標籤不見
+v-show  裡面都填boolean
+是用 display:none
+
+
+常跟 v-if 一起用
+v-else-if
+v-else 
+</code></pre><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// computed 計算屬性
+</span></span></span><span class=line><span class=cl><span class=c1>// watch 監控屬性
+</span></span></span><span class=line><span class=cl><span class=c1>// filter 過濾屬性  -&gt; 使用 {{user.gender | genderFilter}}
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>	<span class=nx>el</span><span class=o>:</span> <span class=s2>&#34;#app&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>	<span class=nx>data</span><span class=o>:</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>a</span><span class=o>:</span><span class=mi>100</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=nx>b</span><span class=o>:</span><span class=mi>200</span>
+</span></span><span class=line><span class=cl>	<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=nx>computed</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>total</span><span class=o>:</span> <span class=kd>function</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>			<span class=k>return</span> <span class=k>this</span><span class=p>.</span><span class=nx>a</span><span class=o>+</span><span class=k>this</span><span class=p>.</span><span class=nx>b</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=nx>watch</span><span class=o>:</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>a</span><span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>newValue</span><span class=p>,</span> <span class=nx>oldValue</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>			<span class=nx>alert</span><span class=p>(</span><span class=s2>&#34;new: &#34;</span><span class=o>+</span><span class=nx>newValue</span><span class=o>+</span><span class=s2>&#34; , old: &#34;</span><span class=o>+</span><span class=nx>oldValue</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span><span class=p>(</span><span class=nx>a</span><span class=o>&gt;</span><span class=mi>3</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>				<span class=k>this</span><span class=p>.</span><span class=nx>msg</span> <span class=o>=</span> <span class=s2>&#34;太多&#34;</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>},</span>
+</span></span><span class=line><span class=cl>	<span class=nx>filters</span><span class=o>:</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>genderFilter</span><span class=p>(</span><span class=nx>val</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span><span class=p>(</span><span class=nx>val</span> <span class=o>==</span> <span class=mi>1</span><span class=p>)</span> <span class=k>return</span> <span class=s2>&#34;male&#34;</span>
+</span></span><span class=line><span class=cl>			<span class=k>else</span> <span class=k>return</span> <span class=s2>&#34;female&#34;</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span></code></pre></td></tr></table></div></div><p>組件:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=nx>script</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nx>Global</span> <span class=nx>組件</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>	<span class=nx>Vue</span><span class=p>.</span><span class=nx>component</span><span class=p>(</span><span class=s2>&#34;counter&#34;</span><span class=p>,{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>template</span><span class=o>:</span> <span class=sb>`&lt;button v-on:click = &#34;count++&#34;&gt; {{count}}&lt;/button&gt;`</span>
+</span></span><span class=line><span class=cl>		<span class=nx>data</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>			<span class=k>return</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>count</span><span class=o>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>});</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=nx>區域組件</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>	<span class=kr>const</span> <span class=nx>buttonCounter</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>template</span><span class=o>:</span> <span class=sb>`&lt;button v-on:click = &#34;count++&#34;&gt; {{count}}&lt;/button&gt;`</span>
+</span></span><span class=line><span class=cl>		<span class=nx>data</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>			<span class=k>return</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>count</span><span class=o>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>後</span> <span class=nx>放入</span> <span class=nx>vue</span> <span class=nx>instance</span> <span class=nx>components</span><span class=o>:</span><span class=p>{}</span><span class=nx>中</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=nx>components</span><span class=o>:</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=s1>&#39;button-counter 名字&#39;</span><span class=o>:</span> <span class=nx>buttonCounter</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=sb>```
+</span></span></span><span class=line><span class=cl><span class=sb>	&lt;button-counter&gt;&lt;/button-counter&gt; 使用
+</span></span></span><span class=line><span class=cl><span class=sb>	```</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=err>/script&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=lifecycle>lifeCycle</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>let</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>    <span class=nx>el</span><span class=o>:</span> <span class=nx>app</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nx>beforeCreate</span><span class=o>:</span> <span class=kd>function</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 放一些生命週期的東西
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/backend/jwt/ class=post-nav-link>JWT</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/architecture/solid/ class=post-nav-link>SOLID</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

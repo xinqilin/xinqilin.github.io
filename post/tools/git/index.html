@@ -1,0 +1,27 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Git - Bill.Lin's Notes</title><meta name=description content="recording the tag use in CI process"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicons/favicon.ico><meta property="og:title" content="Git"><meta property="og:description" content="recording the tag use in CI process"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/tools/git/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Git</h1><div class=post-meta><div class=post-info><time class=post-date>2021年03月01日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>1 分鐘閱讀</span></div><div class=post-categories><a href=/categories/tools class=category-link>Tools</a></div></div></header><div class=post-content><h3 id=git>Git</h3><blockquote><p>tag</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    git tag deploy/<span class=o>{</span>env_name<span class=o>}</span>/<span class=o>{</span>feature_name<span class=o>}</span>
+</span></span><span class=line><span class=cl>    git push origin deploy/<span class=o>{</span>env_name<span class=o>}</span>/<span class=o>{</span>feature_name<span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    git tag -d/--delete deploy/<span class=o>{</span>env_name<span class=o>}</span>/<span class=o>{</span>feature_name<span class=o>}</span>
+</span></span><span class=line><span class=cl>    git push origin --delete deploy/<span class=o>{</span>env_name<span class=o>}</span>/<span class=o>{</span>feature_name<span class=o>}</span>
+</span></span><span class=line><span class=cl>    git push origin :<span class=o>{</span>tagname<span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    git describe --always HEAD  
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>remote info</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    git remote show origin
+</span></span></code></pre></td></tr></table></div></div></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/tools/dig/ class=post-nav-link>Dig</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/backend/map-sort-by-value/ class=post-nav-link>Map Sort by Value</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

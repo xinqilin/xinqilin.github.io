@@ -1,0 +1,161 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Behavioral - Mediator - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicons/favicon.ico><meta property="og:title" content="DesignPattern - Behavioral - Mediator"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/architecture/mediator/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Behavioral - Mediator</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/architecture class=category-link>Architecture</a></div></div></header><div class=post-content><h1 id=mediator>Mediator</h1><p>Mediator 通過阻止對象顯式地相互引用來促進鬆散耦合，並且它允許您獨立地改變它們的交互。
+我們使用中介者設計模式在系統中的不同對象之間提供集中的通信媒介。</p><p>中介者模式專注於在對象之間提供一個中介者進行互動，並幫助實現對象之間的丟失耦合。對像要求中介者代表它們進行交互，而不是直接相互交互。它導致可重用性和鬆散耦合。此外，它封裝了對象之間的交互，使它們相互獨立。這也允許他們通過實現不同的中介以完全不同的方式改變與其他對象的交互。調解器有助於降低類的複雜性。此外，每個對像不再需要詳細了解如何與其他對象交互。對象之間的耦合從緊緻僵硬到鬆散優雅。
+中介者設計模式在多個對象相互交互的企業應用程序中非常有用。如果對象直接相互交互，系統組件就會相互緊密耦合。它們還使可維護性成本更高，並且不能靈活地輕鬆擴展。</p><p>例如，空中交通管制員是調解員模式的一個很好的例子，其中機場控制室充當不同航班之間通信的調解員。中介作為對象之間的路由器工作，它可以有自己的邏輯來提供通信方式。</p><ul><li>Mediator: 定義一個與同事對象通信的 interface</li><li>ConcreteMediator: 通過協調 Colleague 對象來實現協作行為。它還了解並維護其同事。</li><li>Colleague Classes: 每個 Colleague class 都知道它的 Mediator 對象。每位同事在本應與另一位同事溝通時都會與其調解員溝通。</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>IMediator</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>talk</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>fight</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>registerA</span><span class=p>(</span><span class=n>ColleagueA</span><span class=w> </span><span class=n>a</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>registerB</span><span class=p>(</span><span class=n>ColleagueB</span><span class=w> </span><span class=n>b</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ConcreteMediator</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>IMediator</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=n>ColleagueA</span><span class=w> </span><span class=n>talk</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=n>ColleagueB</span><span class=w> </span><span class=n>fight</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>talk</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Mediator is talking&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>fight</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Mediator is fighting&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>registerA</span><span class=p>(</span><span class=n>ColleagueA</span><span class=w> </span><span class=n>a</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>talk</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>a</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>registerB</span><span class=p>(</span><span class=n>ColleagueB</span><span class=w> </span><span class=n>b</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>fight</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>b</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=c1>// ===========</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kd>class</span> <span class=nc>Colleague</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=n>IMediator</span><span class=w> </span><span class=n>mediator</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doSomething</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ColleagueA</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Colleague</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=nf>ColleagueA</span><span class=p>(</span><span class=n>IMediator</span><span class=w> </span><span class=n>mediator</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>mediator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>mediator</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>mediator</span><span class=p>.</span><span class=na>registerA</span><span class=p>(</span><span class=k>this</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doSomething</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>mediator</span><span class=p>.</span><span class=na>talk</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ColleagueB</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Colleague</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=nf>ColleagueB</span><span class=p>(</span><span class=n>IMediator</span><span class=w> </span><span class=n>mediator</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>mediator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>mediator</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>mediator</span><span class=p>.</span><span class=na>registerB</span><span class=p>(</span><span class=k>this</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nd>@Override</span><span class=w>     
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doSomething</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>mediator</span><span class=p>.</span><span class=na>fight</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>IMediator</span><span class=w> </span><span class=n>mediator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ConcreteMediator</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>ColleagueA</span><span class=w> </span><span class=n>talkColleague</span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ColleagueA</span><span class=p>(</span><span class=n>mediator</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>talkColleague</span><span class=p>.</span><span class=na>doSomething</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>ColleagueB</span><span class=w> </span><span class=n>fightColleague</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ColleagueB</span><span class=p>(</span><span class=n>mediator</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>fightColleague</span><span class=p>.</span><span class=na>doSomething</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>一組對像以定義明確但複雜的方式進行互動。由此產生的相互依賴是非結構化的並且難以理解。</li><li>重用一個對像很困難，因為它引用了許多其他對象並與之互動。</li><li>分佈在多個類之間的行為應該是可定制的，無需大量子類化。</li></ul></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/architecture/templatemethod/ class=post-nav-link>DesignPattern - Behavioral - Template Method</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/architecture/chainofresponsibility/ class=post-nav-link>DesignPattern - Behavioral - Chain Of Responsibility</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>

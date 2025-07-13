@@ -1,0 +1,301 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Dockerfile - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=icon type=image/x-icon href=/favicons/favicon.ico><meta property="og:title" content="Dockerfile"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/devops/dockerfile-basic/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-brand><a href=https://xinqilin.github.io/ class=nav-title>Bill.Lin's Notes</a></div><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li></ul></nav></header><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Dockerfile</h1><div class=post-meta><div class=post-info><time class=post-date>2021年07月24日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>3 分鐘閱讀</span></div><div class=post-categories><a href=/categories/devops class=category-link>DevOps</a></div></div></header><div class=post-content><h3 id=dockerfile-basic>Dockerfile Basic</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 首行必須要為指定的基礎映像檔，這裏使用的是ubuntu作為基礎映像檔，</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 版本18.04，若不給版本號則會是latest。</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=s> ubuntu:18.04</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 維護者資訊想必也是不可少，此地方也可輸入E-mail資訊，</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 注意此資訊會寫入產出映像檔的Author名稱屬性中。</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>MAINTAINER</span><span class=s> Bill</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># RUN 是在 build 階段運行</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 最重要的部分，想要在映像檔上設定或安裝都須將命令寫於此，</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 格式須依RUN&lt;command&gt;，為RUN 指令後面放 Linux 指令，如果指令太長可以使用\來進行換行。</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 在此指令為先更新確認軟件包是最新的接者安裝nginx，而-y為同意指令進行中所有出現的問題。</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> apt-get update -y<span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    <span class=o>&amp;&amp;</span> apt-get install nginx -y<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Shell / exec 模式</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> <span class=o>[</span><span class=s2>&#34;./test.php&#34;</span>, <span class=s2>&#34;dev&#34;</span>, <span class=s2>&#34;offline&#34;</span><span class=o>]</span> <span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 等於 RUN ./test.php dev offline</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 容器創建後, default 進來的地方</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># ex: ubuntu 進去是 &#39;/&#39;, tomcat 進去後是 &#39;/usr/local/tomcat&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s> /app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 指定該 image 用什麼 user 去執行, default: root (一般來說用不到)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>USER</span><span class=s> </span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># -v 要 mount 出去的 外面:容器</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>VOLUME</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 只能活在 build image (ARG 與 ENV 都是給值)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ARG</span> <span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 設一些環境變數</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> MY_TEST_PATH /usr/my_test<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s> $MY_TEST_PATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 設定運行時容器提供服務的通道。</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=s> 80</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># docker cp, copy 文件至容器中</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> --from<span class=o>=</span>build <span class=nv>$NVM_DIR</span>/install.sh <span class=nv>$NVM_DIR</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># ADD = COPY + unzip 合體 （習慣用 ADD）</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ADD</span> <span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>##### 以下 runtime</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># shell &amp; exec</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 最後就是當啟用指定容器時(container)預設執行的指令，exec mode: CMD[&#34;command&#34;, ”param1”, &#34;param2&#34;]。</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 可以有多個 CMD 但只有最後一個有效 會覆蓋前面的</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># CMD 會被 docker run 之後的 參數替換 ＊＊＊ 比如 docker run -it -p 8080:8080 {image} /bin/bash 這時會蓋掉 CMD 的 command</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;nginx&#34;</span><span class=p>,</span> <span class=s2>&#34;-g&#34;</span><span class=p>,</span> <span class=s2>&#34;daemon off;&#34;</span><span class=p>]</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> ./catalina/start.sh<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># exec </span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 不會被 run 後面的參數覆蓋, 且這些參數會被當作 ENTRYPOINT 的參數運作</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 可跟 CMD 一起用 此時, CMD 會變成傳參數給 ENTRYPOINT</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENTRYPOINT</span> <span class=p>[</span><span class=s2>&#34;docker-entrypoint.sh&#34;</span><span class=p>]</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>### CMD &amp; ENTRYPOINT 一起用, 會變成 ENTRYPOINT 定義參數, CMD 傳遞參數</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=s> nginx</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENTRYPOINT</span> <span class=p>[</span><span class=s2>&#34;nginx&#34;</span><span class=p>,</span> <span class=s2>&#34;-c&#34;</span><span class=p>]</span> <span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;/etc/nginx/nginx.conf&#34;</span><span class=p>]</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>### 會變成 nginx -c /etc/nginx/nginx.conf</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=docker-build>docker build</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># build 格式</span>
+</span></span><span class=line><span class=cl>    <span class=c1># docker build [option]內容路徑</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    docker build -t bill/first_image .
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 即為在使用此目錄下（注意最後的點 .）的dockerfile進行建立的動作，</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 也可以使用-f選項來指定想要建立的dockerfile路徑位置，使用-t為建置映像檔的標籤資訊，</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 此為 bill/first_image。</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=sample>sample</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=s> centos</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>MAINTAINER</span><span class=s> Bill.Lin&lt;zzx123bill@gmail.com&gt;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> MY_PATH /usr/local<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s> $MY_PATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 安裝環境</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> yum -y install vim<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 可 ifconfig 看 ip</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> yum -y install net-tools<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> mkdir <span class=nv>$MY_PATH</span>/java<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ADD</span> jdk-11-tar-gz <span class=nv>$MY_PATH</span>/<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 配置環境變數</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> JAVA_HOME <span class=nv>$MY_PATH</span>/jdk-11<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> JRE_HOME <span class=nv>$JAVA_HOME</span>/jre<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> CLASSPATH <span class=nv>$JAVA_HOME</span>/lib/dt.jar:<span class=nv>$JAVA_HOME</span>/lib/tools.jar:<span class=nv>$JRE_HOME</span>/lib:<span class=nv>$CLASSPATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> PATH <span class=nv>$JAVA_HOME</span>/bin:<span class=nv>$PATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=s> 80</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=nb>echo</span> <span class=nv>$MY_PATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=nb>echo</span> java --version<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=nb>echo</span> <span class=s1>&#39;success...&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> /bin/bash<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=sample2>sample2</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=s> openjdk:8-jdk-alpine</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> apk add --no-cache bash<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># https://github.com/vishnubob/wait-for-it </span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> wait-for-it.sh /wait-for-it.sh<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> chmod +x /wait-for-it.sh<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ADD</span> /target/mms.war .<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=s> 8080</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=sample3>sample3</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=s> ubuntu</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>MAINTAINER</span><span class=s> Bill.Lin</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span> MY_PATH /usr/local<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s> $MY_PATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> apt-get update<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> apt-get install net-tools<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># RUN apt-get update -y &amp;&amp; apt install -y sudo telnetd vim systemctl  &amp;&amp; apt-get clean</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=s> 80</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=nb>echo</span> <span class=nv>$MY_PATH</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=nb>echo</span> <span class=s2>&#34;build success ------&#34;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> /bin/bash<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=build>build</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># docker build -t {name}:{tag} {path}</span>
+</span></span><span class=line><span class=cl>    docker build -t java-test:latest .
+</span></span></code></pre></td></tr></table></div></div><h4 id=build-image-with-google-jib>build image with google Jib</h4><p>mvn / gradle 後 clean package (或直接install) build 出 jar</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    FROM openjdk:11<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    COPY ./target/*.jar C:/ideaProjects/docker-workspace/xxx.jar<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    WORKDIR C:/ideaProjects/docker-workspace<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    RUN sh -c <span class=s1>&#39;touch xxx.jar&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    ENTRYPOINT <span class=o>[</span><span class=s2>&#34;java&#34;</span>,<span class=s2>&#34;-jar&#34;</span>,<span class=s2>&#34;xxx.jar&#34;</span><span class=o>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=刪除-none-image>刪除 none image</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker image prune
+</span></span></code></pre></td></tr></table></div></div><p>other sample:<br><a href=https://github.com/docker-library/tomcat/blob/master/9.0/jdk11/corretto-al2/Dockerfile>docker-library/tomcat</a></p></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/architecture/uml/ class=post-nav-link>UML</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/devops/dockerfile-docker_in_docker/ class=post-nav-link>Dockerfile - docker in docker</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer></div></body></html>
