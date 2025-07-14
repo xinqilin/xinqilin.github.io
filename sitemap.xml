@@ -215,6 +215,39 @@
     <loc>https://xinqilin.github.io/post/algorithm/backtracking/</loc>
     <lastmod>2022-05-10T23:34:53+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/clean-code/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/code-quality/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/code-review/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/code-smells/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/design-patterns/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/enterprise-development/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/refactoring/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/software-architecture/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/software-maintenance/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/solid-principles/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/technical-debt/</loc>
+    <lastmod>2022-03-17T22:50:11+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/badsmell/</loc>
     <lastmod>2022-03-17T22:50:11+08:00</lastmod>
   </url><url>
@@ -431,16 +464,10 @@
     <loc>https://xinqilin.github.io/post/backend/@autowired/</loc>
     <lastmod>2021-07-10T20:27:20+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/clean-code/</loc>
-    <lastmod>2021-07-08T21:20:39+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/design-principles/</loc>
     <lastmod>2021-07-08T21:20:39+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/oop/</loc>
-    <lastmod>2021-07-08T21:20:39+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/software-architecture/</loc>
     <lastmod>2021-07-08T21:20:39+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/solid/</loc>
@@ -707,6 +734,27 @@
     <loc>https://xinqilin.github.io/post/architecture/decorator/</loc>
     <lastmod>2018-08-07T12:16:24+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/abstraction/</loc>
+    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/bridge-pattern/</loc>
+    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/decoupling/</loc>
+    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/design-pattern/</loc>
+    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/implementation/</loc>
+    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/software-design/</loc>
+    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/structural-pattern/</loc>
+    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/bridge/</loc>
     <lastmod>2018-08-07T12:16:14+08:00</lastmod>
   </url><url>
@@ -722,23 +770,59 @@
     <loc>https://xinqilin.github.io/post/architecture/composite/</loc>
     <lastmod>2018-08-07T12:15:31+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/adapter-pattern/</loc>
+    <lastmod>2018-08-07T12:12:36+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/enterprise-architecture/</loc>
+    <lastmod>2018-08-07T12:12:36+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/interface-conversion/</loc>
+    <lastmod>2018-08-07T12:12:36+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/legacy-system/</loc>
+    <lastmod>2018-08-07T12:12:36+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/system-integration/</loc>
+    <lastmod>2018-08-07T12:12:36+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/third-party-api/</loc>
+    <lastmod>2018-08-07T12:12:36+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/adapter/</loc>
     <lastmod>2018-08-07T12:12:36+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/prototype/</loc>
     <lastmod>2018-08-07T02:27:13+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/api-design/</loc>
+    <lastmod>2018-08-07T02:16:32+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/builder-pattern/</loc>
+    <lastmod>2018-08-07T02:16:32+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/complex-objects/</loc>
+    <lastmod>2018-08-07T02:16:32+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/configuration-management/</loc>
+    <lastmod>2018-08-07T02:16:32+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/creational-pattern/</loc>
+    <lastmod>2018-08-07T02:16:32+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/fluent-interface/</loc>
+    <lastmod>2018-08-07T02:16:32+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/method-chaining/</loc>
+    <lastmod>2018-08-07T02:16:32+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/object-construction/</loc>
+    <lastmod>2018-08-07T02:16:32+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/builder/</loc>
     <lastmod>2018-08-07T02:16:32+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/factory/</loc>
     <lastmod>2018-08-07T01:07:16+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/creational-pattern/</loc>
-    <lastmod>2018-08-06T23:05:44+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/design-pattern/</loc>
-    <lastmod>2018-08-06T23:05:44+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/singleton/</loc>
     <lastmod>2018-08-06T23:05:44+08:00</lastmod>
