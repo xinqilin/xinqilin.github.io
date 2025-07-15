@@ -940,6 +940,76 @@
       <description></description>
     </item>
     <item>
+      <title>Architecture</title>
+      <link>https://xinqilin.github.io/tags/architecture/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/architecture/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Command Query Responsibility Segregation</title>
+      <link>https://xinqilin.github.io/tags/command-query-responsibility-segregation/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/command-query-responsibility-segregation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CQRS</title>
+      <link>https://xinqilin.github.io/tags/cqrs/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/cqrs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Domain-Driven Design</title>
+      <link>https://xinqilin.github.io/tags/domain-driven-design/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/domain-driven-design/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Enterprise Architecture</title>
+      <link>https://xinqilin.github.io/tags/enterprise-architecture/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/enterprise-architecture/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Event Sourcing</title>
+      <link>https://xinqilin.github.io/tags/event-sourcing/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/event-sourcing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Event-Driven Architecture</title>
+      <link>https://xinqilin.github.io/tags/event-driven-architecture/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/event-driven-architecture/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Eventual Consistency</title>
+      <link>https://xinqilin.github.io/tags/eventual-consistency/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/eventual-consistency/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Read Write Separation</title>
+      <link>https://xinqilin.github.io/tags/read-write-separation/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/read-write-separation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scalability</title>
+      <link>https://xinqilin.github.io/tags/scalability/</link>
+      <pubDate>Sun, 16 May 2021 21:18:11 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/scalability/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Comparator</title>
       <link>https://xinqilin.github.io/tags/comparator/</link>
       <pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
@@ -1077,13 +1147,6 @@
       <link>https://xinqilin.github.io/tags/spring-data-jpa/</link>
       <pubDate>Tue, 07 Jan 2020 13:26:41 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/spring-data-jpa/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Architecture</title>
-      <link>https://xinqilin.github.io/tags/architecture/</link>
-      <pubDate>Wed, 01 Jan 2020 20:31:25 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/architecture/</guid>
       <description></description>
     </item>
     <item>
@@ -1227,6 +1290,76 @@
       <description></description>
     </item>
     <item>
+      <title>Behavioral Pattern</title>
+      <link>https://xinqilin.github.io/tags/behavioral-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/behavioral-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Chain of Responsibility</title>
+      <link>https://xinqilin.github.io/tags/chain-of-responsibility/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/chain-of-responsibility/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Design Pattern</title>
+      <link>https://xinqilin.github.io/tags/design-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/design-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Flow Control</title>
+      <link>https://xinqilin.github.io/tags/flow-control/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/flow-control/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Handler Chain</title>
+      <link>https://xinqilin.github.io/tags/handler-chain/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/handler-chain/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Loose Coupling</title>
+      <link>https://xinqilin.github.io/tags/loose-coupling/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/loose-coupling/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Middleware</title>
+      <link>https://xinqilin.github.io/tags/middleware/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/middleware/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pipeline Pattern</title>
+      <link>https://xinqilin.github.io/tags/pipeline-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/pipeline-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Request Processing</title>
+      <link>https://xinqilin.github.io/tags/request-processing/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/request-processing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Request Response</title>
+      <link>https://xinqilin.github.io/tags/request-response/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/request-response/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Abstraction</title>
       <link>https://xinqilin.github.io/tags/abstraction/</link>
       <pubDate>Tue, 07 Aug 2018 12:16:14 +0800</pubDate>
@@ -1245,13 +1378,6 @@
       <link>https://xinqilin.github.io/tags/decoupling/</link>
       <pubDate>Tue, 07 Aug 2018 12:16:14 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/decoupling/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Design Pattern</title>
-      <link>https://xinqilin.github.io/tags/design-pattern/</link>
-      <pubDate>Tue, 07 Aug 2018 12:16:14 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/design-pattern/</guid>
       <description></description>
     </item>
     <item>
@@ -1280,13 +1406,6 @@
       <link>https://xinqilin.github.io/tags/adapter-pattern/</link>
       <pubDate>Tue, 07 Aug 2018 12:12:36 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/adapter-pattern/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Enterprise Architecture</title>
-      <link>https://xinqilin.github.io/tags/enterprise-architecture/</link>
-      <pubDate>Tue, 07 Aug 2018 12:12:36 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/enterprise-architecture/</guid>
       <description></description>
     </item>
     <item>

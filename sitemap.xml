@@ -542,7 +542,37 @@
     <loc>https://xinqilin.github.io/post/algorithm/mergesort/</loc>
     <lastmod>2021-06-28T19:57:24+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/architecture/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/command-query-responsibility-segregation/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/cqrs/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/cqrs/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/domain-driven-design/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/enterprise-architecture/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/event-sourcing/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/event-driven-architecture/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/eventual-consistency/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/read-write-separation/</loc>
+    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/scalability/</loc>
     <lastmod>2021-05-16T21:18:11+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/comparator/</loc>
@@ -619,9 +649,6 @@
   </url><url>
     <loc>https://xinqilin.github.io/post/backend/jpapageable/</loc>
     <lastmod>2020-01-07T13:26:41+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/architecture/</loc>
-    <lastmod>2020-01-01T20:31:25+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/ci/cd/</loc>
     <lastmod>2020-01-01T20:31:25+08:00</lastmod>
@@ -722,6 +749,36 @@
     <loc>https://xinqilin.github.io/post/architecture/observer/</loc>
     <lastmod>2018-08-07T22:37:21+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/behavioral-pattern/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/chain-of-responsibility/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/design-pattern/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/flow-control/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/handler-chain/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/loose-coupling/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/middleware/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/pipeline-pattern/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/request-processing/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/request-response/</loc>
+    <lastmod>2018-08-07T22:37:08+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/chainofresponsibility/</loc>
     <lastmod>2018-08-07T22:37:08+08:00</lastmod>
   </url><url>
@@ -741,9 +798,6 @@
     <lastmod>2018-08-07T12:16:14+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/decoupling/</loc>
-    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/design-pattern/</loc>
     <lastmod>2018-08-07T12:16:14+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/implementation/</loc>
@@ -771,9 +825,6 @@
     <lastmod>2018-08-07T12:15:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/adapter-pattern/</loc>
-    <lastmod>2018-08-07T12:12:36+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/enterprise-architecture/</loc>
     <lastmod>2018-08-07T12:12:36+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/interface-conversion/</loc>
