@@ -446,7 +446,40 @@
     <loc>https://xinqilin.github.io/tags/image-build/</loc>
     <lastmod>2021-07-24T02:21:13+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/architecture/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/class-diagram/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/enterprise-architecture/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/object-oriented-design/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/sequence-diagram/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/software-design/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/software-modeling/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/system-design/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/uml/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/uml/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/unified-modeling-language/</loc>
+    <lastmod>2021-07-12T23:33:14+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/use-case-diagram/</loc>
     <lastmod>2021-07-12T23:33:14+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/autowired/</loc>
@@ -542,9 +575,6 @@
     <loc>https://xinqilin.github.io/post/algorithm/mergesort/</loc>
     <lastmod>2021-06-28T19:57:24+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/architecture/</loc>
-    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/command-query-responsibility-segregation/</loc>
     <lastmod>2021-05-16T21:18:11+08:00</lastmod>
   </url><url>
@@ -555,9 +585,6 @@
     <lastmod>2021-05-16T21:18:11+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/domain-driven-design/</loc>
-    <lastmod>2021-05-16T21:18:11+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/enterprise-architecture/</loc>
     <lastmod>2021-05-16T21:18:11+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/event-sourcing/</loc>
@@ -801,9 +828,6 @@
     <lastmod>2018-08-07T12:16:14+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/implementation/</loc>
-    <lastmod>2018-08-07T12:16:14+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/software-design/</loc>
     <lastmod>2018-08-07T12:16:14+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/structural-pattern/</loc>
