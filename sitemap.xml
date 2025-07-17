@@ -815,7 +815,16 @@
     <loc>https://xinqilin.github.io/post/architecture/templatemethod/</loc>
     <lastmod>2018-08-07T12:18:20+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/aop/</loc>
+    <lastmod>2018-08-07T12:16:24+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/decorator/</loc>
+    <lastmod>2018-08-07T12:16:24+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/decorator/</loc>
+    <lastmod>2018-08-07T12:16:24+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/structural/</loc>
     <lastmod>2018-08-07T12:16:24+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/abstraction/</loc>
@@ -839,13 +848,28 @@
     <loc>https://xinqilin.github.io/post/architecture/facade/</loc>
     <lastmod>2018-08-07T12:16:02+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/facade/</loc>
+    <lastmod>2018-08-07T12:16:02+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/flyweight/</loc>
     <lastmod>2018-08-07T12:15:57+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/caching/</loc>
+    <lastmod>2018-08-07T12:15:41+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/proxy/</loc>
     <lastmod>2018-08-07T12:15:41+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/proxy/</loc>
+    <lastmod>2018-08-07T12:15:41+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/composite/</loc>
+    <lastmod>2018-08-07T12:15:31+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/composite/</loc>
+    <lastmod>2018-08-07T12:15:31+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/tree-structure/</loc>
     <lastmod>2018-08-07T12:15:31+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/adapter-pattern/</loc>

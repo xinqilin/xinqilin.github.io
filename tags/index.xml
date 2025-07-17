@@ -1423,6 +1423,27 @@
       <description></description>
     </item>
     <item>
+      <title>AOP</title>
+      <link>https://xinqilin.github.io/tags/aop/</link>
+      <pubDate>Tue, 07 Aug 2018 12:16:24 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/aop/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Decorator</title>
+      <link>https://xinqilin.github.io/tags/decorator/</link>
+      <pubDate>Tue, 07 Aug 2018 12:16:24 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/decorator/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Structural</title>
+      <link>https://xinqilin.github.io/tags/structural/</link>
+      <pubDate>Tue, 07 Aug 2018 12:16:24 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/structural/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Abstraction</title>
       <link>https://xinqilin.github.io/tags/abstraction/</link>
       <pubDate>Tue, 07 Aug 2018 12:16:14 +0800</pubDate>
@@ -1455,6 +1476,41 @@
       <link>https://xinqilin.github.io/tags/structural-pattern/</link>
       <pubDate>Tue, 07 Aug 2018 12:16:14 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/structural-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Facade</title>
+      <link>https://xinqilin.github.io/tags/facade/</link>
+      <pubDate>Tue, 07 Aug 2018 12:16:02 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/facade/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Caching</title>
+      <link>https://xinqilin.github.io/tags/caching/</link>
+      <pubDate>Tue, 07 Aug 2018 12:15:41 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/caching/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Proxy</title>
+      <link>https://xinqilin.github.io/tags/proxy/</link>
+      <pubDate>Tue, 07 Aug 2018 12:15:41 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/proxy/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Composite</title>
+      <link>https://xinqilin.github.io/tags/composite/</link>
+      <pubDate>Tue, 07 Aug 2018 12:15:31 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/composite/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tree Structure</title>
+      <link>https://xinqilin.github.io/tags/tree-structure/</link>
+      <pubDate>Tue, 07 Aug 2018 12:15:31 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/tree-structure/</guid>
       <description></description>
     </item>
     <item>
