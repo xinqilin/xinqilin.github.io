@@ -1355,8 +1355,78 @@
     <item>
       <title>Behavioral Pattern</title>
       <link>https://xinqilin.github.io/tags/behavioral-pattern/</link>
-      <pubDate>Tue, 07 Aug 2018 22:37:58 +0800</pubDate>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/behavioral-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Collection Traversal</title>
+      <link>https://xinqilin.github.io/tags/collection-traversal/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/collection-traversal/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Custom Iterator</title>
+      <link>https://xinqilin.github.io/tags/custom-iterator/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/custom-iterator/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Design Pattern</title>
+      <link>https://xinqilin.github.io/tags/design-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/design-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Functional Programming</title>
+      <link>https://xinqilin.github.io/tags/functional-programming/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/functional-programming/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Iterator Pattern</title>
+      <link>https://xinqilin.github.io/tags/iterator-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/iterator-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Java 8&#43;</title>
+      <link>https://xinqilin.github.io/tags/java-8&#43;/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/java-8&#43;/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Java Iterator</title>
+      <link>https://xinqilin.github.io/tags/java-iterator/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/java-iterator/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lambda Expressions</title>
+      <link>https://xinqilin.github.io/tags/lambda-expressions/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/lambda-expressions/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lazy Loading</title>
+      <link>https://xinqilin.github.io/tags/lazy-loading/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/lazy-loading/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Performance Optimization</title>
+      <link>https://xinqilin.github.io/tags/performance-optimization/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/performance-optimization/</guid>
       <description></description>
     </item>
     <item>
@@ -1371,13 +1441,6 @@
       <link>https://xinqilin.github.io/tags/context/</link>
       <pubDate>Tue, 07 Aug 2018 22:37:58 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/context/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Design Pattern</title>
-      <link>https://xinqilin.github.io/tags/design-pattern/</link>
-      <pubDate>Tue, 07 Aug 2018 22:37:58 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/design-pattern/</guid>
       <description></description>
     </item>
     <item>
@@ -1497,6 +1560,76 @@
       <link>https://xinqilin.github.io/tags/request-response/</link>
       <pubDate>Tue, 07 Aug 2018 22:37:08 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/request-response/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Abstract Methods</title>
+      <link>https://xinqilin.github.io/tags/abstract-methods/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/abstract-methods/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Algorithm Framework</title>
+      <link>https://xinqilin.github.io/tags/algorithm-framework/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/algorithm-framework/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Code Reuse</title>
+      <link>https://xinqilin.github.io/tags/code-reuse/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/code-reuse/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Final Methods</title>
+      <link>https://xinqilin.github.io/tags/final-methods/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/final-methods/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hollywood Principle</title>
+      <link>https://xinqilin.github.io/tags/hollywood-principle/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/hollywood-principle/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hook Methods</title>
+      <link>https://xinqilin.github.io/tags/hook-methods/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/hook-methods/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Inheritance</title>
+      <link>https://xinqilin.github.io/tags/inheritance/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/inheritance/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Process Control</title>
+      <link>https://xinqilin.github.io/tags/process-control/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/process-control/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Template Method Pattern</title>
+      <link>https://xinqilin.github.io/tags/template-method-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/template-method-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Workflow</title>
+      <link>https://xinqilin.github.io/tags/workflow/</link>
+      <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/workflow/</guid>
       <description></description>
     </item>
     <item>
@@ -1626,6 +1759,76 @@
       <description></description>
     </item>
     <item>
+      <title>Bean Scope</title>
+      <link>https://xinqilin.github.io/tags/bean-scope/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/bean-scope/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Copy Constructor</title>
+      <link>https://xinqilin.github.io/tags/copy-constructor/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/copy-constructor/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Creational Pattern</title>
+      <link>https://xinqilin.github.io/tags/creational-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/creational-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Deep Copy</title>
+      <link>https://xinqilin.github.io/tags/deep-copy/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/deep-copy/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Object Cloning</title>
+      <link>https://xinqilin.github.io/tags/object-cloning/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/object-cloning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Object Creation</title>
+      <link>https://xinqilin.github.io/tags/object-creation/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/object-creation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Prototype Pattern</title>
+      <link>https://xinqilin.github.io/tags/prototype-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/prototype-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Serialization</title>
+      <link>https://xinqilin.github.io/tags/serialization/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/serialization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Shallow Copy</title>
+      <link>https://xinqilin.github.io/tags/shallow-copy/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/shallow-copy/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spring Prototype</title>
+      <link>https://xinqilin.github.io/tags/spring-prototype/</link>
+      <pubDate>Tue, 07 Aug 2018 02:27:13 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/spring-prototype/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>API Design</title>
       <link>https://xinqilin.github.io/tags/api-design/</link>
       <pubDate>Tue, 07 Aug 2018 02:16:32 +0800</pubDate>
@@ -1651,13 +1854,6 @@
       <link>https://xinqilin.github.io/tags/configuration-management/</link>
       <pubDate>Tue, 07 Aug 2018 02:16:32 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/configuration-management/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Creational Pattern</title>
-      <link>https://xinqilin.github.io/tags/creational-pattern/</link>
-      <pubDate>Tue, 07 Aug 2018 02:16:32 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/creational-pattern/</guid>
       <description></description>
     </item>
     <item>
