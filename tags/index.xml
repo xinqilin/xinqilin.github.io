@@ -1355,8 +1355,78 @@
     <item>
       <title>Behavioral Pattern</title>
       <link>https://xinqilin.github.io/tags/behavioral-pattern/</link>
-      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
+      <pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/behavioral-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Command Pattern</title>
+      <link>https://xinqilin.github.io/tags/command-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/command-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Design Pattern</title>
+      <link>https://xinqilin.github.io/tags/design-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/design-pattern/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Memento</title>
+      <link>https://xinqilin.github.io/tags/memento/</link>
+      <pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/memento/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spring Boot Audit</title>
+      <link>https://xinqilin.github.io/tags/spring-boot-audit/</link>
+      <pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/spring-boot-audit/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>State Management</title>
+      <link>https://xinqilin.github.io/tags/state-management/</link>
+      <pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/state-management/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Behavioral</title>
+      <link>https://xinqilin.github.io/tags/behavioral/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:42 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/behavioral/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DSL</title>
+      <link>https://xinqilin.github.io/tags/dsl/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:42 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/dsl/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Interpreter</title>
+      <link>https://xinqilin.github.io/tags/interpreter/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:42 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/interpreter/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rule Engine</title>
+      <link>https://xinqilin.github.io/tags/rule-engine/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:42 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/rule-engine/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spring Expression Language</title>
+      <link>https://xinqilin.github.io/tags/spring-expression-language/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:42 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/spring-expression-language/</guid>
       <description></description>
     </item>
     <item>
@@ -1371,13 +1441,6 @@
       <link>https://xinqilin.github.io/tags/custom-iterator/</link>
       <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/custom-iterator/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Design Pattern</title>
-      <link>https://xinqilin.github.io/tags/design-pattern/</link>
-      <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
-      <guid>https://xinqilin.github.io/tags/design-pattern/</guid>
       <description></description>
     </item>
     <item>
@@ -1427,6 +1490,69 @@
       <link>https://xinqilin.github.io/tags/performance-optimization/</link>
       <pubDate>Tue, 07 Aug 2018 22:38:21 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/performance-optimization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>AST Processing</title>
+      <link>https://xinqilin.github.io/tags/ast-processing/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/ast-processing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Bean Validation</title>
+      <link>https://xinqilin.github.io/tags/bean-validation/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/bean-validation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Code Analysis</title>
+      <link>https://xinqilin.github.io/tags/code-analysis/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/code-analysis/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Compiler Design</title>
+      <link>https://xinqilin.github.io/tags/compiler-design/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/compiler-design/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Double Dispatch</title>
+      <link>https://xinqilin.github.io/tags/double-dispatch/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/double-dispatch/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Object Structure</title>
+      <link>https://xinqilin.github.io/tags/object-structure/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/object-structure/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Polymorphism</title>
+      <link>https://xinqilin.github.io/tags/polymorphism/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/polymorphism/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tree Traversal</title>
+      <link>https://xinqilin.github.io/tags/tree-traversal/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/tree-traversal/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Visitor Pattern</title>
+      <link>https://xinqilin.github.io/tags/visitor-pattern/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/visitor-pattern/</guid>
       <description></description>
     </item>
     <item>
@@ -1563,6 +1689,34 @@
       <description></description>
     </item>
     <item>
+      <title>Enterprise Communication</title>
+      <link>https://xinqilin.github.io/tags/enterprise-communication/</link>
+      <pubDate>Tue, 07 Aug 2018 22:36:43 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/enterprise-communication/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mediator</title>
+      <link>https://xinqilin.github.io/tags/mediator/</link>
+      <pubDate>Tue, 07 Aug 2018 22:36:43 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/mediator/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Message Broker</title>
+      <link>https://xinqilin.github.io/tags/message-broker/</link>
+      <pubDate>Tue, 07 Aug 2018 22:36:43 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/message-broker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spring Events</title>
+      <link>https://xinqilin.github.io/tags/spring-events/</link>
+      <pubDate>Tue, 07 Aug 2018 22:36:43 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/spring-events/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Abstract Methods</title>
       <link>https://xinqilin.github.io/tags/abstract-methods/</link>
       <pubDate>Tue, 07 Aug 2018 12:18:20 +0800</pubDate>
@@ -1693,6 +1847,27 @@
       <link>https://xinqilin.github.io/tags/facade/</link>
       <pubDate>Tue, 07 Aug 2018 12:16:02 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/facade/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Flyweight</title>
+      <link>https://xinqilin.github.io/tags/flyweight/</link>
+      <pubDate>Tue, 07 Aug 2018 12:15:57 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/flyweight/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Memory Optimization</title>
+      <link>https://xinqilin.github.io/tags/memory-optimization/</link>
+      <pubDate>Tue, 07 Aug 2018 12:15:57 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/memory-optimization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Object Pooling</title>
+      <link>https://xinqilin.github.io/tags/object-pooling/</link>
+      <pubDate>Tue, 07 Aug 2018 12:15:57 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/object-pooling/</guid>
       <description></description>
     </item>
     <item>

@@ -752,22 +752,49 @@
     <loc>https://xinqilin.github.io/tags/stream-editor/</loc>
     <lastmod>2019-01-18T10:23:31+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/behavioral-pattern/</loc>
+    <lastmod>2018-08-07T22:39:01+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/command-pattern/</loc>
+    <lastmod>2018-08-07T22:39:01+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/design-pattern/</loc>
+    <lastmod>2018-08-07T22:39:01+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/post/architecture/memento/</loc>
     <lastmod>2018-08-07T22:39:01+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/memento/</loc>
+    <lastmod>2018-08-07T22:39:01+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/spring-boot-audit/</loc>
+    <lastmod>2018-08-07T22:39:01+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/state-management/</loc>
+    <lastmod>2018-08-07T22:39:01+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/behavioral/</loc>
+    <lastmod>2018-08-07T22:38:42+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/interpreter/</loc>
     <lastmod>2018-08-07T22:38:42+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/behavioral-pattern/</loc>
-    <lastmod>2018-08-07T22:38:21+08:00</lastmod>
+    <loc>https://xinqilin.github.io/tags/dsl/</loc>
+    <lastmod>2018-08-07T22:38:42+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/interpreter/</loc>
+    <lastmod>2018-08-07T22:38:42+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/rule-engine/</loc>
+    <lastmod>2018-08-07T22:38:42+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/spring-expression-language/</loc>
+    <lastmod>2018-08-07T22:38:42+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/collection-traversal/</loc>
     <lastmod>2018-08-07T22:38:21+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/custom-iterator/</loc>
-    <lastmod>2018-08-07T22:38:21+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/design-pattern/</loc>
     <lastmod>2018-08-07T22:38:21+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/functional-programming/</loc>
@@ -793,6 +820,33 @@
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/iterator/</loc>
     <lastmod>2018-08-07T22:38:21+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/ast-processing/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/bean-validation/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/code-analysis/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/compiler-design/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/double-dispatch/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/object-structure/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/polymorphism/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/tree-traversal/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/visitor-pattern/</loc>
+    <lastmod>2018-08-07T22:38:06+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/visitor/</loc>
     <lastmod>2018-08-07T22:38:06+08:00</lastmod>
@@ -872,6 +926,18 @@
     <loc>https://xinqilin.github.io/post/architecture/mediator/</loc>
     <lastmod>2018-08-07T22:36:43+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/enterprise-communication/</loc>
+    <lastmod>2018-08-07T22:36:43+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/mediator/</loc>
+    <lastmod>2018-08-07T22:36:43+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/message-broker/</loc>
+    <lastmod>2018-08-07T22:36:43+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/spring-events/</loc>
+    <lastmod>2018-08-07T22:36:43+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/abstract-methods/</loc>
     <lastmod>2018-08-07T12:18:20+08:00</lastmod>
   </url><url>
@@ -942,6 +1008,15 @@
     <lastmod>2018-08-07T12:16:02+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/flyweight/</loc>
+    <lastmod>2018-08-07T12:15:57+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/flyweight/</loc>
+    <lastmod>2018-08-07T12:15:57+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/memory-optimization/</loc>
+    <lastmod>2018-08-07T12:15:57+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/object-pooling/</loc>
     <lastmod>2018-08-07T12:15:57+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/caching/</loc>
