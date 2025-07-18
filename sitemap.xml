@@ -251,7 +251,7 @@
     <loc>https://xinqilin.github.io/post/architecture/badsmell/</loc>
     <lastmod>2022-03-17T22:50:11+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/tools/github-ssh/</loc>
+    <loc>https://xinqilin.github.io/post/others/github-ssh/</loc>
     <lastmod>2022-02-09T19:46:19+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/containerization/</loc>
@@ -266,7 +266,7 @@
     <loc>https://xinqilin.github.io/post/devops/docker-mysql/</loc>
     <lastmod>2022-01-18T23:56:44+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/tools/env/</loc>
+    <loc>https://xinqilin.github.io/post/others/env/</loc>
     <lastmod>2022-01-16T22:35:54+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/bfs/</loc>
@@ -509,12 +509,6 @@
     <loc>https://xinqilin.github.io/post/architecture/solid/</loc>
     <lastmod>2021-07-08T21:20:39+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/frontend/</loc>
-    <lastmod>2021-07-04T22:27:03+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/post/frontend/vue-intro/</loc>
-    <lastmod>2021-07-04T22:27:03+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/authentication/</loc>
     <lastmod>2021-07-01T23:39:52+08:00</lastmod>
   </url><url>
@@ -620,7 +614,7 @@
     <loc>https://xinqilin.github.io/tags/stream-api/</loc>
     <lastmod>2021-03-28T15:10:59+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/post/tools/git/</loc>
+    <loc>https://xinqilin.github.io/post/others/git/</loc>
     <lastmod>2021-03-01T21:16:29+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/debugging/</loc>
