@@ -5,7 +5,7 @@ date: 2018-08-07T12:18:20+08:00
 draft: false
 tags: ["Design Pattern", "Template Method Pattern", "Behavioral Pattern", "Algorithm Framework", "Inheritance", "Hook Methods", "Process Control", "Java", "Spring Boot", "Enterprise Architecture", "Workflow", "Business Process", "Code Reuse", "Hollywood Principle", "Abstract Methods", "Final Methods", "Best Practices"]
 Description: "深入探討模板方法模式的完整實作指南，包含算法骨架設計、鉤子方法應用、Spring Boot 模板整合與企業級業務流程控制最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

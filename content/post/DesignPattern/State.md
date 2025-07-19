@@ -5,7 +5,7 @@ date: 2018-08-07T22:37:58+08:00
 draft: false
 tags: ["Design Pattern", "State Pattern", "Behavioral Pattern", "State Machine", "Finite State Machine", "Dynamic Behavior", "Context", "State Transition", "Java", "Spring Boot", "Enterprise Architecture", "Workflow Engine", "Business Process", "Event-Driven Architecture", "Order Processing", "User Authentication", "Document Lifecycle", "Best Practices"]
 Description: "深入探討狀態模式的完整實作指南，包含狀態機設計、動態行為切換、狀態轉換控制、Spring Boot 整合與企業級工作流程應用最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

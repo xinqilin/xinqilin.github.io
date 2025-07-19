@@ -5,7 +5,7 @@ date: 2018-08-07T22:37:08+08:00
 draft: false
 tags: ["Design Pattern", "Chain of Responsibility", "Behavioral Pattern", "Request Processing", "Loose Coupling", "Flow Control", "Java", "Spring Boot", "Enterprise Architecture", "Handler Chain", "Middleware", "Pipeline Pattern", "Request Response"]
 Description: "深入探討責任鏈模式的完整實作指南，包含請求處理流程、動態責任分配、企業級中介軟體應用與最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

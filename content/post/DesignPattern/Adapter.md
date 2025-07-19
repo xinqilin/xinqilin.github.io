@@ -5,7 +5,7 @@ date: 2018-08-07T12:12:36+08:00
 draft: false
 tags: ["Design Pattern", "Adapter Pattern", "Structural Pattern", "Interface Conversion", "System Integration", "Legacy System", "Third-party API", "Java", "Spring Boot", "Best Practices", "Enterprise Architecture"]
 Description: "深入探討適配器模式的完整實作指南，包含介面轉換機制、系統整合應用、第三方API整合、遺留系統改造與企業級開發最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

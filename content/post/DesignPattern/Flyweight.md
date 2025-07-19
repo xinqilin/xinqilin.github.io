@@ -5,7 +5,7 @@ date: 2018-08-07T12:15:57+08:00
 draft: false
 tags: ["Design Pattern", "Structural Pattern", "Flyweight", "Memory Optimization", "Object Pooling"]
 Description: "深入探討 Flyweight 模式：從基本概念到企業級實現，包含物件池、Spring 快取、記憶體優化等現代化應用"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

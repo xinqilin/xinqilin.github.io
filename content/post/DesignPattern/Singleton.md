@@ -5,7 +5,7 @@ date: 2018-08-06T23:05:44+08:00
 draft: false
 tags: ["Design Pattern", "Singleton", "Java", "Thread Safety", "Best Practices", "Creational Pattern"]
 Description: "深入解析 Singleton 設計模式的各種實作方式，包含執行緒安全、反射攻擊防護與現代化最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

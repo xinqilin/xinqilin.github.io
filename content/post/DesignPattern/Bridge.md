@@ -5,7 +5,7 @@ date: 2018-08-07T12:16:14+08:00
 draft: false
 tags: ["Design Pattern", "Bridge Pattern", "Structural Pattern", "Abstraction", "Implementation", "Decoupling", "Architecture", "Java", "Spring Boot", "Best Practices", "Enterprise Development", "SOLID Principles", "Software Design"]
 Description: "深入探討橋接模式的完整實作指南，包含抽象與實現分離機制、多維度變化處理、企業級應用場景與架構設計最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

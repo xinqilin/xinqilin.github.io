@@ -1091,50 +1091,334 @@ body::before {
     font-weight: 500;
 }
 
-/* Chroma code blocks styling - Enhanced */
+/* 程式碼區塊樣式 - 乾淨簡潔版本 */
 .post-content .chroma {
-    background: #f8f9fa !important;
-    border-radius: 12px;
-    border: 2px solid #e1e8ed;
-    margin: 2rem 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    background: #f8f9fa;
+    border: 1px solid #e1e8ed;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', 'Monaco', 'Menlo', 'Ubuntu Mono', Consolas, 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
-.post-content .chroma .lntable {
+/* 移除表格的所有預設樣式 */
+.post-content .chroma table,
+.post-content .chroma tr,
+.post-content .chroma td {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: auto;
     border-spacing: 0;
-    padding: 0;
-    margin: 0;
-    border: 0;
+    border-collapse: collapse;
 }
 
-.post-content .chroma .lntd {
-    vertical-align: top;
-    padding: 0;
-    margin: 0;
-    border: 0;
+/* 整個表格容器 */
+.post-content .chroma .lntable {
+    width: 100%;
+    display: table;
 }
 
-.post-content .chroma .lnt,
-.post-content .chroma .ln {
-    margin-right: 0.4em;
-    padding: 0 0.4em 0 0.4em;
-    color: #6a737d;
-    background: #f1f3f4;
-    min-width: 2em;
-    text-align: right;
-    user-select: none;
+/* 行號列樣式 */
+.post-content .chroma .lntd:first-child {
+    width: auto;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    color: #636e72;
+    background: rgba(0, 0, 0, 0.03);
     border-right: 1px solid #e1e8ed;
+    user-select: none;
+    vertical-align: top;
 }
 
+/* 程式碼內容列 */
+.post-content .chroma .lntd:last-child {
+    width: 100%;
+    padding-left: 1rem;
+    vertical-align: top;
+}
+
+/* pre 元素重置 */
 .post-content .chroma pre {
     margin: 0;
-    padding: 1.5rem;
+    padding: 0;
     background: transparent;
     border: none;
-    font-size: 0.9em;
-    line-height: 1.5;
+    overflow-x: visible;
+    white-space: pre;
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
 }
+
+/* 行號的顯示 */
+.post-content .chroma .lnt,
+.post-content .chroma .ln {
+    margin: 0;
+    padding: 0;
+    color: #636e72;
+    user-select: none;
+}
+
+/* 程式碼行樣式 */
+.post-content .chroma .line {
+    display: block;
+    min-height: 1.6em;
+}
+
+/* 確保 code 元素不影響佈局 */
+.post-content .chroma code {
+    background: none;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    color: inherit;
+}
+
+/* 無行號的程式碼區塊樣式（類似參考網站） */
+.post-content pre:not(.chroma) {
+    background: #f8f9fa;
+    border: 1px solid #e1e8ed;
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', 'Monaco', 'Menlo', 'Ubuntu Mono', Consolas, 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.post-content pre:not(.chroma) code {
+    background: none;
+    padding: 0;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* 如果不需要行號，可以隱藏行號列 */
+.hide-line-numbers .post-content .chroma .lntd:first-child {
+    display: none;
+}
+
+.hide-line-numbers .post-content .chroma .lntd:last-child {
+    padding-left: 0;
+}
+
+/* ========== 程式碼區塊增強功能 ========== */
+
+/* 程式碼區塊包裝器 */
+.code-block-wrapper {
+    position: relative;
+    margin: 1.5rem 0;
+}
+
+/* 確保每個程式碼區塊只有一個複製按鈕 */
+.code-block-wrapper .code-block-wrapper {
+    position: static;
+    margin: 0;
+}
+
+.code-block-wrapper .code-block-wrapper .copy-code-button {
+    display: none;
+}
+
+/* 複製按鈕樣式 */
+.copy-code-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #e1e8ed;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4a5568;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.copy-code-button:hover {
+    background: rgba(255, 255, 255, 1);
+    color: #2d3748;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.copy-code-button[data-copy="true"] {
+    background: #48bb78;
+    color: white;
+    border-color: #48bb78;
+}
+
+.copy-code-button svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* 行高亮效果 */
+.post-content .chroma tr.line-highlight {
+    background: rgba(97, 200, 224, 0.1);
+}
+
+.post-content .chroma tr.line-highlight .lnt,
+.post-content .chroma tr.line-highlight .ln {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+/* 語言標籤樣式（改進版） */
+.post-content .chroma[data-lang] {
+    padding-top: 2.5rem;
+}
+
+.post-content .chroma[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1;
+}
+
+/* 特定語言的標籤顏色 */
+.post-content .chroma[data-lang="java"]::before {
+    background: linear-gradient(135deg, #f89820 0%, #ed8936 100%);
+}
+
+.post-content .chroma[data-lang="javascript"]::before,
+.post-content .chroma[data-lang="js"]::before {
+    background: linear-gradient(135deg, #f7df1e 0%, #ffd500 100%);
+    color: #333;
+}
+
+.post-content .chroma[data-lang="python"]::before,
+.post-content .chroma[data-lang="py"]::before {
+    background: linear-gradient(135deg, #3776ab 0%, #306998 100%);
+}
+
+.post-content .chroma[data-lang="css"]::before {
+    background: linear-gradient(135deg, #1572b6 0%, #33a9dc 100%);
+}
+
+.post-content .chroma[data-lang="html"]::before {
+    background: linear-gradient(135deg, #e34f26 0%, #f06529 100%);
+}
+
+.post-content .chroma[data-lang="go"]::before {
+    background: linear-gradient(135deg, #00add8 0%, #007d9c 100%);
+}
+
+.post-content .chroma[data-lang="rust"]::before {
+    background: linear-gradient(135deg, #dea584 0%, #ce422b 100%);
+}
+
+.post-content .chroma[data-lang="typescript"]::before,
+.post-content .chroma[data-lang="ts"]::before {
+    background: linear-gradient(135deg, #3178c6 0%, #235a97 100%);
+}
+
+.post-content .chroma[data-lang="vue"]::before {
+    background: linear-gradient(135deg, #4fc08d 0%, #35495e 100%);
+}
+
+.post-content .chroma[data-lang="react"]::before,
+.post-content .chroma[data-lang="jsx"]::before {
+    background: linear-gradient(135deg, #61dafb 0%, #282c34 100%);
+}
+
+.post-content .chroma[data-lang="yaml"]::before,
+.post-content .chroma[data-lang="yml"]::before {
+    background: linear-gradient(135deg, #cb171e 0%, #dc3545 100%);
+}
+
+.post-content .chroma[data-lang="json"]::before {
+    background: linear-gradient(135deg, #292929 0%, #1e1e1e 100%);
+}
+
+.post-content .chroma[data-lang="bash"]::before,
+.post-content .chroma[data-lang="shell"]::before,
+.post-content .chroma[data-lang="sh"]::before {
+    background: linear-gradient(135deg, #4eaa25 0%, #89e051 100%);
+}
+
+.post-content .chroma[data-lang="sql"]::before {
+    background: linear-gradient(135deg, #336791 0%, #4479a1 100%);
+}
+
+.post-content .chroma[data-lang="docker"]::before,
+.post-content .chroma[data-lang="dockerfile"]::before {
+    background: linear-gradient(135deg, #2496ed 0%, #0db7ed 100%);
+}
+
+/* 優化滾動條樣式 */
+.post-content .chroma::-webkit-scrollbar {
+    height: 6px;
+}
+
+.post-content .chroma::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.post-content .chroma::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.post-content .chroma::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* 響應式設計優化 */
+@media (max-width: 768px) {
+    .copy-code-button {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    
+    .copy-code-button span {
+        display: none;
+    }
+    
+    .copy-code-button svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .post-content .chroma {
+        font-size: 12px;
+        padding: 0.75rem;
+    }
+    
+    .post-content .chroma .lntd:first-child {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+    
+    .post-content .chroma .lntd:last-child {
+        padding-left: 0.5rem;
+    }
+}
+
 
 .post-content img {
     max-width: 100%;
@@ -2351,47 +2635,8 @@ body::before {
     }
 }
 
-/* 隱藏 Chroma 程式碼區塊中的空白行 */
-.post-content .chroma .line .cl .w:only-child:empty {
-    display: none;
-}
-
-/* 隱藏只包含空白字元的行 */
-.post-content .chroma .line .cl:only-child .w:only-child {
-    white-space: nowrap;
-}
-
-/* 完全隱藏空白行 */
-.post-content .chroma .line:has(.cl:only-child .w:only-child:empty) {
-    display: none;
-}
-
-/* 對於不支援 :has 的瀏覽器的備用方案 */
-.post-content .chroma .line .cl:only-child .w:only-child:empty {
-    line-height: 0;
-    height: 0;
-    margin: 0;
-    padding: 0;
-    font-size: 0;
-}
-
-/* 移除程式碼區塊末尾的多餘空白 */
-.post-content .chroma .lntable tr:last-child .line:last-child .cl .w:only-child:empty {
-    display: none;
-}
 
 /* 程式碼區塊增強效果 */
-.post-content .chroma::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px 12px 0 0;
-}
-
 .post-content .chroma {
     position: relative;
 }
@@ -2404,69 +2649,9 @@ body::before {
 }
 
 /* 行內程式碼 hover 效果 */
-.post-content code:hover {
+.post-content code:not(.chroma code):hover {
     background: #e9ecef;
     color: #d63384;
     transform: scale(1.05);
     transition: all 0.2s ease;
-}
-
-/* 程式碼語言標籤 */
-.post-content .chroma[data-lang]::after {
-    content: attr(data-lang);
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    background: rgba(102, 126, 234, 0.9);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* 特殊語言標籤顏色 */
-.post-content .chroma[data-lang="java"]::after {
-    background: linear-gradient(135deg, #f89820 0%, #ed8936 100%);
-}
-
-.post-content .chroma[data-lang="javascript"]::after {
-    background: linear-gradient(135deg, #f7df1e 0%, #ffd500 100%);
-    color: #333;
-}
-
-.post-content .chroma[data-lang="python"]::after {
-    background: linear-gradient(135deg, #3776ab 0%, #306998 100%);
-}
-
-.post-content .chroma[data-lang="css"]::after {
-    background: linear-gradient(135deg, #1572b6 0%, #33a9dc 100%);
-}
-
-.post-content .chroma[data-lang="html"]::after {
-    background: linear-gradient(135deg, #e34f26 0%, #f06529 100%);
-}
-
-.post-content .chroma[data-lang="yaml"]::after,
-.post-content .chroma[data-lang="yml"]::after {
-    background: linear-gradient(135deg, #cb171e 0%, #dc3545 100%);
-}
-
-.post-content .chroma[data-lang="json"]::after {
-    background: linear-gradient(135deg, #000000 0%, #333333 100%);
-}
-
-.post-content .chroma[data-lang="xml"]::after {
-    background: linear-gradient(135deg, #005f9f 0%, #1e90ff 100%);
-}
-
-.post-content .chroma[data-lang="bash"]::after,
-.post-content .chroma[data-lang="shell"]::after {
-    background: linear-gradient(135deg, #4eaa25 0%, #89e051 100%);
-}
-
-.post-content .chroma[data-lang="sql"]::after {
-    background: linear-gradient(135deg, #336791 0%, #4479a1 100%);
 }

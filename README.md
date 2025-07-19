@@ -156,6 +156,8 @@ touch content/post/Backend/spring-boot-tutorial.md
 
 # 方法 2: 使用 Hugo 指令
 hugo new post/Backend/spring-boot-tutorial.md
+
+hugo --gc && hugo build && hugo server -D
 ```
 
 ### 文章格式
@@ -261,16 +263,6 @@ params:
 ```
 
 ---
-
-## 🐛 常見問題
-
-### Q: 修改內容後網站沒有更新？
-
-```bash
-# 解決方案：清除 Hugo 快取並重新建構
-hugo --gc
-hugo server -D
-```
 
 ### Q: Git Submodule 同步問題？
 

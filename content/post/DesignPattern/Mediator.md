@@ -5,7 +5,7 @@ date: 2018-08-07T22:36:43+08:00
 draft: false
 tags: ["Design Pattern", "Behavioral Pattern", "Mediator", "Spring Events", "Message Broker", "Enterprise Communication"]
 Description: "深入探討 Mediator 模式：從基本實現到企業級應用，包含 Spring Events、消息代理、事件驅動架構等現代化通信模式"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

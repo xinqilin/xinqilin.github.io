@@ -5,7 +5,7 @@ date: 2018-08-07T22:39:01+08:00
 draft: false
 tags: ["Design Pattern", "Behavioral Pattern", "Memento", "State Management", "Command Pattern", "Spring Boot Audit"]
 Description: "深入探討 Memento 模式：從基本實現到企業級應用，包含命令模式整合、Spring Boot 審計、企業狀態管理等現代化實現"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

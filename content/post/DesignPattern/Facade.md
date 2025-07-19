@@ -5,7 +5,7 @@ date: 2018-08-07T12:16:02+08:00
 draft: false
 tags: ["Design Pattern", "Structural", "Facade", "Spring", "Microservices", "Enterprise"]
 Description: "Comprehensive guide to Facade Pattern with enterprise service patterns, microservices facade implementations, and Spring integration"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

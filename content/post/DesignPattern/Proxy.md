@@ -5,7 +5,7 @@ date: 2018-08-07T12:15:41+08:00
 draft: false
 tags: ["Design Pattern", "Structural", "Proxy", "AOP", "Spring", "Caching"]
 Description: "Comprehensive guide to Proxy Pattern with modern implementations, Spring AOP integration, caching proxies, and enterprise patterns"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2018-08-07T12:15:31+08:00
 draft: false
 tags: ["Design Pattern", "Structural", "Composite", "Tree Structure"]
 Description: "Comprehensive guide to Composite Pattern with modern Java implementations, Spring Boot integration, and real-world examples"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

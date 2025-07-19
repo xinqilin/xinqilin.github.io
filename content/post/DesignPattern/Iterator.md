@@ -5,7 +5,7 @@ date: 2018-08-07T22:38:21+08:00
 draft: false
 tags: ["Design Pattern", "Iterator Pattern", "Behavioral Pattern", "Java Iterator", "Stream API", "Spring Data", "Pagination", "Custom Iterator", "Java 8+", "Spring Boot", "Enterprise Architecture", "Collection Traversal", "Lazy Loading", "Performance Optimization", "Functional Programming", "Lambda Expressions", "Best Practices"]
 Description: "深入探討迭代器模式的現代化實作指南，包含 Java 8+ Stream API 整合、Spring Data 分頁機制與企業級自定義迭代器實作最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2018-08-07T02:27:13+08:00
 draft: false
 tags: ["Design Pattern", "Prototype Pattern", "Creational Pattern", "Object Cloning", "Deep Copy", "Shallow Copy", "Spring Prototype", "Bean Scope", "Java", "Spring Boot", "Enterprise Architecture", "Object Creation", "Memory Management", "Performance Optimization", "Serialization", "Copy Constructor", "Best Practices"]
 Description: "深入探討原型模式的完整實作指南，包含深淺拷貝技術、Spring prototype scope 配置與企業級對象創建模式最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

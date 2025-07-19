@@ -5,7 +5,7 @@ date: 2018-08-07T02:16:32+08:00
 draft: false
 tags: ["Design Pattern", "Builder Pattern", "Creational Pattern", "Object Construction", "Fluent Interface", "Method Chaining", "Java", "Spring Boot", "Best Practices", "Enterprise Development", "Complex Objects", "Configuration Management", "API Design"]
 Description: "深入探討建造者模式的完整實作指南，包含複雜對象構造機制、流式介面設計、企業級應用場景與最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2018-08-07T22:38:06+08:00
 draft: false
 tags: ["Design Pattern", "Visitor Pattern", "Behavioral Pattern", "AST Processing", "Spring Boot", "Bean Validation", "Enterprise Architecture", "Code Analysis", "Compiler Design", "Tree Traversal", "Object Structure", "Double Dispatch", "Polymorphism", "Java", "Best Practices"]
 Description: "深入探討訪問者模式的企業級實作指南，包含 AST 處理、Spring Boot 驗證框架整合與現代化訪問者模式實現最佳實踐"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

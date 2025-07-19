@@ -5,7 +5,7 @@ date: 2018-08-07T22:38:42+08:00
 draft: false
 tags: ["Design Pattern", "Behavioral", "Interpreter", "Spring Expression Language", "Rule Engine", "DSL"]
 Description: "深入探討 Interpreter 模式的現代實現，包含 Spring Expression Language、規則引擎、企業 DSL 模式、效能優化等完整內容"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 

@@ -5,7 +5,7 @@ date: 2018-08-07T12:16:24+08:00
 draft: false
 tags: ["Design Pattern", "Structural", "Decorator", "AOP", "Spring"]
 Description: "Comprehensive guide to Decorator Pattern with modern Java implementations, Spring AOP integration, and enterprise patterns"
-Categories: ["Architecture"]
+Categories: ["DesignPattern"]
 DisableComments: false
 ---
 
