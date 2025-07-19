@@ -17,6 +17,7 @@
 - [⚡ 開發流程](#-開發流程)
 - [📝 內容管理](#-內容管理)
 - [🎨 主題特色](#-主題特色)
+- [💬 留言系統](#-留言系統-giscus)
 - [🔧 進階設定](#-進階設定)
 
 ---
@@ -216,6 +217,57 @@ description: "從零開始學習 Spring Boot 框架開發"
 
 ---
 
+## 💬 留言系統 (Giscus)
+
+本站採用 [Giscus](https://giscus.app) 作為留言系統，基於 GitHub Discussions 提供安全便利的討論功能。
+
+### 留言功能特色
+
+- 🔐 **GitHub 帳號登入**: 使用 GitHub 帳號即可留言
+- 💬 **Markdown 支援**: 支援完整 Markdown 語法與程式碼高亮
+- 🎯 **即時互動**: 支援表情反應與留言回覆
+- 🌍 **多語言支援**: 介面支援繁體中文
+
+### 控制留言顯示
+
+#### 全站控制
+在 `hugo.yaml` 中設定：
+```yaml
+params:
+  giscus:
+    enable: true  # true 啟用，false 關閉全站留言
+```
+
+#### 單篇文章控制
+在文章的 front matter 中設定：
+```yaml
+---
+title: "文章標題"
+date: 2024-01-01T12:00:00+08:00
+draft: false
+categories: ["Backend"]
+tags: ["標籤"]
+comments: false  # 關閉此文章的留言功能
+---
+```
+
+### 留言系統配置
+
+如需修改留言系統設定，請編輯 `hugo.yaml` 中的 `giscus` 參數：
+
+```yaml
+giscus:
+  enable: true
+  repo: "xinqilin/xinqilin.github.io"
+  repoId: "MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk="
+  category: "Announcements"
+  categoryId: "DIC_kwDOFrHhm84CtLOY"
+  theme: "light"  # 可選：light, dark, dark_dimmed
+  inputPosition: "bottom"  # 留言框位置：top 或 bottom
+```
+
+---
+
 ## 🔧 進階設定
 
 ### 自訂主題
@@ -262,28 +314,6 @@ params:
   twitter_card: "summary_large_image"
 ```
 
----
-
-### Q: Git Submodule 同步問題？
-
-```bash
-# 更新 submodule 到最新版本
-git submodule update --remote --merge
-
-# 重置 submodule 到正確狀態
-git submodule deinit -f public
-git submodule update --init
-```
-
-### Q: 部署後網站樣式異常？
-
-```bash
-# 檢查 Hugo 建構日誌
-hugo --verbose
-
-# 確認 baseURL 設定正確
-grep baseURL hugo.yaml
-```
 
 ---
 

@@ -1,0 +1,54 @@
+{{ if and .Site.Params.giscus.enable (not (eq .Params.comments false)) }}
+<section class="comments-section">
+    <h2 class="comments-title">留言討論</h2>
+    <div class="giscus"></div>
+    <script src="https://giscus.app/client.js"
+        data-repo="{{ .Site.Params.giscus.repo }}"
+        data-repo-id="{{ .Site.Params.giscus.repoId }}"
+        data-category="{{ .Site.Params.giscus.category }}"
+        data-category-id="{{ .Site.Params.giscus.categoryId }}"
+        data-mapping="{{ .Site.Params.giscus.mapping }}"
+        data-strict="0"
+        data-reactions-enabled="{{ .Site.Params.giscus.reactionsEnabled }}"
+        data-emit-metadata="{{ .Site.Params.giscus.emitMetadata }}"
+        data-input-position="{{ .Site.Params.giscus.inputPosition }}"
+        data-theme="{{ .Site.Params.giscus.theme }}"
+        data-lang="{{ .Site.Params.giscus.lang }}"
+        data-loading="{{ .Site.Params.giscus.loading }}"
+        crossorigin="anonymous"
+        async>
+    </script>
+</section>
+
+<style>
+.comments-section {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.comments-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.giscus {
+    margin-top: 2rem;
+}
+
+.giscus-frame {
+    border: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .comments-section {
+        border-top-color: #333;
+    }
+    
+    .comments-title {
+        color: #f0f0f0;
+    }
+}
+</style>
+{{ end }}

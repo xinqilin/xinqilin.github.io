@@ -36,7 +36,7 @@ params:
     Content: "分享程式開發、演算法、設計模式等技術筆記"
   
   # SEO 優化
-  keywords: ["程式設計", "演算法", "Java", "Spring", "Docker", "設計模式", "技術筆記"]
+  keywords: ["程式設計", "演算法", "Java", "Spring", "Docker", "設計模式", "技術筆記", "Bill.Lin"]
   
   # 網站設定
   ShowReadingTime: true
@@ -52,6 +52,21 @@ params:
     hidden: true
     hiddenInList: true
     hiddenInSingle: true
+
+  # Giscus 留言系統配置
+  giscus:
+    enable: true
+    repo: "xinqilin/xinqilin.github.io"  # 您的 GitHub Pages 儲存庫
+    repoId: "MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk="  # 請從 https://giscus.app 獲取
+    category: "Announcements"  # GitHub Discussions 分類
+    categoryId: "DIC_kwDOFrHhm84CtLOY"  # 請從 https://giscus.app 獲取
+    mapping: "pathname"  # 頁面和討論的對應關係
+    reactionsEnabled: "1"  # 啟用表情反應
+    emitMetadata: "0"
+    theme: "light"  # 主題：light, dark, dark_dimmed, transparent_dark
+    lang: "zh-TW"  # 語言
+    inputPosition: "bottom"  # 留言框位置：top 或 bottom
+    loading: "lazy"  # 延遲加載
 
   socialIcons:
     - name: github
