@@ -1,0 +1,1371 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>DesignPattern - Behavioral - Strategy Pattern - Bill.Lin's Notes</title><meta name=description content="技術筆記與開發心得分享"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="DesignPattern - Behavioral - Strategy Pattern"><meta property="og:description" content="技術筆記與開發心得分享"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/designpattern/strategy/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>DesignPattern - Behavioral - Strategy Pattern</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>12 分鐘閱讀</span></div><div class=post-categories><a href=/categories/designpattern class=category-link>DesignPattern</a></div></div></header><div class=post-content><h1 id=strategy-pattern-策略模式>Strategy Pattern 策略模式</h1><p>Strategy Pattern 是行為型設計模式之一，它定義了一系列算法，把它們封裝起來，並使它們可以相互替換。策略模式讓算法的變化獨立於使用算法的客戶端。</p><h2 id=核心概念>核心概念</h2><p>策略模式的核心思想是將算法的定義與使用分離，通過定義一族算法，將每個算法封裝起來，並使它們可以互相替換。這樣可以讓算法的變化不會影響到使用算法的客戶端。</p><h3 id=主要組成部分>主要組成部分</h3><ol><li><strong>Strategy (策略接口)</strong>: 定義所有具體策略的公共接口</li><li><strong>ConcreteStrategy (具體策略)</strong>: 實現具體的算法</li><li><strong>Context (上下文)</strong>: 持有策略的引用，並將客戶端的請求委派給策略</li></ol><h3 id=主要優勢>主要優勢</h3><ul><li><strong>算法切換靈活</strong>: 可以在運行時切換算法</li><li><strong>算法獨立</strong>: 算法的變化不影響客戶端</li><li><strong>開閉原則</strong>: 新增算法無需修改現有代碼</li><li><strong>可測試性</strong>: 每個策略都可以獨立測試</li><li><strong>代碼重用</strong>: 算法可以在不同上下文中重用</li></ul><h2 id=1-基礎策略模式實現>1. 基礎策略模式實現</h2><h3 id=經典支付策略範例>經典支付策略範例</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 策略接口</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>PaymentStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>PaymentResult</span><span class=w> </span><span class=nf>processPayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>boolean</span><span class=w> </span><span class=nf>validatePayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=nf>getPaymentMethodName</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 支付請求模型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>PaymentRequest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>BigDecimal</span><span class=w> </span><span class=n>amount</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>currency</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>merchantId</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>Map</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>additionalData</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>PaymentRequest</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>amount</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>currency</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>merchantId</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>amount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>amount</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>currency</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>currency</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>merchantId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>merchantId</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>additionalData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HashMap</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// getters and setters</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>BigDecimal</span><span class=w> </span><span class=nf>getAmount</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>amount</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getCurrency</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>currency</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getMerchantId</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>merchantId</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Map</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getAdditionalData</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>additionalData</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 支付結果模型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>PaymentResult</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=n>success</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>transactionId</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>LocalDateTime</span><span class=w> </span><span class=n>timestamp</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>PaymentResult</span><span class=p>(</span><span class=kt>boolean</span><span class=w> </span><span class=n>success</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>transactionId</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>success</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>success</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>transactionId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>transactionId</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>message</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>message</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>timestamp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>LocalDateTime</span><span class=p>.</span><span class=na>now</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// getters</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>isSuccess</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>success</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getTransactionId</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>transactionId</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getMessage</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>message</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>LocalDateTime</span><span class=w> </span><span class=nf>getTimestamp</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>timestamp</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=具體策略實現>具體策略實現</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 信用卡支付策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CreditCardPaymentStrategy</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>cardNumber</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>cardHolderName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>expiryDate</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>cvv</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>CreditCardPaymentStrategy</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>cardNumber</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>cardHolderName</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>                                   </span><span class=n>String</span><span class=w> </span><span class=n>expiryDate</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>cvv</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>cardNumber</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cardNumber</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>cardHolderName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cardHolderName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>expiryDate</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>expiryDate</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>cvv</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>cvv</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>PaymentResult</span><span class=w> </span><span class=nf>processPayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>validatePayment</span><span class=p>(</span><span class=n>request</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=s>&#34;信用卡驗證失敗&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 模擬信用卡支付處理</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>String</span><span class=w> </span><span class=n>transactionId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;CC_&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=na>currentTimeMillis</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;正在處理信用卡支付...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;金額: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getAmount</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getCurrency</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;卡號: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>maskCardNumber</span><span class=p>(</span><span class=n>cardNumber</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 模擬網絡延遲</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Thread</span><span class=p>.</span><span class=na>sleep</span><span class=p>(</span><span class=n>1000</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>true</span><span class=p>,</span><span class=w> </span><span class=n>transactionId</span><span class=p>,</span><span class=w> </span><span class=s>&#34;信用卡支付成功&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>InterruptedException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=s>&#34;支付過程中發生錯誤&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>validatePayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 驗證邏輯</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>request</span><span class=p>.</span><span class=na>getAmount</span><span class=p>().</span><span class=na>compareTo</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>ZERO</span><span class=p>)</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cardNumber</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>cardNumber</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>16</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>cvv</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>cvv</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>3</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getPaymentMethodName</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;信用卡支付&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>maskCardNumber</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>cardNumber</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;**** **** **** &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>cardNumber</span><span class=p>.</span><span class=na>substring</span><span class=p>(</span><span class=n>cardNumber</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>4</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// PayPal 支付策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>PayPalPaymentStrategy</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>email</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>password</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>PayPalPaymentStrategy</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>email</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>password</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>email</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>email</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>password</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>password</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>PaymentResult</span><span class=w> </span><span class=nf>processPayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>validatePayment</span><span class=p>(</span><span class=n>request</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=s>&#34;PayPal 驗證失敗&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>String</span><span class=w> </span><span class=n>transactionId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;PP_&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=na>currentTimeMillis</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;正在處理 PayPal 支付...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;金額: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getAmount</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getCurrency</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;PayPal 帳戶: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>email</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 模擬 PayPal API 調用</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Thread</span><span class=p>.</span><span class=na>sleep</span><span class=p>(</span><span class=n>800</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>true</span><span class=p>,</span><span class=w> </span><span class=n>transactionId</span><span class=p>,</span><span class=w> </span><span class=s>&#34;PayPal 支付成功&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>InterruptedException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=s>&#34;PayPal 支付過程中發生錯誤&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>validatePayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>request</span><span class=p>.</span><span class=na>getAmount</span><span class=p>().</span><span class=na>compareTo</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>ZERO</span><span class=p>)</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>email</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=o>!</span><span class=n>email</span><span class=p>.</span><span class=na>contains</span><span class=p>(</span><span class=s>&#34;@&#34;</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>password</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>password</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>6</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getPaymentMethodName</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;PayPal 支付&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 銀行轉帳策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>BankTransferPaymentStrategy</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>accountNumber</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>routingNumber</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>accountHolderName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>BankTransferPaymentStrategy</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>accountNumber</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>routingNumber</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>                                     </span><span class=n>String</span><span class=w> </span><span class=n>accountHolderName</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>accountNumber</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>accountNumber</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>routingNumber</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>routingNumber</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>accountHolderName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>accountHolderName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>PaymentResult</span><span class=w> </span><span class=nf>processPayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>validatePayment</span><span class=p>(</span><span class=n>request</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=s>&#34;銀行轉帳驗證失敗&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>String</span><span class=w> </span><span class=n>transactionId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;BT_&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=na>currentTimeMillis</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;正在處理銀行轉帳...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;金額: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getAmount</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getCurrency</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;收款帳戶: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>maskAccountNumber</span><span class=p>(</span><span class=n>accountNumber</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 模擬銀行處理時間</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Thread</span><span class=p>.</span><span class=na>sleep</span><span class=p>(</span><span class=n>2000</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>true</span><span class=p>,</span><span class=w> </span><span class=n>transactionId</span><span class=p>,</span><span class=w> </span><span class=s>&#34;銀行轉帳成功&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>InterruptedException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=s>&#34;銀行轉帳過程中發生錯誤&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>validatePayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>request</span><span class=p>.</span><span class=na>getAmount</span><span class=p>().</span><span class=na>compareTo</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>ZERO</span><span class=p>)</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>accountNumber</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>accountNumber</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>10</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>routingNumber</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>routingNumber</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>9</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getPaymentMethodName</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;銀行轉帳&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>maskAccountNumber</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>accountNumber</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;*&#34;</span><span class=p>.</span><span class=na>repeat</span><span class=p>(</span><span class=n>accountNumber</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>4</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>accountNumber</span><span class=p>.</span><span class=na>substring</span><span class=p>(</span><span class=n>accountNumber</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>4</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=上下文類實現>上下文類實現</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 支付處理器上下文</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>PaymentProcessor</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>paymentStrategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>PaymentProcessor</span><span class=p>(</span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>paymentStrategy</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>paymentStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>paymentStrategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setPaymentStrategy</span><span class=p>(</span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>paymentStrategy</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>paymentStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>paymentStrategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>PaymentResult</span><span class=w> </span><span class=nf>processPayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>paymentStrategy</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=s>&#34;未設置支付策略&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;使用支付方式: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>paymentStrategy</span><span class=p>.</span><span class=na>getPaymentMethodName</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentResult</span><span class=w> </span><span class=n>result</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>paymentStrategy</span><span class=p>.</span><span class=na>processPayment</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 記錄支付結果</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>logPaymentResult</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>result</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>result</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>logPaymentResult</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>PaymentResult</span><span class=w> </span><span class=n>result</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;=== 支付日誌 ===&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;時間: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>result</span><span class=p>.</span><span class=na>getTimestamp</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;金額: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getAmount</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getCurrency</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;狀態: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=p>(</span><span class=n>result</span><span class=p>.</span><span class=na>isSuccess</span><span class=p>()</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=s>&#34;成功&#34;</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=s>&#34;失敗&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;訊息: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>result</span><span class=p>.</span><span class=na>getMessage</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>result</span><span class=p>.</span><span class=na>getTransactionId</span><span class=p>()</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;交易ID: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>result</span><span class=p>.</span><span class=na>getTransactionId</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;==================&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=基礎使用範例>基礎使用範例</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>BasicStrategyDemo</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 創建支付請求</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentRequest</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>new</span><span class=w> </span><span class=n>BigDecimal</span><span class=p>(</span><span class=s>&#34;299.99&#34;</span><span class=p>),</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;TWD&#34;</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;MERCHANT_001&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 信用卡支付</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>creditCardStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CreditCardPaymentStrategy</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;4111111111111111&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;John Doe&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;12/25&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;123&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentProcessor</span><span class=w> </span><span class=n>processor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentProcessor</span><span class=p>(</span><span class=n>creditCardStrategy</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentResult</span><span class=w> </span><span class=n>result1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>processor</span><span class=p>.</span><span class=na>processPayment</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 切換到 PayPal 支付</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>paypalStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PayPalPaymentStrategy</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;user@example.com&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;password123&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>processor</span><span class=p>.</span><span class=na>setPaymentStrategy</span><span class=p>(</span><span class=n>paypalStrategy</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentResult</span><span class=w> </span><span class=n>result2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>processor</span><span class=p>.</span><span class=na>processPayment</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 切換到銀行轉帳</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>bankTransferStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>BankTransferPaymentStrategy</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;1234567890&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;123456789&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;John Doe&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>processor</span><span class=p>.</span><span class=na>setPaymentStrategy</span><span class=p>(</span><span class=n>bankTransferStrategy</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentResult</span><span class=w> </span><span class=n>result3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>processor</span><span class=p>.</span><span class=na>processPayment</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=2-現代-java-函數式策略模式>2. 現代 Java 函數式策略模式</h2><h3 id=使用-lambda-表達式>使用 Lambda 表達式</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 函數式策略接口</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@FunctionalInterface</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>DiscountStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>BigDecimal</span><span class=w> </span><span class=nf>calculateDiscount</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>originalPrice</span><span class=p>,</span><span class=w> </span><span class=n>Customer</span><span class=w> </span><span class=n>customer</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 客戶模型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Customer</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>CustomerType</span><span class=w> </span><span class=n>type</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>LocalDate</span><span class=w> </span><span class=n>memberSince</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>BigDecimal</span><span class=w> </span><span class=n>totalSpent</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>Customer</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>id</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>,</span><span class=w> </span><span class=n>CustomerType</span><span class=w> </span><span class=n>type</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>                   </span><span class=n>LocalDate</span><span class=w> </span><span class=n>memberSince</span><span class=p>,</span><span class=w> </span><span class=n>BigDecimal</span><span class=w> </span><span class=n>totalSpent</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>id</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>type</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>type</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>memberSince</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>memberSince</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>totalSpent</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>totalSpent</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// getters</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getId</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getName</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>CustomerType</span><span class=w> </span><span class=nf>getType</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>type</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>LocalDate</span><span class=w> </span><span class=nf>getMemberSince</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>memberSince</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>BigDecimal</span><span class=w> </span><span class=nf>getTotalSpent</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>totalSpent</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>enum</span><span class=w> </span><span class=n>CustomerType</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>REGULAR</span><span class=p>,</span><span class=w> </span><span class=n>PREMIUM</span><span class=p>,</span><span class=w> </span><span class=n>VIP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 函數式折扣策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FunctionalDiscountStrategies</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 常規折扣策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>REGULAR_DISCOUNT</span><span class=w> </span><span class=o>=</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>price</span><span class=p>.</span><span class=na>multiply</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>0</span><span class=p>.</span><span class=na>05</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 會員折扣策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>MEMBER_DISCOUNT</span><span class=w> </span><span class=o>=</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>long</span><span class=w> </span><span class=n>membershipYears</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ChronoUnit</span><span class=p>.</span><span class=na>YEARS</span><span class=p>.</span><span class=na>between</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>customer</span><span class=p>.</span><span class=na>getMemberSince</span><span class=p>(),</span><span class=w> </span><span class=n>LocalDate</span><span class=p>.</span><span class=na>now</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>double</span><span class=w> </span><span class=n>discountRate</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Math</span><span class=p>.</span><span class=na>min</span><span class=p>(</span><span class=n>0</span><span class=p>.</span><span class=na>20</span><span class=p>,</span><span class=w> </span><span class=n>0</span><span class=p>.</span><span class=na>05</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=p>(</span><span class=n>membershipYears</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>0</span><span class=p>.</span><span class=na>01</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>price</span><span class=p>.</span><span class=na>multiply</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>discountRate</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// VIP 折扣策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>VIP_DISCOUNT</span><span class=w> </span><span class=o>=</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>customer</span><span class=p>.</span><span class=na>getType</span><span class=p>()</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>CustomerType</span><span class=p>.</span><span class=na>VIP</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w> </span><span class=n>price</span><span class=p>.</span><span class=na>multiply</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>0</span><span class=p>.</span><span class=na>25</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>ZERO</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 大額消費折扣策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>HIGH_SPENDER_DISCOUNT</span><span class=w> </span><span class=o>=</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>customer</span><span class=p>.</span><span class=na>getTotalSpent</span><span class=p>().</span><span class=na>compareTo</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>10000</span><span class=p>))</span><span class=w> </span><span class=o>&gt;=</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w> </span><span class=n>price</span><span class=p>.</span><span class=na>multiply</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>0</span><span class=p>.</span><span class=na>15</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>ZERO</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 組合策略 - 取最大折扣</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=nf>maxDiscount</span><span class=p>(</span><span class=n>DiscountStrategy</span><span class=p>...</span><span class=w> </span><span class=n>strategies</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>Arrays</span><span class=p>.</span><span class=na>stream</span><span class=p>(</span><span class=n>strategies</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>map</span><span class=p>(</span><span class=n>strategy</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>strategy</span><span class=p>.</span><span class=na>calculateDiscount</span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>max</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>::</span><span class=n>compareTo</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>orElse</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>ZERO</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 組合策略 - 累加折扣</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=nf>additiveDiscount</span><span class=p>(</span><span class=n>DiscountStrategy</span><span class=p>...</span><span class=w> </span><span class=n>strategies</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>Arrays</span><span class=p>.</span><span class=na>stream</span><span class=p>(</span><span class=n>strategies</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>map</span><span class=p>(</span><span class=n>strategy</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>strategy</span><span class=p>.</span><span class=na>calculateDiscount</span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>reduce</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>ZERO</span><span class=p>,</span><span class=w> </span><span class=n>BigDecimal</span><span class=p>::</span><span class=n>add</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=函數式策略使用>函數式策略使用</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 價格計算器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>PriceCalculator</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>discountStrategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>PriceCalculator</span><span class=p>(</span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>discountStrategy</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>discountStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>discountStrategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>BigDecimal</span><span class=w> </span><span class=nf>calculateFinalPrice</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>originalPrice</span><span class=p>,</span><span class=w> </span><span class=n>Customer</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>BigDecimal</span><span class=w> </span><span class=n>discount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>discountStrategy</span><span class=p>.</span><span class=na>calculateDiscount</span><span class=p>(</span><span class=n>originalPrice</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>BigDecimal</span><span class=w> </span><span class=n>finalPrice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>originalPrice</span><span class=p>.</span><span class=na>subtract</span><span class=p>(</span><span class=n>discount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>printf</span><span class=p>(</span><span class=s>&#34;原價: %s, 折扣: %s, 最終價格: %s%n&#34;</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>originalPrice</span><span class=p>,</span><span class=w> </span><span class=n>discount</span><span class=p>,</span><span class=w> </span><span class=n>finalPrice</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>finalPrice</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setDiscountStrategy</span><span class=p>(</span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>discountStrategy</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>discountStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>discountStrategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 函數式策略範例</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FunctionalStrategyDemo</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 創建客戶</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Customer</span><span class=w> </span><span class=n>regularCustomer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Customer</span><span class=p>(</span><span class=s>&#34;001&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Alice&#34;</span><span class=p>,</span><span class=w> </span><span class=n>CustomerType</span><span class=p>.</span><span class=na>REGULAR</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>LocalDate</span><span class=p>.</span><span class=na>now</span><span class=p>().</span><span class=na>minusYears</span><span class=p>(</span><span class=n>1</span><span class=p>),</span><span class=w> </span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>5000</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Customer</span><span class=w> </span><span class=n>vipCustomer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Customer</span><span class=p>(</span><span class=s>&#34;002&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Bob&#34;</span><span class=p>,</span><span class=w> </span><span class=n>CustomerType</span><span class=p>.</span><span class=na>VIP</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>LocalDate</span><span class=p>.</span><span class=na>now</span><span class=p>().</span><span class=na>minusYears</span><span class=p>(</span><span class=n>3</span><span class=p>),</span><span class=w> </span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>15000</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>BigDecimal</span><span class=w> </span><span class=n>originalPrice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>1000</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 使用預定義策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PriceCalculator</span><span class=w> </span><span class=n>calculator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PriceCalculator</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>FunctionalDiscountStrategies</span><span class=p>.</span><span class=na>REGULAR_DISCOUNT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>calculator</span><span class=p>.</span><span class=na>calculateFinalPrice</span><span class=p>(</span><span class=n>originalPrice</span><span class=p>,</span><span class=w> </span><span class=n>regularCustomer</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 使用 Lambda 表達式創建策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>seasonalDiscount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>price</span><span class=p>.</span><span class=na>multiply</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>0</span><span class=p>.</span><span class=na>10</span><span class=p>));</span><span class=w> </span><span class=c1>// 10% 季節性折扣</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>calculator</span><span class=p>.</span><span class=na>setDiscountStrategy</span><span class=p>(</span><span class=n>seasonalDiscount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>calculator</span><span class=p>.</span><span class=na>calculateFinalPrice</span><span class=p>(</span><span class=n>originalPrice</span><span class=p>,</span><span class=w> </span><span class=n>regularCustomer</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 使用組合策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>DiscountStrategy</span><span class=w> </span><span class=n>combinedStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>FunctionalDiscountStrategies</span><span class=p>.</span><span class=na>maxDiscount</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>FunctionalDiscountStrategies</span><span class=p>.</span><span class=na>MEMBER_DISCOUNT</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>FunctionalDiscountStrategies</span><span class=p>.</span><span class=na>VIP_DISCOUNT</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>FunctionalDiscountStrategies</span><span class=p>.</span><span class=na>HIGH_SPENDER_DISCOUNT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>calculator</span><span class=p>.</span><span class=na>setDiscountStrategy</span><span class=p>(</span><span class=n>combinedStrategy</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>calculator</span><span class=p>.</span><span class=na>calculateFinalPrice</span><span class=p>(</span><span class=n>originalPrice</span><span class=p>,</span><span class=w> </span><span class=n>vipCustomer</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 使用方法引用</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>calculator</span><span class=p>.</span><span class=na>setDiscountStrategy</span><span class=p>(</span><span class=n>FunctionalStrategyDemo</span><span class=p>::</span><span class=n>loyaltyDiscount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>calculator</span><span class=p>.</span><span class=na>calculateFinalPrice</span><span class=p>(</span><span class=n>originalPrice</span><span class=p>,</span><span class=w> </span><span class=n>vipCustomer</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 靜態方法作為策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>BigDecimal</span><span class=w> </span><span class=nf>loyaltyDiscount</span><span class=p>(</span><span class=n>BigDecimal</span><span class=w> </span><span class=n>price</span><span class=p>,</span><span class=w> </span><span class=n>Customer</span><span class=w> </span><span class=n>customer</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>long</span><span class=w> </span><span class=n>membershipDays</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ChronoUnit</span><span class=p>.</span><span class=na>DAYS</span><span class=p>.</span><span class=na>between</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>customer</span><span class=p>.</span><span class=na>getMemberSince</span><span class=p>(),</span><span class=w> </span><span class=n>LocalDate</span><span class=p>.</span><span class=na>now</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>double</span><span class=w> </span><span class=n>discountRate</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Math</span><span class=p>.</span><span class=na>min</span><span class=p>(</span><span class=n>0</span><span class=p>.</span><span class=na>30</span><span class=p>,</span><span class=w> </span><span class=n>membershipDays</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>0</span><span class=p>.</span><span class=na>0001</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>price</span><span class=p>.</span><span class=na>multiply</span><span class=p>(</span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>discountRate</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=3-spring-boot-中的策略模式>3. Spring Boot 中的策略模式</h2><h3 id=spring-配置和依賴注入>Spring 配置和依賴注入</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 通知策略接口</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>NotificationStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>sendNotification</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>recipient</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>boolean</span><span class=w> </span><span class=nf>isAvailable</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=nf>getChannelName</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 具體通知策略實現</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Component</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>EmailNotificationStrategy</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>NotificationStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Value</span><span class=p>(</span><span class=s>&#34;${notification.email.enabled:true}&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=n>enabled</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>JavaMailSender</span><span class=w> </span><span class=n>mailSender</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>sendNotification</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>recipient</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>isAvailable</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IllegalStateException</span><span class=p>(</span><span class=s>&#34;Email 通知服務不可用&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>SimpleMailMessage</span><span class=w> </span><span class=n>mailMessage</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SimpleMailMessage</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>mailMessage</span><span class=p>.</span><span class=na>setTo</span><span class=p>(</span><span class=n>recipient</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>mailMessage</span><span class=p>.</span><span class=na>setSubject</span><span class=p>(</span><span class=s>&#34;系統通知&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>mailMessage</span><span class=p>.</span><span class=na>setText</span><span class=p>(</span><span class=n>message</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>mailSender</span><span class=p>.</span><span class=na>send</span><span class=p>(</span><span class=n>mailMessage</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Email 通知已發送到: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>recipient</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Email 發送失敗: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>e</span><span class=p>.</span><span class=na>getMessage</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>isAvailable</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>enabled</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>mailSender</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getChannelName</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;email&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Component</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SmsNotificationStrategy</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>NotificationStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Value</span><span class=p>(</span><span class=s>&#34;${notification.sms.enabled:true}&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=n>enabled</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Value</span><span class=p>(</span><span class=s>&#34;${notification.sms.api-key:}&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>apiKey</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>sendNotification</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>recipient</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>isAvailable</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IllegalStateException</span><span class=p>(</span><span class=s>&#34;SMS 通知服務不可用&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 模擬 SMS API 調用</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;SMS 通知已發送到: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>recipient</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;內容: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>message</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>isAvailable</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>enabled</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>apiKey</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>apiKey</span><span class=p>.</span><span class=na>isEmpty</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getChannelName</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;sms&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=策略工廠和管理>策略工廠和管理</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 通知策略工廠</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Component</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>NotificationStrategyFactory</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>Map</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>NotificationStrategy</span><span class=o>&gt;</span><span class=w> </span><span class=n>strategies</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>NotificationStrategyFactory</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>NotificationStrategy</span><span class=o>&gt;</span><span class=w> </span><span class=n>strategyList</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>strategies</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>strategyList</span><span class=p>.</span><span class=na>stream</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>collect</span><span class=p>(</span><span class=n>Collectors</span><span class=p>.</span><span class=na>toMap</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>NotificationStrategy</span><span class=p>::</span><span class=n>getChannelName</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>Function</span><span class=p>.</span><span class=na>identity</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>NotificationStrategy</span><span class=w> </span><span class=nf>getStrategy</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>channelName</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>NotificationStrategy</span><span class=w> </span><span class=n>strategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>strategies</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=n>channelName</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>strategy</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IllegalArgumentException</span><span class=p>(</span><span class=s>&#34;不支援的通知方式: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>channelName</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>strategy</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>NotificationStrategy</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getAvailableStrategies</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>strategies</span><span class=p>.</span><span class=na>values</span><span class=p>().</span><span class=na>stream</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>filter</span><span class=p>(</span><span class=n>NotificationStrategy</span><span class=p>::</span><span class=n>isAvailable</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>collect</span><span class=p>(</span><span class=n>Collectors</span><span class=p>.</span><span class=na>toList</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Set</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getSupportedChannels</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>strategies</span><span class=p>.</span><span class=na>keySet</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 通知服務</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Service</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>NotificationService</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>NotificationStrategyFactory</span><span class=w> </span><span class=n>strategyFactory</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>NotificationService</span><span class=p>(</span><span class=n>NotificationStrategyFactory</span><span class=w> </span><span class=n>strategyFactory</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>strategyFactory</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>strategyFactory</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>sendNotification</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>channel</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>recipient</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>NotificationStrategy</span><span class=w> </span><span class=n>strategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>strategyFactory</span><span class=p>.</span><span class=na>getStrategy</span><span class=p>(</span><span class=n>channel</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>strategy</span><span class=p>.</span><span class=na>isAvailable</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 降級策略 - 嘗試其他可用的通知方式</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>List</span><span class=o>&lt;</span><span class=n>NotificationStrategy</span><span class=o>&gt;</span><span class=w> </span><span class=n>availableStrategies</span><span class=w> </span><span class=o>=</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>strategyFactory</span><span class=p>.</span><span class=na>getAvailableStrategies</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>availableStrategies</span><span class=p>.</span><span class=na>isEmpty</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>NotificationStrategy</span><span class=w> </span><span class=n>fallbackStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>availableStrategies</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=n>0</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;原通知方式不可用，使用備選方式: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>fallbackStrategy</span><span class=p>.</span><span class=na>getChannelName</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>fallbackStrategy</span><span class=p>.</span><span class=na>sendNotification</span><span class=p>(</span><span class=n>recipient</span><span class=p>,</span><span class=w> </span><span class=n>message</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IllegalStateException</span><span class=p>(</span><span class=s>&#34;所有通知方式都不可用&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>strategy</span><span class=p>.</span><span class=na>sendNotification</span><span class=p>(</span><span class=n>recipient</span><span class=p>,</span><span class=w> </span><span class=n>message</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>broadcastNotification</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>List</span><span class=o>&lt;</span><span class=n>NotificationStrategy</span><span class=o>&gt;</span><span class=w> </span><span class=n>availableStrategies</span><span class=w> </span><span class=o>=</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>strategyFactory</span><span class=p>.</span><span class=na>getAvailableStrategies</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>availableStrategies</span><span class=p>.</span><span class=na>parallelStream</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>forEach</span><span class=p>(</span><span class=n>strategy</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>strategy</span><span class=p>.</span><span class=na>sendNotification</span><span class=p>(</span><span class=s>&#34;broadcast&#34;</span><span class=p>,</span><span class=w> </span><span class=n>message</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;廣播通知失敗 [&#34;</span><span class=w> </span><span class=o>+</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>strategy</span><span class=p>.</span><span class=na>getChannelName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;]: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>e</span><span class=p>.</span><span class=na>getMessage</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=4-策略模式的最佳實踐>4. 策略模式的最佳實踐</h2><h3 id=避免常見陷阱>避免常見陷阱</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// ❌ 錯誤：策略類過於複雜</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>BadComplexStrategy</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>PaymentResult</span><span class=w> </span><span class=nf>processPayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 100+ 行複雜邏輯</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 包含多個職責</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 難以測試和維護</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// ✅ 正確：單一職責的策略</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>GoodSimpleStrategy</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>PaymentValidator</span><span class=w> </span><span class=n>validator</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>PaymentProcessor</span><span class=w> </span><span class=n>processor</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>GoodSimpleStrategy</span><span class=p>(</span><span class=n>PaymentValidator</span><span class=w> </span><span class=n>validator</span><span class=p>,</span><span class=w> </span><span class=n>PaymentProcessor</span><span class=w> </span><span class=n>processor</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>validator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>validator</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>processor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>processor</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>PaymentResult</span><span class=w> </span><span class=nf>processPayment</span><span class=p>(</span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>validator</span><span class=p>.</span><span class=na>validate</span><span class=p>(</span><span class=n>request</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=s>&#34;驗證失敗&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>processor</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=策略模式測試>策略模式測試</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@ExtendWith</span><span class=p>(</span><span class=n>MockitoExtension</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>PaymentStrategyTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>creditCardPayment_shouldProcessSuccessfully</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Given</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>strategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CreditCardPaymentStrategy</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;4111111111111111&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;John Doe&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;12/25&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;123&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentRequest</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>100</span><span class=p>),</span><span class=w> </span><span class=s>&#34;USD&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;MERCHANT_001&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// When</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentResult</span><span class=w> </span><span class=n>result</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>strategy</span><span class=p>.</span><span class=na>processPayment</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Then</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>assertThat</span><span class=p>(</span><span class=n>result</span><span class=p>.</span><span class=na>isSuccess</span><span class=p>()).</span><span class=na>isTrue</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>assertThat</span><span class=p>(</span><span class=n>result</span><span class=p>.</span><span class=na>getTransactionId</span><span class=p>()).</span><span class=na>isNotNull</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>assertThat</span><span class=p>(</span><span class=n>result</span><span class=p>.</span><span class=na>getTransactionId</span><span class=p>()).</span><span class=na>startsWith</span><span class=p>(</span><span class=s>&#34;CC_&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>paymentProcessor_shouldSwitchStrategies</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Given</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>creditCardStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CreditCardPaymentStrategy</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;4111111111111111&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;John Doe&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;12/25&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;123&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentStrategy</span><span class=w> </span><span class=n>paypalStrategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PayPalPaymentStrategy</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;user@example.com&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;password123&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentProcessor</span><span class=w> </span><span class=n>processor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentProcessor</span><span class=p>(</span><span class=n>creditCardStrategy</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>PaymentRequest</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>BigDecimal</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>100</span><span class=p>),</span><span class=w> </span><span class=s>&#34;USD&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;MERCHANT_001&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// When &amp; Then</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentResult</span><span class=w> </span><span class=n>result1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>processor</span><span class=p>.</span><span class=na>processPayment</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>assertThat</span><span class=p>(</span><span class=n>result1</span><span class=p>.</span><span class=na>isSuccess</span><span class=p>()).</span><span class=na>isTrue</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>processor</span><span class=p>.</span><span class=na>setPaymentStrategy</span><span class=p>(</span><span class=n>paypalStrategy</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PaymentResult</span><span class=w> </span><span class=n>result2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>processor</span><span class=p>.</span><span class=na>processPayment</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>assertThat</span><span class=p>(</span><span class=n>result2</span><span class=p>.</span><span class=na>isSuccess</span><span class=p>()).</span><span class=na>isTrue</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>assertThat</span><span class=p>(</span><span class=n>result2</span><span class=p>.</span><span class=na>getTransactionId</span><span class=p>()).</span><span class=na>startsWith</span><span class=p>(</span><span class=s>&#34;PP_&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=5-總結>5. 總結</h2><h3 id=適用場景>適用場景</h3><ol><li><strong>算法選擇</strong>: 需要在多個算法間動態選擇</li><li><strong>行為變化</strong>: 對象行為需要在運行時改變</li><li><strong>條件邏輯</strong>: 替代複雜的條件分支結構</li><li><strong>擴展性</strong>: 需要頻繁添加新的行為實現</li></ol><h3 id=關鍵要點>關鍵要點</h3><ul><li><strong>單一職責</strong>: 每個策略專注於一個特定算法</li><li><strong>開閉原則</strong>: 容易添加新策略，無需修改現有代碼</li><li><strong>運行時切換</strong>: 支持動態切換策略</li><li><strong>測試友好</strong>: 每個策略可以獨立測試</li></ul><h3 id=spring-boot-最佳實踐>Spring Boot 最佳實踐</h3><ul><li><strong>依賴注入</strong>: 使用 Spring 管理策略實例</li><li><strong>配置驅動</strong>: 通過配置文件控制策略選擇</li><li><strong>條件創建</strong>: 使用 <code>@ConditionalOnProperty</code> 控制策略載入</li><li><strong>監控集成</strong>: 整合 Spring Actuator 監控策略使用情況</li></ul><h3 id=與其他模式的關係>與其他模式的關係</h3><ul><li><strong>工廠模式</strong>: 用於創建策略實例</li><li><strong>裝飾器模式</strong>: 為策略添加額外功能</li><li><strong>責任鏈模式</strong>: 組合多個策略處理複雜業務</li><li><strong>模板方法模式</strong>: 在策略內部定義算法骨架</li></ul><p>策略模式是企業級應用中最常用的設計模式之一，特別適合處理業務規則頻繁變化的場景。在 Spring Boot 環境中，結合依賴注入和配置管理，可以構建出高度靈活和可維護的應用系統。</p></div></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/observer/ class=post-nav-link>DesignPattern - Behavioral - Observer Pattern</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/command/ class=post-nav-link>DesignPattern - Behavioral - Command Pattern</a></div></div></nav></main><footer class=footer><div class=footer-content><p>&copy; 2025 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div><script src=/js/code-enhance.js></script></body></html>
