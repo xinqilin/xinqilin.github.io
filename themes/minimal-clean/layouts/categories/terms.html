@@ -24,6 +24,7 @@
                     {{ else if eq .Page.Title "DevOps" }}🚀
                     {{ else if eq .Page.Title "Architecture" }}🏗️
                     {{ else if eq .Page.Title "Tools" }}🛠️
+                    {{ else if eq .Page.Title "Python" }}🐍
                     {{ else }}📁{{ end }}
                 </div>
                 <div class="category-content">
@@ -35,6 +36,7 @@
                         {{ else if eq .Page.Title "DevOps" }}開發營運與部署技術
                         {{ else if eq .Page.Title "Architecture" }}系統架構與設計模式
                         {{ else if eq .Page.Title "Tools" }}開發工具與實用腳本
+                        {{ else if eq .Page.Title "Python" }}Python 程式語言與應用
                         {{ else }}{{ .Page.Title }} 相關技術文章{{ end }}
                     </p>
                     <div class="category-meta">

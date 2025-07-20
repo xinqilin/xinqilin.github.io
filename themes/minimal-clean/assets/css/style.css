@@ -1683,6 +1683,17 @@ body::before {
     transform: translateY(-4px);
 }
 
+.category-card[data-category="python"]::before {
+    background: linear-gradient(90deg, #eab308, #ca8a04);
+}
+
+.category-card[data-category="python"]:hover {
+    box-shadow: 0 8px 25px rgba(234, 179, 8, 0.12);
+    border-color: rgba(234, 179, 8, 0.3);
+    background: white;
+    transform: translateY(-4px);
+}
+
 
 
 .category-link {
