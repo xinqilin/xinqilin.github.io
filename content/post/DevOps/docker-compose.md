@@ -11,6 +11,8 @@ DisableComments: false
 
 ## 概述
 
+> **版本說明**：`docker-compose`（帶連字號，v1 Python 實作）自 2023 年 7 月已停止維護（EOL）。現行版本為 `docker compose`（空格，v2 Go 實作，已整合進 Docker Desktop 與 Docker Engine）。本文使用 `docker compose` 指令。
+
 在現代應用程式開發中，一個專案往往由多個服務組成，例如前端、後端 API、資料庫、快取等。這些服務各自運行在不同的容器中，而 Docker Compose 正是為了解決這種多容器應用程式的定義與管理而生。
 
 Docker Compose 允許您使用一個 YAML 檔案 (`docker-compose.yml`) 來定義應用程式的所有服務、網路和儲存卷，然後透過單一指令啟動、停止或管理整個應用程式堆疊。這極大地簡化了開發、測試和部署的流程。
@@ -21,36 +23,35 @@ Docker Compose 允許您使用一個 YAML 檔案 (`docker-compose.yml`) 來定�
 
 | 指令 | 說明 | 範例 |
 | :--- | :--- | :--- |
-| `docker-compose --version` | 顯示 Docker Compose 的版本資訊。 | `docker-compose --version` |
-| `docker-compose -h` | 顯示 Docker Compose 的幫助訊息。 | `docker-compose -h` |
-| `docker-compose up` | 啟動並建立所有服務的容器。如果容器已存在，則會重新建立。 | `docker-compose up` |
-| `docker-compose up -d` | 在背景模式 (detached mode) 啟動並建立所有服務的容器。 | `docker-compose up -d` |
-| `docker-compose down` | 停止並移除所有服務的容器、網路和預設儲存卷。 | `docker-compose down` |
-| `docker-compose exec <service_name> <command>` | 在指定服務的容器中執行指令。 | `docker-compose exec microService /bin/bash` |
-| `docker-compose ps` | 列出所有服務的容器狀態。 | `docker-compose ps` |
-| `docker-compose top` | 顯示服務容器的運行進程。 | `docker-compose top` |
-| `docker-compose logs <service_name>` | 顯示指定服務容器的日誌輸出。 | `docker-compose logs microService` |
-| `docker-compose config` | 驗證 `docker-compose.yml` 檔案的語法是否正確，並顯示解析後的配置。 | `docker-compose config` |
-| `docker-compose config -q` | 靜默模式驗證配置，只在有錯誤時輸出訊息。 | `docker-compose config -q` |
-| `docker-compose restart <service_name>` | 重新啟動指定服務的容器。若未指定服務，則重新啟動所有服務。 | `docker-compose restart microService` |
-| `docker-compose start <service_name>` | 啟動指定服務的容器。若未指定服務，則啟動所有已停止的服務。 | `docker-compose start microService` |
-| `docker-compose stop <service_name>` | 停止指定服務的容器。若未指定服務，則停止所有運行中的服務。 | `docker-compose stop microService` |
+| `docker compose version` | 顯示 Docker Compose 的版本資訊。 | `docker compose version` |
+| `docker compose --help` | 顯示 Docker Compose 的幫助訊息。 | `docker compose --help` |
+| `docker compose up` | 啟動並建立所有服務的容器。如果容器已存在，則會重新建立。 | `docker compose up` |
+| `docker compose up -d` | 在背景模式 (detached mode) 啟動並建立所有服務的容器。 | `docker compose up -d` |
+| `docker compose down` | 停止並移除所有服務的容器、網路和預設儲存卷。 | `docker compose down` |
+| `docker compose exec <service_name> <command>` | 在指定服務的容器中執行指令。 | `docker compose exec microService /bin/bash` |
+| `docker compose ps` | 列出所有服務的容器狀態。 | `docker compose ps` |
+| `docker compose top` | 顯示服務容器的運行進程。 | `docker compose top` |
+| `docker compose logs <service_name>` | 顯示指定服務容器的日誌輸出。 | `docker compose logs microService` |
+| `docker compose config` | 驗證 `docker-compose.yml` 檔案的語法是否正確，並顯示解析後的配置。 | `docker compose config` |
+| `docker compose config -q` | 靜默模式驗證配置，只在有錯誤時輸出訊息。 | `docker compose config -q` |
+| `docker compose restart <service_name>` | 重新啟動指定服務的容器。若未指定服務，則重新啟動所有服務。 | `docker compose restart microService` |
+| `docker compose start <service_name>` | 啟動指定服務的容器。若未指定服務，則啟動所有已停止的服務。 | `docker compose start microService` |
+| `docker compose stop <service_name>` | 停止指定服務的容器。若未指定服務，則停止所有運行中的服務。 | `docker compose stop microService` |
 
 ### 常用組合指令
 
 ```bash
 # 驗證配置後，停止並重新啟動所有服務
-docker-compose config -q && docker-compose down && docker-compose up -d
+docker compose config -q && docker compose down && docker compose up -d
 ```
 
 ## `docker-compose.yml` 檔案結構詳解
 
 `docker-compose.yml` 是 Docker Compose 的核心配置檔案，它使用 YAML 語法來定義應用程式的服務。
 
-```yaml
-# 指定 Docker Compose 檔案格式的版本，建議使用最新穩定版 (目前為 '3.x')
-version: "3.8" # 建議使用 3.8 或更高版本，以支援更多功能
+> **Docker Compose v2 注意**：Compose 檔案格式版本 2.x 以後，`version:` 欄位已無意義（被忽略）。Compose v2（`docker compose` 指令）不再需要此欄位，新範例已移除。
 
+```yaml
 # 定義應用程式中的所有服務 (即容器)
 services:
     # 自訂服務名稱，例如 'microService'、'web'、'db' 等
@@ -91,7 +92,7 @@ services:
         command: redis-server /etc/redis/redis.conf
 
     mysql:
-        image: mysql:5.7 # 使用 MySQL 5.7 映像檔
+        image: mysql:8.0 # 5.7 已 EOL（2023-10-31）
         # 設定 MySQL 容器的環境變數
         environment:
             MYSQL_ROOT_PASSWORD: '123456' # 設定 root 使用者的密碼
@@ -120,3 +121,28 @@ networks:
 # 定義應用程式使用的儲存卷 (可選，如果服務中直接使用匿名卷或綁定掛載則不需要在此定義)
 # volumes:
 #     my_data: # 自訂儲存卷名稱
+```
+
+## Healthcheck 與 depends_on condition
+
+基本的 `depends_on` 只保證容器啟動順序，不等待服務實際就緒。搭配 `healthcheck` 可確保依賴服務真正可用後再啟動 app：
+
+```yaml
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    image: my-app
+    depends_on:
+      db:
+        condition: service_healthy  # 等 DB healthcheck 通過再啟動
+```

@@ -117,3 +117,34 @@ docker run -d -p 8081:8080 --network container:tomcat_1 --name tomcat_2 tomcat #
 相比之下，使用自訂網路則沒有這個問題。每個容器在自訂網路中仍然擁有自己的獨立網路堆疊和埠空間，只是它們可以透過網路名稱互相發現和通訊。這使得自訂網路成為多容器應用程式之間通訊的更優雅和健壯的解決方案。
 
 透過理解和善用 Docker 網路模式，您可以更有效地設計和管理您的容器化應用程式。
+
+## 跨平台注意事項
+
+### --network host 在 macOS / Windows 無效
+
+`--network host` 讓容器直接使用宿主機的網路 namespace，跳過 Docker 虛擬網路：
+
+```bash
+docker run --network host nginx
+```
+
+**限制**：
+- **Linux**：完全支援，容器直接使用主機網路介面
+- **macOS / Windows**：**無效**！Docker Desktop 在 Linux VM 中運行，`--network host` 讓容器共用的是 Linux VM 的網路，而非 macOS/Windows 主機的網路。等同於 `bridge` 模式。
+
+### DNS Round-Robin 的限制
+
+Docker 的嵌入式 DNS 對同名服務做 round-robin，但有幾個限制：
+- DNS 快取可能讓 round-robin 失效（client 端 JVM 的 DNS 快取預設為永久）
+- 不等同於負載均衡（沒有健康檢查、不考慮節點負載）
+- 生產環境建議搭配 HAProxy、Nginx 或 Traefik 做 L7 負載均衡
+
+```yaml
+services:
+  api:
+    image: my-api
+    deploy:
+      replicas: 3
+    # DNS round-robin 在 Swarm mode 生效
+    # 在一般 Compose 中，多個 replica 共用服務名但 DNS 可能只返回一個
+```

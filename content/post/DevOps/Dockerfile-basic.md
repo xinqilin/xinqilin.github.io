@@ -181,3 +181,51 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 這樣可以避免將編譯工具、原始碼等不必要的內容包含在最終的運行映像檔中，從而顯著減小映像檔大小，提高安全性和部署效率。
 
 透過熟練掌握 Dockerfile 的各項指令和最佳實踐，您可以更有效地建構和管理您的 Docker 映像檔。
+
+## 進階最佳實踐
+
+### .dockerignore 減少 build context
+
+```dockerignore
+# .dockerignore
+node_modules/
+.git/
+*.log
+target/
+.env
+```
+
+沒有 `.dockerignore` 時，`docker build` 會把整個目錄（含 `node_modules`、`.git`）送到 Docker daemon，大幅增加 build 時間。
+
+### Layer Cache 最佳化排序
+
+**依賴的 layer 改變頻率越低，放越前面**：
+
+```dockerfile
+# 不好的順序（程式碼變動 -> 重新 COPY package.json -> 重新 npm install）
+COPY . .
+RUN npm install
+
+# 好的順序（package.json 不動 -> npm install 從 cache 讀取）
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . .
+```
+
+### Distroless / Scratch 映像（最小化）
+
+```dockerfile
+# Multi-stage build + distroless（Google）
+FROM eclipse-temurin:21 AS builder
+COPY . .
+RUN ./gradlew bootJar
+
+FROM gcr.io/distroless/java21-debian12
+COPY --from=builder /app/build/libs/app.jar /app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+```
+
+Distroless 映像：
+- 無 shell（無法 `docker exec sh`）→ 安全性高
+- 映像大小大幅減少（約 50-80MB vs JDK 映像 500MB+）
+- 適合生產環境；開發環境仍用完整 JDK 映像

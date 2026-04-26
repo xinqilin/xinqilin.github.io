@@ -111,6 +111,8 @@ apt list --installed
 
 ### 套件庫管理
 
+> **注意**：`apt-key` 指令在 Ubuntu 22.04+ 已標記為 deprecated，會顯示警告。建議改用 `/etc/apt/keyrings/` 目錄存放 GPG key（需先 `mkdir -p /etc/apt/keyrings`）。
+
 ```bash
 # 添加 PPA 套件庫
 sudo add-apt-repository ppa:user/ppa-name
@@ -119,10 +121,14 @@ sudo apt update
 # 移除 PPA
 sudo add-apt-repository --remove ppa:user/ppa-name
 
-# 管理套件庫金鑰
-wget -qO - https://example.com/key.gpg | sudo apt-key add -
-sudo apt-key list
-sudo apt-key del KEY_ID
+# 舊（已棄用，Ubuntu 22.04 後會收到警告）
+# wget -qO - https://example.com/key.gpg | sudo apt-key add -
+
+# 新（建議）：使用 /etc/apt/keyrings/ 存放 GPG key
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://example.com/key.gpg | gpg --dearmor -o /etc/apt/keyrings/example.gpg
+echo "deb [signed-by=/etc/apt/keyrings/example.gpg] https://example.com/repo stable main" \
+    | sudo tee /etc/apt/sources.list.d/example.list
 
 # 編輯套件來源
 sudo nano /etc/apt/sources.list
@@ -294,8 +300,9 @@ echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
 service ssh start
 
 # 建立使用者
-useradd -m -s /bin/bash developer
-echo 'developer:password' | chpasswd
+# 安全警告：弱密碼僅供本地開發環境，生產環境應使用 SSH key 認證並禁用 password login
+sudo adduser deploy
+# 會互動式要求輸入密碼（請使用 20+ 字元的隨機密碼）
 usermod -aG sudo developer
 ```
 
@@ -344,6 +351,8 @@ start_container() {
             echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
             service ssh start
             useradd -m -s /bin/bash developer
+            # 安全警告：developer:developer 等弱密碼僅供本地開發環境測試
+            # 生產環境請使用 SSH key 認證並禁用 password login
             echo 'developer:developer' | chpasswd
             usermod -aG sudo developer
         "
@@ -962,3 +971,7 @@ Ubuntu 是現代 Linux 發行版的代表，掌握其使用技巧能夠大幅提
 - [APT User's Guide](https://www.debian.org/doc/manuals/apt-guide/)
 - [systemd Documentation](https://systemd.io/)
 - [Docker on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+---
+
+*TODO: 本文計劃拆分為多篇專題文章：APT 套件管理、UFW 防火牆設定、SSH 安全加固、系統備份策略、效能監控工具。*
