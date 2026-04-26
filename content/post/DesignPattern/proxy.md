@@ -1171,6 +1171,86 @@ class ProxyIntegrationTest {
 2. **性能關鍵**: 當代理會顯著影響性能時
 3. **過度複雜**: 當代理層次過多時
 
+## Spring AOP 的代理機制：JDK vs CGLIB
+
+Spring AOP 使用代理物件攔截方法呼叫，但代理的類型決定了它的能力與限制：
+
+### JDK 動態代理（介面型）
+- **原理**：使用 `java.lang.reflect.Proxy` 生成實作目標介面的代理類
+- **要求**：目標物件**必須實作至少一個介面**
+- **觸發條件**：`proxyTargetClass = false`（默認）
+
+```java
+// JDK Proxy 內部原理
+UserService proxy = (UserService) Proxy.newProxyInstance(
+    UserService.class.getClassLoader(),
+    new Class[]{UserService.class},
+    (proxyObj, method, args) -> {
+        System.out.println("Before: " + method.getName());
+        Object result = method.invoke(target, args);
+        System.out.println("After: " + method.getName());
+        return result;
+    }
+);
+```
+
+### CGLIB（繼承型）
+- **原理**：繼承目標類別，覆寫方法插入 AOP 邏輯（位元組碼操作）
+- **要求**：目標類別**不能是 final**，方法**不能是 final/private**
+- **觸發條件**：`proxyTargetClass = true` 或目標類無介面
+- **Spring Boot 預設使用 CGLIB**
+
+```java
+// CGLIB 的限制 — 以下代理會失效
+@Service
+public final class PaymentService { ... }  // final class！CGLIB 無法繼承
+
+@Service
+public class UserService {
+    public final String getName() { ... }  // final method！不能被覆寫
+}
+```
+
+### ByteBuddy
+- Spring Boot 3 / Spring 6 已將底層代理從 CGLIB 切換到 **ByteBuddy**（效能更好）
+- 行為與 CGLIB 相似，但生成的字節碼更優化
+
+### Self-invocation 問題（最常見的 AOP 坑）
+
+```java
+@Service
+public class OrderService {
+    @Transactional
+    public void createOrder(Order order) {
+        this.saveOrder(order);  // 這裡 this. 呼叫是直接呼叫，不經過代理！
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveOrder(Order order) {
+        // @Transactional 在這裡完全無效！
+    }
+}
+```
+
+**原因**：AOP 代理在類別**外部**攔截呼叫，`this.method()` 繞過代理直接呼叫原始物件。
+
+**解法**：
+```java
+// 方法 1：注入自身（透過代理）
+@Service
+public class OrderService {
+    @Autowired
+    private OrderService self;  // 這是代理物件
+
+    public void createOrder(Order order) {
+        self.saveOrder(order);  // 透過代理呼叫，@Transactional 生效
+    }
+}
+
+// 方法 2：拆分為兩個 Bean
+// 方法 3：使用 AspectJ weaving（compile-time 或 load-time）
+```
+
 ## 總結
 
 Proxy Pattern 是一個非常強大和靈活的設計模式，特別是在企業級應用中。通過與 Spring AOP 的結合，我們可以創建出非常優雅和功能豐富的代理實現。

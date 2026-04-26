@@ -267,6 +267,8 @@ public class BasicObserverDemo {
 
 ### 使用 Java 內建 Observable
 
+> **注意**：`java.util.Observable` 和 `java.util.Observer` 自 **Java 9 起已被標記為 deprecated**，官方建議改用 `PropertyChangeListener`、`Flow.Subscriber`（JDK 9+ Reactive Streams）或 Spring Events。
+
 ```java
 import java.util.Observable;
 import java.util.Observer;
@@ -1267,4 +1269,87 @@ class SpringEventIntegrationTest {
 - **批量處理**: 對大量事件進行批量處理
 - **錯誤隔離**: 確保單個觀察者異常不影響系統
 
-觀察者模式是構建現代企業級應用的重要設計模式，特別是在微服務架構和事件驅動系統中。結合 Spring Boot 和響應式編程，可以構建出高度可擴展和maintainable的系統。
+觀察者模式是構建現代企業級應用的重要設計模式，特別是在微服務架構和事件驅動系統中。結合 Spring Boot 和響應式編程，可以構建出高度可擴展和 maintainable 的系統。
+
+## 現代 Java 的 Observer 替代方案
+
+### 方案 1：PropertyChangeListener（JDK 內建）
+
+```java
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+public class OrderService {
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private OrderStatus status;
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    public void setStatus(OrderStatus newStatus) {
+        OrderStatus old = this.status;
+        this.status = newStatus;
+        support.firePropertyChange("status", old, newStatus);
+    }
+}
+
+// 訂閱者
+OrderService service = new OrderService();
+service.addPropertyChangeListener(evt ->
+    System.out.println("Status changed: " + evt.getOldValue() + " -> " + evt.getNewValue())
+);
+```
+
+### 方案 2：Spring Application Events（推薦）
+
+```java
+// 事件類別
+public record OrderStatusChangedEvent(Long orderId, OrderStatus newStatus) {}
+
+// 發布者（Publisher）
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+    private final ApplicationEventPublisher publisher;
+
+    public void updateStatus(Long id, OrderStatus status) {
+        // ... 更新邏輯
+        publisher.publishEvent(new OrderStatusChangedEvent(id, status));
+    }
+}
+
+// 訂閱者（Listener）
+@Component
+public class NotificationListener {
+    @EventListener
+    @Async  // 非同步處理
+    public void handleOrderStatusChanged(OrderStatusChangedEvent event) {
+        // 發送通知、更新快取等
+    }
+}
+```
+
+### 方案 3：Reactor / RxJava（Reactive）
+
+```java
+// 使用 Reactor Sinks 作為事件總線
+Sinks.Many<OrderStatusChangedEvent> sink = Sinks.many().multicast().onBackpressureBuffer();
+
+// 發布
+sink.tryEmitNext(new OrderStatusChangedEvent(orderId, status));
+
+// 訂閱（可有多個 subscriber）
+sink.asFlux()
+    .filter(e -> e.orderId().equals(targetId))
+    .subscribe(e -> System.out.println("Received: " + e));
+```
+
+### 比較
+
+| 方案 | 同步/非同步 | 適用場景 |
+|---|---|---|
+| `PropertyChangeListener` | 同步 | 簡單 JavaBean 屬性監聽 |
+| Spring Events | 兩者均支援 | Spring 應用的領域事件 |
+| Reactor Sinks | 非同步 | 高吞吐量、背壓控制 |
+| `java.util.Observable` | 同步 | **已廢棄，不建議使用** |
