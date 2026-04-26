@@ -1379,6 +1379,53 @@ UML 統一建模語言是軟體開發中的重要工具：
 
 通過正確使用 UML，可以大幅提升軟體設計的品質和團隊協作效率。
 
+## C4 Model
+
+C4 Model 是 UML 之外更適合溝通系統架構的框架，分四個層次：
+
+| 層次 | 受眾 | 說明 |
+|------|------|------|
+| Context (C1) | 所有人 | 系統與外部使用者/系統的關係 |
+| Container (C2) | 技術人員 | 部署單元（Web app、DB、Message Queue） |
+| Component (C3) | 開發者 | Container 內的主要元件 |
+| Code (C4) | 開發者 | 類別/介面層級（UML Class Diagram） |
+
+實務上 C1+C2 最常用，用 Mermaid `graph` 就能畫出清晰的溝通圖。
+
+## Mermaid 實例
+
+```mermaid
+graph TB
+    User["使用者\n[Browser]"]
+    API["Spring Boot API\n[Java 21, Dockerized]"]
+    DB["MySQL 8.0\n[Database]"]
+    Cache["Redis 7\n[Cache]"]
+
+    User -->|HTTPS| API
+    API -->|JDBC| DB
+    API -->|Jedis| Cache
+```
+
+## ArchUnit
+
+ArchUnit 讓你用程式碼描述並測試架構約束：
+
+```java
+@Test
+void servicesShouldNotDependOnControllers() {
+    JavaClasses classes = new ClassFileImporter().importPackages("com.example");
+
+    ArchRule rule = noClasses()
+        .that().resideInAPackage("..service..")
+        .should().dependOnClassesThat()
+        .resideInAPackage("..controller..");
+
+    rule.check(classes);
+}
+```
+
+這讓架構規則從「文件上的約定」變成「CI 管線上的強制檢查」。
+
 ## 參考資料
 
 - [UML 2.5 官方規範](https://www.omg.org/spec/UML/2.5.1/)

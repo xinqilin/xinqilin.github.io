@@ -1761,3 +1761,47 @@ CQRS 是一種強大的架構模式，特別適用於：
 6. **測試策略**：建立全面的測試策略，包括事件重播測試
 
 CQRS 結合事件溯源為企業級應用提供了強大的架構基礎，能夠有效處理複雜的業務場景和高並發需求。正確實施 CQRS 可以大幅提升系統的可維護性、可擴展性和性能。
+
+## Outbox Pattern（事務一致性）
+
+CQRS 最常見的雙寫問題：Command handler 在同一個 transaction 中寫 DB 又發 Event，網路故障時兩者不一致。
+
+**Outbox Pattern 解法**：
+1. 在同一個 DB transaction 寫入業務資料 + 一張 `outbox` 表（event 記錄）
+2. 獨立的 poller/Debezium CDC 讀取 `outbox` 表，確認成功後發佈 event
+3. 確保 at-least-once delivery（consumer 端需冪等）
+
+```sql
+CREATE TABLE outbox_events (
+    id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+    aggregate_type VARCHAR(64)  NOT NULL,
+    aggregate_id   VARCHAR(64)  NOT NULL,
+    event_type     VARCHAR(128) NOT NULL,
+    payload        JSON         NOT NULL,
+    created_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    processed_at   DATETIME
+);
+```
+
+## 何時不該用 CQRS
+
+- **簡單 CRUD**：增加了大量複雜度，但沒有對應的效益
+- **強一致性要求高**：Read side 的 eventual consistency 在金融等場景是風險點
+- **團隊規模小**：維護兩套 model 的成本可能超出收益
+- **查詢不複雜**：標準 JPA query 已夠用時，不需要獨立 Read model
+
+## 踩坑紀錄
+
+### Eventual Consistency 的使用者體驗問題
+使用者送出 Command 後立刻查詢，可能看到舊資料（Read model 尚未更新）。解法：
+1. 前端樂觀更新（Optimistic UI）
+2. 特定查詢直接走 Write side（Command side）
+3. Read model 更新後透過 WebSocket 推送通知
+
+## 生態系統
+
+| 框架/工具 | 說明 |
+|-----------|------|
+| Axon Framework | Java 完整 CQRS + Event Sourcing 框架 |
+| Spring Modulith | 模組內部 CQRS，基於 Spring Events + Outbox |
+| Eventuate Tram | 輕量 Outbox + Saga 支援 |

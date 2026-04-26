@@ -2782,6 +2782,29 @@ Snowflake 算法是分散式系統中生成唯一 ID 的經典解決方案，具
 
 通過本文的全面介紹，您應該能夠在企業級項目中成功實施 Snowflake 分散式 ID 生成系統，並根據具體需求進行適當的優化和定制。
 
+## 踩坑紀錄
+
+### K8s / 容器環境的 Worker ID 分配
+Snowflake 需要唯一 Worker ID（通常 10 bits = 1024 個節點）。在容器環境中，容器 IP 的末段 8 bits 是常見做法，但需注意：
+- IP 可能重複（不同子網路）
+- Pod 重啟後 IP 會變，同一時間兩個 Pod 可能短暫使用同一個 Worker ID
+
+推薦做法：
+1. 用 Redis `INCR` 分配 Worker ID，Pod 啟動時取號
+2. 用 Zookeeper/etcd 做 Worker ID 分配協調
+
+### 雪花 ID vs UUID 對 InnoDB 主鍵的影響
+
+| 特性 | 雪花 ID | UUIDv4 | UUIDv7 |
+|------|---------|--------|--------|
+| 插入順序 | 單調遞增 | 隨機 | 時間排序 |
+| InnoDB B+ Tree 插入 | 尾插，快速 | 頁分裂，慢 | 尾插，快速 |
+| 索引碎片化 | 低 | 高 | 低 |
+| 可讀性 | 可解析時間戳 | 不可讀 | 可解析時間戳 |
+| 分散式唯一性 | 需協調 Worker ID | 無需協調 | 無需協調 |
+
+**結論**：雪花 ID 在 MySQL InnoDB 下效能優於 UUIDv4；UUIDv7（RFC 9562，Java 尚無原生支援）是更好的標準化替代。
+
 ---
 
 ## 參考資料

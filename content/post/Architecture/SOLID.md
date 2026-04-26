@@ -1829,6 +1829,24 @@ SOLID 原則是軟體設計的基石，它們相互補充，共同促進程式�
 
 SOLID 原則不僅適用於物件導向程式設計，在微服務架構、函數式程式設計等現代軟體架構中同樣具有指導意義。掌握這些原則將顯著提升你的軟體設計能力。
 
+## 批評與反思
+
+SOLID 並非沒有爭議：
+
+**Dan North（BDD 發明者）的 CUPID**：提出 CUPID（Composable, Unix philosophy, Predictable, Idiomatic, Domain-based）作為替代，認為 SOLID 的問題在於它是負面規則（"不要違反..."），而非正面特質。
+
+**Hillel Wayne 的 LSP 分析**：嚴格的 Liskov Substitution Principle 在形式化邏輯下比直覺理解複雜得多——大多數實際違反 LSP 的程式碼在測試中仍能正常運行，因為呼叫方沒有依賴 LSP 保證的那些屬性。
+
+**ISP 的現實困境**：「Repository 30 個方法」的真實場景——把它拆成 30 個單方法介面雖然符合 ISP，但程式碼可讀性和維護性可能更差。實際做法是按「使用場景分群」（讀/寫/管理介面）而非一方法一介面。
+
+## 踩坑紀錄
+
+### OCP 的成本
+「對擴展開放、對修改關閉」聽起來簡單，但在不知道未來擴展點在哪時就預留抽象，反而造成 YAGNI（You Aren't Gonna Need It）過度設計。推薦做法：**Rule of Three**——看到第三次相似需求時再提取抽象，而非第一次就設計。
+
+### DIP 的常見誤解
+DIP 說的是「依賴抽象」，不是「一定要用介面」。當一個 class 只有一個實作，而且可預見未來也不會有第二個實作時，強制建立介面只是增加間接層，不是真正的 DIP。
+
 ## 參考資料
 
 - [Clean Code by Robert C. Martin](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350884)
