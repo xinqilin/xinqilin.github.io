@@ -1,11 +1,11 @@
 ---
-title: "Github Ssh"
+title: "GitHub SSH 金鑰設定"
 author: Bill.Lin
 date: 2022-02-09T19:46:19+08:00
 draft: false
-tags: []
-Description: "換工作時，重新設定 github ssh 連線"
-Categories: ["Tools"]
+tags: ["Git", "GitHub", "SSH", "PAT", "Authentication"]
+Description: "GitHub SSH 金鑰設定、Classic vs Fine-grained PAT 比較，以及 SSH vs HTTPS 選型指南"
+Categories: ["Git"]
 DisableComments: false
 aliases:
   - /post/Others/Github-ssh/
