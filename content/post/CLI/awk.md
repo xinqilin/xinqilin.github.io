@@ -24,6 +24,24 @@ AWK 是一種強大的模式掃描和處理語言，由 Alfred Aho、Peter Weinb
 - **數學運算能力**：支援完整的算術和字串操作
 - **正規表達式支援**：強大的模式匹配功能
 
+## 相容性注意事項
+
+### macOS vs Linux 差異
+macOS 內建的 `awk` 是 **BSD awk**（One True AWK），而 Linux 發行版通常是 **GNU awk (gawk)**。兩者差異：
+
+| 功能 | GNU awk (gawk) | BSD awk (macOS) |
+|------|---------------|-----------------|
+| `gensub()` | 支援 | 不支援 |
+| TCP/IP 連線 (`/inet/tcp`) | 支援 | 不支援 |
+| `PROCINFO` | 支援 | 不支援 |
+| `printf "%'d"` 千位分隔 | 支援 | 不支援 |
+| 正規表達式 interval (`{n,m}`) | 支援 | 不支援（需 --re-interval） |
+
+**gawk-only 功能請明確標注**，或提供替代寫法。macOS 用戶如需完整功能：`brew install gawk`。
+
+### POSIX awk
+POSIX 標準的 awk 功能最小但最廣泛相容。跨平台腳本應優先使用 POSIX awk 功能。
+
 ## 基本語法
 
 ```bash

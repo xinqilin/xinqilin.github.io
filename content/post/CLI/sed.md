@@ -550,6 +550,43 @@ find . -name "*.java" -exec sed -i \
 echo "重構完成：$OLD_CLASS -> $NEW_CLASS"
 ```
 
+## 跨平台相容性（macOS vs Linux）
+
+### `-i` In-place 編輯
+`sed -i` 在 **macOS（BSD sed）** 和 **Linux（GNU sed）** 行為不同：
+
+```bash
+# Linux (GNU sed)
+sed -i 's/foo/bar/g' file.txt
+
+# macOS (BSD sed) — 需要明確提供 backup 副檔名（空字串 '' 表示不備份）
+sed -i '' 's/foo/bar/g' file.txt
+```
+
+**跨平台腳本寫法**：
+```bash
+# 偵測系統並選擇正確語法
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' 's/foo/bar/g' file.txt
+else
+    sed -i 's/foo/bar/g' file.txt
+fi
+```
+
+或直接使用 `perl -i` 替代（POSIX 兼容）：
+```bash
+perl -i -pe 's/foo/bar/g' file.txt
+```
+
+### 其他 BSD vs GNU 差異
+
+| 功能 | GNU sed | BSD sed |
+|------|---------|---------|
+| Extended regex | `-E` 或 `-r` | `-E` |
+| Case-insensitive | `s/foo/bar/gI` | 不支援 |
+| Multi-line `N` | 支援 | 有限支援 |
+| `\w` word boundary | 支援 | 不支援（用 `[[:alpha:]]`） |
+
 ## 總結
 
 ### 核心優勢

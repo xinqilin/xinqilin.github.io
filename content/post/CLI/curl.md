@@ -24,6 +24,35 @@ cURL（Client URL）是一個功能強大的命令行工具和函式庫，用於
 - **腳本友好**：輸出格式化，適合自動化處理
 - **安全性**：支援 SSL/TLS、各種認證機制
 
+## 安全注意事項
+
+### `-k` / `--insecure`：MITM 風險
+`curl -k https://example.com` 跳過 TLS 憑證驗證，會讓你容易受到中間人攻擊（MITM）。
+
+**僅允許使用場景**：
+- 本機測試自簽憑證的開發環境
+- CI/CD 內部系統（確定網路是受信任的）
+
+**正確做法**（而非跳過驗證）：
+```bash
+# 指定自訂 CA
+curl --cacert /path/to/ca.crt https://internal-service/
+
+# 或設定 SSL_CERT_FILE 環境變數
+SSL_CERT_FILE=/path/to/ca-bundle.crt curl https://internal-service/
+```
+
+### `--fail-with-body`（curl 7.76+）
+
+比 `--fail` 更好的錯誤處理：`--fail` 在 HTTP 4xx/5xx 時靜默失敗，`--fail-with-body` 同樣在 4xx/5xx 時返回非 0 exit code，但同時**顯示 response body**（對排查錯誤有幫助）：
+
+```bash
+curl --fail-with-body https://api.example.com/data
+```
+
+### HSTS 預載入
+`curl` 本身不會強制 HSTS 預載入清單，但多數瀏覽器會。API 設計時若 endpoint 在 HSTS 清單的域名下，HTTP 請求會被瀏覽器強制升級至 HTTPS。`curl` 測試不代表瀏覽器行為。
+
 ## 基本語法
 
 ```bash

@@ -122,6 +122,65 @@ xmas-fifth-day:
 }
 ```
 
+## YAML 常見陷阱
+
+### Norway Problem
+`NO`、`no`、`off`、`false`、`n` 在 YAML 1.1 中都被解析為布林 `false`。因此挪威的國碼 `NO` 在某些 YAML 解析器中變成 `false`：
+
+```yaml
+# YAML 1.1 (PyYAML 預設)
+country: NO    # false (!!!)
+enabled: off   # false
+flag: y        # true
+
+# YAML 1.2 修正了這個問題（只有 true/false 是布林）
+country: NO    # "NO" (字串)
+```
+
+**解決方法**：使用引號 `"NO"` 明確標示字串。
+
+### Anchors 與 Aliases（錨點與別名）
+
+```yaml
+# 定義 anchor
+defaults: &defaults
+  timeout: 30
+  retries: 3
+
+# 使用 alias（引用 anchor 的內容）
+development:
+  <<: *defaults   # merge key：展開 defaults 的所有 key
+  environment: dev
+
+production:
+  <<: *defaults
+  environment: prod
+  timeout: 60   # 覆蓋 defaults 的 timeout
+```
+
+### Multi-document YAML
+
+```yaml
+---
+# 第一份文件
+name: document-1
+---
+# 第二份文件
+name: document-2
+...  # 可選的文件結束符
+```
+
+常見於 Kubernetes manifest：多個資源定義在同一個檔案中，用 `---` 分隔。
+
+### YAML 1.1 vs 1.2
+
+| 差異 | YAML 1.1 | YAML 1.2 |
+|------|---------|---------|
+| 布林字面值 | true/yes/on/y/TRUE... | 只有 true/false |
+| 八進位語法 | `0777` | `0o777` |
+| 浮點數 | `.inf`、`.nan` | `.inf`、`.nan` |
+| 常用解析器 | PyYAML（預設）、libyaml | Go yaml.v3、Jackson YAML |
+
 ## 參考資料
 
 - [CloudBees YAML Tutorial](https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started)

@@ -590,6 +590,33 @@ find /data -mtime +30 -print0 | tar -czf old_files.tar.gz --null -T -
 find /source -name "*.txt" -print0 | rsync -av --files-from=- --from0 /source/ /destination/
 ```
 
+## macOS（BSD find）vs Linux（GNU find）
+
+### macOS 缺少的 GNU 功能
+
+```bash
+# GNU find only：-printf 自定義輸出格式
+find . -name "*.java" -printf "%f\t%s bytes\n"  # macOS 不支援
+
+# macOS 替代做法
+find . -name "*.java" -exec ls -la {} \;
+
+# GNU find only：-regextype 選擇正規表達式引擎
+find . -regextype posix-extended -regex ".*\.(java|kt)"  # macOS 不支援 -regextype
+
+# macOS 的 find -regex 只支援 Basic RE（BRE）
+find . -regex ".*\.java"  # 可以，但無法用 ERE 的 +、?、|
+```
+
+### 效能提示
+```bash
+# 避免 fork exec：用 -print0 | xargs -0 比 -exec {} \; 快
+find . -name "*.log" -print0 | xargs -0 rm
+
+# -exec {} + (自動 batching) 比 -exec {} \; 少 fork 次數
+find . -name "*.txt" -exec grep "pattern" {} +
+```
+
 ## 總結
 
 ### 核心優勢
