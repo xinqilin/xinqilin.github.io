@@ -1,0 +1,407 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>jq — 命令列 JSON 處理 - Bill.Lin's Notes</title><meta name=description content="jq 完整使用指南：從基本過濾器到 map、select、string interpolation，以及 CI/CD 實戰範例與常見陷阱"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="jq — 命令列 JSON 處理"><meta property="og:description" content="jq 完整使用指南：從基本過濾器到 map、select、string interpolation，以及 CI/CD 實戰範例與常見陷阱"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/cli/jq/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>jq — 命令列 JSON 處理</h1><div class=post-meta><div class=post-info><time class=post-date>2024年01月15日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>5 分鐘閱讀</span></div><div class=post-categories><a href=/categories/cli class=category-link>CLI</a></div></div></header><div class=post-content><h2 id=安裝>安裝</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># macOS</span>
+</span></span><span class=line><span class=cl>brew install jq
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Ubuntu / Debian</span>
+</span></span><span class=line><span class=cl>sudo apt install jq
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Alpine（Docker 常用）</span>
+</span></span><span class=line><span class=cl>apk add jq
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 確認版本</span>
+</span></span><span class=line><span class=cl>jq --version
+</span></span><span class=line><span class=cl><span class=c1># jq-1.7.1</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=基本過濾器>基本過濾器</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Pretty print（最常用：curl 結果格式化）</span>
+</span></span><span class=line><span class=cl>curl -s https://api.github.com/repos/spring-projects/spring-boot <span class=p>|</span> jq <span class=s1>&#39;.&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 取特定欄位</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.name&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.stargazers_count&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 取陣列元素</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[0]&#39;</span>         <span class=c1># 第一個元素</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[-1]&#39;</span>        <span class=c1># 最後一個元素</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[2:5]&#39;</span>       <span class=c1># index 2 到 4（slice）</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 展開陣列（iterate）</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[]&#39;</span>          <span class=c1># 輸出陣列每個元素，各佔一行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 巢狀欄位</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.user.email&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.address.city&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 多個欄位 → 新物件</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;{name: .name, email: .user.email}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 多個欄位 → array</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;[.name, .email]&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=空值安全>空值安全</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 欄位不存在時回傳 null，不報錯</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.nonexistent&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 提供預設值（若為 null 則用 &#34;unknown&#34;）</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.name // &#34;unknown&#34;&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># optional operator（? 表示若不適用則忽略，不報錯）</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.items[]? | .name&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=陣列操作>陣列操作</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># map：對每個元素套用 filter</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;map(.name)&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># 等同於</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;[.[] | .name]&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># select：過濾符合條件的元素</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[] | select(.age &gt; 18)&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[] | select(.status == &#34;active&#34;)&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[] | select(.role == &#34;admin&#34; or .role == &#34;superuser&#34;)&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># length：陣列長度 / 字串長度 / 物件 key 數</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;length&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.items | length&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># sort_by</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;sort_by(.name)&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;sort_by(.age) | reverse&#39;</span>   <span class=c1># 降序</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># unique_by</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;unique_by(.type)&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;[.[].type] | unique&#39;</span>        <span class=c1># 取所有 type 的唯一值列表</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># group_by</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;group_by(.department)&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># flatten（展開巢狀陣列）</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;flatten&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;flatten(1)&#39;</span>  <span class=c1># 只展開一層</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># first / last</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;first(.[] | select(.active))&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=字串與格式化>字串與格式化</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># String interpolation（@string format）</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[] | &#34;\(.name): \(.email)&#34;&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 傳入變數（避免 shell injection）</span>
+</span></span><span class=line><span class=cl>jq --arg status <span class=s2>&#34;active&#34;</span> <span class=s1>&#39;.[] | select(.status == $status)&#39;</span>
+</span></span><span class=line><span class=cl>jq --argjson min_age <span class=m>18</span> <span class=s1>&#39;.[] | select(.age &gt; $min_age)&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 數值格式</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.price * 100 | round&#39;</span>       <span class=c1># 四捨五入</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.size / 1024 / 1024&#39;</span>        <span class=c1># MB</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 字串操作</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.name | ascii_upcase&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.name | ascii_downcase&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.name | ltrimstr(&#34;Mr. &#34;)&#39;</span>   <span class=c1># 移除前綴</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.name | split(&#34; &#34;) | .[0]&#39;</span>  <span class=c1># 取第一個 token</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.tags | join(&#34;, &#34;)&#39;</span>         <span class=c1># 陣列轉字串</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 輸出純字串（不含 JSON 引號）</span>
+</span></span><span class=line><span class=cl>jq -r <span class=s1>&#39;.name&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=物件操作>物件操作</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># keys / values</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;keys&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;values&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;to_entries&#39;</span>     <span class=c1># [{key: &#34;a&#34;, value: 1}, ...]</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;from_entries&#39;</span>   <span class=c1># [{key,value}] → {a:1}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># has：判斷是否有某 key</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;has(&#34;email&#34;)&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;.[] | select(has(&#34;avatar_url&#34;))&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 合併物件</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;. + {&#34;extra&#34;: &#34;field&#34;}&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;reduce .[] as $item ({}; . + $item)&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># del：刪除欄位</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;del(.password)&#39;</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;del(.users[].password)&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 重新命名欄位</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;{id: .user_id, email: .user_email}&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=進階reduce-與-env>進階：reduce 與 env</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># reduce：摺疊陣列</span>
+</span></span><span class=line><span class=cl><span class=c1># 計算總和</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;reduce .[] as $x (0; . + $x)&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 讀取環境變數</span>
+</span></span><span class=line><span class=cl>jq -n <span class=s1>&#39;env.HOME&#39;</span>
+</span></span><span class=line><span class=cl>jq -n <span class=s1>&#39;env | keys&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># null input（不從 stdin 讀，直接建構）</span>
+</span></span><span class=line><span class=cl>jq -n <span class=s1>&#39;{&#34;timestamp&#34;: now | todate, &#34;host&#34;: env.HOSTNAME}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># any / all</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;any(.[]; .active)&#39;</span>   <span class=c1># 有任何元素 active</span>
+</span></span><span class=line><span class=cl>jq <span class=s1>&#39;all(.[]; .verified)&#39;</span> <span class=c1># 所有元素都 verified</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=cicd-實戰範例>CI/CD 實戰範例</h2><h3 id=github-api>GitHub API</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 取最新 release tag</span>
+</span></span><span class=line><span class=cl>gh api repos/spring-projects/spring-boot/releases/latest <span class=p>|</span> jq -r <span class=s1>&#39;.tag_name&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 列出所有 PR 的 title 與 number</span>
+</span></span><span class=line><span class=cl>gh api repos/owner/repo/pulls <span class=p>|</span> jq <span class=s1>&#39;.[] | &#34;\(.number): \(.title)&#34;&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 找出所有 open PR 的 author</span>
+</span></span><span class=line><span class=cl>gh api repos/owner/repo/pulls <span class=p>|</span> jq <span class=s1>&#39;[.[] | select(.state == &#34;open&#34;) | .user.login] | unique&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># CI 判斷：若無 open issue 則繼續</span>
+</span></span><span class=line><span class=cl><span class=nv>OPEN_COUNT</span><span class=o>=</span><span class=k>$(</span>gh api repos/owner/repo/issues <span class=p>|</span> jq <span class=s1>&#39;[.[] | select(.state == &#34;open&#34;)] | length&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$OPEN_COUNT</span><span class=s2>&#34;</span> -gt <span class=m>0</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span> <span class=nb>echo</span> <span class=s2>&#34;Has open issues&#34;</span><span class=p>;</span> <span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=docker>Docker</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 取 image 支援的平台</span>
+</span></span><span class=line><span class=cl>docker manifest inspect nginx:latest <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  jq <span class=s1>&#39;[.manifests[].platform | &#34;\(.os)/\(.architecture)&#34;]&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 列出所有 running container 的 name 與 image</span>
+</span></span><span class=line><span class=cl>docker ps --format <span class=s1>&#39;{{json .}}&#39;</span> <span class=p>|</span> jq -s <span class=s1>&#39;[.[] | {name: .Names, image: .Image}]&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=aws-cli>AWS CLI</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 列出所有 EC2 instance 的 ID 與狀態</span>
+</span></span><span class=line><span class=cl>aws ec2 describe-instances <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  jq <span class=s1>&#39;.Reservations[].Instances[] | {id: .InstanceId, state: .State.Name, type: .InstanceType}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 只列出 running 的 instance</span>
+</span></span><span class=line><span class=cl>aws ec2 describe-instances <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  jq <span class=s1>&#39;[.Reservations[].Instances[] | select(.State.Name == &#34;running&#34;) | .InstanceId]&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 取 ECS service 的 desired / running count</span>
+</span></span><span class=line><span class=cl>aws ecs describe-services --cluster my-cluster --services my-service <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  jq <span class=s1>&#39;.services[0] | {desired: .desiredCount, running: .runningCount}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 從 Secrets Manager 取值（已解碼的 JSON secret）</span>
+</span></span><span class=line><span class=cl>aws secretsmanager get-secret-value --secret-id my-secret <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  jq -r <span class=s1>&#39;.SecretString&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;.DB_PASSWORD&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=kubernetes>Kubernetes</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 列出所有 pod 及其狀態</span>
+</span></span><span class=line><span class=cl>kubectl get pods -o json <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  jq <span class=s1>&#39;.items[] | {name: .metadata.name, status: .status.phase}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 找出 Crash 的 pod</span>
+</span></span><span class=line><span class=cl>kubectl get pods -o json <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  jq <span class=s1>&#39;[.items[] | select(.status.phase == &#34;CrashLoopBackOff&#34;) | .metadata.name]&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=helm--部署腳本>Helm / 部署腳本</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 比較兩個 JSON 的差異</span>
+</span></span><span class=line><span class=cl>diff &lt;<span class=o>(</span>jq -S <span class=s1>&#39;.&#39;</span> file1.json<span class=o>)</span> &lt;<span class=o>(</span>jq -S <span class=s1>&#39;.&#39;</span> file2.json<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 從 package.json 取版本號</span>
+</span></span><span class=line><span class=cl><span class=nv>VERSION</span><span class=o>=</span><span class=k>$(</span>jq -r <span class=s1>&#39;.version&#39;</span> package.json<span class=k>)</span>
+</span></span><span class=line><span class=cl>docker build -t <span class=s2>&#34;my-app:</span><span class=si>${</span><span class=nv>VERSION</span><span class=si>}</span><span class=s2>&#34;</span> .
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=jq-vs-其他工具>jq vs 其他工具</h2><table><thead><tr><th>工具</th><th>優點</th><th>缺點</th><th>適用</th></tr></thead><tbody><tr><td><code>jq</code></td><td>快速、語法簡潔、shell-friendly</td><td>學習曲線、複雜邏輯難讀</td><td>CLI 腳本、CI/CD</td></tr><tr><td><code>python -m json.tool</code></td><td>無需安裝、pretty print</td><td>只能格式化，無法過濾</td><td>純格式化</td></tr><tr><td><code>fx</code></td><td>互動式、支援 JS 語法</td><td>需要 Node.js</td><td>互動探索</td></tr><tr><td><code>gron</code></td><td>把 JSON 變成 grep-able 行</td><td>需要配合 grep/sed</td><td>搜尋特定值</td></tr><tr><td>Python/<code>requests</code></td><td>完整語言能力</td><td>需要寫腳本</td><td>複雜邏輯</td></tr></tbody></table><hr><h2 id=常見陷阱>常見陷阱</h2><h3 id=數值精度>數值精度</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># jq 使用 IEEE 754 double，大整數會失去精度</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;{&#34;id&#34;: 9007199254740993}&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;.id&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># 輸出：9007199254740992  ← 精度丟失！</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 解法：用字串處理大整數</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;{&#34;id&#34;: &#34;9007199254740993&#34;}&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;.id&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># 輸出：&#34;9007199254740993&#34;  ← 正確</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>2^53 = 9007199254740992</code>，超過此值的整數用 jq 處理會失去精度，Twitter ID、雪花算法 ID 等大整數要特別注意。</p><h3 id=輸出含引號>輸出含引號</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 預設輸出含 JSON 引號</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;{&#34;name&#34;:&#34;Alice&#34;}&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;.name&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># &#34;Alice&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># -r（--raw-output）去掉引號，傳給 shell 變數</span>
+</span></span><span class=line><span class=cl><span class=nv>NAME</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s1>&#39;{&#34;name&#34;:&#34;Alice&#34;}&#39;</span> <span class=p>|</span> jq -r <span class=s1>&#39;.name&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$NAME</span>
+</span></span><span class=line><span class=cl><span class=c1># Alice</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=null-與空陣列的差異>null 與空陣列的差異</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;null&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;length&#39;</span>       <span class=c1># 0</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;[]&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;length&#39;</span>         <span class=c1># 0</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;{}&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;length&#39;</span>         <span class=c1># 0</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;&#34;hello&#34;&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;length&#39;</span>    <span class=c1># 5</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># null 在算術中傳播</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;null&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;. + 1&#39;</span>        <span class=c1># 1（null + 數字 = 數字）</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;null&#39;</span> <span class=p>|</span> jq <span class=s1>&#39;. + &#34;str&#34;&#39;</span>    <span class=c1># &#34;str&#34;</span>
+</span></span></code></pre></td></tr></table></div></div></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/cli class=tag-link>#CLI</a>
+<a href=/tags/jq class=tag-link>#jq</a>
+<a href=/tags/json class=tag-link>#JSON</a>
+<a href=/tags/shell class=tag-link>#Shell</a>
+<a href=/tags/devops class=tag-link>#DevOps</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/cli/xargs/ class=post-nav-link>Xargs 命令完整指南：Linux 參數處理與並行執行的強大工具</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div><script src=/js/code-enhance.js></script></body></html>

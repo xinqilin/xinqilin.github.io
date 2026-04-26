@@ -6,13 +6,41 @@
     <description>Recent content in Categories on Bill.Lin&#39;s Notes</description>
     <generator>Hugo</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Thu, 05 Jan 2023 23:45:46 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jan 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xinqilin.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Algorithm</title>
+      <link>https://xinqilin.github.io/categories/algorithm/</link>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://xinqilin.github.io/categories/algorithm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Architecture</title>
+      <link>https://xinqilin.github.io/categories/architecture/</link>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://xinqilin.github.io/categories/architecture/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Backend</title>
       <link>https://xinqilin.github.io/categories/backend/</link>
-      <pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
       <guid>https://xinqilin.github.io/categories/backend/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CLI</title>
+      <link>https://xinqilin.github.io/categories/cli/</link>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://xinqilin.github.io/categories/cli/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Container</title>
+      <link>https://xinqilin.github.io/categories/container/</link>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://xinqilin.github.io/categories/container/</guid>
       <description></description>
     </item>
     <item>
@@ -23,17 +51,10 @@
       <description></description>
     </item>
     <item>
-      <title>Algorithm</title>
-      <link>https://xinqilin.github.io/categories/algorithm/</link>
-      <pubDate>Wed, 28 Sep 2022 21:19:26 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/algorithm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Architecture</title>
-      <link>https://xinqilin.github.io/categories/architecture/</link>
-      <pubDate>Tue, 13 Sep 2022 23:05:38 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/architecture/</guid>
+      <title>Git</title>
+      <link>https://xinqilin.github.io/categories/git/</link>
+      <pubDate>Wed, 09 Feb 2022 19:46:19 +0800</pubDate>
+      <guid>https://xinqilin.github.io/categories/git/</guid>
       <description></description>
     </item>
     <item>
@@ -44,10 +65,10 @@
       <description></description>
     </item>
     <item>
-      <title>Python</title>
-      <link>https://xinqilin.github.io/categories/python/</link>
-      <pubDate>Wed, 20 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://xinqilin.github.io/categories/python/</guid>
+      <title>Linux</title>
+      <link>https://xinqilin.github.io/categories/linux/</link>
+      <pubDate>Sun, 16 Jan 2022 22:35:54 +0800</pubDate>
+      <guid>https://xinqilin.github.io/categories/linux/</guid>
       <description></description>
     </item>
     <item>

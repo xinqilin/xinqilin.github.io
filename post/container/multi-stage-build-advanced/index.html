@@ -1,0 +1,306 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Dockerfile 進階多階段建構 - Bill.Lin's Notes</title><meta name=description content="Dockerfile cache mount 加速建構、secret mount 防洩漏、distroless 與 jlink 最小化 JRE，以及 ARG vs ENV 的差異"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Dockerfile 進階多階段建構"><meta property="og:description" content="Dockerfile cache mount 加速建構、secret mount 防洩漏、distroless 與 jlink 最小化 JRE，以及 ARG vs ENV 的差異"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/container/multi-stage-build-advanced/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Dockerfile 進階多階段建構</h1><div class=post-meta><div class=post-info><time class=post-date>2024年01月15日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>4 分鐘閱讀</span></div><div class=post-categories><a href=/categories/container class=category-link>Container</a></div></div></header><div class=post-content><h2 id=基礎複習builder--runtime-模式>基礎複習：Builder + Runtime 模式</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=c># Stage 1: 建構</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>eclipse-temurin:21-jdk</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>builder</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>WORKDIR</span><span class=w> </span><span class=s>/app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> . .<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> ./mvnw package -q -DskipTests<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># Stage 2: 執行（只複製 jar，不含 JDK 與 source code）</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>eclipse-temurin:21-jre-jammy</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>builder /app/target/app.jar /app.jar<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENTRYPOINT</span> <span class=p>[</span><span class=s2>&#34;java&#34;</span><span class=p>,</span> <span class=s2>&#34;-jar&#34;</span><span class=p>,</span> <span class=s2>&#34;/app.jar&#34;</span><span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><p>多階段建構的目的：<strong>最終 image 只含執行所需的檔案</strong>，不含原始碼、建構工具、測試依賴。</p><hr><h2 id=cache-mount加速重複建構>Cache Mount：加速重複建構</h2><p>每次 <code>docker build</code> 若依賴沒有改變，Maven/npm 都會重新下載套件，非常耗時。<code>--mount=type=cache</code> 讓套件管理器的 cache 跨 build 持久化。</p><h3 id=maven>Maven</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>eclipse-temurin:21-jdk</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>builder</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>WORKDIR</span><span class=w> </span><span class=s>/app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> pom.xml mvnw ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> .mvn .mvn<span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># 先只複製 pom.xml，cache mount 讓 ~/.m2 跨 build 保留</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.m2 <span class=se>\
+</span></span></span><span class=line><span class=cl>    ./mvnw dependency:go-offline -q<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> src ./src<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.m2 <span class=se>\
+</span></span></span><span class=line><span class=cl>    ./mvnw package -q -DskipTests<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><p>先 <code>COPY pom.xml</code> 再下載依賴，只有 <code>pom.xml</code> 改變時才重新下載，source 變更不影響依賴層的 cache。</p><h3 id=npm--pnpm>npm / pnpm</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>node:20-alpine</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>builder</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>WORKDIR</span><span class=w> </span><span class=s>/app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> package.json pnpm-lock.yaml ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># npm cache</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.npm <span class=se>\
+</span></span></span><span class=line><span class=cl>    npm ci --prefer-offline<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># pnpm cache</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.local/share/pnpm/store <span class=se>\
+</span></span></span><span class=line><span class=cl>    pnpm install --frozen-lockfile<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> . .<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> pnpm build<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=gradle>Gradle</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.gradle <span class=se>\
+</span></span></span><span class=line><span class=cl>    ./gradlew dependencies --no-daemon -q<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.gradle <span class=se>\
+</span></span></span><span class=line><span class=cl>    ./gradlew bootJar --no-daemon -q<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=secret-mount機密不進-layer>Secret Mount：機密不進 Layer</h2><p>不要把機密寫入 image layer（即使之後 <code>RUN rm ~/.npmrc</code>，layer history 仍保留）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=c># 錯誤：機密殘留在 layer history</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> <span class=nb>echo</span> <span class=s2>&#34;//registry.npmjs.org/:_authToken=</span><span class=si>${</span><span class=nv>NPM_TOKEN</span><span class=si>}</span><span class=s2>&#34;</span> &gt; ~/.npmrc <span class=se>\
+</span></span></span><span class=line><span class=cl>    <span class=o>&amp;&amp;</span> npm install <span class=se>\
+</span></span></span><span class=line><span class=cl>    <span class=o>&amp;&amp;</span> rm ~/.npmrc<span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># docker history 或 docker save 仍可找到 .npmrc</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># 正確：secret 只在 build 期間存在，不進 image</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>secret,id<span class=o>=</span>npmtoken <span class=se>\
+</span></span></span><span class=line><span class=cl>    <span class=nv>NPM_TOKEN</span><span class=o>=</span><span class=k>$(</span>cat /run/secrets/npmtoken<span class=k>)</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>    npm config <span class=nb>set</span> //registry.npmjs.org/:_authToken <span class=s2>&#34;</span><span class=si>${</span><span class=nv>NPM_TOKEN</span><span class=si>}</span><span class=s2>&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>    <span class=o>&amp;&amp;</span> npm install<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 建構時傳入 secret</span>
+</span></span><span class=line><span class=cl>docker build --secret <span class=nv>id</span><span class=o>=</span>npmtoken,src<span class=o>=</span>./npm-token.txt -t my-app .
+</span></span><span class=line><span class=cl><span class=c1># 或從環境變數</span>
+</span></span><span class=line><span class=cl>docker build --secret <span class=nv>id</span><span class=o>=</span>npmtoken,env<span class=o>=</span>NPM_TOKEN -t my-app .
+</span></span></code></pre></td></tr></table></div></div><p><strong>私有 Maven Repository</strong>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>secret,id<span class=o>=</span>maven-settings,dst<span class=o>=</span>/root/.m2/settings.xml <span class=se>\
+</span></span></span><span class=line><span class=cl>    --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.m2/repository <span class=se>\
+</span></span></span><span class=line><span class=cl>    ./mvnw package -q -DskipTests<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=distroless最小攻擊面>Distroless：最小攻擊面</h2><p><code>gcr.io/distroless</code> 系列 image 不含 shell、套件管理器、不必要的系統工具，大幅減少攻擊面：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>eclipse-temurin:21-jdk</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>builder</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>WORKDIR</span><span class=w> </span><span class=s>/app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> . .<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.m2 <span class=se>\
+</span></span></span><span class=line><span class=cl>    ./mvnw package -q -DskipTests<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># 無 shell，無套件管理器</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>gcr.io/distroless/java21-debian12</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>builder /app/target/app.jar /app.jar<span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># ENTRYPOINT 必須用 exec form（JSON array），不能用 shell form</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENTRYPOINT</span> <span class=p>[</span><span class=s2>&#34;java&#34;</span><span class=p>,</span> <span class=s2>&#34;-jar&#34;</span><span class=p>,</span> <span class=s2>&#34;/app.jar&#34;</span><span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><p><strong>注意</strong>：distroless 無 <code>sh</code>，<code>docker exec -it container bash</code> 會失敗。偵錯需用：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 用 debug variant（含 busybox shell）</span>
+</span></span><span class=line><span class=cl>docker run --rm gcr.io/distroless/java21-debian12:debug sh
+</span></span><span class=line><span class=cl><span class=c1># 或在建構時加入 debug stage</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=jlink自訂最小-jre>jlink：自訂最小 JRE</h2><p><code>jlink</code> 可以從 JDK 模組中抽出應用實際需要的部分，生成自訂 JRE：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>eclipse-temurin:21-jdk</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>jlink-builder</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># 先分析 jar 需要哪些模組</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> java -jar /opt/java/openjdk/lib/ct.sym 2&gt;/dev/null<span class=p>;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>    jdeps --ignore-missing-deps <span class=se>\
+</span></span></span><span class=line><span class=cl>          --print-module-deps <span class=se>\
+</span></span></span><span class=line><span class=cl>          --multi-release <span class=m>21</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>          app.jar &gt; /tmp/modules.txt <span class=o>||</span> true<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># 建構自訂 JRE（已知模組清單）</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> jlink <span class=se>\
+</span></span></span><span class=line><span class=cl>    --add-modules java.base,java.logging,java.net.http,java.sql,java.management,jdk.crypto.ec <span class=se>\
+</span></span></span><span class=line><span class=cl>    --output /jre-custom <span class=se>\
+</span></span></span><span class=line><span class=cl>    --strip-debug <span class=se>\
+</span></span></span><span class=line><span class=cl>    --no-header-files <span class=se>\
+</span></span></span><span class=line><span class=cl>    --no-man-pages <span class=se>\
+</span></span></span><span class=line><span class=cl>    --compress<span class=o>=</span><span class=m>2</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># 最終 image：基於 slim debian，只含自訂 JRE</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>debian:12-slim</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>jlink-builder /jre-custom /opt/jre<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>builder /app/target/app.jar /app.jar<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENV</span> <span class=nv>PATH</span><span class=o>=</span><span class=s2>&#34;/opt/jre/bin:</span><span class=nv>$PATH</span><span class=s2>&#34;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENTRYPOINT</span> <span class=p>[</span><span class=s2>&#34;java&#34;</span><span class=p>,</span> <span class=s2>&#34;-jar&#34;</span><span class=p>,</span> <span class=s2>&#34;/app.jar&#34;</span><span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=各-image-大小比較>各 Image 大小比較</h2><table><thead><tr><th>基礎 Image</th><th>大約大小</th></tr></thead><tbody><tr><td><code>eclipse-temurin:21-jdk-jammy</code></td><td>~460 MB</td></tr><tr><td><code>eclipse-temurin:21-jre-jammy</code></td><td>~260 MB</td></tr><tr><td><code>eclipse-temurin:21-jre-alpine</code></td><td>~190 MB</td></tr><tr><td><code>gcr.io/distroless/java21-debian12</code></td><td>~145 MB</td></tr><tr><td>debian:12-slim + jlink 自訂 JRE</td><td>~90–120 MB</td></tr><tr><td>scratch + jlink 靜態 binary（GraalVM native）</td><td>~50 MB</td></tr></tbody></table><p>小 image 帶來的優勢：</p><ul><li><strong>更快 pull</strong>：CI/CD 縮短部署時間</li><li><strong>更小攻擊面</strong>：無不必要的二進位檔</li><li><strong>更便宜</strong>：Container Registry 儲存費用</li></ul><hr><h2 id=arg-vs-env>ARG vs ENV</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=c># ARG：只在 build 階段存在，不進入最終 image</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ARG</span> <span class=nv>APP_VERSION</span><span class=o>=</span><span class=m>1</span>.0.0<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ARG</span> BUILD_DATE<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># ENV：在 image 和 container 執行時都存在</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENV</span> <span class=nv>JAVA_OPTS</span><span class=o>=</span><span class=s2>&#34;-Xmx512m -Xms256m&#34;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENV</span> <span class=nv>APP_HOME</span><span class=o>=</span>/app<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># 使用 ARG</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> <span class=nb>echo</span> <span class=s2>&#34;Building version: </span><span class=si>${</span><span class=nv>APP_VERSION</span><span class=si>}</span><span class=s2>&#34;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># ARG 可以傳給 ENV（讓 build-time 值進入 runtime）</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ARG</span> GIT_COMMIT<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENV</span> <span class=nv>GIT_COMMIT_SHA</span><span class=o>=</span><span class=si>${</span><span class=nv>GIT_COMMIT</span><span class=si>}</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 傳入 ARG</span>
+</span></span><span class=line><span class=cl>docker build --build-arg <span class=nv>APP_VERSION</span><span class=o>=</span>2.0.1 --build-arg <span class=nv>GIT_COMMIT</span><span class=o>=</span><span class=k>$(</span>git rev-parse HEAD<span class=k>)</span> -t my-app .
+</span></span></code></pre></td></tr></table></div></div><p><strong>安全注意</strong>：<code>ARG</code> 值雖然不在最終 image 的 env 中，但會出現在 <code>docker history</code> 的 build 命令裡。<strong>不要用 ARG 傳遞機密</strong>，改用 <code>--mount=type=secret</code>。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># ARG 值可在 docker history 看到</span>
+</span></span><span class=line><span class=cl>docker <span class=nb>history</span> my-app
+</span></span><span class=line><span class=cl><span class=c1># IMAGE          CREATED BY</span>
+</span></span><span class=line><span class=cl><span class=c1># ...            /bin/sh -c #(nop) ARG APP_VERSION=2.0.1  ← 可見</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=完整-spring-boot-生產-dockerfile>完整 Spring Boot 生產 Dockerfile</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=c># Stage 1: 下載依賴（利用 cache layer）</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>eclipse-temurin:21-jdk-alpine</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>deps</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>WORKDIR</span><span class=w> </span><span class=s>/app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> pom.xml mvnw ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> .mvn .mvn<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.m2 <span class=se>\
+</span></span></span><span class=line><span class=cl>    ./mvnw dependency:go-offline -q<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># Stage 2: 建構</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>deps</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>builder</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> src ./src<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> --mount<span class=o>=</span><span class=nv>type</span><span class=o>=</span>cache,target<span class=o>=</span>/root/.m2 <span class=se>\
+</span></span></span><span class=line><span class=cl>    ./mvnw package -q -DskipTests<span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># Spring Boot Layered Jar</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> java -Djarmode<span class=o>=</span>tools -jar target/app.jar extract --layers --destination target/extracted<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># Stage 3: 執行（distroless）</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>gcr.io/distroless/java21-debian12</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>runtime</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ARG</span> <span class=nv>APP_VERSION</span><span class=o>=</span>unknown
+</span></span><span class=line><span class=cl><span class=k>ARG</span> <span class=nv>GIT_COMMIT</span><span class=o>=</span>unknown
+</span></span><span class=line><span class=cl><span class=k>LABEL</span> org.opencontainers.image.version<span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>APP_VERSION</span><span class=si>}</span><span class=s2>&#34;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>LABEL</span> org.opencontainers.image.revision<span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>GIT_COMMIT</span><span class=si>}</span><span class=s2>&#34;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>WORKDIR</span><span class=w> </span><span class=s>/app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=c># Layered jar：dependencies 變動較少，先 COPY 利用 Docker cache</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>builder /app/target/extracted/dependencies/ ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>builder /app/target/extracted/spring-boot-loader/ ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>builder /app/target/extracted/snapshot-dependencies/ ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>builder /app/target/extracted/application/ ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>EXPOSE</span><span class=w> </span><span class=s>8080</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENTRYPOINT</span> <span class=p>[</span><span class=s2>&#34;java&#34;</span><span class=p>,</span> <span class=s2>&#34;org.springframework.boot.loader.launch.JarLauncher&#34;</span><span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><p>Spring Boot Layered Jar 讓 <code>application</code> layer（最常變動）與 <code>dependencies</code> layer（不常變動）分開，大幅提升 CI 建構時的 Docker layer cache 命中率。</p><hr><h2 id=小結>小結</h2><ul><li><strong><code>--mount=type=cache</code></strong> 讓 Maven/npm 跨 build 重用套件，節省數分鐘建構時間。</li><li><strong><code>--mount=type=secret</code></strong> 是傳遞機密的唯一安全方式，不進 layer history。</li><li><strong>distroless</strong> 是生產環境的首選 runtime image，無 shell 攻擊面小。</li><li><strong>jlink</strong> 可進一步縮小 JRE，適合對 image size 有要求的場景。</li><li><strong>ARG 只給 build-time 使用</strong>，機密永遠用 secret mount，不用 ARG 或 ENV。</li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/docker class=tag-link>#Docker</a>
+<a href=/tags/dockerfile class=tag-link>#Dockerfile</a>
+<a href=/tags/multi-stage-build class=tag-link>#Multi-stage Build</a>
+<a href=/tags/security class=tag-link>#Security</a>
+<a href=/tags/performance class=tag-link>#Performance</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/container/docker-mysql/ class=post-nav-link>Docker MySQL：容器化部署與設定</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/container/docker-compose-v2-migration/ class=post-nav-link>Docker Compose V2 遷移指南</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div><script src=/js/code-enhance.js></script></body></html>

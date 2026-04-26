@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>State on Bill.Lin&#39;s Notes</title>
+    <link>https://xinqilin.github.io/tags/state/</link>
+    <description>Recent content in State on Bill.Lin&#39;s Notes</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Tue, 07 Aug 2018 22:37:58 +0800</lastBuildDate>
+    <atom:link href="https://xinqilin.github.io/tags/state/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>State — 讓物件隨狀態改變行為</title>
+      <link>https://xinqilin.github.io/post/designpattern/state/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:58 +0800</pubDate>
+      <guid>https://xinqilin.github.io/post/designpattern/state/</guid>
+      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;讓物件在其內部狀態改變時自動改變行為，看起來就像換了一個類別。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Context {&#xA;        -state State&#xA;        +setState(State)&#xA;        +request()&#xA;    }&#xA;    class State {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +handle(Context)&#xA;    }&#xA;    class ConcreteStateA {&#xA;        +handle(Context)&#xA;    }&#xA;    class ConcreteStateB {&#xA;        +handle(Context)&#xA;    }&#xA;    Context --&gt; State&#xA;    State &lt;|.. ConcreteStateA&#xA;    State &lt;|.. ConcreteStateB&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;物件行為取決於狀態，且狀態在執行期變化&lt;/li&gt;&#xA;&lt;li&gt;存在大量以狀態為條件的 &lt;code&gt;switch&lt;/code&gt; / &lt;code&gt;if-else&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;狀態轉換規則複雜，不同狀態下允許的操作各異（例如訂單狀態機）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;狀態少且不會演進（2–3 個 boolean flag），直接 &lt;code&gt;if&lt;/code&gt; 更清晰&lt;/li&gt;&#xA;&lt;li&gt;狀態轉換純粹線性，沒有分支邏輯&lt;/li&gt;&#xA;&lt;li&gt;用 Spring Statemachine 等成熟框架更合適的複雜場景（別重造輪子）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;訂單狀態機（PENDING → PAID → SHIPPED → DELIVERED）：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

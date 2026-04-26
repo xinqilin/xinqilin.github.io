@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Builder on Bill.Lin&#39;s Notes</title>
+    <link>https://xinqilin.github.io/tags/builder/</link>
+    <description>Recent content in Builder on Bill.Lin&#39;s Notes</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Tue, 07 Aug 2018 02:16:32 +0800</lastBuildDate>
+    <atom:link href="https://xinqilin.github.io/tags/builder/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Builder — 分離複雜物件的建構與表示</title>
+      <link>https://xinqilin.github.io/post/designpattern/builder/</link>
+      <pubDate>Tue, 07 Aug 2018 02:16:32 +0800</pubDate>
+      <guid>https://xinqilin.github.io/post/designpattern/builder/</guid>
+      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;將一個複雜物件的建構步驟與最終表示分離，使同樣的建構流程可以產生不同的物件，同時消除因可選參數過多而衍生的「伸縮建構子」反模式。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Director {&#xA;        +construct(Builder)&#xA;    }&#xA;    class Builder {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +buildPartA()&#xA;        +buildPartB()&#xA;        +getResult() Product&#xA;    }&#xA;    class ConcreteBuilder {&#xA;        -product Product&#xA;        +buildPartA()&#xA;        +buildPartB()&#xA;        +getResult() Product&#xA;    }&#xA;    class Product&#xA;    Director --&gt; Builder&#xA;    Builder &lt;|.. ConcreteBuilder&#xA;    ConcreteBuilder --&gt; Product&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;建構子有 4 個以上參數，且部分為可選（Effective Java Item 2）&lt;/li&gt;&#xA;&lt;li&gt;物件不可變（immutable），但欄位多到無法一次傳入&lt;/li&gt;&#xA;&lt;li&gt;需要在 &lt;code&gt;build()&lt;/code&gt; 時做跨欄位的驗證邏輯&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;欄位少且全為必填，直接用建構子更清晰&lt;/li&gt;&#xA;&lt;li&gt;物件非常簡單（考慮改用 Java Record）&lt;/li&gt;&#xA;&lt;li&gt;效能極敏感路徑（每次 &lt;code&gt;build()&lt;/code&gt; 都產生一個中間 Builder 物件）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;以 HTTP 請求設定為例，展示必填欄位在 Builder 建構子中固定、可選欄位採 fluent 設定：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

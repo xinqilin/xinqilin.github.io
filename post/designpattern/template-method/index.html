@@ -1,0 +1,182 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Template Method — 模板方法模式 - Bill.Lin's Notes</title><meta name=description content="模板方法模式：在抽象父類定義演算法骨架，子類覆寫特定步驟而不改變整體流程，體現好萊塢原則。"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Template Method — 模板方法模式"><meta property="og:description" content="模板方法模式：在抽象父類定義演算法骨架，子類覆寫特定步驟而不改變整體流程，體現好萊塢原則。"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/designpattern/template-method/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Template Method — 模板方法模式</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>3 分鐘閱讀</span></div><div class=post-categories><a href=/categories/designpattern class=category-link>DesignPattern</a></div></div></header><div class=post-content><h2 id=1-意圖>1. 意圖</h2><p>在抽象父類中定義演算法的骨架（<code>final</code> 方法），將某些步驟延遲到子類實作，讓子類在不改變整體結構的前提下覆寫特定步驟。</p><h2 id=2-uml-類圖>2. UML 類圖</h2><pre class=mermaid>classDiagram
+    class AbstractClass {
+        <<abstract>>
+        +templateMethod()
+        #step1()*
+        #step2()*
+        #hook()
+    }
+    class ConcreteClassA {
+        #step1()
+        #step2()
+    }
+    class ConcreteClassB {
+        #step1()
+        #step2()
+        #hook()
+    }
+    AbstractClass <|-- ConcreteClassA
+    AbstractClass <|-- ConcreteClassB
+</pre><h2 id=3-何時用--何時別用>3. 何時用 / 何時別用</h2><p><strong>用</strong>：</p><ul><li>多個類別共用相同的演算法骨架，只有部分步驟不同</li><li>想控制子類能擴展的範圍（用 <code>final</code> 保護骨架，<code>protected abstract</code> 開放步驟）</li><li>框架設計：讓使用者繼承後填入業務邏輯（Hollywood Principle）</li></ul><p><strong>別用</strong>：</p><ul><li>步驟差異大，繼承層次超過 2 層——改用 Strategy（組合優於繼承）</li><li>子類只需客製 1 個步驟，傳入 callback / lambda 比繼承更輕量</li><li>需要在執行期切換演算法變體，Template Method 是靜態綁定</li></ul><h2 id=4-java-範例>4. Java 範例</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 資料匯出的通用骨架</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kd>class</span> <span class=nc>DataExporter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 模板方法：final 保護流程</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>export</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>destination</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>data</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fetchData</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>processed</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>transform</span><span class=p>(</span><span class=n>data</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>write</span><span class=p>(</span><span class=n>processed</span><span class=p>,</span><span class=w> </span><span class=n>destination</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>needsNotification</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>notify</span><span class=p>(</span><span class=n>destination</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>fetchData</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>transform</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>data</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>write</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>data</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>destination</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// hook：子類可選擇覆寫</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>needsNotification</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>notify</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>destination</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Exported to: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>destination</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// 具體實作 A：CSV 匯出</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CsvExporter</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>DataExporter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>source</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>CsvExporter</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>source</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>source</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>fetchData</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>List</span><span class=p>.</span><span class=na>copyOf</span><span class=p>(</span><span class=n>source</span><span class=p>);</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>transform</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>data</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>data</span><span class=p>.</span><span class=na>stream</span><span class=p>().</span><span class=na>map</span><span class=p>(</span><span class=n>s</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=s>&#34;\&#34;&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;\&#34;&#34;</span><span class=p>).</span><span class=na>toList</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>write</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>data</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>destination</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Writing CSV to &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>destination</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>data</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>needsNotification</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w> </span><span class=c1>// 覆寫 hook</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// 使用</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>DataExporter</span><span class=w> </span><span class=n>exporter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CsvExporter</span><span class=p>(</span><span class=n>List</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;Alice&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Bob&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>exporter</span><span class=p>.</span><span class=na>export</span><span class=p>(</span><span class=s>&#34;/tmp/output.csv&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// Writing CSV to /tmp/output.csv: [&#34;Alice&#34;, &#34;Bob&#34;]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// Exported to: /tmp/output.csv</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=5-jdk--spring-真實案例>5. JDK / Spring 真實案例</h2><p><strong><code>AbstractList</code></strong>：<code>indexOf()</code>、<code>lastIndexOf()</code>、<code>iterator()</code> 等方法的骨架實作在 <code>AbstractList</code>，只有 <code>get(int index)</code> 和 <code>size()</code> 是 <code>abstract</code>，<code>ArrayList</code> 與 <code>LinkedList</code> 各自提供這兩個方法。</p><p><strong><code>HttpServlet</code></strong>：<code>service()</code> 方法依 HTTP method 呼叫 <code>doGet()</code>、<code>doPost()</code> 等，是 Servlet 規範的 Template Method，使用者繼承後只需覆寫對應方法。</p><p><strong>Spring <code>JdbcTemplate</code></strong>：<code>execute(PreparedStatementCallback)</code> 處理 Connection 取得、Statement 建立、例外轉換、Connection 釋放，業務邏輯透過回呼填入，是 Template Method 的回呼變體。</p><p><strong>Spring <code>AbstractBeanFactory.getBean()</code></strong>：Bean 的建立流程（<code>doGetBean</code>）是模板，<code>createBean()</code> 是 abstract 步驟，由 <code>AbstractAutowireCapableBeanFactory</code> 實作。</p><h2 id=6-與相近-pattern-的差異>6. 與相近 Pattern 的差異</h2><table><thead><tr><th>維度</th><th>Template Method</th><th>Strategy</th></tr></thead><tbody><tr><td>機制</td><td>繼承（靜態）</td><td>組合（動態）</td></tr><tr><td>骨架</td><td>固定在父類</td><td>Context 決定呼叫哪個 Strategy</td></tr><tr><td>切換</td><td>編譯期決定（子類）</td><td>執行期決定（注入不同 Strategy）</td></tr><tr><td>耦合</td><td>子類與父類強耦合</td><td>Context 與 Strategy 弱耦合</td></tr></tbody></table><p>當繼承層次超過 2 層或步驟在執行期需要切換，改用 Strategy。</p><h2 id=7-現代-java-取代方案>7. 現代 Java 取代方案</h2><p>可用函數式回呼取代繼承，避免類別爆炸：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 將可變步驟提取為 Function 參數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>DataExporter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>export</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Supplier</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w>        </span><span class=n>fetcher</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>UnaryOperator</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w>   </span><span class=n>transformer</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>BiConsumer</span><span class=o>&lt;</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>writer</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>String</span><span class=w> </span><span class=n>destination</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>data</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fetcher</span><span class=p>.</span><span class=na>get</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>processed</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>transformer</span><span class=p>.</span><span class=na>apply</span><span class=p>(</span><span class=n>data</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>writer</span><span class=p>.</span><span class=na>accept</span><span class=p>(</span><span class=n>processed</span><span class=p>,</span><span class=w> </span><span class=n>destination</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// 呼叫端用 lambda 組裝，無需繼承</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>DataExporter</span><span class=w> </span><span class=n>exporter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>DataExporter</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>exporter</span><span class=p>.</span><span class=na>export</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>List</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;Alice&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Bob&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>data</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>data</span><span class=p>.</span><span class=na>stream</span><span class=p>().</span><span class=na>map</span><span class=p>(</span><span class=n>String</span><span class=p>::</span><span class=n>toUpperCase</span><span class=p>).</span><span class=na>toList</span><span class=p>(),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>(</span><span class=n>data</span><span class=p>,</span><span class=w> </span><span class=n>dest</span><span class=p>)</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Write to &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>dest</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>data</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;/tmp/output.txt&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>步驟多、流程複雜且需要 hook 控制分支時，傳統 Template Method 的可讀性優於一大串 lambda。</p><h2 id=8-參考資料>8. 參考資料</h2><ul><li>GoF <em>Design Patterns</em> (1994), ch.5 Template Method</li><li>Effective Java 3rd ed., Item 20 — Prefer interfaces to abstract classes</li><li>Spring Framework Source — <code>JdbcTemplate</code>, <code>AbstractBeanFactory</code></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/designpattern class=tag-link>#DesignPattern</a>
+<a href=/tags/behavioral class=tag-link>#Behavioral</a>
+<a href=/tags/templatemethod class=tag-link>#TemplateMethod</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/decorator/ class=post-nav-link>Decorator — 動態疊加行為</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/mediator/ class=post-nav-link>Mediator — 以中介者解耦多方互動</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div><script src=/js/code-enhance.js></script><script type=module>
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script></body></html>

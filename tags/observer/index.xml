@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Observer on Bill.Lin&#39;s Notes</title>
+    <link>https://xinqilin.github.io/tags/observer/</link>
+    <description>Recent content in Observer on Bill.Lin&#39;s Notes</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Tue, 07 Aug 2018 22:37:21 +0800</lastBuildDate>
+    <atom:link href="https://xinqilin.github.io/tags/observer/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Observer — 一對多狀態變更通知</title>
+      <link>https://xinqilin.github.io/post/designpattern/observer/</link>
+      <pubDate>Tue, 07 Aug 2018 22:37:21 +0800</pubDate>
+      <guid>https://xinqilin.github.io/post/designpattern/observer/</guid>
+      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;定義物件間一對多的依賴關係，當 Subject 狀態改變時，所有依賴它的 Observer 都會自動收到通知並更新。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Subject {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +subscribe(Observer)&#xA;        +unsubscribe(Observer)&#xA;        +notifyObservers()&#xA;    }&#xA;    class Observer {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +update(event)&#xA;    }&#xA;    class ConcreteSubject {&#xA;        -observers List~Observer~&#xA;        -state&#xA;        +setState(state)&#xA;    }&#xA;    class ConcreteObserver {&#xA;        +update(event)&#xA;    }&#xA;    Subject &lt;|.. ConcreteSubject&#xA;    Observer &lt;|.. ConcreteObserver&#xA;    ConcreteSubject --&gt; Observer : notifies&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;一個物件狀態改變，多個物件需要連動更新（MVC model → view）&lt;/li&gt;&#xA;&lt;li&gt;訂閱關係需要在執行期動態增減&lt;/li&gt;&#xA;&lt;li&gt;跨模組通知，不希望兩者直接相互引用&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;觀察者鏈太長，觸發順序難以追蹤（考慮改用 Mediator）&lt;/li&gt;&#xA;&lt;li&gt;觀察者之間有依賴順序要求（Observer 本身不保證順序，需額外機制）&lt;/li&gt;&#xA;&lt;li&gt;簡單的一對一回呼，直接傳 lambda 更清楚&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;Push 模型（Subject 主動推送事件物件）：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

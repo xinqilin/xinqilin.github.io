@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Visitor on Bill.Lin&#39;s Notes</title>
+    <link>https://xinqilin.github.io/tags/visitor/</link>
+    <description>Recent content in Visitor on Bill.Lin&#39;s Notes</description>
+    <generator>Hugo</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Tue, 07 Aug 2018 22:38:06 +0800</lastBuildDate>
+    <atom:link href="https://xinqilin.github.io/tags/visitor/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Visitor — 將演算法從物件結構抽離</title>
+      <link>https://xinqilin.github.io/post/designpattern/visitor/</link>
+      <pubDate>Tue, 07 Aug 2018 22:38:06 +0800</pubDate>
+      <guid>https://xinqilin.github.io/post/designpattern/visitor/</guid>
+      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;在不修改物件結構的前提下，將新操作以獨立的 Visitor 類加入，透過雙分派（double dispatch）實現型別安全的呼叫。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Visitor {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +visitCircle(Circle)&#xA;        +visitRectangle(Rectangle)&#xA;    }&#xA;    class Shape {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +accept(Visitor)&#xA;    }&#xA;    class Circle {&#xA;        -radius double&#xA;        +accept(Visitor)&#xA;    }&#xA;    class Rectangle {&#xA;        -width double&#xA;        -height double&#xA;        +accept(Visitor)&#xA;    }&#xA;    class AreaCalculator {&#xA;        +visitCircle(Circle)&#xA;        +visitRectangle(Rectangle)&#xA;    }&#xA;    Visitor &lt;|.. AreaCalculator&#xA;    Shape &lt;|.. Circle&#xA;    Shape &lt;|.. Rectangle&#xA;    Circle --&gt; Visitor : accept&#xA;    Rectangle --&gt; Visitor : accept&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;物件結構穩定，但需要頻繁新增對元素的操作（如 AST 有新的 code generation pass）&lt;/li&gt;&#xA;&lt;li&gt;同一物件結構需要多種不相關的操作（計算面積、序列化、驗證）&lt;/li&gt;&#xA;&lt;li&gt;不想把所有操作塞進元素類，保持高內聚&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

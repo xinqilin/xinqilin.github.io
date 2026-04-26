@@ -1,0 +1,208 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Spring Boot 3 + Virtual Threads 實戰 - Bill.Lin's Notes</title><meta name=description content="深入解析 Project Loom Virtual Threads 原理，Spring Boot 3.2 啟用方式、Pinning 問題與 ThreadLocal 陷阱的實戰指南"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Spring Boot 3 + Virtual Threads 實戰"><meta property="og:description" content="深入解析 Project Loom Virtual Threads 原理，Spring Boot 3.2 啟用方式、Pinning 問題與 ThreadLocal 陷阱的實戰指南"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/backend/spring-virtual-threads/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Spring Boot 3 + Virtual Threads 實戰</h1><div class=post-meta><div class=post-info><time class=post-date>2024年01月15日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>4 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h2 id=什麼是-virtual-threads>什麼是 Virtual Threads</h2><p>Java 21 正式引入 Virtual Threads（Project Loom），目的是讓 <strong>I/O-bound</strong> 的應用在不改變同步程式碼風格的前提下，獲得接近非同步的吞吐量。</p><h3 id=carrier-thread-vs-virtual-thread--mn-調度>Carrier Thread vs Virtual Thread — M:N 調度</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>OS Thread (Carrier Thread) [N 條]
+</span></span><span class=line><span class=cl>    │
+</span></span><span class=line><span class=cl>    ├── Virtual Thread 1  (執行中)
+</span></span><span class=line><span class=cl>    ├── Virtual Thread 2  (等待 I/O，已卸載)
+</span></span><span class=line><span class=cl>    └── Virtual Thread 3  (等待 I/O，已卸載)
+</span></span></code></pre></td></tr></table></div></div><ul><li><strong>Platform Thread（傳統）</strong>：1:1 對應 OS thread，每條佔 ~1MB stack，數量上限約數千條。</li><li><strong>Virtual Thread</strong>：M:N，大量 virtual threads 映射到少量 carrier threads（通常等於 CPU cores）。</li><li>當 virtual thread 遇到阻塞 I/O，JVM <strong>自動將它從 carrier thread 卸載（unmount）</strong>，carrier thread 可繼續處理其他 virtual threads；I/O 完成後再重新掛載（mount）。</li></ul><p>這讓你可以為每個 HTTP 請求建立一條 virtual thread，而不用擔心耗盡 OS threads。</p><hr><h2 id=在-spring-boot-32-啟用>在 Spring Boot 3.2+ 啟用</h2><h3 id=方式一yaml-設定最簡單>方式一：yaml 設定（最簡單）</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>spring</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>threads</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>virtual</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Spring Boot 會自動將 <code>TomcatProtocolHandler</code> 改用 <code>VirtualThreadExecutor</code>，Tomcat 每個請求分配一條 virtual thread。</p><h3 id=方式二手動設定-executor>方式二：手動設定 Executor</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ThreadConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;virtualThreadExecutor&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Executor</span><span class=w> </span><span class=nf>virtualThreadExecutor</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>Executors</span><span class=p>.</span><span class=na>newVirtualThreadPerTaskExecutor</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=確認生效>確認生效</h3><p>啟動後用 <code>jcmd</code> 確認：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>jcmd &lt;pid&gt; Thread.dump_to_file -format<span class=o>=</span>json /tmp/threads.json
+</span></span><span class=line><span class=cl><span class=c1># 看到 virtual=true 的 thread 即為 virtual thread</span>
+</span></span></code></pre></td></tr></table></div></div><p>或在 log 中觀察，Spring Boot 會印出 <code>tomcat-handler-x</code> 的 virtual thread 字樣。</p><hr><h2 id=效能特性>效能特性</h2><table><thead><tr><th>情境</th><th>Virtual Thread 效果</th></tr></thead><tbody><tr><td>JDBC 查詢（blocking）</td><td>大幅提升吞吐量，因 I/O 等待期間 carrier thread 不閒置</td></tr><tr><td>HTTP client（<code>RestClient</code>）</td><td>同上</td></tr><tr><td>CPU 密集（矩陣運算、影像處理）</td><td><strong>無效甚至退化</strong>，因 carrier thread 本來就在用，不存在「卸載」機會</td></tr><tr><td>Sleep / 純等待</td><td>可大量並發，記憶體佔用遠低於 platform threads</td></tr></tbody></table><p><strong>經驗法則</strong>：Virtual threads 解決的是「執行緒等待 I/O 時浪費 OS thread」的問題，不是加速 CPU 計算。</p><hr><h2 id=陷阱一pinning-問題>陷阱一：Pinning 問題</h2><h3 id=什麼是-pinning>什麼是 Pinning</h3><p>Virtual thread 在以下兩種情況會<strong>釘住（pin）</strong> carrier thread，使 carrier thread 無法服務其他 virtual threads：</p><ol><li><strong><code>synchronized</code> 區塊 / 方法內發生阻塞</strong></li><li><strong>呼叫 native method</strong></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 危險：synchronized + 阻塞 I/O = pinning</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>synchronized</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>fetchData</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>restClient</span><span class=p>.</span><span class=na>get</span><span class=p>().</span><span class=na>uri</span><span class=p>(</span><span class=s>&#34;/api/data&#34;</span><span class=p>).</span><span class=na>retrieve</span><span class=p>().</span><span class=na>body</span><span class=p>(</span><span class=n>String</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w> </span><span class=c1>// I/O</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>若有大量請求同時進入此方法，carrier threads 全部被 pin，吞吐量崩潰。</p><h3 id=解法改用-reentrantlock>解法：改用 ReentrantLock</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>ReentrantLock</span><span class=w> </span><span class=n>lock</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ReentrantLock</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>fetchData</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>lock</span><span class=p>.</span><span class=na>lock</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>restClient</span><span class=p>.</span><span class=na>get</span><span class=p>().</span><span class=na>uri</span><span class=p>(</span><span class=s>&#34;/api/data&#34;</span><span class=p>).</span><span class=na>retrieve</span><span class=p>().</span><span class=na>body</span><span class=p>(</span><span class=n>String</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>finally</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>lock</span><span class=p>.</span><span class=na>unlock</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>ReentrantLock</code> 不會造成 pinning，virtual thread 等待鎖時可正常從 carrier thread 卸載。</p><h3 id=偵測-pinning>偵測 Pinning</h3><p>加上 JVM flag，遇到 pinning 時列印警告：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>-Djdk.tracePinnedThreads<span class=o>=</span>full
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=陷阱二threadlocal-洩漏>陷阱二：ThreadLocal 洩漏</h2><h3 id=問題描述>問題描述</h3><p>傳統 Platform Thread Pool 中，<code>ThreadLocal</code> 值在 thread 歸還到 pool 後若未清除，下一個請求可能讀到舊值。Virtual threads 雖然更輕量，但每條 virtual thread 仍有自己的 <code>ThreadLocal</code> map，若無限制地建立 virtual thread 並存放大物件，同樣有記憶體問題。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 不好的寫法：每條 virtual thread 都把 UserContext 放進 ThreadLocal</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>ThreadLocal</span><span class=o>&lt;</span><span class=n>UserContext</span><span class=o>&gt;</span><span class=w> </span><span class=n>USER_CTX</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ThreadLocal</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// 正確做法：用完必須清除</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>USER_CTX</span><span class=p>.</span><span class=na>set</span><span class=p>(</span><span class=n>ctx</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>doWork</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w> </span><span class=k>finally</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>USER_CTX</span><span class=p>.</span><span class=na>remove</span><span class=p>();</span><span class=w> </span><span class=c1>// 必須</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=java-21-previewscopedvalue>Java 21 Preview：ScopedValue</h3><p><code>ScopedValue</code> 是 <code>ThreadLocal</code> 的繼任者，設計給 virtual threads：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// ScopedValue 是不可變的，在 scope 結束後自動清除</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>ScopedValue</span><span class=o>&lt;</span><span class=n>UserContext</span><span class=o>&gt;</span><span class=w> </span><span class=n>USER_CTX</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ScopedValue</span><span class=p>.</span><span class=na>newInstance</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>ScopedValue</span><span class=p>.</span><span class=na>where</span><span class=p>(</span><span class=n>USER_CTX</span><span class=p>,</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>UserContext</span><span class=p>(</span><span class=s>&#34;alice&#34;</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>.</span><span class=na>run</span><span class=p>(()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 在此 scope 內可讀取</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>UserContext</span><span class=w> </span><span class=n>ctx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>USER_CTX</span><span class=p>.</span><span class=na>get</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>doWork</span><span class=p>(</span><span class=n>ctx</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// scope 結束後自動清除，無需 finally</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Java 21 為 preview，Java 23 已 finalized。</p><hr><h2 id=實戰範例controller--service-含阻塞-io>實戰範例：Controller + Service 含阻塞 I/O</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RestController</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@RequestMapping</span><span class=p>(</span><span class=s>&#34;/orders&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>OrderController</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>OrderService</span><span class=w> </span><span class=n>orderService</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>OrderController</span><span class=p>(</span><span class=n>OrderService</span><span class=w> </span><span class=n>orderService</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>orderService</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderService</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@GetMapping</span><span class=p>(</span><span class=s>&#34;/{id}&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>OrderDto</span><span class=w> </span><span class=nf>getOrder</span><span class=p>(</span><span class=nd>@PathVariable</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>id</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 每個請求在獨立 virtual thread 執行，不佔用 carrier thread 在等 DB</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>orderService</span><span class=p>.</span><span class=na>findById</span><span class=p>(</span><span class=n>id</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>OrderService</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>OrderRepository</span><span class=w> </span><span class=n>orderRepository</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>InventoryClient</span><span class=w> </span><span class=n>inventoryClient</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>OrderService</span><span class=p>(</span><span class=n>OrderRepository</span><span class=w> </span><span class=n>orderRepository</span><span class=p>,</span><span class=w> </span><span class=n>InventoryClient</span><span class=w> </span><span class=n>inventoryClient</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>orderRepository</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderRepository</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>inventoryClient</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>inventoryClient</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>OrderDto</span><span class=w> </span><span class=nf>findById</span><span class=p>(</span><span class=n>Long</span><span class=w> </span><span class=n>id</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 兩次 I/O：DB + 外部 HTTP，在 virtual thread 中均可阻塞，不浪費 carrier</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Order</span><span class=w> </span><span class=n>order</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderRepository</span><span class=p>.</span><span class=na>findById</span><span class=p>(</span><span class=n>id</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>orElseThrow</span><span class=p>(()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>EntityNotFoundException</span><span class=p>(</span><span class=s>&#34;Order not found: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>id</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>InventoryInfo</span><span class=w> </span><span class=n>inventory</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>inventoryClient</span><span class=p>.</span><span class=na>getStock</span><span class=p>(</span><span class=n>order</span><span class=p>.</span><span class=na>getProductId</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>OrderDto</span><span class=p>(</span><span class=n>order</span><span class=p>,</span><span class=w> </span><span class=n>inventory</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>啟用 <code>spring.threads.virtual.enabled: true</code> 後，Tomcat 每個請求跑在獨立 virtual thread，<code>orderRepository.findById</code> 阻塞 JDBC 時，carrier thread 自動服務其他請求。</p><hr><h2 id=何時不該用-virtual-threads>何時不該用 Virtual Threads</h2><table><thead><tr><th>情況</th><th>原因</th></tr></thead><tbody><tr><td>CPU 密集任務（FFT、影像壓縮）</td><td>沒有 I/O 等待，無法「卸載」，反而增加調度開銷</td></tr><tr><td>大量使用 <code>synchronized</code> 的第三方函式庫</td><td>容易 pinning，需等函式庫升級</td></tr><tr><td>native method 密集呼叫</td><td>同上</td></tr><tr><td>需精確控制並發數的場景</td><td>Virtual thread per task 模型不支援 bounded pool；用 Semaphore 限流</td></tr></tbody></table><hr><h2 id=監控>監控</h2><h3 id=jcmd-thread-dump>jcmd Thread dump</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 以 JSON 格式取 thread dump，含 virtual thread 資訊</span>
+</span></span><span class=line><span class=cl>jcmd &lt;pid&gt; Thread.dump_to_file -format<span class=o>=</span>json /tmp/threads.json
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 統計 virtual thread 數量</span>
+</span></span><span class=line><span class=cl>cat /tmp/threads.json <span class=p>|</span> jq <span class=s1>&#39;[.threadDump.threads[] | select(.virtual == true)] | length&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=jvm-metricsmicrometer>JVM Metrics（Micrometer）</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>management</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>metrics</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>enable</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>jvm</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li><code>jvm.threads.live</code> — 當前存活 platform threads（virtual threads 不在此計數）</li><li>觀察 CPU utilization：virtual threads 場景下 CPU 應有更高利用率</li></ul><hr><h2 id=傳統-threads-vs-virtual-threads-比較>傳統 Threads vs Virtual Threads 比較</h2><table><thead><tr><th>面向</th><th>Platform Thread</th><th>Virtual Thread</th></tr></thead><tbody><tr><td>建立成本</td><td>高（OS syscall，~1ms）</td><td>低（純 JVM，~1μs）</td></tr><tr><td>Stack 大小</td><td>~1MB（預設）</td><td>初始 ~KB，動態伸縮</td></tr><tr><td>數量上限</td><td>數千（OS 限制）</td><td>數百萬（記憶體限制）</td></tr><tr><td>I/O 阻塞行為</td><td>佔住 OS thread</td><td>自動卸載</td></tr><tr><td>調試工具支援</td><td>完整</td><td>Java 21+ 已完整支援</td></tr><tr><td><code>synchronized</code> pinning</td><td>無此問題</td><td>需注意</td></tr><tr><td>適合場景</td><td>CPU 密集</td><td>I/O 密集</td></tr></tbody></table><hr><h2 id=小結>小結</h2><ul><li><strong>啟用只需一行 yaml</strong>，對現有同步程式碼幾乎零改動。</li><li><strong>Pinning 是最大風險</strong>：盤點程式碼中 <code>synchronized</code> + I/O 的組合，替換為 <code>ReentrantLock</code>。</li><li><strong>ThreadLocal 要清除</strong>，或遷移到 <code>ScopedValue</code>（Java 21+）。</li><li>CPU 密集任務繼續用 <code>ForkJoinPool</code> 或專用 platform thread pool，不要混用。</li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/java class=tag-link>#Java</a>
+<a href=/tags/virtual-threads class=tag-link>#Virtual Threads</a>
+<a href=/tags/project-loom class=tag-link>#Project Loom</a>
+<a href=/tags/spring-boot class=tag-link>#Spring Boot</a>
+<a href=/tags/concurrency class=tag-link>#Concurrency</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/backend/ftp-utility/ class=post-nav-link>FTP 工具類實作指南：安全、可靠的檔案傳輸解決方案</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/backend/jpa-n-plus-1/ class=post-nav-link>JPA N+1 偵測與解法</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div><script src=/js/code-enhance.js></script></body></html>

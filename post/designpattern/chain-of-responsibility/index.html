@@ -1,0 +1,145 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Chain of Responsibility — 責任鏈模式 - Bill.Lin's Notes</title><meta name=description content="責任鏈模式：將請求沿處理者鏈傳遞，讓多個物件都有機會處理請求，避免發送者與接收者的強耦合。"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Chain of Responsibility — 責任鏈模式"><meta property="og:description" content="責任鏈模式：將請求沿處理者鏈傳遞，讓多個物件都有機會處理請求，避免發送者與接收者的強耦合。"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/designpattern/chain-of-responsibility/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Chain of Responsibility — 責任鏈模式</h1><div class=post-meta><div class=post-info><time class=post-date>2018年08月07日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>2 分鐘閱讀</span></div><div class=post-categories><a href=/categories/designpattern class=category-link>DesignPattern</a></div></div></header><div class=post-content><h2 id=1-意圖>1. 意圖</h2><p>將請求沿著處理者鏈依序傳遞，每個處理者決定自己是否處理，或繼續往下傳。</p><h2 id=2-uml-類圖>2. UML 類圖</h2><pre class=mermaid>classDiagram
+    class Handler {
+        <<abstract>>
+        #next Handler
+        +setNext(Handler)
+        +handle(request)*
+    }
+    class ConcreteHandlerA {
+        +handle(request)
+    }
+    class ConcreteHandlerB {
+        +handle(request)
+    }
+    Handler <|-- ConcreteHandlerA
+    Handler <|-- ConcreteHandlerB
+    Handler --> Handler : next
+</pre><h2 id=3-何時用--何時別用>3. 何時用 / 何時別用</h2><p><strong>用</strong>：</p><ul><li>超過一個物件可能處理同一請求，且處理者在執行期才決定（審批流、過濾管道）</li><li>需要動態組裝或重排處理者順序</li><li>不想讓發送者知道具體由誰處理</li></ul><p><strong>別用</strong>：</p><ul><li>每個請求必須保證被處理——責任鏈可能讓請求靜默消失</li><li>處理者固定且少（2-3 個），直接 if/else 更清楚</li><li>鏈很長時效能敏感的熱路徑</li></ul><h2 id=4-java-範例>4. Java 範例</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 審批請求：金額超過閾值就往上傳</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kd>class</span> <span class=nc>Approver</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Approver</span><span class=w> </span><span class=n>next</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Approver</span><span class=w> </span><span class=nf>setNext</span><span class=p>(</span><span class=n>Approver</span><span class=w> </span><span class=n>next</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>next</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>next</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>next</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>approve</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>canApprove</span><span class=p>(</span><span class=n>amount</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>doApprove</span><span class=p>(</span><span class=n>amount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>next</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>next</span><span class=p>.</span><span class=na>approve</span><span class=p>(</span><span class=n>amount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IllegalStateException</span><span class=p>(</span><span class=s>&#34;No approver for amount: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>amount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>canApprove</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doApprove</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>TeamLead</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Approver</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w> </span><span class=kd>protected</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>canApprove</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>amount</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>1_000</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w> </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doApprove</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;TeamLead approved: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>amount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Manager</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Approver</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w> </span><span class=kd>protected</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>canApprove</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>amount</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>10_000</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w> </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doApprove</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Manager approved: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>amount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Director</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Approver</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w> </span><span class=kd>protected</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>canApprove</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w> </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doApprove</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>amount</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Director approved: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>amount</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// 組裝鏈</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Approver</span><span class=w> </span><span class=n>chain</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>TeamLead</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>chain</span><span class=p>.</span><span class=na>setNext</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Manager</span><span class=p>()).</span><span class=na>setNext</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Director</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>chain</span><span class=p>.</span><span class=na>approve</span><span class=p>(</span><span class=n>500</span><span class=p>);</span><span class=w>     </span><span class=c1>// TeamLead approved: 500</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>chain</span><span class=p>.</span><span class=na>approve</span><span class=p>(</span><span class=n>5_000</span><span class=p>);</span><span class=w>   </span><span class=c1>// Manager approved: 5000</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>chain</span><span class=p>.</span><span class=na>approve</span><span class=p>(</span><span class=n>50_000</span><span class=p>);</span><span class=w>  </span><span class=c1>// Director approved: 50000</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=5-jdk--spring-真實案例>5. JDK / Spring 真實案例</h2><p><strong>ClassLoader 親委派</strong>：<code>ClassLoader.loadClass()</code> 先委派給 parent，parent 找不到才自己載入，這就是責任鏈的「先傳再自處理」變體。</p><p><strong>Servlet FilterChain</strong>：<code>javax.servlet.Filter.doFilter(request, response, chain)</code> 呼叫 <code>chain.doFilter()</code> 把控制權傳到下一個 Filter，Spring Security 整個過濾器堆疊就是此模式的實作。</p><p><strong>Spring HandlerInterceptor</strong>：<code>preHandle()</code> 回傳 <code>false</code> 即中斷鏈，<code>true</code> 則繼續傳遞，等同於有條件的責任鏈。</p><h2 id=6-與相近-pattern-的差異>6. 與相近 Pattern 的差異</h2><table><thead><tr><th>維度</th><th>Chain of Responsibility</th><th>Command</th></tr></thead><tbody><tr><td>目的</td><td>路由請求，找到能處理的那個</td><td>封裝請求為物件，支援 undo/queue</td></tr><tr><td>接收者</td><td>鏈中的某一個（或無人）處理</td><td>明確指定 Receiver</td></tr><tr><td>請求流向</td><td>沿鏈傳遞，可在任意節點停止</td><td>直接由 Invoker 呼叫 Command</td></tr></tbody></table><h2 id=7-現代-java-取代方案>7. 現代 Java 取代方案</h2><p>可用函數式組合替代繼承式鏈：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 用 UnaryOperator 鏈組裝管道</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>UnaryOperator</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>trim</span><span class=w>    </span><span class=o>=</span><span class=w> </span><span class=n>String</span><span class=p>::</span><span class=n>trim</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>UnaryOperator</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>lower</span><span class=w>   </span><span class=o>=</span><span class=w> </span><span class=n>String</span><span class=p>::</span><span class=n>toLowerCase</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>UnaryOperator</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>noBlank</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>s</span><span class=p>.</span><span class=na>replaceAll</span><span class=p>(</span><span class=s>&#34;\\s+&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;_&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>UnaryOperator</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>pipeline</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>trim</span><span class=p>.</span><span class=na>andThen</span><span class=p>(</span><span class=n>lower</span><span class=p>).</span><span class=na>andThen</span><span class=p>(</span><span class=n>noBlank</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>pipeline</span><span class=p>.</span><span class=na>apply</span><span class=p>(</span><span class=s>&#34;  Hello World  &#34;</span><span class=p>));</span><span class=w> </span><span class=c1>// hello_world</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>Filter</code> 使用 <code>Predicate.and()</code> / <code>or()</code> 也是同一精神。傳統繼承式責任鏈在需要 <code>undo</code>、狀態保存或動態插拔節點時仍是標準做法。</p><h2 id=8-參考資料>8. 參考資料</h2><ul><li>GoF <em>Design Patterns</em> (1994), ch.5 Chain of Responsibility</li><li>Oracle Docs — <a href=https://docs.oracle.com/en/java/docs/api/java.base/java/lang/ClassLoader.html>ClassLoader.loadClass</a></li><li>Spring Security Reference — Filter Chain</li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/designpattern class=tag-link>#DesignPattern</a>
+<a href=/tags/behavioral class=tag-link>#Behavioral</a>
+<a href=/tags/chainofresponsibility class=tag-link>#ChainOfResponsibility</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/mediator/ class=post-nav-link>Mediator — 以中介者解耦多方互動</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/designpattern/observer/ class=post-nav-link>Observer — 一對多狀態變更通知</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div><script src=/js/code-enhance.js></script><script type=module>
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script></body></html>

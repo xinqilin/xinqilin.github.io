@@ -1,0 +1,288 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>JPA N+1 偵測與解法 - Bill.Lin's Notes</title><meta name=description content="深入解析 JPA N+1 問題的成因、偵測方式，以及 JOIN FETCH、EntityGraph、BatchSize 三種解法的適用時機"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="JPA N+1 偵測與解法"><meta property="og:description" content="深入解析 JPA N+1 問題的成因、偵測方式，以及 JOIN FETCH、EntityGraph、BatchSize 三種解法的適用時機"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/backend/jpa-n-plus-1/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>JPA N+1 偵測與解法</h1><div class=post-meta><div class=post-info><time class=post-date>2024年01月15日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>4 分鐘閱讀</span></div><div class=post-categories><a href=/categories/backend class=category-link>Backend</a></div></div></header><div class=post-content><h2 id=什麼是-n1-問題>什麼是 N+1 問題</h2><p>載入 1 筆 <code>Order</code> 後，Hibernate 額外發出 N 條 SQL 去撈每筆 <code>Order</code> 的 <code>OrderItem</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>SELECT * FROM orders WHERE user_id = 1;        -- 1 條
+</span></span><span class=line><span class=cl>SELECT * FROM order_items WHERE order_id = 10; -- N 條（每筆 Order 一條）
+</span></span><span class=line><span class=cl>SELECT * FROM order_items WHERE order_id = 11;
+</span></span><span class=line><span class=cl>SELECT * FROM order_items WHERE order_id = 12;
+</span></span><span class=line><span class=cl>...
+</span></span></code></pre></td></tr></table></div></div><p>根源在於 <code>@OneToMany</code> 預設是 <code>LAZY</code> 載入——存取集合屬性時才觸發查詢，在迴圈中存取就變成 N 條。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Entity</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Order</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Id</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@OneToMany</span><span class=p>(</span><span class=n>mappedBy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;order&#34;</span><span class=p>,</span><span class=w> </span><span class=n>fetch</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>FetchType</span><span class=p>.</span><span class=na>LAZY</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>OrderItem</span><span class=o>&gt;</span><span class=w> </span><span class=n>items</span><span class=p>;</span><span class=w> </span><span class=c1>// 預設 LAZY</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// Service 層：觸發 N+1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>List</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=n>orders</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderRepository</span><span class=p>.</span><span class=na>findByUserId</span><span class=p>(</span><span class=n>userId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>orders</span><span class=p>.</span><span class=na>forEach</span><span class=p>(</span><span class=n>o</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>process</span><span class=p>(</span><span class=n>o</span><span class=p>.</span><span class=na>getItems</span><span class=p>()));</span><span class=w> </span><span class=c1>// 每次 getItems() 觸發一條 SQL</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=如何偵測>如何偵測</h2><h3 id=方式一hibernate-statistics>方式一：Hibernate Statistics</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>spring</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>jpa</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>hibernate</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>generate_statistics</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>logging</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>level</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>org.hibernate.stat</span><span class=p>:</span><span class=w> </span><span class=l>DEBUG</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>啟動後每次請求結束，log 會顯示：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Session Metrics {
+</span></span><span class=line><span class=cl>  1234567 nanoseconds spent acquiring 1 JDBC connections;
+</span></span><span class=line><span class=cl>  ...
+</span></span><span class=line><span class=cl>  20 flushes as part of pre-partial-flush operations;
+</span></span><span class=line><span class=cl>  52 JDBC statements executed
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><p>52 條 SQL 來自 1 個請求，明顯異常。</p><h3 id=方式二p6spy--datasource-proxy>方式二：P6Spy / datasource-proxy</h3><p>加入 <code>datasource-proxy</code>，攔截所有 SQL 並計數，適合在測試環境斷言 SQL 數量：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// build.gradle</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>testImplementation</span><span class=w> </span><span class=err>&#39;</span><span class=n>net</span><span class=p>.</span><span class=na>ttddyy</span><span class=p>:</span><span class=n>datasource</span><span class=o>-</span><span class=n>proxy</span><span class=p>:</span><span class=n>1</span><span class=p>.</span><span class=na>9</span><span class=err>&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kt>void</span><span class=w> </span><span class=nf>should_loadOrdersWithItems_inSingleQuery</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>QueryCountHolder</span><span class=p>.</span><span class=na>clear</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=n>orders</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderRepository</span><span class=p>.</span><span class=na>findWithItemsByUserId</span><span class=p>(</span><span class=n>1L</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>orders</span><span class=p>.</span><span class=na>forEach</span><span class=p>(</span><span class=n>o</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>assertThat</span><span class=p>(</span><span class=n>o</span><span class=p>.</span><span class=na>getItems</span><span class=p>()).</span><span class=na>isNotEmpty</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>QueryCount</span><span class=w> </span><span class=n>count</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>QueryCountHolder</span><span class=p>.</span><span class=na>getGrandTotal</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>assertThat</span><span class=p>(</span><span class=n>count</span><span class=p>.</span><span class=na>getSelect</span><span class=p>()).</span><span class=na>isEqualTo</span><span class=p>(</span><span class=n>1</span><span class=p>);</span><span class=w> </span><span class=c1>// 只允許 1 條 SELECT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=方式三datajpatest--sql-斷言>方式三：@DataJpaTest + SQL 斷言</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@DataJpaTest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@AutoConfigureTestDatabase</span><span class=p>(</span><span class=n>replace</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>NONE</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>class</span> <span class=nc>OrderRepositoryTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>OrderRepository</span><span class=w> </span><span class=n>orderRepository</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>EntityManager</span><span class=w> </span><span class=n>em</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>no_n_plus_1_on_findWithItems</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>SessionFactory</span><span class=w> </span><span class=n>sf</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>em</span><span class=p>.</span><span class=na>getEntityManagerFactory</span><span class=p>().</span><span class=na>unwrap</span><span class=p>(</span><span class=n>SessionFactory</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Statistics</span><span class=w> </span><span class=n>stats</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sf</span><span class=p>.</span><span class=na>getStatistics</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>stats</span><span class=p>.</span><span class=na>setStatisticsEnabled</span><span class=p>(</span><span class=kc>true</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>stats</span><span class=p>.</span><span class=na>clear</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>orderRepository</span><span class=p>.</span><span class=na>findWithItemsByUserId</span><span class=p>(</span><span class=n>1L</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>assertThat</span><span class=p>(</span><span class=n>stats</span><span class=p>.</span><span class=na>getPrepareStatementCount</span><span class=p>()).</span><span class=na>isLessThanOrEqualTo</span><span class=p>(</span><span class=n>2</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=三種解法>三種解法</h2><h3 id=解法一join-fetchjpql>解法一：JOIN FETCH（JPQL）</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Repository</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>OrderRepository</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>JpaRepository</span><span class=o>&lt;</span><span class=n>Order</span><span class=p>,</span><span class=w> </span><span class=n>Long</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Query</span><span class=p>(</span><span class=s>&#34;SELECT o FROM Order o JOIN FETCH o.items WHERE o.userId = :uid&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findWithItemsByUserId</span><span class=p>(</span><span class=nd>@Param</span><span class=p>(</span><span class=s>&#34;uid&#34;</span><span class=p>)</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>uid</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 多層關聯</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Query</span><span class=p>(</span><span class=s>&#34;SELECT DISTINCT o FROM Order o &#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>           </span><span class=s>&#34;JOIN FETCH o.items i &#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>           </span><span class=s>&#34;JOIN FETCH i.product &#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>           </span><span class=s>&#34;WHERE o.userId = :uid&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findWithItemsAndProducts</span><span class=p>(</span><span class=nd>@Param</span><span class=p>(</span><span class=s>&#34;uid&#34;</span><span class=p>)</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>uid</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>注意 <code>DISTINCT</code>：當 Order 有多個 OrderItem 時，JOIN 會產生重複的 Order 行，<code>DISTINCT</code> 讓 Hibernate 在 Java 層去重（SQL 層也會加上 DISTINCT）。</p><p><strong>限制</strong>：無法與 <code>Pageable</code> 分頁並用，因為分頁是在記憶體中做而非資料庫層（見下方陷阱）。</p><h3 id=解法二entitygraph>解法二：@EntityGraph</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 方式一：在 Repository 方法上直接宣告</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@EntityGraph</span><span class=p>(</span><span class=n>attributePaths</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>&#34;items&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;items.product&#34;</span><span class=p>})</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>List</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findByUserId</span><span class=p>(</span><span class=n>Long</span><span class=w> </span><span class=n>userId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// 方式二：在 Entity 上定義具名 graph</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@NamedEntityGraph</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;Order.withItems&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>attributeNodes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@NamedAttributeNode</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;items&#34;</span><span class=p>,</span><span class=w> </span><span class=n>subgraph</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;items.product&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>subgraphs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@NamedSubgraph</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;items.product&#34;</span><span class=p>,</span><span class=w> </span><span class=n>attributeNodes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@NamedAttributeNode</span><span class=p>(</span><span class=s>&#34;product&#34;</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Entity</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Order</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=p>...</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// Repository</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@EntityGraph</span><span class=p>(</span><span class=s>&#34;Order.withItems&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>List</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findByUserId</span><span class=p>(</span><span class=n>Long</span><span class=w> </span><span class=n>userId</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>@EntityGraph</code> 本質上等同於 <code>JOIN FETCH</code>，但讓 Repository 介面更乾淨，適合跨多個方法重用相同的 fetch 策略。</p><h3 id=解法三batchsizehibernate-專屬>解法三：@BatchSize（Hibernate 專屬）</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Entity</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Order</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@OneToMany</span><span class=p>(</span><span class=n>mappedBy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;order&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@BatchSize</span><span class=p>(</span><span class=n>size</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>30</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>OrderItem</span><span class=o>&gt;</span><span class=w> </span><span class=n>items</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Hibernate 不再為每筆 Order 發一條 SQL，而是每次批次載入 30 筆 Order 的 items：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 原本 100 條（N=100）
+</span></span></span><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=k>FROM</span><span class=w> </span><span class=n>order_items</span><span class=w> </span><span class=k>WHERE</span><span class=w> </span><span class=n>order_id</span><span class=w> </span><span class=k>IN</span><span class=w> </span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>2</span><span class=p>,...,</span><span class=mi>30</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=k>FROM</span><span class=w> </span><span class=n>order_items</span><span class=w> </span><span class=k>WHERE</span><span class=w> </span><span class=n>order_id</span><span class=w> </span><span class=k>IN</span><span class=w> </span><span class=p>(</span><span class=mi>31</span><span class=p>,</span><span class=mi>32</span><span class=p>,...,</span><span class=mi>60</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>-- ...
+</span></span></span><span class=line><span class=cl><span class=c1>-- 只剩 4 條（ceiling(100/30)=4）
+</span></span></span></code></pre></td></tr></table></div></div><p><strong>優點</strong>：不需改動 Repository 方法，JPQL 查詢依然簡單；支援分頁。<br><strong>缺點</strong>：Hibernate 專屬，換成其他 JPA 實作就失效；需要 2 次以上查詢（非 JOIN）。</p><hr><h2 id=slice-vs-pagecount-query-的代價>Slice vs Page：COUNT Query 的代價</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// Page：Spring Data 自動追加一條 COUNT(*)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Page</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findByUserId</span><span class=p>(</span><span class=n>Long</span><span class=w> </span><span class=n>userId</span><span class=p>,</span><span class=w> </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// 等同於：</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// SELECT * FROM orders WHERE user_id = ? LIMIT ? OFFSET ?</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// SELECT COUNT(*) FROM orders WHERE user_id = ?   &lt;-- 額外一條</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// Slice：只多取一筆，判斷是否有下一頁，不發 COUNT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Slice</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findByUserId</span><span class=p>(</span><span class=n>Long</span><span class=w> </span><span class=n>userId</span><span class=p>,</span><span class=w> </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>需要總頁數（pagination UI）→ 用 <code>Page</code></li><li>無限滾動 / 只需「是否有更多」→ 用 <code>Slice</code>，省掉 COUNT 查詢</li></ul><hr><h2 id=陷阱entitygraph--pageable--記憶體分頁>陷阱：EntityGraph + Pageable = 記憶體分頁</h2><p>當 <code>@EntityGraph</code> 與 <code>Pageable</code> 並用時，Hibernate 會發出警告：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+</span></span></code></pre></td></tr></table></div></div><p>這表示 Hibernate <strong>先把所有資料全部載入記憶體，再做分頁</strong>，資料量大時 OOM。</p><p><strong>正確解法</strong>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 1. 先分頁查 ID（不 JOIN 集合）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Query</span><span class=p>(</span><span class=s>&#34;SELECT o.id FROM Order o WHERE o.userId = :uid&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Page</span><span class=o>&lt;</span><span class=n>Long</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findIdsByUserId</span><span class=p>(</span><span class=nd>@Param</span><span class=p>(</span><span class=s>&#34;uid&#34;</span><span class=p>)</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>uid</span><span class=p>,</span><span class=w> </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// 2. 用 ID 做 JOIN FETCH</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Query</span><span class=p>(</span><span class=s>&#34;SELECT DISTINCT o FROM Order o JOIN FETCH o.items WHERE o.id IN :ids&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>List</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findWithItemsByIds</span><span class=p>(</span><span class=nd>@Param</span><span class=p>(</span><span class=s>&#34;ids&#34;</span><span class=p>)</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Long</span><span class=o>&gt;</span><span class=w> </span><span class=n>ids</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// Service 層組合</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Page</span><span class=o>&lt;</span><span class=n>Long</span><span class=o>&gt;</span><span class=w> </span><span class=n>idPage</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderRepository</span><span class=p>.</span><span class=na>findIdsByUserId</span><span class=p>(</span><span class=n>userId</span><span class=p>,</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>List</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=n>orders</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>orderRepository</span><span class=p>.</span><span class=na>findWithItemsByIds</span><span class=p>(</span><span class=n>idPage</span><span class=p>.</span><span class=na>getContent</span><span class=p>());</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>或是設定 <code>countQuery</code>，讓 Spring Data 知道如何計算總數：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Query</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;SELECT o FROM Order o JOIN FETCH o.items WHERE o.userId = :uid&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>countQuery</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;SELECT COUNT(o) FROM Order o WHERE o.userId = :uid&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Page</span><span class=o>&lt;</span><span class=n>Order</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findWithItemsByUserId</span><span class=p>(</span><span class=nd>@Param</span><span class=p>(</span><span class=s>&#34;uid&#34;</span><span class=p>)</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>uid</span><span class=p>,</span><span class=w> </span><span class=n>Pageable</span><span class=w> </span><span class=n>pageable</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=決策樹>決策樹</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>需要分頁？
+</span></span><span class=line><span class=cl>├── 是
+</span></span><span class=line><span class=cl>│   ├── 集合關聯需要 JOIN FETCH？
+</span></span><span class=line><span class=cl>│   │   ├── 是 → 兩步查詢（先查 ID，再 JOIN FETCH）
+</span></span><span class=line><span class=cl>│   │   └── 否 → @BatchSize + Page/Slice
+</span></span><span class=line><span class=cl>│   └── 無集合關聯 → 正常 Page
+</span></span><span class=line><span class=cl>└── 否
+</span></span><span class=line><span class=cl>    ├── 關聯層數 &lt;= 2 → JOIN FETCH / @EntityGraph
+</span></span><span class=line><span class=cl>    ├── 關聯層數 &gt; 2 → 多個 JOIN FETCH + DISTINCT
+</span></span><span class=line><span class=cl>    └── 不想改 JPQL → @BatchSize
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=小結>小結</h2><table><thead><tr><th>解法</th><th>查詢次數</th><th>分頁安全</th><th>可讀性</th><th>適用場景</th></tr></thead><tbody><tr><td>JOIN FETCH</td><td>1</td><td>有限制</td><td>中</td><td>小資料集、無分頁</td></tr><tr><td>@EntityGraph</td><td>1</td><td>同上</td><td>高</td><td>方法重用多</td></tr><tr><td>@BatchSize</td><td>ceil(N/size)</td><td>安全</td><td>高</td><td>有分頁、Hibernate 環境</td></tr><tr><td>兩步查詢</td><td>2</td><td>安全</td><td>低</td><td>大資料分頁 + JOIN FETCH</td></tr></tbody></table><p>N+1 問題不是一刀切，選解法前先確認：有沒有分頁、資料量、關聯深度。</p></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/jpa class=tag-link>#JPA</a>
+<a href=/tags/hibernate class=tag-link>#Hibernate</a>
+<a href=/tags/n+1 class=tag-link>#N+1</a>
+<a href=/tags/performance class=tag-link>#Performance</a>
+<a href=/tags/spring-data class=tag-link>#Spring Data</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/backend/spring-virtual-threads/ class=post-nav-link>Spring Boot 3 + Virtual Threads 實戰</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/backend/hikaricp-tuning/ class=post-nav-link>HikariCP 連線池調校</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div><script src=/js/code-enhance.js></script></body></html>
