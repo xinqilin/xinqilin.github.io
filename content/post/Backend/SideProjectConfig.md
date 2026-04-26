@@ -1586,6 +1586,39 @@ spring:
       connection-test-query: SELECT 1
 ```
 
+## 踩坑紀錄
+
+### Spring Boot 3 Jakarta 遷移
+Spring Boot 3 需要 Java 17+ 且所有 javax.* → jakarta.*。若從 Boot 2.x 升級，常見的 compile error：
+- `javax.persistence.*` → `jakarta.persistence.*`
+- `javax.servlet.*` → `jakarta.servlet.*`
+- `javax.validation.*` → `jakarta.validation.*`
+
+### Testcontainers 整合
+Spring Boot 3.1+ 原生支援 Testcontainers：
+```java
+@SpringBootTest
+@Testcontainers
+class IntegrationTest {
+    @Container
+    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0");
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysql::getJdbcUrl);
+    }
+}
+```
+
+## 版本變遷
+
+| 版本 | 主要變更 |
+|------|---------|
+| Spring Boot 3.0 | Jakarta EE 10、Java 17 baseline、Hibernate 6 |
+| Spring Boot 3.1 | Testcontainers 原生支援、Docker Compose 支援 |
+| Spring Boot 3.2 | Virtual Threads 自動啟用（`spring.threads.virtual.enabled=true`）、`RestClient` GA |
+| Spring Boot 3.3 | CDS（Class Data Sharing）啟動加速 |
+
 ### 總結
 
 本文提供了一個完整的 Side Project 企業級配置指南，包含：

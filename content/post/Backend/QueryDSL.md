@@ -1982,3 +1982,32 @@ QueryDSL 是一個功能強大的類型安全查詢框架，為 Java 開發者�
 5. **測試覆蓋**：充分的單元測試和整合測試
 
 通過掌握 QueryDSL 的使用技巧和最佳實踐，可以大幅提升 Java 應用程式的查詢效率和開發體驗，建構出高效能、可維護的資料存取層。
+
+## 踩坑紀錄
+
+### APT（Annotation Processing）Q-class 生成
+IntelliJ 需到 `Build → Compiler → Annotation Processors` 啟用 APT。Gradle 需加：
+```groovy
+annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jpa"
+annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+```
+每次 Entity 變更需重新執行 `compileJava` 才能更新 Q-class。
+
+### 維護狀態
+QueryDSL 5.x 更新非常緩慢（最後活躍 2021）。若遇到 Hibernate 6 / Spring Boot 3 整合問題，可評估以下替代品：
+
+## 版本變遷
+
+| 版本 | 變更 |
+|------|------|
+| QueryDSL 4.x | 支援 `javax.persistence` |
+| QueryDSL 5.x | 遷移至 `jakarta.persistence`，Spring Boot 3 需要此版 |
+
+## 替代方案比較
+
+| 方案 | 適用 | 特點 |
+|------|------|------|
+| QueryDSL | 複雜動態查詢 | 最成熟但維護放緩 |
+| Spring Data `Specification` | 中等複雜度 | 無程式碼生成，內建支援 |
+| jOOQ | 複雜 SQL + 型別安全 | SQL-first，非 ORM |
+| Blaze-Persistence | 視窗函數、CTE | QueryDSL 相容，功能更強 |

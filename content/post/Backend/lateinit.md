@@ -1082,3 +1082,30 @@ class LateinitPerformanceBenchmark {
 5. **監控和診斷**：在生產環境中監控初始化狀態和效能
 
 選擇 `lateinit` 還是 `lazy` 取決於具體需求：使用 `lateinit` 進行手動控制的延遲初始化，使用 `lazy` 進行自動的懶加載。正確使用這些機制可以顯著改善應用程式的效能和記憶體使用效率。
+
+## 踩坑紀錄
+
+### `lateinit` + Spring 注入
+`@Autowired lateinit var service: MyService` 需搭配 `var`，不能用 `val`。但 Spring 官方建議用建構子注入搭配 `val`：
+```kotlin
+@Service
+class MyController(private val service: MyService)  // 推薦
+```
+
+### `lateinit` 型別限制
+`lateinit` 不支援 nullable 型別（`String?`）和基本型別（`Int`、`Boolean` 等，需用 `Integer`）。用 `lateinit` 的目的本來就是「保證稍後一定會賦值」，nullable 或基本型別通常用 `by lazy` 或直接初始化。
+
+## 版本變遷
+
+| 版本 | 變更 |
+|------|------|
+| Kotlin 1.2 | `::field.isInitialized` 可檢查 `lateinit var` 是否已初始化 |
+| Kotlin 1.4 | Top-level `lateinit var` 支援 |
+
+## 替代方案比較
+
+| 方案 | 適用 | 特點 |
+|------|------|------|
+| `lateinit var` | 測試 setUp、Spring 欄位注入 | 執行時若未初始化拋 `UninitializedPropertyAccessException` |
+| `by lazy {}` | 計算代價高的唯讀屬性 | 執行緒安全（預設 `LazyThreadSafetyMode.SYNCHRONIZED`） |
+| nullable `var T? = null` | 真的可選 | 每次使用需要 null check |

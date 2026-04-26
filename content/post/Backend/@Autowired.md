@@ -959,6 +959,31 @@ public class ApplicationStartupListener {
 
 正確的依賴注入不僅是技術最佳實踐，更是建立可維護、可測試、高品質軟體的基礎。
 
+## 踩坑紀錄
+
+### Circular Dependency
+Spring Boot 2.6+ 預設禁止循環依賴（`spring.main.allow-circular-references=false`）。出現 `UnsatisfiedDependencyException: circular` 時，正確解法是重新設計（拆分介面、引入第三個 bean），而非啟用 `allow-circular-references=true`。
+
+### `@Autowired` 在 `static` 欄位上無效
+Spring AOP 代理只對 instance 欄位作用。`static` 欄位注入永遠是 `null`。
+
+## 版本變遷
+
+| 版本 | 變更 |
+|------|------|
+| Spring 4.3 | 單一建構子時 `@Autowired` 可省略 |
+| Spring 5.0 | Kotlin primary constructor 支援 |
+| Spring Boot 2.6 | 循環依賴預設禁止 |
+
+## 替代方案比較
+
+| 方式 | 適用場景 | 缺點 |
+|------|---------|------|
+| Constructor injection | 必填依賴（推薦） | 依賴多時建構子很長 |
+| `@RequiredArgsConstructor` (Lombok) | 簡化建構子注入 | 需加 Lombok 依賴 |
+| `ObjectProvider<T>` | 可選依賴或避免循環 | API 較冗長 |
+| Setter injection | 可選依賴 | 允許 null，難測試 |
+
 ## 參考資料
 
 - [Spring Framework Reference Documentation](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-dependencies)
