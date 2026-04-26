@@ -1732,6 +1732,76 @@ public class UserController {
 }
 ```
 
-## 繼續完善中...
+## 現代 Java 的 Visitor 替代方案：Sealed Class + Pattern Matching
 
-*接下來將添加完整的 DTO 類和測試策略等內容。*
+Java 17+ 引入 **sealed class** + **pattern matching for switch**，可以解決傳統 Visitor 的 double dispatch 痛點，而且不需要修改每個 Element 類別：
+
+### 傳統 Visitor 的問題
+
+```java
+// 傳統寫法：每新增一個 Element，所有 Visitor 都要改
+interface Shape { void accept(ShapeVisitor visitor); }
+class Circle implements Shape {
+    public void accept(ShapeVisitor visitor) { visitor.visitCircle(this); }
+}
+class Rectangle implements Shape {
+    public void accept(ShapeVisitor visitor) { visitor.visitRectangle(this); }
+}
+
+interface ShapeVisitor {
+    void visitCircle(Circle circle);
+    void visitRectangle(Rectangle rectangle);
+    // 每新增 Shape，這裡就要加方法 → 所有實作類都要改
+}
+```
+
+### Java 17+ Sealed Class 替代方案
+
+```java
+// Sealed class：明確列出所有可能的子類型
+public sealed interface Shape
+    permits Circle, Rectangle, Triangle {}
+
+public record Circle(double radius) implements Shape {}
+public record Rectangle(double width, double height) implements Shape {}
+public record Triangle(double base, double height) implements Shape {}
+
+// Pattern matching for switch（Java 21 正式，Java 17 preview）
+public double calculateArea(Shape shape) {
+    return switch (shape) {
+        case Circle c    -> Math.PI * c.radius() * c.radius();
+        case Rectangle r -> r.width() * r.height();
+        case Triangle t  -> 0.5 * t.base() * t.height();
+        // 編譯器保證窮舉所有 case，新增 Shape 時編譯報錯
+    };
+}
+```
+
+### 與傳統 Visitor 的比較
+
+| 特性 | 傳統 Visitor | Sealed + Pattern Matching |
+|---|---|---|
+| 新增 Element 類型 | 所有 Visitor 都要改 | 編譯器強制提示缺少 case |
+| 新增操作（算法） | 新增一個 Visitor 實作 | 新增一個 method/class |
+| 元素類別修改 | 需要 accept() 方法 | 不需要修改元素類別 |
+| Java 版本要求 | 全版本 | Java 17+（sealed），Java 21（pattern switch 正式） |
+| 適用場景 | 穩定的元素類型集合 | 元素類型頻繁新增的場景 |
+
+### 何時仍該用傳統 Visitor
+
+- 元素類別無法修改（第三方庫）
+- 操作數量遠多於元素類型
+- Java 版本 < 17
+- 跨多個包（package）的複雜型別層次
+
+## 何時不該用 Visitor
+
+- 型別結構頻繁增加新型別（每次都要改所有 Visitor）
+- 操作很少（一個 if-else 就夠）
+- 使用 Java 17+（優先考慮 sealed class）
+
+## 參考
+
+- [GoF Design Patterns - Visitor](https://refactoring.guru/design-patterns/visitor)
+- [Java 17 Sealed Classes](https://openjdk.org/jeps/409)
+- [Java 21 Pattern Matching for Switch](https://openjdk.org/jeps/441)
