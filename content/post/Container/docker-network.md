@@ -151,3 +151,13 @@ services:
     # DNS round-robin 在 Swarm mode 生效
     # 在一般 Compose 中，多個 replica 共用服務名但 DNS 可能只返回一個
 ```
+
+## 網路模式比較
+
+| 模式 | 用途 | 限制 |
+|------|------|------|
+| `bridge`（預設）| 容器互通，對外需 port mapping | 效能略有開銷 |
+| `host` | 容器共用 host 網路 | Linux-only；Windows/macOS 實際是 VM 網路 |
+| `none` | 完全隔離 | 需手動設定所有網路 |
+| `overlay` | Swarm 跨節點通訊 | 需要 Swarm mode |
+| `macvlan` | 容器取得獨立 MAC/IP | 需要 promiscuous mode，雲端常不支援 |

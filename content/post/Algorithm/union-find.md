@@ -195,6 +195,54 @@ public class UnionFindBySize {
 }
 ```
 
+## 路徑壓縮 + 按秩合併
+
+完整的 Union-Find 實作應同時包含路徑壓縮（Path Compression）和按秩合併（Union by Rank）以達到接近 O(α(n)) 攤銷複雜度：
+
+```java
+class UnionFind {
+    private final int[] parent;
+    private final int[] rank;
+    private int components;
+
+    public UnionFind(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        components = n;
+        for (int i = 0; i < n; i++) parent[i] = i;
+    }
+
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);  // 路徑壓縮
+        }
+        return parent[x];
+    }
+
+    public boolean union(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) return false;
+
+        if (rank[px] < rank[py]) { int t = px; px = py; py = t; }
+        parent[py] = px;                   // 按秩合併：rank 小的接到 rank 大的下面
+        if (rank[px] == rank[py]) rank[px]++;
+        components--;
+        return true;
+    }
+
+    public int components() { return components; }
+}
+```
+
+## 複雜度
+
+| 操作 | 純 Union-Find | + 路徑壓縮 | + 按秩合併 | 兩者都有 |
+|------|--------------|-----------|-----------|---------|
+| find | O(n) | O(log n) 均攤 | O(log n) | O(α(n)) ≈ O(1) |
+| union | O(n) | O(log n) 均攤 | O(log n) | O(α(n)) ≈ O(1) |
+
+α(n) 是反阿克曼函數，實際場景中永遠 ≤ 4。
+
 ## 時間複雜度
 
 | 操作 | 時間複雜度 | 說明 |

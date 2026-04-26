@@ -277,6 +277,74 @@ public class Solution {
 2. **中序遍歷**：二元搜尋樹的有序輸出、驗證二元搜尋樹
 3. **後序遍歷**：計算樹的大小、刪除樹、計算表達式值、釋放記憶體
 
+## 層序遍歷（BFS）
+
+```java
+public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> result = new ArrayList<>();
+    if (root == null) return result;
+
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        List<Integer> level = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TreeNode node = queue.poll();
+            level.add(node.val);
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
+        result.add(level);
+    }
+    return result;
+}
+```
+
+## Morris 遍歷（O(1) 空間）
+
+Morris 遍歷利用葉節點的空 right 指標儲存 predecessor，實現不用 stack 的中序遍歷：
+
+```java
+public List<Integer> inorderMorris(TreeNode root) {
+    List<Integer> result = new ArrayList<>();
+    TreeNode curr = root;
+
+    while (curr != null) {
+        if (curr.left == null) {
+            result.add(curr.val);
+            curr = curr.right;
+        } else {
+            TreeNode pred = curr.left;
+            while (pred.right != null && pred.right != curr) {
+                pred = pred.right;
+            }
+            if (pred.right == null) {
+                pred.right = curr;   // 建立 thread
+                curr = curr.left;
+            } else {
+                pred.right = null;   // 恢復樹結構
+                result.add(curr.val);
+                curr = curr.right;
+            }
+        }
+    }
+    return result;
+}
+```
+
+時間 O(n)，空間 O(1)（修改指標後恢復原始結構）。
+
+## 遍歷方法比較
+
+| 方法 | 時間 | 空間 | 適用場景 |
+|------|------|------|---------|
+| 遞迴 | O(n) | O(h) call stack | 程式碼簡潔，h = 樹高 |
+| 迭代 + Stack | O(n) | O(h) | 避免 stack overflow（深樹） |
+| Morris | O(n) | O(1) | 空間嚴格限制 |
+| BFS | O(n) | O(w) | 層序、最短路（w = 最寬層） |
+
 ## 參考資料
 
 - [LeetCode 94. Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)
