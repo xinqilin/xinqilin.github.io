@@ -1439,3 +1439,45 @@ public class CodeQualityChecker {
 5. **重構文化**：培養持續重構的文化
 
 通過系統性的代碼壞味道識別與重構，可以大幅提升代碼品質，降低維護成本，提高開發效率。
+
+## Fowler 22 Code Smells 速查
+
+Martin Fowler《Refactoring》定義的 22 個 Code Smell：
+
+| # | Smell | 快速識別 |
+|---|-------|---------|
+| 1 | Mysterious Name | 看名字猜不出用途 |
+| 2 | Duplicated Code | 同樣邏輯出現 2+ 次 |
+| 3 | Long Function | 函數超過一個螢幕 |
+| 4 | Long Parameter List | 超過 3-4 個參數 |
+| 5 | Global Data | 全域可變狀態 |
+| 6 | Mutable Data | 可變物件在多處共享 |
+| 7 | Divergent Change | 一個 class 因多種原因修改（違反 SRP） |
+| 8 | Shotgun Surgery | 一個變更需改多個 class |
+| 9 | Feature Envy | method 更像在操作別的 class |
+| 10 | Data Clumps | 同一組欄位一直一起出現 |
+| 11 | Primitive Obsession | 用 String/int 代替 Domain 物件 |
+| 12 | Repeated Switches | 同一個 switch 散落各處 |
+| 13 | Parallel Inheritance | 繼承一個 class 就得繼承另一個 |
+| 14 | Lazy Element | class/function 做太少事 |
+| 15 | Speculative Generality | 「以後可能用到」的過度設計 |
+| 16 | Temporary Field | 只在某些情況才有值的欄位 |
+| 17 | Message Chains | `a.b().c().d()` 的過長鏈 |
+| 18 | Middle Man | class 大部分 method 都委派給別的 class |
+| 19 | Insider Trading | class 互相知道太多對方細節 |
+| 20 | Large Class | class 做太多事（違反 SRP） |
+| 21 | Alternative Classes | 做相同事但介面不一樣的 class |
+| 22 | Data Class | 只有 getter/setter，沒有邏輯 |
+
+## SonarQube / SpotBugs 規則對應
+
+常見 Smell 的靜態分析工具規則：
+
+| Smell | SonarQube Key | SpotBugs |
+|-------|--------------|---------|
+| Duplicated Code | `DuplicatedBlocks` | N/A |
+| Long Method | `S138` (>150 lines) | N/A |
+| God Class | `S2094` | `GOD_CLASS` |
+| Null Return | `S1168` | `NP_NULL_ON_SOME_PATH` |
+| Empty catch | `S1166` | `DE_MIGHT_IGNORE` |
+| Mutable Static | `S2696` | `ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD` |
