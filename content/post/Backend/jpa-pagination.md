@@ -50,8 +50,8 @@ aliases:
 
 <!-- Database Driver (以 MySQL 為例) -->
 <dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
     <scope>runtime</scope>
 </dependency>
 
@@ -984,6 +984,53 @@ public class PageConfigController {
     }
 }
 ```
+
+## OFFSET 分頁效能問題與替代方案
+
+`Page<T>` 預設使用 `LIMIT ? OFFSET ?` 實作，OFFSET 越大效能越差（MySQL 需掃描並丟棄前 N 筆資料）。
+
+### 使用 Slice<T> 取代 Page<T>
+
+`Slice<T>` 不發出 `COUNT(*)` 查詢，適合「載入更多」等不需要總頁數的場景：
+
+```java
+public interface UserRepository extends JpaRepository<User, Long> {
+    Slice<User> findByStatus(String status, Pageable pageable);
+}
+
+// Service 層
+Slice<User> slice = userRepository.findByStatus("ACTIVE", PageRequest.of(0, 20));
+boolean hasMore = slice.hasNext(); // 是否還有下一頁
+List<User> content = slice.getContent();
+```
+
+### 自訂 countQuery 優化 COUNT 查詢
+
+當 JOIN 讓 COUNT 查詢很慢，可以單獨指定簡化的 count SQL：
+
+```java
+@Query(value = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.status = :status",
+       countQuery = "SELECT COUNT(u) FROM User u WHERE u.status = :status")
+Page<User> findActiveUsersWithRoles(@Param("status") String status, Pageable pageable);
+```
+
+### Keyset（Cursor）分頁
+
+深分頁（如第 10000 頁）效能最佳解法：利用上一頁最後一筆的排序鍵做 `WHERE` 過濾，避免 OFFSET 掃描：
+
+```java
+// 以 id 為 cursor（需有索引）
+@Query("SELECT u FROM User u WHERE u.id > :lastId AND u.status = :status ORDER BY u.id ASC")
+List<User> findNextPage(@Param("lastId") Long lastId,
+                        @Param("status") String status,
+                        Pageable pageable);
+```
+
+| 方式 | COUNT 查詢 | 深分頁效能 | 支援跳頁 |
+|------|-----------|-----------|---------|
+| `Page<T>` | 有 | 差 | 支援 |
+| `Slice<T>` | 無 | 差（仍用 OFFSET） | 不支援 |
+| Keyset / Cursor | 無 | 優秀（O(log n)） | 不支援 |
 
 ## 效能優化技巧
 

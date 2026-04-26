@@ -588,9 +588,9 @@ public class ExternalApiClient {
         return webClient.get()
             .uri("/posts/{id}", id)
             .retrieve()
-            .onStatus(HttpStatus::is4xxClientError, response -> 
+            .onStatus(HttpStatusCode::is4xxClientError, response ->
                 Mono.error(new NotFoundException("Post not found")))
-            .onStatus(HttpStatus::is5xxServerError, response -> 
+            .onStatus(HttpStatusCode::is5xxServerError, response ->
                 Mono.error(new ServiceException("Server error")))
             .bodyToMono(Post.class)
             .timeout(Duration.ofSeconds(10))
@@ -983,6 +983,40 @@ Reactive Programming 為 Java 開發者提供了處理非同步、非阻塞程�
 5. **監控**：建立適當的日誌和度量機制
 
 響應式程式設計雖然學習曲線較陡，但掌握後能顯著提升應用程式的效能和可維護性，特別適合現代微服務架構和雲端環境。
+
+## Spring Boot 3 遷移注意事項
+
+### onStatus() API 變更
+
+Spring 6（Spring Boot 3）將 `onStatus()` 的 predicate 參數型別從 `HttpStatus`（enum）改為 `HttpStatusCode`（interface），以支援非標準狀態碼。
+
+```java
+// Spring Boot 2.x（Spring 5）— 已過時
+.onStatus(HttpStatus::is4xxClientError, response -> ...)
+
+// Spring Boot 3.x（Spring 6）— 正確寫法
+.onStatus(HttpStatusCode::is4xxClientError, response -> ...)
+```
+
+`HttpStatus` 仍然實作 `HttpStatusCode`，因此 `HttpStatus.valueOf(404)` 等具體值呼叫不受影響；只有以方法參考形式傳入 predicate 時才需要修改。
+
+### 其他常見遷移問題
+
+- `javax.*` 套件全面改為 `jakarta.*`（影響所有 `@Valid`、`@NotNull` 等 annotation import）
+- `WebClient` 的 `ExchangeFilterFunction` API 無重大變更，可直接沿用
+
+## Reactive 不等於快
+
+WebFlux 和 reactive pipeline 在以下場景**不一定**比傳統 MVC 更快：
+
+| 場景 | 說明 |
+|------|------|
+| CPU 密集型運算 | Reactive 不能加速 CPU 計算，反而增加調度開銷 |
+| 簡單低並發 CRUD | Reactive 的學習成本和 debug 難度不合算 |
+| 使用阻塞 JDBC | 若 DB 層仍用 JDBC（阻塞），整個 pipeline 的非阻塞優勢消失；需搭配 R2DBC |
+| 少量長時任務 | 少數請求各佔用長時間，virtual thread（Spring Boot 3.2+）往往更簡單 |
+
+**適合 WebFlux 的場景**：大量並發、短時 I/O（呼叫外部 API、Redis、SSE 推送）、需要 backpressure 的串流處理。
 
 ## 參考資料
 

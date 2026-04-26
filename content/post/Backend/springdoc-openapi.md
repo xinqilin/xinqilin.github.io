@@ -12,6 +12,8 @@ aliases:
 
 ---
 
+> **注意**：舊版 Springfox（`io.springfox:springfox-swagger2`）已停止維護，且與 Spring Boot 2.6+ 的 Spring MVC path matching 策略不相容，亦不支援 Spring Boot 3。請改用 `org.springdoc:springdoc-openapi-starter-webmvc-ui`（支援 OpenAPI 3，相容 Spring Boot 3）。
+
 ## 概述
 
 Swagger（現稱為 OpenAPI）是目前最流行的 REST API 文檔化工具之一。它不僅能自動生成美觀的 API 文檔，還提供互動式測試介面，支援多種程式語言的客戶端程式碼生成。本文將全面介紹如何在 Spring Boot 專案中整合和使用 Swagger，從基礎配置到進階功能的完整實戰指南。

@@ -12,6 +12,8 @@ aliases:
 
 ---
 
+> **函式庫選擇說明**：原始 `com.jcraft:jsch` 自 2018 年後已停止維護，存在已知安全漏洞且不支援新版 OpenSSH 演算法。本文使用社群維護的 fork `com.github.mwiede:jsch`，API 完全相容，持續更新安全修補。
+
 ## SFTP 企業級工具類實作指南
 
 ### 簡介
@@ -26,9 +28,9 @@ aliases:
 <dependencies>
     <!-- SFTP 核心依賴 -->
     <dependency>
-        <groupId>com.jcraft</groupId>
+        <groupId>com.github.mwiede</groupId>
         <artifactId>jsch</artifactId>
-        <version>0.1.55</version>
+        <version>0.2.20</version>
     </dependency>
     
     <!-- Apache Commons Pool2 連線池 -->
@@ -64,7 +66,7 @@ aliases:
 ```groovy
 dependencies {
     // SFTP 核心依賴
-    implementation 'com.jcraft:jsch:0.1.55'
+    implementation 'com.github.mwiede:jsch:0.2.20'
     
     // Apache Commons Pool2 連線池
     implementation 'org.apache.commons:commons-pool2:2.11.1'
@@ -1348,3 +1350,34 @@ public class SftpErrorHandler {
 7. **測試覆蓋**：提供完整的單元測試和整合測試
 
 這個 SFTP 工具類適用於各種企業級應用場景，能夠穩定、高效地處理文件傳輸任務，同時提供良好的可觀測性和維護性。
+
+## 安全性注意事項
+
+### StrictHostKeyChecking
+
+預設建議開啟 `StrictHostKeyChecking`，避免中間人攻擊：
+
+```java
+session.setConfig("StrictHostKeyChecking", "yes"); // 生產環境
+// 搭配 known_hosts 檔案驗證伺服器指紋
+jsch.setKnownHosts("/path/to/known_hosts");
+```
+
+開發環境可設為 `"no"` 方便測試，但**禁止帶入生產**。
+
+### 演算法協商
+
+較新的 OpenSSH Server（8.8+）預設停用 `ssh-rsa`（SHA-1）。`com.github.mwiede:jsch` 0.2.x 已支援 `rsa-sha2-256` / `rsa-sha2-512`，若遇到連線被拒，確認伺服器端 `PubkeyAcceptedAlgorithms` 設定，或在 JSch 側指定：
+
+```java
+session.setConfig("server_host_key", "ssh-ed25519,ecdsa-sha2-nistp256,rsa-sha2-256,rsa-sha2-512");
+```
+
+### 金鑰管理建議
+
+| 做法 | 說明 |
+|------|------|
+| 使用 Ed25519 金鑰 | 比 RSA 2048 更安全且更快 |
+| Passphrase 保護私鑰 | 即使私鑰洩漏也有二次防護 |
+| 金鑰存放於環境變數或 Vault | 不要將私鑰直接寫入 application.yml |
+| 定期輪換金鑰 | 建議每年或人員異動時輪換 |

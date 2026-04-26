@@ -12,6 +12,8 @@ aliases:
 
 ---
 
+> **注意**：RestTemplate 自 Spring 5.0 起已進入 **maintenance mode**，Spring 官方建議新專案改用 RestClient（Spring 6.1+）或 WebClient（reactive 場景）。本文保留 RestTemplate 用法作為參考，並在最後提供三種 HTTP client 的選擇建議。
+
 ## 概述
 
 RestTemplate 是 Spring Framework 提供的同步 HTTP 客戶端，用於簡化 RESTful Web 服務的調用。雖然在 Spring 5.0 之後被標記為維護模式（推薦使用 WebClient），但在許多現有項目中仍廣泛使用。本文將深入介紹 RestTemplate 的完整使用方法和最佳實踐。
@@ -1973,3 +1975,52 @@ RestTemplate 作為 Spring 生態系統中的經典 HTTP 客戶端，提供了�
 4. **效能敏感**：對效能有較高要求的應用
 
 通過合理的配置和最佳實踐，RestTemplate 仍然是一個可靠的 HTTP 客戶端選擇，特別是在現有項目的維護和漸進式升級場景中。
+
+## Spring HTTP Client 選型指南
+
+| Client | 適用場景 | Spring 版本 |
+|--------|----------|------------|
+| RestTemplate | 維護舊專案、簡單同步呼叫 | Spring 3.0+（maintenance mode） |
+| RestClient | 新專案同步呼叫，API 風格現代 | Spring 6.1+ / Spring Boot 3.2+ |
+| WebClient | Reactive 場景、高並發、串流 | Spring 5.0+ |
+
+### RestClient 基本用法（Spring Boot 3.2+）
+
+```java
+@Configuration
+public class RestClientConfig {
+
+    @Bean
+    public RestClient restClient() {
+        return RestClient.builder()
+                .baseUrl("https://api.example.com")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+}
+
+@Service
+public class UserApiService {
+
+    private final RestClient restClient;
+
+    public UserApiService(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
+    public User getUserById(Long userId) {
+        return restClient.get()
+                .uri("/users/{id}", userId)
+                .retrieve()
+                .body(User.class);
+    }
+
+    public User createUser(User newUser) {
+        return restClient.post()
+                .uri("/users")
+                .body(newUser)
+                .retrieve()
+                .body(User.class);
+    }
+}
+```

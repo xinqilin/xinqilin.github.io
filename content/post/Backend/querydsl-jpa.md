@@ -12,6 +12,15 @@ aliases:
 
 ---
 
+> **維護狀態說明**：QueryDSL 4.x 自 2018 年後長期缺乏維護；5.0.0（2022 年）雖遷移至 Jakarta namespace，但開發活躍度仍低。評估新專案時請考量以下替代方案：
+
+| 方案 | 適用場景 | 維護狀態 |
+|------|---------|---------|
+| QueryDSL 5.x | 現有專案延續、需要複雜型別安全查詢 | 低度維護 |
+| Spring Data JPA Specification | 簡單動態查詢，無需額外依賴 | 積極維護 |
+| jOOQ | 複雜 SQL、需要完整 SQL 功能 | 積極維護 |
+| Blaze-Persistence | JPA 進階查詢、Entity View | 積極維護 |
+
 ## 概述
 
 QueryDSL 是一個強大的 Java 查詢框架，提供類型安全的 SQL 查詢建構功能。它通過代碼生成技術創建查詢類型，在編譯時期就能發現查詢錯誤，大幅提升開發效率和代碼質量。本文將深入介紹 QueryDSL 的各種用法和最佳實踐。
@@ -176,6 +185,44 @@ configurations {
 
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
+}
+```
+
+### IntelliJ IDEA + Gradle APT 常見問題
+
+QueryDSL 依賴 Annotation Processing（APT）在編譯時產生 `Q` 類別（如 `QUser`）。IntelliJ 與 Gradle APT 的整合不完美，常見錯誤及解法：
+
+**問題 1：`QUser` 找不到 / 無法 import**
+
+IntelliJ 未將 APT 輸出目錄加入 source root。
+
+解法：
+1. Preferences → Build, Execution, Deployment → Build Tools → Gradle
+2. 將「Build and run using」改為 **IntelliJ IDEA**（非 Gradle）
+3. 或手動將 `build/generated/querydsl` 標記為 Generated Sources Root（右鍵目錄 → Mark Directory as → Generated Sources Root）
+
+**問題 2：`./gradlew compileJava` 成功但 IDEA 仍報錯**
+
+原因：IDEA 的索引與 Gradle 輸出目錄不同步。
+
+解法：執行 `./gradlew compileQuerydsl`（或 `./gradlew compileJava`）後，在 IDEA 選單執行 **File → Invalidate Caches / Restart**。
+
+**問題 3：Gradle 8.x 中 `querydsl` 自訂 configuration 已棄用**
+
+Gradle 8 建議直接使用標準 `annotationProcessor` configuration，移除舊的 `querydsl { }` block 和 `compileQuerydsl` task：
+
+```gradle
+dependencies {
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+}
+
+// APT 輸出目錄加入 source set（Gradle 7+ 標準做法）
+tasks.withType(JavaCompile).configureEach {
+    options.annotationProcessorGeneratedSourcesDirectory =
+        file("$buildDir/generated/sources/annotationProcessor/java/main")
 }
 ```
 

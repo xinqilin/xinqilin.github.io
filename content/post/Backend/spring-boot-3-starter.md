@@ -165,9 +165,10 @@ project-root/
 
         <!-- Database -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
+            <!-- Spring Boot 3 / MySQL 8.0.31+ 請改用新 artifact -->
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.3.0</version>
         </dependency>
         
         <dependency>
@@ -1603,3 +1604,61 @@ spring:
 8. **最佳實踐**：安全性、效能、監控等方面的建議
 
 這個配置可以作為任何 Side Project 的起點，提供了企業級的可擴展性和可維護性。通過遵循這些最佳實踐，您可以快速建立一個穩定、安全、高效的應用程式。
+
+## Spring Boot 3 基準需求
+
+| 項目 | 最低需求 | 說明 |
+|------|---------|------|
+| Java | 17 | Spring Boot 3 不支援 Java 8/11 |
+| Spring Framework | 6.0 | 隨 Spring Boot 3 一同升級 |
+| Jakarta EE | 9+ | 套件由 `javax.*` 全面改為 `jakarta.*` |
+| Hibernate | 6.1+ | 配合 Jakarta Persistence 3.0 |
+| MySQL Connector | `com.mysql:mysql-connector-j` | 舊 `mysql:mysql-connector-java` 已棄用 |
+
+**主要遷移注意事項**：
+
+- 所有 `import javax.persistence.*` → `import jakarta.persistence.*`
+- `import javax.validation.*` → `import jakarta.validation.*`
+- Spring Security：不再支援 `WebSecurityConfigurerAdapter`，改用 `SecurityFilterChain` Bean
+- Actuator：`/actuator/health` 回應格式有微幅調整
+
+## Testcontainers 整合測試
+
+Spring Boot 3.1+ 提供 `@ServiceConnection` 讓整合測試設定更簡潔：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-testcontainers</artifactId>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.testcontainers</groupId>
+    <artifactId>mysql</artifactId>
+    <scope>test</scope>
+</dependency>
+```
+
+```java
+@SpringBootTest
+@Testcontainers
+class UserRepositoryIntegrationTest {
+
+    @Container
+    @ServiceConnection  // Spring Boot 3.1+ 自動注入 DataSource 設定
+    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.3");
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    void should_save_and_find_user() {
+        User user = new User("test@example.com", "Alice");
+        userRepository.save(user);
+
+        assertThat(userRepository.findByEmail("test@example.com")).isPresent();
+    }
+}
+```
+
+`@ServiceConnection` 會自動讀取 container 的 JDBC URL / username / password 並覆寫 `spring.datasource.*`，無需手動 `@DynamicPropertySource`。

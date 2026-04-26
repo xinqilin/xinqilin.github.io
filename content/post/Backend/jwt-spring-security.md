@@ -1364,6 +1364,63 @@ curl -X GET http://localhost:8080/api/users \
 
 JWT 是現代 Web 應用程式認證的標準解決方案，正確實作能夠提供安全、可擴展的認證機制。記住：安全性設計應該從一開始就考慮，而不是後續添加的功能。
 
+## 安全設計最佳實踐
+
+### Algorithm 白名單（防 alg=none 攻擊）
+JWT header 中的 `alg` 欄位若被攻擊者篡改為 `none`，伺服器端若未驗證演算法，會跳過簽章驗證：
+
+```java
+// 正確：在解析時強制指定允許的演算法
+Jwts.parser()
+    .verifyWith(secretKey)
+    .requireAudience("my-app")
+    .build()
+    .parseSignedClaims(token);
+// jjwt 0.12.x 已強制要求 key，隱式拒絕 alg=none
+```
+
+**不要**使用允許空白演算法的 parser 設定。
+
+### JWT Blacklist（JTI 黑名單）
+stateless JWT 的弱點：無法在 token 過期前使它失效（如登出、帳號停權）。解法：在 Redis 儲存被撤銷的 JTI（JWT ID）：
+
+```java
+// 簽發時加入 JTI
+String jti = UUID.randomUUID().toString();
+String token = Jwts.builder().id(jti)...build();
+
+// 登出時加入黑名單（TTL 設為 token 剩餘有效期）
+redisTemplate.opsForValue().set("jwt:blacklist:" + jti, "1", remainingTtl, TimeUnit.SECONDS);
+
+// 驗證時檢查黑名單
+if (Boolean.TRUE.equals(redisTemplate.hasKey("jwt:blacklist:" + jti))) {
+    throw new JwtException("Token revoked");
+}
+```
+
+### Refresh Token Rotation
+Access token 應短命（15 分鐘），搭配 refresh token rotation 策略：
+- Refresh token 每次使用後換發新的（舊的立即失效）
+- Refresh token 儲存在 HttpOnly cookie（非 localStorage，避免 XSS 竊取）
+- 偵測 refresh token 重複使用 → 視為令牌洩漏 → 撤銷該用戶的所有 session
+
+### Access Token 不該放 localStorage
+JWT 存在 `localStorage` 可被 XSS 腳本讀取。生產環境建議：
+- Access token：記憶體（SPA state）
+- Refresh token：HttpOnly + SameSite=Strict cookie
+
+```java
+// Spring Boot 設定 refresh token cookie
+ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
+    .httpOnly(true)
+    .secure(true)
+    .sameSite("Strict")
+    .maxAge(Duration.ofDays(7))
+    .path("/auth/refresh")
+    .build();
+response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+```
+
 ## 參考資料
 
 - [JWT Official Website](https://jwt.io/)

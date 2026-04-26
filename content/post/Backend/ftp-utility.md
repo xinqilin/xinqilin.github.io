@@ -12,6 +12,8 @@ aliases:
 
 ---
 
+> **安全警告**：FTP 為明文協定，帳號密碼與檔案內容在傳輸過程中未加密，不建議在公網或敏感資料場景使用。生產環境請優先考慮 **SFTP**（SSH 通道加密）或 **FTPS**（TLS 加密）。若系統限制只能使用 FTP，務必在內網隔離環境中部署，並搭配 VPN 或 IP 白名單控管。
+
 ## 概述
 
 FTP（File Transfer Protocol）是企業環境中常用的檔案傳輸協定。本文提供一個完整、安全且可靠的 FTP 工具類實作，適用於生產環境的檔案上傳、下載和管理需求。
@@ -176,6 +178,9 @@ public class FtpConnectionFactory {
     @Autowired
     private FtpProperties ftpProperties;
     
+    // 注意：FTPClient 非執行緒安全（non-thread-safe）。
+    // 此處使用 BlockingQueue 確保同一時間只有一個執行緒持有並使用單一 FTPClient 實例。
+    // 從 pool 取出後必須在同一執行緒完成操作並歸還，嚴禁跨執行緒共用同一個 FTPClient 物件。
     private final BlockingQueue<FTPClient> connectionPool = new LinkedBlockingQueue<>();
     
     /**
