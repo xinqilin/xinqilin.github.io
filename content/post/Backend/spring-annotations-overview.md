@@ -122,6 +122,30 @@ public class AppConfiguration {
 }
 ```
 
+### `@Configuration(proxyBeanMethods = false)`
+
+預設 `proxyBeanMethods = true`：Spring 會用 CGLIB 代理 `@Configuration` 類別，確保 `@Bean` 方法之間互相呼叫時回傳的是同一個 singleton。
+
+設為 `false` 時不代理，效能略好（適合 Spring Boot 的 auto-configuration 內部使用），但 `@Bean` 方法互相呼叫時會產生新 instance，而非 singleton。
+
+**Rule**：除非明確需要 `@Bean` 互呼且要確保 singleton，否則保持預設 `true`。
+
+### `@ConditionalOnMissingBean` / `@ConditionalOnProperty`
+
+這兩個是 Spring Boot auto-configuration 的核心機制：
+
+```java
+@Bean
+@ConditionalOnMissingBean(DataSource.class)  // 只在沒有 DataSource bean 時才建立
+public DataSource embeddedDataSource() { ... }
+
+@Bean
+@ConditionalOnProperty(name = "feature.cache.enabled", havingValue = "true")
+public CacheManager cacheManager() { ... }
+```
+
+`@ConditionalOnMissingBean` 是「讓使用者覆蓋預設設定」的標準做法。
+
 ### 2. 依賴注入註解
 
 #### @Autowired 和相關註解

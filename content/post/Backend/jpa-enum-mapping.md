@@ -842,6 +842,30 @@ JPA 中的 Enum 處理是企業級應用程式開發的重要技能。透過本�
 
 正確處理 Enum 型別不僅能提升程式碼的可讀性和維護性，還能確保資料的一致性和業務邏輯的正確執行。
 
+## 踩坑紀錄
+
+### `EnumType.STRING` vs `EnumType.ORDINAL`
+`ORDINAL`（預設）儲存 enum 的 index（0, 1, 2...）——一旦 enum 順序調整，所有現有資料就會對應錯誤，且沒有 compile time 錯誤。**生產環境務必用 `STRING`**。
+
+### PostgreSQL Native Enum
+PostgreSQL 有原生 `CREATE TYPE status AS ENUM (...)` 型別。Hibernate 6 透過 `@JdbcTypeCode(SqlTypes.NAMED_ENUM)` 支援，但 Flyway migration 需特別處理 enum 值的新增順序（PostgreSQL enum 值只能加在末尾或指定位置，不能刪除）。
+
+## 版本變遷
+
+| 版本 | 變更 |
+|------|------|
+| JPA 2.0 | `@Enumerated(EnumType.STRING/ORDINAL)` |
+| Hibernate 6.0 | `AttributeConverter` 更靈活；`@JdbcTypeCode` 支援 DB native enum |
+| Spring Data JPA 3.0 | 與 Hibernate 6 整合，自動轉換改善 |
+
+## 替代方案比較
+
+| 方案 | 優點 | 缺點 |
+|------|------|------|
+| `@Enumerated(STRING)` | 簡單，可讀 | DB 端無約束，可存任意字串 |
+| `AttributeConverter` | 完全自定義映射（含縮寫） | 需手寫 convert/revert |
+| PostgreSQL native enum | DB 層強約束 | 不可移植，migration 較複雜 |
+
 ## 參考資料
 
 - [JPA 2.2 Specification](https://jcp.org/en/jsr/detail?id=338)
