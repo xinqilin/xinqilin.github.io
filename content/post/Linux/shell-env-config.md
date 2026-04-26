@@ -1,15 +1,14 @@
 ---
-title: "Env"
+title: "Shell 環境配置與 Homebrew 安裝"
 author: Bill.Lin
 date: 2022-01-16T22:35:54+08:00
 draft: false
-tags: []
-Description: ""
-Categories: ["Tools"]
+tags: ["macos", "homebrew", "zsh", "shell", "environment"]
+Description: "macOS 開發環境設定：Homebrew 安裝、zsh 設定、PATH 管理、常用工具安裝清單"
+Categories: ["Linux"]
 DisableComments: false
 aliases:
   - /post/Others/Env/
-
 ---
 
 ### Basic
@@ -21,8 +20,13 @@ chmod u+x *.sh
 
 ### Homebrew
 
-``/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"``
-``brew install cask``
+```bash
+# 現行官方安裝指令（2023+）
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+舊版 `ruby -e` 格式為 2018 年前的格式，已棄用。
+
 ``brew install wget``
 
 ### SDKMAN

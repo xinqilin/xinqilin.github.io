@@ -18,6 +18,8 @@ aliases:
 
 ## 啟動 MySQL 容器
 
+> **鏡像選擇**：`mysql/mysql-server` 是 Oracle 的私有版本（不同於 Docker Hub 官方鏡像），現已標記為 deprecated。請使用官方 `mysql` 鏡像（`docker.io/library/mysql`）。
+
 使用 `docker run` 指令可以快速啟動一個 MySQL 容器。以下是一個常用的範例，包含了密碼設定、埠映射和字元集設定。
 
 ```bash
@@ -26,7 +28,7 @@ docker run \
     -e MYSQL_ROOT_PASSWORD=your_strong_password \
     -p 3306:3306 \
     -d \
-    mysql/mysql-server \
+    mysql:8.0 \
     --character-set-server=utf8mb4 \
     --collation-server=utf8mb4_unicode_ci \
     --skip-character-set-client-handshake
@@ -38,7 +40,7 @@ docker run \
 *   `-e MYSQL_ROOT_PASSWORD=your_strong_password`: 設定 MySQL `root` 使用者的密碼。**請務必將 `your_strong_password` 替換為您自己的強密碼**。
 *   `-p 3306:3306`: 將主機的 3306 埠映射到容器的 3306 埠。這樣您就可以從主機透過 3306 埠連接到容器內的 MySQL 服務。
 *   `-d`: 以背景模式 (detached mode) 運行容器，讓容器在背景執行。
-*   `mysql/mysql-server`: 指定要使用的 Docker 映像檔。`mysql/mysql-server` 是 MySQL 官方提供的映像檔。
+*   `mysql:8.0`: 指定要使用的 Docker 映像檔。使用 Docker Hub 官方 `mysql` 鏡像。
 *   `--character-set-server=utf8mb4`: 設定 MySQL 伺服器的預設字元集為 `utf8mb4`，以支援更廣泛的字元，包括表情符號。
 *   `--collation-server=utf8mb4_unicode_ci`: 設定伺服器的預設排序規則為 `utf8mb4_unicode_ci`，這是一種不區分大小寫和重音的排序規則。
 *   `--skip-character-set-client-handshake`: 禁用客戶端字元集握手。這有助於確保客戶端和伺服器之間的字元集一致性，避免亂碼問題。
@@ -74,7 +76,7 @@ docker run \
     -p 3306:3306 \
     -d \
     -v mysql_data:/var/lib/mysql \
-    mysql/mysql-server \
+    mysql:8.0 \
     --character-set-server=utf8mb4 \
     --collation-server=utf8mb4_unicode_ci \
     --skip-character-set-client-handshake
@@ -95,7 +97,7 @@ docker run \
     -p 3306:3306 \
     -d \
     -v /path/to/your/mysql_data:/var/lib/mysql \
-    mysql/mysql-server \
+    mysql:8.0 \
     --character-set-server=utf8mb4 \
     --collation-server=utf8mb4_unicode_ci \
     --skip-character-set-client-handshake
@@ -130,6 +132,45 @@ mysql -u root -p
 ```
 
 然後輸入密碼。
+
+### Apple Silicon（M1/M2/M3）注意事項
+
+MySQL 官方鏡像自 8.0.27+ 提供多架構支援（`linux/amd64` + `linux/arm64`），無需指定 platform。
+若使用較舊版本或遇到相容性問題：
+
+```bash
+docker run --platform linux/amd64 mysql:8.0 ...
+```
+
+M1/M2 上也可考慮使用 ARM 原生版本：
+
+```yaml
+services:
+  db:
+    image: mysql:8.0
+    platform: linux/arm64  # M1/M2 原生效能較好
+```
+
+## Docker Compose 搭配 healthcheck
+
+```yaml
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydb
+    volumes:
+      - mysql_data:/var/lib/mysql  # 資料持久化
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:  # named volume，由 Docker 管理
+```
 
 ## 最佳實踐與考量
 

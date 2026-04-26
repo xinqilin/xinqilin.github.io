@@ -1,16 +1,18 @@
 ---
-title: "多階段 Dockerfile：建構跨平台 Selenium 應用程式映像檔"
+title: "Selenium Grid Multi-Architecture Docker 映像建構"
 author: "Bill.Lin"
 date: 2021-07-25T02:21:13+08:00
 draft: false
 tags: ["Docker", "Dockerfile", "Multi-stage Build", "Selenium", "Node.js", "DevOps", "Cross-platform"]
-Description: "本指南詳細介紹如何使用多階段 Dockerfile 建構支援不同 CPU 架構 (ARM64, x86_64) 和瀏覽器 (Firefox, Chrome) 的 Selenium 自動化測試應用程式映像檔，並解析其啟動腳本。"
+Description: "使用 Dockerfile 建構跨 linux/amd64 與 linux/arm64 的 Selenium 多架構映像，處理 NVM 路徑設定與多階段建構"
 Categories: ["DevOps"]
 DisableComments: false
 aliases:
   - /post/DevOps/Dockerfile-docker_in_docker/
 
 ---
+
+> **檔名說明**：本文原名 `Dockerfile-docker_in_docker.md`，但實際內容是 Selenium 多架構映像建構，與 DinD（Docker in Docker）技術無關。標題已更正以符合實際內容。
 
 ## 概述
 
@@ -47,9 +49,11 @@ RUN apt-get update && apt-get install curl -y
 # 安裝 NVM 和指定版本的 Node.js
 # 從 GitHub 下載 NVM 安裝腳本
 RUN curl -o $NVM_DIR/install.sh https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh
-# 執行 NVM 安裝腳本
+# 執行 NVM 安裝腳本（只安裝 NVM 本身，尚未安裝 Node.js）
 RUN /bin/bash $NVM_DIR/install.sh
-# 設定 PATH 環境變數，將 Node.js 可執行檔加入路徑
+# 使用 NVM 安裝並啟用指定版本的 Node.js（必須在 PATH 設定前完成）
+RUN . "$NVM_DIR/nvm.sh" && nvm install $NODE_VERSION && nvm use $NODE_VERSION && nvm alias default $NODE_VERSION
+# 安裝完成後再設定 PATH，確保路徑實際存在
 ENV PATH $NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH
 
 # 複製應用程式檔案
