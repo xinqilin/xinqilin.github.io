@@ -134,7 +134,39 @@
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.post-content table:not(.lntable) {
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+    font-size: 0.95em;
+}
+.post-content table:not(.lntable) thead {
+    background-color: #f6f8fa;
+}
+.post-content table:not(.lntable) th,
+.post-content table:not(.lntable) td {
+    padding: 0.5em 0.9em;
+    border: 1px solid #d0d7de;
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.55;
+}
+.post-content table:not(.lntable) th {
+    font-weight: 600;
+}
+.post-content table:not(.lntable) tbody tr:nth-child(even) {
+    background-color: #fafbfc;
+}
+.post-content table:not(.lntable) code {
+    background-color: rgba(175, 184, 193, 0.2);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    font-size: 0.9em;
 }
 </style>
