@@ -6,292 +6,327 @@
     <description>Recent content in Tags on Bill.Lin&#39;s Notes</description>
     <generator>Hugo</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Mon, 15 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 28 Apr 2026 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://xinqilin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bot Protection</title>
+      <link>https://xinqilin.github.io/tags/bot-protection/</link>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/bot-protection/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CAPTCHA</title>
+      <link>https://xinqilin.github.io/tags/captcha/</link>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/captcha/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cloudflare</title>
+      <link>https://xinqilin.github.io/tags/cloudflare/</link>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/cloudflare/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>https://xinqilin.github.io/tags/security/</link>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spring Boot</title>
+      <link>https://xinqilin.github.io/tags/spring-boot/</link>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/spring-boot/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Turnstile</title>
+      <link>https://xinqilin.github.io/tags/turnstile/</link>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/turnstile/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vue</title>
+      <link>https://xinqilin.github.io/tags/vue/</link>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://xinqilin.github.io/tags/vue/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Algorithm</title>
       <link>https://xinqilin.github.io/tags/algorithm/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/algorithm/</guid>
       <description></description>
     </item>
     <item>
       <title>Architecture</title>
       <link>https://xinqilin.github.io/tags/architecture/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/architecture/</guid>
       <description></description>
     </item>
     <item>
       <title>Backpack</title>
       <link>https://xinqilin.github.io/tags/backpack/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/backpack/</guid>
       <description></description>
     </item>
     <item>
       <title>Clean Architecture</title>
       <link>https://xinqilin.github.io/tags/clean-architecture/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/clean-architecture/</guid>
       <description></description>
     </item>
     <item>
       <title>CLI</title>
       <link>https://xinqilin.github.io/tags/cli/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/cli/</guid>
       <description></description>
     </item>
     <item>
       <title>Concurrency</title>
       <link>https://xinqilin.github.io/tags/concurrency/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/concurrency/</guid>
       <description></description>
     </item>
     <item>
       <title>Connection Pool</title>
       <link>https://xinqilin.github.io/tags/connection-pool/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/connection-pool/</guid>
       <description></description>
     </item>
     <item>
       <title>Container</title>
       <link>https://xinqilin.github.io/tags/container/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/container/</guid>
       <description></description>
     </item>
     <item>
       <title>DDD</title>
       <link>https://xinqilin.github.io/tags/ddd/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/ddd/</guid>
       <description></description>
     </item>
     <item>
       <title>DevOps</title>
       <link>https://xinqilin.github.io/tags/devops/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/devops/</guid>
       <description></description>
     </item>
     <item>
       <title>Dijkstra</title>
       <link>https://xinqilin.github.io/tags/dijkstra/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/dijkstra/</guid>
       <description></description>
     </item>
     <item>
       <title>Distributed Systems</title>
       <link>https://xinqilin.github.io/tags/distributed-systems/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/distributed-systems/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
       <link>https://xinqilin.github.io/tags/docker/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker Compose</title>
       <link>https://xinqilin.github.io/tags/docker-compose/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/docker-compose/</guid>
       <description></description>
     </item>
     <item>
       <title>Dockerfile</title>
       <link>https://xinqilin.github.io/tags/dockerfile/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/dockerfile/</guid>
       <description></description>
     </item>
     <item>
       <title>DP</title>
       <link>https://xinqilin.github.io/tags/dp/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/dp/</guid>
       <description></description>
     </item>
     <item>
       <title>Dynamic Programming</title>
       <link>https://xinqilin.github.io/tags/dynamic-programming/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/dynamic-programming/</guid>
       <description></description>
     </item>
     <item>
       <title>Event-Driven</title>
       <link>https://xinqilin.github.io/tags/event-driven/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/event-driven/</guid>
       <description></description>
     </item>
     <item>
       <title>Graph</title>
       <link>https://xinqilin.github.io/tags/graph/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/graph/</guid>
       <description></description>
     </item>
     <item>
       <title>Hexagonal</title>
       <link>https://xinqilin.github.io/tags/hexagonal/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/hexagonal/</guid>
       <description></description>
     </item>
     <item>
       <title>Hibernate</title>
       <link>https://xinqilin.github.io/tags/hibernate/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/hibernate/</guid>
       <description></description>
     </item>
     <item>
       <title>HikariCP</title>
       <link>https://xinqilin.github.io/tags/hikaricp/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/hikaricp/</guid>
       <description></description>
     </item>
     <item>
       <title>Java</title>
       <link>https://xinqilin.github.io/tags/java/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/java/</guid>
       <description></description>
     </item>
     <item>
       <title>JPA</title>
       <link>https://xinqilin.github.io/tags/jpa/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/jpa/</guid>
       <description></description>
     </item>
     <item>
       <title>Jq</title>
       <link>https://xinqilin.github.io/tags/jq/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/jq/</guid>
       <description></description>
     </item>
     <item>
       <title>JSON</title>
       <link>https://xinqilin.github.io/tags/json/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/json/</guid>
       <description></description>
     </item>
     <item>
       <title>Kafka</title>
       <link>https://xinqilin.github.io/tags/kafka/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/kafka/</guid>
       <description></description>
     </item>
     <item>
       <title>LeetCode</title>
       <link>https://xinqilin.github.io/tags/leetcode/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/leetcode/</guid>
       <description></description>
     </item>
     <item>
       <title>Migration</title>
       <link>https://xinqilin.github.io/tags/migration/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/migration/</guid>
       <description></description>
     </item>
     <item>
       <title>Multi-Stage Build</title>
       <link>https://xinqilin.github.io/tags/multi-stage-build/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/multi-stage-build/</guid>
       <description></description>
     </item>
     <item>
       <title>MySQL</title>
       <link>https://xinqilin.github.io/tags/mysql/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/mysql/</guid>
       <description></description>
     </item>
     <item>
       <title>N&#43;1</title>
       <link>https://xinqilin.github.io/tags/n&#43;1/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/n&#43;1/</guid>
       <description></description>
     </item>
     <item>
       <title>Outbox Pattern</title>
       <link>https://xinqilin.github.io/tags/outbox-pattern/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/outbox-pattern/</guid>
       <description></description>
     </item>
     <item>
       <title>Performance</title>
       <link>https://xinqilin.github.io/tags/performance/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/performance/</guid>
       <description></description>
     </item>
     <item>
       <title>Project Loom</title>
       <link>https://xinqilin.github.io/tags/project-loom/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/project-loom/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Security</title>
-      <link>https://xinqilin.github.io/tags/security/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>https://xinqilin.github.io/tags/security/</guid>
       <description></description>
     </item>
     <item>
       <title>Shell</title>
       <link>https://xinqilin.github.io/tags/shell/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/shell/</guid>
       <description></description>
     </item>
     <item>
       <title>Shortest Path</title>
       <link>https://xinqilin.github.io/tags/shortest-path/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/shortest-path/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Spring Boot</title>
-      <link>https://xinqilin.github.io/tags/spring-boot/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>https://xinqilin.github.io/tags/spring-boot/</guid>
       <description></description>
     </item>
     <item>
       <title>Spring Data</title>
       <link>https://xinqilin.github.io/tags/spring-data/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/spring-data/</guid>
       <description></description>
     </item>
     <item>
       <title>Virtual Threads</title>
       <link>https://xinqilin.github.io/tags/virtual-threads/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/tags/virtual-threads/</guid>
       <description></description>
     </item>

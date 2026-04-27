@@ -1,0 +1,806 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Cloudflare Turnstile 實戰：Vue 3 + Spring Boot 雙端整合 - Bill.Lin's Notes</title><meta name=description content="Cloudflare Turnstile 雙端整合筆記：Vue 3 widget 兩種寫法、Spring Boot siteverify 手寫對照套件，涵蓋 action 防重放、idempotency_key 重試、hostname 安全鎖與完整 error-codes 速查。"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="Cloudflare Turnstile 實戰：Vue 3 + Spring Boot 雙端整合"><meta property="og:description" content="Cloudflare Turnstile 雙端整合筆記：Vue 3 widget 兩種寫法、Spring Boot siteverify 手寫對照套件，涵蓋 action 防重放、idempotency_key 重試、hostname 安全鎖與完整 error-codes 速查。"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/security/cloudflare-turnstile-vue-spring-boot/"></head><body><div class=container><header class=header><nav class=nav><div class=nav-left><a href=https://xinqilin.github.io/ class=nav-title><img src=/images/Bill-coding.svg alt="Site Icon" class=nav-icon>
+Bill.Lin's Notes</a></div><div class=nav-center><a href=https://xinqilin.github.io/ class=avatar-link><div class=avatar-container><div class=avatar-ring></div><img src=/images/Bill-coding.svg alt="Bill's Avatar" class=nav-avatar-center></div></a></div><div class=nav-right><ul class=nav-menu><li class=nav-item><a href=https://xinqilin.github.io/ class=nav-link>Me</a></li><li class=nav-item><a href=/posts/ class="nav-link posts">Posts</a></li><li class=nav-item><a href=/categories/ class="nav-link categories">Categories</a></li><li class=nav-item id=search-container><a href=# id=search-trigger class=nav-link>Search</a>
+<input type=text id=search-input placeholder=Search...><div id=search-results-container></div></li></ul></div></nav></header><style>.container{max-width:1100px}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>Cloudflare Turnstile 實戰：Vue 3 + Spring Boot 雙端整合</h1><div class=post-meta><div class=post-info><time class=post-date>2026年04月28日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>10 分鐘閱讀</span></div><div class=post-categories><a href=/categories/security class=category-link>Security</a></div></div></header><div class=post-content><h2 id=為什麼選-turnstile>為什麼選 Turnstile</h2><table><thead><tr><th>方案</th><th>價格</th><th>使用者體驗</th><th>隱私</th></tr></thead><tbody><tr><td>Cloudflare Turnstile</td><td>免費（無流量上限）</td><td>多數情況完全無感</td><td>不依賴 Google，不發 tracking cookie</td></tr><tr><td>reCAPTCHA v3</td><td>免費（有配額）</td><td>無感，但 score 閾值需自行調</td><td>Google 蒐集使用者行為</td></tr><tr><td>hCaptcha</td><td>有免費層</td><td>可能出現拼圖互動</td><td>較注重隱私，非 Google</td></tr></tbody></table><p>Turnstile 使用 JavaScript challenge + machine learning 評估訪客，大多數真實使用者不需要任何互動即可通過。sitekey 不需要 Cloudflare 付費計畫。</p><hr><h2 id=運作原理與雙端流程>運作原理與雙端流程</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Vue SPA                Cloudflare CDN          Spring Boot 後端
+</span></span><span class=line><span class=cl>  │                          │                        │
+</span></span><span class=line><span class=cl>  │  1. 動態載入 api.js       │                        │
+</span></span><span class=line><span class=cl>  │─────────────────────────▶│                        │
+</span></span><span class=line><span class=cl>  │                          │                        │
+</span></span><span class=line><span class=cl>  │  2. widget 完成挑戰，回傳 token                    │
+</span></span><span class=line><span class=cl>  │◀─────────────────────────│                        │
+</span></span><span class=line><span class=cl>  │                                                    │
+</span></span><span class=line><span class=cl>  │  3. POST /api/contact（含 cf-turnstile-response）  │
+</span></span><span class=line><span class=cl>  │───────────────────────────────────────────────────▶│
+</span></span><span class=line><span class=cl>  │                                                    │
+</span></span><span class=line><span class=cl>  │                   4. POST siteverify（帶 secret）  │
+</span></span><span class=line><span class=cl>  │                          ◀─────────────────────── │
+</span></span><span class=line><span class=cl>  │                          │                        │
+</span></span><span class=line><span class=cl>  │                   5. {&#34;success&#34;: true}            │
+</span></span><span class=line><span class=cl>  │                          ──────────────────────── ▶│
+</span></span><span class=line><span class=cl>  │                                                    │
+</span></span><span class=line><span class=cl>  │  6. 200 OK                                         │
+</span></span><span class=line><span class=cl>  │◀───────────────────────────────────────────────────│
+</span></span></code></pre></td></tr></table></div></div><p>三個核心事實：</p><ul><li><strong>token 由 Cloudflare 發行</strong>，前端只能轉交後端；secret key 永遠不能離開後端</li><li><strong>token TTL = 300 秒（5 分鐘）、一次性</strong>：超時或重放都會回傳 <code>timeout-or-duplicate</code></li><li><strong>token 長度 ≤ 2048 字元</strong>：後端 <code>@RequestParam</code> 要能接收這個長度（Spring Boot 預設無問題）</li></ul><hr><h2 id=第一步在-cloudflare-dashboard-申請-site-key>第一步：在 Cloudflare Dashboard 申請 site key</h2><ol><li>Dashboard → <strong>Turnstile</strong> → Add site</li><li>填 Site name（自訂）</li><li><strong>Hostname</strong>：填正式網域（<code>example.com</code>）；本機測試加 <code>localhost</code></li><li>選 <strong>Widget Mode</strong>：</li></ol><table><thead><tr><th>Mode</th><th>外觀</th><th>何時出拼圖</th></tr></thead><tbody><tr><td>Managed（推薦）</td><td>有 Cloudflare badge</td><td>由 Cloudflare ML 決定，多數無感</td></tr><tr><td>Non-interactive</td><td>有 badge</td><td>永遠不出拼圖，純 JS challenge</td></tr><tr><td>Invisible</td><td>完全隱藏</td><td>無任何 UI，challenge 在背景執行</td></tr></tbody></table><ol start=5><li>取得：<ul><li><strong>Site Key（sitekey）</strong>：公開，放前端，可 commit</li><li><strong>Secret Key</strong>：私密，放後端 env，絕對不能 commit</li></ul></li></ol><hr><h2 id=開發環境用-dummy-keys>開發環境用 dummy keys</h2><p>Cloudflare 提供官方 test keys，不需要真實帳號即可完整測試：</p><p><strong>Sitekeys（前端）</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>1x00000000000000000000AA   visible     always pass
+</span></span><span class=line><span class=cl>2x00000000000000000000AB   visible     always fail
+</span></span><span class=line><span class=cl>1x00000000000000000000BB   invisible   always pass
+</span></span><span class=line><span class=cl>2x00000000000000000000BB   invisible   always fail
+</span></span><span class=line><span class=cl>3x00000000000000000000FF   visible     forces interactive challenge
+</span></span></code></pre></td></tr></table></div></div><p><strong>Secret keys（後端）</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>1x0000000000000000000000000000000AA   always pass
+</span></span><span class=line><span class=cl>2x0000000000000000000000000000000AA   always fail
+</span></span><span class=line><span class=cl>3x0000000000000000000000000000000AA   token already spent (timeout-or-duplicate)
+</span></span></code></pre></td></tr></table></div></div><p>注意：dummy sitekey 產生的 token 格式為 <code>XXXX.DUMMY.TOKEN.XXXX</code>，只能配對 <strong>dummy secret key</strong> 驗證；正式 secret 會拒絕 dummy token。Sitekey 與 secret key 必須成對使用（都 dummy 或都正式）。</p><hr><h2 id=vue-3-前端整合寫法-a--純官方-script--composition-api>Vue 3 前端整合：寫法 A — 純官方 script + Composition API</h2><p>不依賴任何第三方 Vue 套件，直接使用 Cloudflare 的 JS API，框架無關、可遷移到任何前端框架。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-vue data-lang=vue><span class=line><span class=cl><span class=c>&lt;!--</span> <span class=nx>TurnstileWidget</span><span class=p>.</span><span class=nx>vue</span> <span class=o>--&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>setup</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=kr>import</span> <span class=p>{</span> <span class=nx>ref</span><span class=p>,</span> <span class=nx>onMounted</span><span class=p>,</span> <span class=nx>onBeforeUnmount</span> <span class=p>}</span> <span class=nx>from</span> <span class=s1>&#39;vue&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>props</span> <span class=o>=</span> <span class=nx>defineProps</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>  <span class=nx>siteKey</span><span class=o>:</span> <span class=p>{</span> <span class=nx>type</span><span class=o>:</span> <span class=nb>String</span><span class=p>,</span> <span class=nx>required</span><span class=o>:</span> <span class=kc>true</span> <span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>emit</span> <span class=o>=</span> <span class=nx>defineEmits</span><span class=p>([</span><span class=s1>&#39;update:token&#39;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>widgetId</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=kc>null</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>errorMsg</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>loadScript</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=k>new</span> <span class=nb>Promise</span><span class=p>((</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;cf-turnstile-script&#39;</span><span class=p>))</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>resolve</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>script</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;script&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nx>script</span><span class=p>.</span><span class=nx>id</span> <span class=o>=</span> <span class=s1>&#39;cf-turnstile-script&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>script</span><span class=p>.</span><span class=nx>src</span> <span class=o>=</span> <span class=s1>&#39;https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>script</span><span class=p>.</span><span class=nx>onload</span> <span class=o>=</span> <span class=nx>resolve</span>
+</span></span><span class=line><span class=cl>    <span class=nx>script</span><span class=p>.</span><span class=nx>onerror</span> <span class=o>=</span> <span class=nx>reject</span>
+</span></span><span class=line><span class=cl>    <span class=nb>document</span><span class=p>.</span><span class=nx>head</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>script</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>onMounted</span><span class=p>(</span><span class=nx>async</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>await</span> <span class=nx>loadScript</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>  <span class=nb>window</span><span class=p>.</span><span class=nx>turnstile</span><span class=p>.</span><span class=nx>ready</span><span class=p>(()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>widgetId</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=nb>window</span><span class=p>.</span><span class=nx>turnstile</span><span class=p>.</span><span class=nx>render</span><span class=p>(</span><span class=s1>&#39;#cf-widget&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>sitekey</span><span class=o>:</span> <span class=nx>props</span><span class=p>.</span><span class=nx>siteKey</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>callback</span><span class=o>:</span> <span class=p>(</span><span class=nx>token</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;update:token&#39;</span><span class=p>,</span> <span class=nx>token</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nx>errorMsg</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=s1>&#39;expired-callback&#39;</span><span class=o>:</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;update:token&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=s1>&#39;error-callback&#39;</span><span class=o>:</span> <span class=p>(</span><span class=nx>code</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>errorMsg</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=sb>`驗證失敗（</span><span class=si>${</span><span class=nx>code</span><span class=si>}</span><span class=sb>）`</span>
+</span></span><span class=line><span class=cl>        <span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;update:token&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=s1>&#39;timeout-callback&#39;</span><span class=o>:</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>errorMsg</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=s1>&#39;挑戰逾時，請重試&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;update:token&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>onBeforeUnmount</span><span class=p>(()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>widgetId</span><span class=p>.</span><span class=nx>value</span> <span class=o>!==</span> <span class=kc>null</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>window</span><span class=p>.</span><span class=nx>turnstile</span><span class=p>.</span><span class=nx>remove</span><span class=p>(</span><span class=nx>widgetId</span><span class=p>.</span><span class=nx>value</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>reset</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>widgetId</span><span class=p>.</span><span class=nx>value</span> <span class=o>!==</span> <span class=kc>null</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>window</span><span class=p>.</span><span class=nx>turnstile</span><span class=p>.</span><span class=nx>reset</span><span class=p>(</span><span class=nx>widgetId</span><span class=p>.</span><span class=nx>value</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;update:token&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>defineExpose</span><span class=p>({</span> <span class=nx>reset</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;cf-widget&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>p</span> <span class=nt>v-if</span><span class=o>=</span><span class=s>&#34;errorMsg&#34;</span><span class=p>&gt;{{</span> <span class=na>errorMsg</span> <span class=p>}}&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>環境變數（Vite）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># .env.development</span>
+</span></span><span class=line><span class=cl><span class=nv>VITE_TURNSTILE_SITE_KEY</span><span class=o>=</span>1x00000000000000000000AA
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># .env.production</span>
+</span></span><span class=line><span class=cl><span class=nv>VITE_TURNSTILE_SITE_KEY</span><span class=o>=</span>0x4AAAAAABxxxxxxxxxx
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=vue-3-前端整合寫法-b--vue-turnstile-套件>Vue 3 前端整合：寫法 B — vue-turnstile 套件</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>pnpm add vue-turnstile
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-vue data-lang=vue><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>setup</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=kr>import</span> <span class=p>{</span> <span class=nx>ref</span> <span class=p>}</span> <span class=nx>from</span> <span class=s1>&#39;vue&#39;</span>
+</span></span><span class=line><span class=cl><span class=kr>import</span> <span class=nx>VueTurnstile</span> <span class=nx>from</span> <span class=s1>&#39;vue-turnstile&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>SITE_KEY</span> <span class=o>=</span> <span class=kr>import</span><span class=p>.</span><span class=nx>meta</span><span class=p>.</span><span class=nx>env</span><span class=p>.</span><span class=nx>VITE_TURNSTILE_SITE_KEY</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>token</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>tsRef</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=kc>null</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>reset</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>tsRef</span><span class=p>.</span><span class=nx>value</span><span class=o>?</span><span class=p>.</span><span class=nx>reset</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>  <span class=nx>token</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>defineExpose</span><span class=p>({</span> <span class=nx>reset</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>VueTurnstile</span>
+</span></span><span class=line><span class=cl>    <span class=na>ref</span><span class=o>=</span><span class=s>&#34;tsRef&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>:site-key</span><span class=o>=</span><span class=s>&#34;SITE_KEY&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>v-model</span><span class=o>=</span><span class=s>&#34;token&#34;</span><span class=p>
+</span></span></span><span class=line><span class=cl>    <span class=na>theme</span><span class=o>=</span><span class=s>&#34;auto&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>@error</span><span class=s>=&#34;(code) =&gt; console.warn(&#39;Turnstile error:&#39;, code)&#34;</span><span class=p>
+</span></span></span><span class=line><span class=cl>  <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>兩種前端寫法比較</strong></p><table><thead><tr><th>面向</th><th>寫法 A（純官方）</th><th>寫法 B（vue-turnstile）</th></tr></thead><tbody><tr><td>行數</td><td>~45 行</td><td>~20 行</td></tr><tr><td>框架依賴</td><td>無，可遷移到 React/Svelte</td><td>需 <code>vue-turnstile</code> 套件</td></tr><tr><td>reset 方式</td><td><code>turnstile.reset(widgetId)</code></td><td><code>tsRef.value.reset()</code></td></tr><tr><td>SSR / Nuxt</td><td>需 <code>process.client</code> 判斷</td><td>需確認套件版本是否支援</td></tr><tr><td>升級風險</td><td>直接跟官方 API 走</td><td>套件可能落後官方更新</td></tr></tbody></table><hr><h2 id=spring-boot-後端驗證寫法-a--手寫-restclient--dto>Spring Boot 後端驗證：寫法 A — 手寫 RestClient + DTO</h2><p><strong>技術棧</strong>：Spring Boot 4.x、Java 21（RestClient 為 Spring 6.1+ 引入，Spring Boot 4 延續此 API）</p><blockquote><p><strong>Spring Boot 4 vs 3 差異（本文相關）</strong></p><ul><li>Spring Framework 7.0、Spring Security 7.0、Jakarta EE Servlet 6.1</li><li><strong>Jackson 3.0 成為標準</strong>：<code>@JsonProperty</code> 的 import 路徑從 <code>com.fasterxml.jackson.annotation.JsonProperty</code>（Jackson 2，現已 deprecated）改為 <code>tools.jackson.annotation.JsonProperty</code>；Spring Boot 4 新專案請用 Jackson 3 import</li><li><code>RestClient</code>、<code>@ConfigurationProperties</code> record、<code>LinkedMultiValueMap</code> API 無 breaking change</li><li>Spring Boot 3.x 的程式碼只需調整 Jackson import，其他可直接沿用</li></ul></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># application.yml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>app</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>turnstile</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>secret</span><span class=p>:</span><span class=w> </span><span class=l>${TURNSTILE_SECRET}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>verify-url</span><span class=p>:</span><span class=w> </span><span class=l>https://challenges.cloudflare.com/turnstile/v0/siteverify</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// TurnstileProperties.java</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@ConfigurationProperties</span><span class=p>(</span><span class=s>&#34;app.turnstile&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>record</span> <span class=nc>TurnstileProperties</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>secret</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>verifyUrl</span><span class=p>)</span><span class=w> </span><span class=p>{}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// SiteverifyResponse.java</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// Spring Boot 4（Jackson 3）：import tools.jackson.annotation.JsonProperty;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c1>// Spring Boot 3（Jackson 2，deprecated in SB4）：import com.fasterxml.jackson.annotation.JsonProperty;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>record</span> <span class=nc>SiteverifyResponse</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>boolean</span><span class=w> </span><span class=n>success</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@JsonProperty</span><span class=p>(</span><span class=s>&#34;error-codes&#34;</span><span class=p>)</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>errorCodes</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>hostname</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@JsonProperty</span><span class=p>(</span><span class=s>&#34;challenge_ts&#34;</span><span class=p>)</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>challengeTs</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>action</span><span class=p>)</span><span class=w> </span><span class=p>{}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// VerifyResult.java</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>record</span> <span class=nc>VerifyResult</span><span class=p>(</span><span class=kt>boolean</span><span class=w> </span><span class=n>ok</span><span class=p>,</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>errorCodes</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>VerifyResult</span><span class=w> </span><span class=nf>success</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>VerifyResult</span><span class=p>(</span><span class=kc>true</span><span class=p>,</span><span class=w> </span><span class=n>List</span><span class=p>.</span><span class=na>of</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>VerifyResult</span><span class=w> </span><span class=nf>failure</span><span class=p>(</span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>codes</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>VerifyResult</span><span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=n>codes</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=n>codes</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>List</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;internal-error&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// TurnstileService.java</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>TurnstileService</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>RestClient</span><span class=w> </span><span class=n>restClient</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>TurnstileProperties</span><span class=w> </span><span class=n>props</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>TurnstileService</span><span class=p>(</span><span class=n>RestClient</span><span class=p>.</span><span class=na>Builder</span><span class=w> </span><span class=n>builder</span><span class=p>,</span><span class=w> </span><span class=n>TurnstileProperties</span><span class=w> </span><span class=n>props</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>restClient</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>builder</span><span class=p>.</span><span class=na>build</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>props</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>props</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>VerifyResult</span><span class=w> </span><span class=nf>verify</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>token</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>remoteIp</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>var</span><span class=w> </span><span class=n>form</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>LinkedMultiValueMap</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=o>&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>form</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;secret&#34;</span><span class=p>,</span><span class=w> </span><span class=n>props</span><span class=p>.</span><span class=na>secret</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>form</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;response&#34;</span><span class=p>,</span><span class=w> </span><span class=n>token</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>remoteIp</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>remoteIp</span><span class=p>.</span><span class=na>isBlank</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>form</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;remoteip&#34;</span><span class=p>,</span><span class=w> </span><span class=n>remoteIp</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>SiteverifyResponse</span><span class=w> </span><span class=n>resp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>restClient</span><span class=p>.</span><span class=na>post</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>uri</span><span class=p>(</span><span class=n>props</span><span class=p>.</span><span class=na>verifyUrl</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>contentType</span><span class=p>(</span><span class=n>MediaType</span><span class=p>.</span><span class=na>APPLICATION_FORM_URLENCODED</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>body</span><span class=p>(</span><span class=n>form</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>retrieve</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>body</span><span class=p>(</span><span class=n>SiteverifyResponse</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>resp</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>resp</span><span class=p>.</span><span class=na>success</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=o>?</span><span class=w> </span><span class=n>VerifyResult</span><span class=p>.</span><span class=na>success</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>:</span><span class=w> </span><span class=n>VerifyResult</span><span class=p>.</span><span class=na>failure</span><span class=p>(</span><span class=n>resp</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=n>resp</span><span class=p>.</span><span class=na>errorCodes</span><span class=p>()</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=kc>null</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>VerifyResult</span><span class=w> </span><span class=nf>verifyWithIdempotencyKey</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>token</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>remoteIp</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>idempotencyKey</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>var</span><span class=w> </span><span class=n>form</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>LinkedMultiValueMap</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=o>&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>form</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;secret&#34;</span><span class=p>,</span><span class=w> </span><span class=n>props</span><span class=p>.</span><span class=na>secret</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>form</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;response&#34;</span><span class=p>,</span><span class=w> </span><span class=n>token</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>remoteIp</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>remoteIp</span><span class=p>.</span><span class=na>isBlank</span><span class=p>())</span><span class=w> </span><span class=n>form</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;remoteip&#34;</span><span class=p>,</span><span class=w> </span><span class=n>remoteIp</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>idempotencyKey</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>idempotencyKey</span><span class=p>.</span><span class=na>isBlank</span><span class=p>())</span><span class=w> </span><span class=n>form</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;idempotency_key&#34;</span><span class=p>,</span><span class=w> </span><span class=n>idempotencyKey</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>SiteverifyResponse</span><span class=w> </span><span class=n>resp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>restClient</span><span class=p>.</span><span class=na>post</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>uri</span><span class=p>(</span><span class=n>props</span><span class=p>.</span><span class=na>verifyUrl</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>contentType</span><span class=p>(</span><span class=n>MediaType</span><span class=p>.</span><span class=na>APPLICATION_FORM_URLENCODED</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>body</span><span class=p>(</span><span class=n>form</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>retrieve</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>body</span><span class=p>(</span><span class=n>SiteverifyResponse</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=p>(</span><span class=n>resp</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>resp</span><span class=p>.</span><span class=na>success</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=o>?</span><span class=w> </span><span class=n>VerifyResult</span><span class=p>.</span><span class=na>success</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>:</span><span class=w> </span><span class=n>VerifyResult</span><span class=p>.</span><span class=na>failure</span><span class=p>(</span><span class=n>resp</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=n>resp</span><span class=p>.</span><span class=na>errorCodes</span><span class=p>()</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=kc>null</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>啟動類別或任一 <code>@Configuration</code> 上加 <code>@EnableConfigurationProperties</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootApplication</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@EnableConfigurationProperties</span><span class=p>(</span><span class=n>TurnstileProperties</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>App</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=n>SpringApplication</span><span class=p>.</span><span class=na>run</span><span class=p>(</span><span class=n>App</span><span class=p>.</span><span class=na>class</span><span class=p>,</span><span class=w> </span><span class=n>args</span><span class=p>);</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=spring-boot-後端驗證寫法-b--springcfturnstile-套件>Spring Boot 後端驗證：寫法 B — springcfturnstile 套件</h2><p>GitHub：<code>https://github.com/devondragon/springcfturnstile</code>（請至 Releases 確認最新版號）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-kotlin data-lang=kotlin><span class=line><span class=cl><span class=c1>// build.gradle.kts
+</span></span></span><span class=line><span class=cl><span class=n>implementation</span><span class=p>(</span><span class=s2>&#34;com.digitalsanctuary:spring-cf-turnstile-starter:最新版&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># application.yml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>ds</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>cf</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turnstile</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>sitekey</span><span class=p>:</span><span class=w> </span><span class=l>${TURNSTILE_SITE_KEY}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>secret</span><span class=p>:</span><span class=w> </span><span class=l>${TURNSTILE_SECRET}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># connect-timeout: 5   # 預設 5 秒</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># read-timeout: 10      # 預設 10 秒</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Slf4j</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@RestController</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@RequiredArgsConstructor</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@RequestMapping</span><span class=p>(</span><span class=s>&#34;/api&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ContactController</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>TurnstileValidationService</span><span class=w> </span><span class=n>turnstileService</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@PostMapping</span><span class=p>(</span><span class=s>&#34;/contact&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>ResponseEntity</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>contact</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nd>@RequestParam</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nd>@RequestParam</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nd>@RequestParam</span><span class=p>(</span><span class=s>&#34;cf-turnstile-response&#34;</span><span class=p>)</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>cfToken</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>clientIp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>turnstileService</span><span class=p>.</span><span class=na>getClientIpAddress</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>boolean</span><span class=w> </span><span class=n>valid</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>turnstileService</span><span class=p>.</span><span class=na>validateTurnstileResponse</span><span class=p>(</span><span class=n>cfToken</span><span class=p>,</span><span class=w> </span><span class=n>clientIp</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>valid</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>log</span><span class=p>.</span><span class=na>warn</span><span class=p>(</span><span class=s>&#34;Turnstile failed for ip={}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>clientIp</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>ResponseEntity</span><span class=p>.</span><span class=na>status</span><span class=p>(</span><span class=n>HttpStatus</span><span class=p>.</span><span class=na>FORBIDDEN</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>body</span><span class=p>(</span><span class=n>Map</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;error&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;CAPTCHA verification failed&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 業務邏輯...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>ResponseEntity</span><span class=p>.</span><span class=na>ok</span><span class=p>(</span><span class=n>Map</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;status&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;received&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>套件也提供 <code>validateTurnstileResponseDetailed(token, ip)</code> 回傳 <code>ValidationResult</code>，含 <code>ValidationResultType</code> enum（SUCCESS / INVALID_TOKEN / NETWORK_ERROR / CONFIGURATION_ERROR / INPUT_ERROR），適合需要細分錯誤的場景。</p><p><strong>兩種後端寫法比較</strong></p><table><thead><tr><th>面向</th><th>寫法 A（手寫）</th><th>寫法 B（套件）</th></tr></thead><tbody><tr><td>額外依賴</td><td>無</td><td>1 個 starter</td></tr><tr><td>可自訂（retry、circuit breaker）</td><td>是</td><td>受限於套件實作</td></tr><tr><td>內建 Metrics / Health check</td><td>需自行加</td><td>有（可選啟用）</td></tr><tr><td>Spring Security filter 整合</td><td>無</td><td>提供 <code>/login</code> filter 選項</td></tr><tr><td>學習透明度</td><td>高</td><td>中</td></tr></tbody></table><hr><h2 id=完整串接聯絡表單-post-apicontact>完整串接：聯絡表單 POST /api/contact</h2><h3 id=vue-側>Vue 側</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-vue data-lang=vue><span class=line><span class=cl><span class=c>&lt;!--</span> <span class=nx>ContactPage</span><span class=p>.</span><span class=nx>vue</span> <span class=err>—</span> <span class=nx>使用寫法</span> <span class=nx>A</span> <span class=nx>的</span> <span class=nx>TurnstileWidget</span> <span class=o>--&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>setup</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=kr>import</span> <span class=p>{</span> <span class=nx>ref</span> <span class=p>}</span> <span class=nx>from</span> <span class=s1>&#39;vue&#39;</span>
+</span></span><span class=line><span class=cl><span class=kr>import</span> <span class=nx>TurnstileWidget</span> <span class=nx>from</span> <span class=s1>&#39;./TurnstileWidget.vue&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>SITE_KEY</span> <span class=o>=</span> <span class=kr>import</span><span class=p>.</span><span class=nx>meta</span><span class=p>.</span><span class=nx>env</span><span class=p>.</span><span class=nx>VITE_TURNSTILE_SITE_KEY</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>tsRef</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=kc>null</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>name</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>message</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>token</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>status</span> <span class=o>=</span> <span class=nx>ref</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>async</span> <span class=kd>function</span> <span class=nx>submit</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=nx>token</span><span class=p>.</span><span class=nx>value</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>status</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=s1>&#39;請先完成人機驗證&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>body</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>URLSearchParams</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>    <span class=nx>name</span><span class=o>:</span> <span class=nx>name</span><span class=p>.</span><span class=nx>value</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>message</span><span class=o>:</span> <span class=nx>message</span><span class=p>.</span><span class=nx>value</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s1>&#39;cf-turnstile-response&#39;</span><span class=o>:</span> <span class=nx>token</span><span class=p>.</span><span class=nx>value</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>res</span> <span class=o>=</span> <span class=nx>await</span> <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;/api/contact&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>method</span><span class=o>:</span> <span class=s1>&#39;POST&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>headers</span><span class=o>:</span> <span class=p>{</span> <span class=s1>&#39;Content-Type&#39;</span><span class=o>:</span> <span class=s1>&#39;application/x-www-form-urlencoded&#39;</span> <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nx>body</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>res</span><span class=p>.</span><span class=nx>ok</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>status</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=s1>&#39;送出成功&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>name</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>message</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>status</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=s1>&#39;送出失敗，請重試&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>tsRef</span><span class=p>.</span><span class=nx>value</span><span class=o>?</span><span class=p>.</span><span class=nx>reset</span><span class=p>()</span>   <span class=c1>// token 已失效，強制重新驗證
+</span></span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>form</span> <span class=nt>@submit.prevent</span><span class=s>=&#34;submit&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>input</span> <span class=nt>v-model</span><span class=o>=</span><span class=s>&#34;name&#34; placeholder=&#34;姓名&#34;</span><span class=p> </span><span class=na>required</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>textarea</span> <span class=nt>v-model</span><span class=o>=</span><span class=s>&#34;message&#34; placeholder=&#34;訊息&#34;</span><span class=p> </span><span class=na>required</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>TurnstileWidget</span> <span class=na>ref</span><span class=o>=</span><span class=s>&#34;tsRef&#34;</span> <span class=nt>:site-key</span><span class=o>=</span><span class=s>&#34;SITE_KEY&#34;</span> <span class=err>@</span><span class=na>update</span><span class=o>:</span><span class=na>token</span><span class=o>=</span><span class=s>&#34;(t) =&gt; token = t&#34;</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>button</span> <span class=na>type</span><span class=o>=</span><span class=s>&#34;submit&#34;</span> <span class=nt>:disabled</span><span class=o>=</span><span class=s>&#34;!token&#34;</span><span class=p>&gt;</span><span class=nx>送出</span><span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>form</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;{{</span> <span class=nx>status</span> <span class=p>}}&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>template</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=spring-boot-側手寫-turnstileservice>Spring Boot 側（手寫 TurnstileService）</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Slf4j</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@RestController</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@RequiredArgsConstructor</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@RequestMapping</span><span class=p>(</span><span class=s>&#34;/api&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ContactController</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>TurnstileService</span><span class=w> </span><span class=n>turnstileService</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@PostMapping</span><span class=p>(</span><span class=n>path</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;/contact&#34;</span><span class=p>,</span><span class=w> </span><span class=n>consumes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>MediaType</span><span class=p>.</span><span class=na>APPLICATION_FORM_URLENCODED_VALUE</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>ResponseEntity</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>contact</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nd>@RequestParam</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nd>@RequestParam</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nd>@RequestParam</span><span class=p>(</span><span class=s>&#34;cf-turnstile-response&#34;</span><span class=p>)</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>cfToken</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>clientIp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>extractClientIp</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>VerifyResult</span><span class=w> </span><span class=n>result</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>turnstileService</span><span class=p>.</span><span class=na>verify</span><span class=p>(</span><span class=n>cfToken</span><span class=p>,</span><span class=w> </span><span class=n>clientIp</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>result</span><span class=p>.</span><span class=na>ok</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>log</span><span class=p>.</span><span class=na>warn</span><span class=p>(</span><span class=s>&#34;Turnstile failed: codes={} ip={}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>result</span><span class=p>.</span><span class=na>errorCodes</span><span class=p>(),</span><span class=w> </span><span class=n>clientIp</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>ResponseEntity</span><span class=p>.</span><span class=na>status</span><span class=p>(</span><span class=n>HttpStatus</span><span class=p>.</span><span class=na>FORBIDDEN</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>body</span><span class=p>(</span><span class=n>Map</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;error&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;CAPTCHA verification failed&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>log</span><span class=p>.</span><span class=na>info</span><span class=p>(</span><span class=s>&#34;Contact form submitted: name={}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>name</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 業務邏輯：寄信、存 DB...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>ResponseEntity</span><span class=p>.</span><span class=na>ok</span><span class=p>(</span><span class=n>Map</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;status&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;received&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>extractClientIp</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>xff</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getHeader</span><span class=p>(</span><span class=s>&#34;X-Forwarded-For&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>xff</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>xff</span><span class=p>.</span><span class=na>isBlank</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>xff</span><span class=p>.</span><span class=na>split</span><span class=p>(</span><span class=s>&#34;,&#34;</span><span class=p>)</span><span class=o>[</span><span class=n>0</span><span class=o>]</span><span class=p>.</span><span class=na>trim</span><span class=p>();</span><span class=w>   </span><span class=c1>// 取第一個（最原始的客戶端 IP）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getRemoteAddr</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>CORS（前後端分離時）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CorsConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>CorsConfigurationSource</span><span class=w> </span><span class=nf>corsConfigurationSource</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>var</span><span class=w> </span><span class=n>config</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CorsConfiguration</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>config</span><span class=p>.</span><span class=na>setAllowedOrigins</span><span class=p>(</span><span class=n>List</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;https://your-domain.com&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>config</span><span class=p>.</span><span class=na>setAllowedMethods</span><span class=p>(</span><span class=n>List</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;POST&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;OPTIONS&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// allowCredentials 若設 true，allowedOrigins 就不能用 &#34;*&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>var</span><span class=w> </span><span class=n>source</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>UrlBasedCorsConfigurationSource</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>source</span><span class=p>.</span><span class=na>registerCorsConfiguration</span><span class=p>(</span><span class=s>&#34;/api/**&#34;</span><span class=p>,</span><span class=w> </span><span class=n>config</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>source</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=進階安全idempotency_keyactionhostnameip-綁定>進階安全：idempotency_key、action、hostname、IP 綁定</h2><h3 id=idempotency_key--安全重試>idempotency_key — 安全重試</h3><p>token 是一次性的，若後端因網路抖動打 siteverify 失敗後想重試，<strong>重試必須帶同一個 UUID 作為 idempotency_key</strong>，Cloudflare 不會將它判定為重放：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// 前端每次 submit 生成一個 UUID，含在請求 body 中傳給後端
+</span></span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>idempotencyKey</span> <span class=o>=</span> <span class=nx>crypto</span><span class=p>.</span><span class=nx>randomUUID</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=nx>body</span><span class=p>.</span><span class=nx>append</span><span class=p>(</span><span class=s1>&#39;idempotency_key&#39;</span><span class=p>,</span> <span class=nx>idempotencyKey</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>後端收到 <code>idempotency_key</code> 後帶入 <code>verifyWithIdempotencyKey()</code>，Cloudflare 對同一 idempotency_key 回傳相同結果（快取 5 分鐘）。</p><h3 id=action--防跨表單-replay>action — 防跨表單 replay</h3><p>前端 widget 加 <code>data-action</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nb>window</span><span class=p>.</span><span class=nx>turnstile</span><span class=p>.</span><span class=nx>render</span><span class=p>(</span><span class=s1>&#39;#cf-widget&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>sitekey</span><span class=o>:</span> <span class=nx>SITE_KEY</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>action</span><span class=o>:</span> <span class=s1>&#39;contact-form&#39;</span><span class=p>,</span>   <span class=c1>// 對應表單用途
+</span></span></span><span class=line><span class=cl>  <span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span></code></pre></td></tr></table></div></div><p>後端驗 token 成功後比對 <code>action</code> 欄位：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=s>&#34;contact-form&#34;</span><span class=p>.</span><span class=na>equals</span><span class=p>(</span><span class=n>resp</span><span class=p>.</span><span class=na>action</span><span class=p>()))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>log</span><span class=p>.</span><span class=na>warn</span><span class=p>(</span><span class=s>&#34;Turnstile action mismatch: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>resp</span><span class=p>.</span><span class=na>action</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>VerifyResult</span><span class=p>.</span><span class=na>failure</span><span class=p>(</span><span class=n>List</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;action-mismatch&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>防止攻擊者把登入頁或其他表單產生的 token 拿來打聯絡表單 API（cross-form replay）。</p><h3 id=hostname-鎖>hostname 鎖</h3><p>Dashboard 設定的 hostname 是第一道鎖，後端 double-check 是第二道：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=s>&#34;your-domain.com&#34;</span><span class=p>.</span><span class=na>equals</span><span class=p>(</span><span class=n>resp</span><span class=p>.</span><span class=na>hostname</span><span class=p>()))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>log</span><span class=p>.</span><span class=na>warn</span><span class=p>(</span><span class=s>&#34;Turnstile hostname mismatch: {}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>resp</span><span class=p>.</span><span class=na>hostname</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>VerifyResult</span><span class=p>.</span><span class=na>failure</span><span class=p>(</span><span class=n>List</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=s>&#34;invalid-hostname&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>防止 sitekey 被其他網站偷用後拿到有效 token。</p><h3 id=ip-綁定remoteip>IP 綁定（remoteip）</h3><p>把 client IP 一起送給 siteverify，Cloudflare 在評分時納入 IP 信譽，提高機器人辨識率：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>form</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;remoteip&#34;</span><span class=p>,</span><span class=w> </span><span class=n>extractClientIp</span><span class=p>(</span><span class=n>request</span><span class=p>));</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>注意：<code>X-Forwarded-For</code> 可以被用戶端偽造，只在信任上游 proxy（Cloudflare / Nginx）時才可靠；不確定就直接用 <code>request.getRemoteAddr()</code>。</p><h3 id=5-分鐘-ttl--前端提早-reset>5 分鐘 TTL — 前端提早 reset</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>RESET_BEFORE_EXPIRE_MS</span> <span class=o>=</span> <span class=mi>280_000</span>  <span class=c1>// 提早 20 秒重置
+</span></span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>let</span> <span class=nx>resetTimer</span> <span class=o>=</span> <span class=kc>null</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>callback</span><span class=o>:</span> <span class=p>(</span><span class=nx>token</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;update:token&#39;</span><span class=p>,</span> <span class=nx>token</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=nx>clearTimeout</span><span class=p>(</span><span class=nx>resetTimer</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=nx>resetTimer</span> <span class=o>=</span> <span class=nx>setTimeout</span><span class=p>(()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>window</span><span class=p>.</span><span class=nx>turnstile</span><span class=p>.</span><span class=nx>reset</span><span class=p>(</span><span class=nx>widgetId</span><span class=p>.</span><span class=nx>value</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;update:token&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span> <span class=nx>RESET_BEFORE_EXPIRE_MS</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=s1>&#39;expired-callback&#39;</span><span class=o>:</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>clearTimeout</span><span class=p>(</span><span class=nx>resetTimer</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;update:token&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>},</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=所有-error-codes-速查表>所有 error-codes 速查表</h2><table><thead><tr><th>error-code</th><th>觸發原因</th><th>處理建議</th></tr></thead><tbody><tr><td><code>missing-input-secret</code></td><td>後端沒帶 <code>secret</code> 欄位</td><td>檢查 env 注入、<code>@ConfigurationProperties</code> 是否啟用</td></tr><tr><td><code>invalid-input-secret</code></td><td><code>secret</code> 值錯誤</td><td>比對 dashboard 對應 widget 的 secret key</td></tr><tr><td><code>missing-input-response</code></td><td>後端沒帶 <code>response</code>（token）欄位</td><td>前端 form 的 <code>cf-turnstile-response</code> binding 有誤</td></tr><tr><td><code>invalid-input-response</code></td><td>token 格式錯、已篡改，或正式 secret 配 dummy token</td><td>通常是攻擊；log 並回 403</td></tr><tr><td><code>bad-request</code></td><td>請求格式不對（如 JSON body 而非 form-encoded）</td><td>確認 <code>Content-Type: application/x-www-form-urlencoded</code></td></tr><tr><td><code>timeout-or-duplicate</code></td><td>token 超過 300 秒，或已被驗證過一次</td><td>前端 <code>resetWidget()</code>；使用 <code>idempotency_key</code> 避免網路重試誤判</td></tr><tr><td><code>internal-error</code></td><td>Cloudflare 自身問題</td><td>重試（exponential backoff）；不要直接 block 使用者</td></tr></tbody></table><hr><h2 id=陷阱與監控>陷阱與監控</h2><h3 id=陷阱一spa-路由切換-widget-殘留>陷阱一：SPA 路由切換 widget 殘留</h3><p>Vue Router 切換路由後，若元件沒有正確 unmount，下次回來 <code>turnstile.render</code> 會找到 DOM 上殘留的舊 widget，導致 <code>widgetId</code> 錯亂、token callback 不觸發。</p><p><strong>必須</strong>在 <code>onBeforeUnmount</code> 呼叫 <code>window.turnstile.remove(widgetId.value)</code> 清除 widget。</p><h3 id=陷阱二submit-失敗後-token-重用>陷阱二：Submit 失敗後 token 重用</h3><p>後端 500 或業務邏輯失敗後，前端沒有 reset 就重送請求，第二次送出的是已被 siteverify 消耗過的舊 token，後端會收到 <code>timeout-or-duplicate</code>。</p><p><strong>解法</strong>：每次 submit 失敗後呼叫 <code>tsRef.value.reset()</code>，強制使用者重新完成挑戰。</p><h3 id=陷阱三dummy-keys-成對問題>陷阱三：dummy keys 成對問題</h3><p><code>VITE_TURNSTILE_SITE_KEY</code> 用 dummy sitekey（<code>1x00000000000000000000AA</code>），但 <code>TURNSTILE_SECRET</code> 誤設為正式 secret key，siteverify 會回 <code>invalid-input-response</code>。</p><p><strong>解法</strong>：<code>.env.development</code> 同時設 dummy sitekey 和 dummy secret，<code>.env.production</code> 同時設正式兩者。</p><h3 id=陷阱四hot-reload-重複-append-script>陷阱四：Hot reload 重複 append script</h3><p>Vite HMR 重新 mount 元件時，<code>loadScript()</code> 若沒有偵測既有 <code>&lt;script></code> 是否存在，會重複 append 同一個 URL，導致 <code>turnstile</code> 全域物件重新初始化。</p><p><strong>解法</strong>：<code>document.getElementById('cf-turnstile-script')</code> 存在則直接 <code>resolve()</code>（寫法 A 已處理）。</p><h3 id=監控>監控</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 注入 MeterRegistry，每次 verify 後記錄結果</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>MeterRegistry</span><span class=w> </span><span class=n>meterRegistry</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>VerifyResult</span><span class=w> </span><span class=n>result</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>turnstileService</span><span class=p>.</span><span class=na>verify</span><span class=p>(</span><span class=n>token</span><span class=p>,</span><span class=w> </span><span class=n>ip</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>meterRegistry</span><span class=p>.</span><span class=na>counter</span><span class=p>(</span><span class=s>&#34;turnstile.verify&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;result&#34;</span><span class=p>,</span><span class=w> </span><span class=n>result</span><span class=p>.</span><span class=na>ok</span><span class=p>()</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=s>&#34;success&#34;</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=s>&#34;fail&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;error_code&#34;</span><span class=p>,</span><span class=w> </span><span class=n>result</span><span class=p>.</span><span class=na>ok</span><span class=p>()</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=s>&#34;none&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>:</span><span class=w> </span><span class=p>(</span><span class=n>result</span><span class=p>.</span><span class=na>errorCodes</span><span class=p>().</span><span class=na>isEmpty</span><span class=p>()</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=s>&#34;unknown&#34;</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>result</span><span class=p>.</span><span class=na>errorCodes</span><span class=p>().</span><span class=na>get</span><span class=p>(</span><span class=n>0</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>).</span><span class=na>increment</span><span class=p>();</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>建議：<code>result=fail</code> 比例連續 5 分鐘超過 10% 觸發告警，通常代表 secret 設定錯誤或前端 token 傳不到後端。</p><hr><h2 id=小結>小結</h2><ul><li><strong>後端 siteverify 才是安全防線</strong>，前端 widget 完成只代表拿到 token；token 合不合法由後端呼叫 Cloudflare 決定</li><li><strong>secret 永遠 env</strong>，透過 <code>${TURNSTILE_SECRET}</code> 注入，不得 hardcode，不得出現在任何 git commit 中</li><li><strong>5 分鐘 + 一次性</strong>：前端需處理 <code>expired-callback</code>，submit 失敗後必須 <code>reset()</code></li><li><strong>進階四件套</strong>：<code>idempotency_key</code>（安全重試）、<code>action</code>（防跨表單 replay）、<code>hostname</code>（防 sitekey 盜用）、<code>remoteip</code>（提高 bot 辨識率）</li><li><strong>dev 用 dummy keys</strong>：<code>1x00000000000000000000AA</code>（sitekey）+ <code>1x0000000000000000000000000000000AA</code>（secret），CI 測試不需要真實 Cloudflare 帳號</li></ul><hr><h2 id=參考資料>參考資料</h2><ul><li>Cloudflare Turnstile 官方文件：https://developers.cloudflare.com/turnstile/</li><li>Testing dummy keys：https://developers.cloudflare.com/turnstile/troubleshooting/testing/</li><li>Client-side rendering（explicit mode）：https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/</li><li>Siteverify API：https://developers.cloudflare.com/turnstile/get-started/server-side-validation/</li><li>springcfturnstile GitHub：https://github.com/devondragon/springcfturnstile</li><li>vue-turnstile npm：https://www.npmjs.com/package/vue-turnstile</li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/cloudflare class=tag-link>#Cloudflare</a>
+<a href=/tags/turnstile class=tag-link>#Turnstile</a>
+<a href=/tags/vue class=tag-link>#Vue</a>
+<a href=/tags/spring-boot class=tag-link>#Spring Boot</a>
+<a href=/tags/captcha class=tag-link>#CAPTCHA</a>
+<a href=/tags/bot-protection class=tag-link>#Bot Protection</a>
+<a href=/tags/security class=tag-link>#Security</a></div></footer></article><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a></div></div></footer><script src=/js/search.js></script></div><script src=/js/code-enhance.js></script></body></html>

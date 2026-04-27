@@ -6,12 +6,12 @@
     <description>Recent content in JPA on Bill.Lin&#39;s Notes</description>
     <generator>Hugo</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Mon, 15 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jan 2024 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://xinqilin.github.io/tags/jpa/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>JPA N&#43;1 偵測與解法</title>
       <link>https://xinqilin.github.io/post/backend/jpa-n-plus-1/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
       <guid>https://xinqilin.github.io/post/backend/jpa-n-plus-1/</guid>
       <description>&lt;h2 id=&#34;什麼是-n1-問題&#34;&gt;什麼是 N+1 問題&lt;/h2&gt;&#xA;&lt;p&gt;載入 1 筆 &lt;code&gt;Order&lt;/code&gt; 後，Hibernate 額外發出 N 條 SQL 去撈每筆 &lt;code&gt;Order&lt;/code&gt; 的 &lt;code&gt;OrderItem&lt;/code&gt;：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;SELECT * FROM orders WHERE user_id = 1;        -- 1 條&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;SELECT * FROM order_items WHERE order_id = 10; -- N 條（每筆 Order 一條）&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;SELECT * FROM order_items WHERE order_id = 11;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;SELECT * FROM order_items WHERE order_id = 12;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;p&gt;根源在於 &lt;code&gt;@OneToMany&lt;/code&gt; 預設是 &lt;code&gt;LAZY&lt;/code&gt; 載入——存取集合屬性時才觸發查詢，在迴圈中存取就變成 N 條。&lt;/p&gt;</description>
     </item>

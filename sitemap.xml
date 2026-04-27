@@ -3,202 +3,226 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://xinqilin.github.io/</loc>
-    <lastmod>2025-07-13T10:00:00+08:00</lastmod>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/bot-protection/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/captcha/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/categories/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/cloudflare/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/security/cloudflare-turnstile-vue-spring-boot/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/categories/security/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/security/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/security/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/spring-boot/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/turnstile/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/vue/</loc>
+    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/about/</loc>
     <lastmod>2025-07-13T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/algorithm/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/algorithm/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/algorithm/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/architecture/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/architecture/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/backend/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/backend/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/backpack/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/categories/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/clean-architecture/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/cli/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/cli/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/cli/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/concurrency/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/connection-pool/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/categories/container/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/container/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/container/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/ddd/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/devops/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/dijkstra/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/distributed-systems/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/docker/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/docker-compose/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/container/docker-compose-v2-migration/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/dockerfile/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/container/multi-stage-build-advanced/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/dp/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/dynamic-programming/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/event-driven/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/graph/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/hexagonal/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/hibernate/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/hikaricp/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/backend/hikaricp-tuning/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/java/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/jpa/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/backend/jpa-n-plus-1/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/jq/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/cli/jq/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/json/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/kafka/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/leetcode/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/migration/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/multi-stage-build/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/mysql/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/n&#43;1/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/outbox-pattern/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/outbox-pattern/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/performance/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/post/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/project-loom/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/security/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/shell/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/shortest-path/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/spring-boot/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/backend/spring-virtual-threads/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/spring-data/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/virtual-threads/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/architecture/hexagonal-architecture/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/algorithm/dp-templates/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/algorithm/dijkstra-bellman-floyd/</loc>
-    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/commons-net/</loc>
     <lastmod>2023-01-05T23:45:46+08:00</lastmod>
@@ -1073,8 +1097,6 @@
     <loc>https://xinqilin.github.io/post/database/</loc>
   </url><url>
     <loc>https://xinqilin.github.io/posts/</loc>
-  </url><url>
-    <loc>https://xinqilin.github.io/post/security/</loc>
   </url><url>
     <loc>https://xinqilin.github.io/post/testing/</loc>
   </url>
