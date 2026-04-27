@@ -1,0 +1,238 @@
+{{ define "main" }}
+{{ if .IsHome }}
+<div class="home-page">
+    <section class="home-hero">
+        <div class="home-hero-text">
+            <p class="home-hero-eyebrow">Hi, I'm</p>
+            <h1 class="home-hero-name">Bill Lin</h1>
+            <p class="home-hero-role">Backend Engineer · Full Stack Developer</p>
+            <p class="home-hero-loc">Working in Taipei, Taiwan</p>
+            <p class="home-hero-bio">
+                7+ 年 Java 後端服務開發，2+ 年 Vue / React 前端框架經驗，
+                以及 8 個月 Kotlin Android 開發。熟 Java、Kotlin、TypeScript，
+                也對 Golang、Python 感興趣。
+            </p>
+            <p class="home-hero-bio home-hero-bio-aside">
+                目前主力後端，本站是技術筆記沉澱的地方。
+            </p>
+            <div class="home-hero-links">
+                <a href="https://github.com/xinqilin" target="_blank" rel="noopener" class="home-link-pill">
+                    <span class="home-link-pill-icon" aria-hidden="true">⌨</span> GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/bill-lin-47348017a/" target="_blank" rel="noopener" class="home-link-pill">
+                    <span class="home-link-pill-icon" aria-hidden="true">in</span> LinkedIn
+                </a>
+                <a href="mailto:zzx123bill@gmail.com" class="home-link-pill">
+                    <span class="home-link-pill-icon" aria-hidden="true">✉</span> Email
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-section">
+        <div class="home-section-head">
+            <h2 class="home-section-title">工作經歷</h2>
+            <span class="home-section-side">超過 7 年 ·  Java backend</span>
+        </div>
+        <ol class="exp-timeline">
+            <li class="exp-item exp-item-current">
+                <div class="exp-dot"></div>
+                <div class="exp-card">
+                    <div class="exp-head">
+                        <h3 class="exp-role">Software Engineer</h3>
+                        <span class="exp-period">2021/07 — 現在 · 4 年 10 個月</span>
+                    </div>
+                    <p class="exp-company">104 Corporation · 台灣 新北市</p>
+                    <ul class="exp-bullets">
+                        <li>負責 Billing &amp; Payment 系統，服務集團內 7 個事業單位，full-stack 兼第一線支援</li>
+                        <li>主導 on-prem 基礎設施遷移到 AWS，每週系統維護事件減少 2-3 次</li>
+                        <li>重構 legacy Billing &amp; Payment 系統並導入 unit tests，避免關鍵業務邏輯錯誤</li>
+                        <li>建置 WebdriverIO E2E 測試，省下每次部署 30+ 分鐘的人工 QA</li>
+                        <li>整合第三方金流：CTBC Pay、MEGA Pay、NCCC Pay</li>
+                        <li>內訓講者：「From JS to TS &amp; Java to Kotlin」、「Intro to GraalVM」、「API-First Design」（聽眾達 200 名工程師）</li>
+                        <li>參與企業 ERP 系統從 Tiptop 遷移至 SAP 的關鍵角色</li>
+                    </ul>
+                    <div class="exp-skills">
+                        <span class="exp-skill">Spring Boot</span>
+                        <span class="exp-skill">MySQL</span>
+                        <span class="exp-skill">AWS</span>
+                        <span class="exp-skill">Kotlin</span>
+                        <span class="exp-skill">TypeScript</span>
+                        <span class="exp-skill">WebdriverIO</span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="exp-item">
+                <div class="exp-dot"></div>
+                <div class="exp-card">
+                    <div class="exp-head">
+                        <h3 class="exp-role">Software Engineer</h3>
+                        <span class="exp-period">2020/08 — 2021/03 · 8 個月</span>
+                    </div>
+                    <p class="exp-company">CASHIER TECH. CORP., LTD. · 新北市汐止</p>
+                    <ul class="exp-bullets">
+                        <li>用 Spring Boot 開發 Kiosk 系統後端，支援 50 家門市、150 台設備</li>
+                        <li>開發 Matsuya.TW 的線上點餐 mobile web</li>
+                    </ul>
+                    <div class="exp-skills">
+                        <span class="exp-skill">Spring Boot</span>
+                        <span class="exp-skill">Android</span>
+                        <span class="exp-skill">Kotlin</span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="exp-item">
+                <div class="exp-dot"></div>
+                <div class="exp-card">
+                    <div class="exp-head">
+                        <h3 class="exp-role">Software Engineer</h3>
+                        <span class="exp-period">2019/09 — 2020/07 · 11 個月</span>
+                    </div>
+                    <p class="exp-company">鴻揚科技有限公司 · 台北南港（駐遠傳電信）</p>
+                    <ul class="exp-bullets">
+                        <li>駐點遠傳電信，開發/維護租賃管理系統的客製表單與 CRUD API</li>
+                        <li>製作 PM 用的 pre-sale demo single-page web</li>
+                    </ul>
+                    <div class="exp-skills">
+                        <span class="exp-skill">Java</span>
+                        <span class="exp-skill">Oracle</span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="exp-item">
+                <div class="exp-dot"></div>
+                <div class="exp-card">
+                    <div class="exp-head">
+                        <h3 class="exp-role">Software Engineer</h3>
+                        <span class="exp-period">2018/01 — 2019/01 · 1 年 1 個月</span>
+                    </div>
+                    <p class="exp-company">EAGLE INDUSTRY TAIWAN CORPORATION · 高雄市</p>
+                    <ul class="exp-bullets">
+                        <li>為 500 人公司開發內部系統與 e-portal，包含招募、表單、看板等模組</li>
+                    </ul>
+                    <div class="exp-skills">
+                        <span class="exp-skill">Java</span>
+                        <span class="exp-skill">JSP</span>
+                        <span class="exp-skill">Servlet</span>
+                    </div>
+                </div>
+            </li>
+        </ol>
+    </section>
+
+    <section class="home-section">
+        <div class="home-section-head">
+            <h2 class="home-section-title">技能棧</h2>
+        </div>
+        <div class="skill-cluster">
+            <div class="skill-group">
+                <h4 class="skill-group-name">Languages</h4>
+                <div class="skill-pills">
+                    <span class="skill-pill skill-primary">Java</span>
+                    <span class="skill-pill skill-primary">Kotlin</span>
+                    <span class="skill-pill skill-primary">TypeScript</span>
+                    <span class="skill-pill skill-primary">JavaScript</span>
+                    <span class="skill-pill">Python</span>
+                    <span class="skill-pill skill-interest">Golang</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4 class="skill-group-name">Backend</h4>
+                <div class="skill-pills">
+                    <span class="skill-pill">Spring Boot</span>
+                    <span class="skill-pill">Spring Framework</span>
+                    <span class="skill-pill">JPA / Hibernate</span>
+                    <span class="skill-pill">MySQL</span>
+                    <span class="skill-pill">Oracle</span>
+                    <span class="skill-pill">Redis</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4 class="skill-group-name">Frontend</h4>
+                <div class="skill-pills">
+                    <span class="skill-pill">Vue.js</span>
+                    <span class="skill-pill">React</span>
+                    <span class="skill-pill">TypeScript</span>
+                    <span class="skill-pill">Vite</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4 class="skill-group-name">Cloud / Tools</h4>
+                <div class="skill-pills">
+                    <span class="skill-pill">AWS</span>
+                    <span class="skill-pill">Docker</span>
+                    <span class="skill-pill">GraalVM</span>
+                    <span class="skill-pill">WebdriverIO</span>
+                    <span class="skill-pill">Git</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-section">
+        <div class="home-section-head">
+            <h2 class="home-section-title">證照</h2>
+            <span class="home-section-side">依取得時間排序</span>
+        </div>
+        <div class="cert-list">
+            <div class="cert-card">
+                <div class="cert-icon cert-icon-anthropic" aria-hidden="true">A</div>
+                <div class="cert-body">
+                    <h3 class="cert-name">Certificate of Completion: Claude 101</h3>
+                    <p class="cert-issuer">Anthropic · 2026/03</p>
+                </div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-icon cert-icon-anthropic" aria-hidden="true">A</div>
+                <div class="cert-body">
+                    <h3 class="cert-name">Claude Code in Action</h3>
+                    <p class="cert-issuer">Anthropic · 2026/01</p>
+                </div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-icon cert-icon-oracle" aria-hidden="true">O</div>
+                <div class="cert-body">
+                    <h3 class="cert-name">Oracle Certified Professional, Java SE 6 Programmer</h3>
+                    <p class="cert-issuer">Oracle · 2016/06</p>
+                </div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-icon cert-icon-erp" aria-hidden="true">ERP</div>
+                <div class="cert-body">
+                    <h3 class="cert-name">Planner of Enterprise Resource Planning</h3>
+                    <p class="cert-issuer">ERP 認證</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{{ else }}
+<div class="post-index-page">
+    <header class="post-index-head">
+        <h1 class="post-index-title">{{ .Title | default "文章" }}</h1>
+        {{ if .Description }}<p class="post-index-sub">{{ .Description }}</p>{{ end }}
+    </header>
+
+    {{ if .Pages }}
+    <div class="post-list">
+        {{ range .Pages.ByDate.Reverse }}
+        <a href="{{ .Permalink }}" class="post-list-card">
+            <div class="post-list-card-body">
+                <h2 class="post-list-card-title">{{ .Title }}</h2>
+                {{ with .Description }}
+                <p class="post-list-card-desc">{{ . }}</p>
+                {{ end }}
+                <div class="post-list-card-meta">
+                    <time>{{ .Date.Format "2006-01-02" }}</time>
+                </div>
+            </div>
+        </a>
+        {{ end }}
+    </div>
+    {{ end }}
+</div>
+{{ end }}
+{{ end }}

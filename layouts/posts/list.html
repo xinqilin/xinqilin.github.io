@@ -1,0 +1,55 @@
+{{ define "main" }}
+<div class="post-index-page">
+    <header class="post-index-head post-index-head-row">
+        <div class="post-index-head-left">
+            <h1 class="post-index-title">所有文章</h1>
+            {{ $posts := where .Site.RegularPages "Section" "post" }}
+            <p class="post-index-sub">共 {{ len $posts }} 篇 · 依日期由新到舊</p>
+        </div>
+        <a href="/categories/" class="post-index-side-link">依分類瀏覽 →</a>
+    </header>
+
+    {{ $posts := where .Site.RegularPages "Section" "post" }}
+    {{ if $posts }}
+    <div class="post-list">
+        {{ range $posts.ByDate.Reverse }}
+        <a href="{{ .Permalink }}" class="post-list-card">
+            <div class="post-list-card-body">
+                <h2 class="post-list-card-title">{{ .Title }}</h2>
+                {{ with .Description }}
+                <p class="post-list-card-desc">{{ . }}</p>
+                {{ else }}
+                {{ with .Summary }}
+                <p class="post-list-card-desc">{{ . | plainify | truncate 120 }}</p>
+                {{ end }}
+                {{ end }}
+                <div class="post-list-card-meta">
+                    <time>{{ .Date.Format "2006-01-02" }}</time>
+                    {{ if .Params.categories }}
+                    <span class="post-list-card-dot">·</span>
+                    <div class="post-list-card-tags">
+                        {{ range first 1 .Params.categories }}
+                        <span class="post-list-card-cat">{{ . }}</span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                    {{ if .Params.tags }}
+                    <span class="post-list-card-dot">·</span>
+                    <div class="post-list-card-tags">
+                        {{ range first 3 .Params.tags }}
+                        <span class="post-list-card-tag">#{{ . }}</span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </a>
+        {{ end }}
+    </div>
+    {{ else }}
+    <div class="post-list-empty">
+        <p>尚無文章</p>
+    </div>
+    {{ end }}
+</div>
+{{ end }}

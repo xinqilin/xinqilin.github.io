@@ -1,8 +1,7 @@
 name = "Minimal Clean"
 license = "MIT"
-licenselink = "https://github.com/xinqilin/minimal-clean/blob/master/LICENSE"
-description = "A clean, minimal Hugo theme inspired by modern personal websites"
-homepage = "https://github.com/xinqilin/minimal-clean"
+description = "A custom minimal Hugo theme for Bill.Lin's personal blog."
+homepage = "https://xinqilin.github.io/"
 tags = ["blog", "minimal", "clean", "personal", "responsive"]
 features = ["responsive", "blog", "syntax-highlighting", "minimal"]
 min_version = "0.74.0"
