@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Spring Boot on Bill.Lin&#39;s Notes</title>
+    <title>Spring-Boot on Bill.Lin&#39;s Notes</title>
     <link>https://xinqilin.github.io/tags/spring-boot/</link>
-    <description>Recent content in Spring Boot on Bill.Lin&#39;s Notes</description>
+    <description>Recent content in Spring-Boot on Bill.Lin&#39;s Notes</description>
     <generator>Hugo</generator>
     <language>zh-tw</language>
     <lastBuildDate>Tue, 28 Apr 2026 00:00:00 +0800</lastBuildDate>
