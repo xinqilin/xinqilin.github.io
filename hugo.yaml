@@ -1,6 +1,7 @@
 baseURL: https://xinqilin.github.io/
 languageCode: zh-tw
 defaultContentLanguage: zh-tw
+timeZone: Asia/Taipei
 theme: minimal-clean
 
 outputs:
