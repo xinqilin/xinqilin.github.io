@@ -802,19 +802,54 @@ body {
     font-style: italic;
 }
 
-/* Hero pill icon 加裝飾 */
+/* Hero pill icon — inline SVG，三個 social link 視覺一致 */
 .home-link-pill-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    background: rgba(97, 200, 224, 0.15);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: #4a5568;
+    transition: color 0.18s ease;
+}
+.home-link-pill:hover .home-link-pill-icon {
     color: #1a8eb3;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1;
+}
+
+/* Hero footnote（last updated + LinkedIn 註腳） */
+.home-hero-footnote {
+    font-size: 0.78rem;
+    color: #a0aec0;
+    margin: 0.9rem 0 0 0;
+    font-feature-settings: "tnum";
+}
+.home-hero-footnote a {
+    color: #36b9d8;
+    text-decoration: none;
+}
+.home-hero-footnote a:hover {
+    text-decoration: underline;
+}
+
+/* Skill aside（"Exploring: Python · Go" 一行小字） */
+.skill-aside {
+    margin: 0.6rem 0 0 0;
+    font-size: 0.8rem;
+    color: #718096;
+    font-style: italic;
+}
+
+/* Cert sub-section heading */
+.cert-subhead {
+    font-size: 0.78rem;
+    color: #36b9d8;
+    margin: 1.4rem 0 0.7rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    border-left: none;
+    padding-left: 0;
+}
+.cert-subhead:first-of-type {
+    margin-top: 0;
 }
 
 /* Section side text（h2 右側純文字 hint） */
