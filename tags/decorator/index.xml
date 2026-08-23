@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Decorator on Bill.Lin&#39;s Notes</title>
-    <link>https://xinqilin.github.io/tags/decorator/</link>
-    <description>Recent content in Decorator on Bill.Lin&#39;s Notes</description>
-    <generator>Hugo</generator>
-    <language>zh-tw</language>
-    <lastBuildDate>Tue, 07 Aug 2018 12:16:24 +0800</lastBuildDate>
-    <atom:link href="https://xinqilin.github.io/tags/decorator/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Decorator — 動態疊加行為</title>
-      <link>https://xinqilin.github.io/post/designpattern/decorator/</link>
-      <pubDate>Tue, 07 Aug 2018 12:16:24 +0800</pubDate>
-      <guid>https://xinqilin.github.io/post/designpattern/decorator/</guid>
-      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;在不修改原始類別的情況下，透過包裝（組合）動態地為物件附加新功能，作為繼承的彈性替代方案。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Component {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +operation() String&#xA;    }&#xA;    class ConcreteComponent {&#xA;        +operation() String&#xA;    }&#xA;    class Decorator {&#xA;        &lt;&lt;abstract&gt;&gt;&#xA;        #component Component&#xA;        +operation() String&#xA;    }&#xA;    class ConcreteDecorator {&#xA;        +operation() String&#xA;    }&#xA;    Component &lt;|.. ConcreteComponent&#xA;    Component &lt;|.. Decorator&#xA;    Decorator &lt;|-- ConcreteDecorator&#xA;    Decorator --&gt; Component&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;需要疊加多個獨立的行為，且組合數量多（繼承會類別爆炸）&lt;/li&gt;&#xA;&lt;li&gt;需要在執行期動態增減功能（不同使用者看到不同裝飾組合）&lt;/li&gt;&#xA;&lt;li&gt;橫切關注點（logging、retry、rate limit）不想侵入核心邏輯&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;只需一種固定擴充，直接繼承或 Strategy 更簡單&lt;/li&gt;&#xA;&lt;li&gt;裝飾器層數超過 3-4 層，Debug 困難，改用 Pipeline / Chain of Responsibility&lt;/li&gt;&#xA;&lt;li&gt;需要明確知道具體型別時（Decorator 會遮蔽真實型別）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;以 HTTP client 為例，疊加 logging 與 retry 裝飾器：&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>Decorator on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/decorator/</link>
+		<description>Recent content in Decorator on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 07 Aug 2018 12:16:24 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/decorator/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Decorator — 動態疊加行為</title>
+				<link>https://xinqilin.github.io/post/designpattern/decorator/</link>
+				<pubDate>Tue, 07 Aug 2018 12:16:24 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/designpattern/decorator/</guid>
+				<description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;在不修改原始類別的情況下，透過包裝（組合）動態地為物件附加新功能，作為繼承的彈性替代方案。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Component {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +operation() String&#xA;    }&#xA;    class ConcreteComponent {&#xA;        +operation() String&#xA;    }&#xA;    class Decorator {&#xA;        &lt;&lt;abstract&gt;&gt;&#xA;        #component Component&#xA;        +operation() String&#xA;    }&#xA;    class ConcreteDecorator {&#xA;        +operation() String&#xA;    }&#xA;    Component &lt;|.. ConcreteComponent&#xA;    Component &lt;|.. Decorator&#xA;    Decorator &lt;|-- ConcreteDecorator&#xA;    Decorator --&gt; Component&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;需要疊加多個獨立的行為，且組合數量多（繼承會類別爆炸）&lt;/li&gt;&#xA;&lt;li&gt;需要在執行期動態增減功能（不同使用者看到不同裝飾組合）&lt;/li&gt;&#xA;&lt;li&gt;橫切關注點（logging、retry、rate limit）不想侵入核心邏輯&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;只需一種固定擴充，直接繼承或 Strategy 更簡單&lt;/li&gt;&#xA;&lt;li&gt;裝飾器層數超過 3-4 層，Debug 困難，改用 Pipeline / Chain of Responsibility&lt;/li&gt;&#xA;&lt;li&gt;需要明確知道具體型別時（Decorator 會遮蔽真實型別）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;以 HTTP client 為例，疊加 logging 與 retry 裝飾器：&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

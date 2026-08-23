@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Composite on Bill.Lin&#39;s Notes</title>
-    <link>https://xinqilin.github.io/tags/composite/</link>
-    <description>Recent content in Composite on Bill.Lin&#39;s Notes</description>
-    <generator>Hugo</generator>
-    <language>zh-tw</language>
-    <lastBuildDate>Tue, 07 Aug 2018 12:15:31 +0800</lastBuildDate>
-    <atom:link href="https://xinqilin.github.io/tags/composite/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Composite — 樹狀結構統一操作</title>
-      <link>https://xinqilin.github.io/post/designpattern/composite/</link>
-      <pubDate>Tue, 07 Aug 2018 12:15:31 +0800</pubDate>
-      <guid>https://xinqilin.github.io/post/designpattern/composite/</guid>
-      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;將物件組合成樹狀結構以表示「部分—整體」層次，讓客戶端對單個物件（Leaf）與組合物件（Composite）使用相同的介面。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Component {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +operation()&#xA;        +add(Component)&#xA;        +remove(Component)&#xA;    }&#xA;    class Leaf {&#xA;        +operation()&#xA;    }&#xA;    class Composite {&#xA;        -children List~Component~&#xA;        +operation()&#xA;        +add(Component)&#xA;        +remove(Component)&#xA;    }&#xA;    Component &lt;|.. Leaf&#xA;    Component &lt;|.. Composite&#xA;    Composite --&gt; Component : children&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;資料天然形成樹狀結構（檔案系統、組織圖、選單、UI 元件樹）&lt;/li&gt;&#xA;&lt;li&gt;希望客戶端程式碼不需判斷「這是葉子還是組合」就能統一呼叫&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;結構扁平，沒有遞迴嵌套需求&lt;/li&gt;&#xA;&lt;li&gt;需要對 Leaf 與 Composite 做不同型別處理（型別安全比透明性更重要時，用 Safe 設計或 Visitor）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Transparent 設計&lt;/strong&gt;（Leaf 實作 add/remove 丟例外）vs &lt;strong&gt;Safe 設計&lt;/strong&gt;（Leaf 不宣告 add/remove）。以下示範較常見的 Transparent 設計，並以組織圖為例：&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>Composite on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/composite/</link>
+		<description>Recent content in Composite on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 07 Aug 2018 12:15:31 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/composite/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Composite — 樹狀結構統一操作</title>
+				<link>https://xinqilin.github.io/post/designpattern/composite/</link>
+				<pubDate>Tue, 07 Aug 2018 12:15:31 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/designpattern/composite/</guid>
+				<description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;將物件組合成樹狀結構以表示「部分—整體」層次，讓客戶端對單個物件（Leaf）與組合物件（Composite）使用相同的介面。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Component {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +operation()&#xA;        +add(Component)&#xA;        +remove(Component)&#xA;    }&#xA;    class Leaf {&#xA;        +operation()&#xA;    }&#xA;    class Composite {&#xA;        -children List~Component~&#xA;        +operation()&#xA;        +add(Component)&#xA;        +remove(Component)&#xA;    }&#xA;    Component &lt;|.. Leaf&#xA;    Component &lt;|.. Composite&#xA;    Composite --&gt; Component : children&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;資料天然形成樹狀結構（檔案系統、組織圖、選單、UI 元件樹）&lt;/li&gt;&#xA;&lt;li&gt;希望客戶端程式碼不需判斷「這是葉子還是組合」就能統一呼叫&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;結構扁平，沒有遞迴嵌套需求&lt;/li&gt;&#xA;&lt;li&gt;需要對 Leaf 與 Composite 做不同型別處理（型別安全比透明性更重要時，用 Safe 設計或 Visitor）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Transparent 設計&lt;/strong&gt;（Leaf 實作 add/remove 丟例外）vs &lt;strong&gt;Safe 設計&lt;/strong&gt;（Leaf 不宣告 add/remove）。以下示範較常見的 Transparent 設計，並以組織圖為例：&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

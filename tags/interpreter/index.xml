@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Interpreter on Bill.Lin&#39;s Notes</title>
-    <link>https://xinqilin.github.io/tags/interpreter/</link>
-    <description>Recent content in Interpreter on Bill.Lin&#39;s Notes</description>
-    <generator>Hugo</generator>
-    <language>zh-tw</language>
-    <lastBuildDate>Tue, 07 Aug 2018 22:38:42 +0800</lastBuildDate>
-    <atom:link href="https://xinqilin.github.io/tags/interpreter/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Interpreter — 為語言定義文法與解釋器</title>
-      <link>https://xinqilin.github.io/post/designpattern/interpreter/</link>
-      <pubDate>Tue, 07 Aug 2018 22:38:42 +0800</pubDate>
-      <guid>https://xinqilin.github.io/post/designpattern/interpreter/</guid>
-      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;為一個語言定義文法表示，並提供解釋器來處理該文法的句子（AST 節點遞迴求值）。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Expression {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +interpret(Context) int&#xA;    }&#xA;    class NumberExpression {&#xA;        -value int&#xA;        +interpret(Context) int&#xA;    }&#xA;    class AddExpression {&#xA;        -left Expression&#xA;        -right Expression&#xA;        +interpret(Context) int&#xA;    }&#xA;    class SubtractExpression {&#xA;        -left Expression&#xA;        -right Expression&#xA;        +interpret(Context) int&#xA;    }&#xA;    Expression &lt;|.. NumberExpression&#xA;    Expression &lt;|.. AddExpression&#xA;    Expression &lt;|.. SubtractExpression&#xA;    AddExpression --&gt; Expression : left&#xA;    AddExpression --&gt; Expression : right&#xA;    SubtractExpression --&gt; Expression : left&#xA;    SubtractExpression --&gt; Expression : right&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>Interpreter on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/interpreter/</link>
+		<description>Recent content in Interpreter on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 07 Aug 2018 22:38:42 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/interpreter/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Interpreter — 為語言定義文法與解釋器</title>
+				<link>https://xinqilin.github.io/post/designpattern/interpreter/</link>
+				<pubDate>Tue, 07 Aug 2018 22:38:42 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/designpattern/interpreter/</guid>
+				<description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;為一個語言定義文法表示，並提供解釋器來處理該文法的句子（AST 節點遞迴求值）。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Expression {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +interpret(Context) int&#xA;    }&#xA;    class NumberExpression {&#xA;        -value int&#xA;        +interpret(Context) int&#xA;    }&#xA;    class AddExpression {&#xA;        -left Expression&#xA;        -right Expression&#xA;        +interpret(Context) int&#xA;    }&#xA;    class SubtractExpression {&#xA;        -left Expression&#xA;        -right Expression&#xA;        +interpret(Context) int&#xA;    }&#xA;    Expression &lt;|.. NumberExpression&#xA;    Expression &lt;|.. AddExpression&#xA;    Expression &lt;|.. SubtractExpression&#xA;    AddExpression --&gt; Expression : left&#xA;    AddExpression --&gt; Expression : right&#xA;    SubtractExpression --&gt; Expression : left&#xA;    SubtractExpression --&gt; Expression : right&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

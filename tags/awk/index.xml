@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>AWK on Bill.Lin&#39;s Notes</title>
-    <link>https://xinqilin.github.io/tags/awk/</link>
-    <description>Recent content in AWK on Bill.Lin&#39;s Notes</description>
-    <generator>Hugo</generator>
-    <language>zh-tw</language>
-    <lastBuildDate>Sat, 06 Apr 2019 23:18:56 +0800</lastBuildDate>
-    <atom:link href="https://xinqilin.github.io/tags/awk/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>AWK 程式設計完整指南：Linux 文本處理與資料分析利器</title>
-      <link>https://xinqilin.github.io/post/cli/awk/</link>
-      <pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
-      <guid>https://xinqilin.github.io/post/cli/awk/</guid>
-      <description>&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;&#xA;&lt;p&gt;AWK 是一種強大的模式掃描和處理語言，由 Alfred Aho、Peter Weinberger 和 Brian Kernighan 於 1977 年在貝爾實驗室開發。AWK 特別適合處理結構化文本資料，能夠進行複雜的文本分析、報表生成和資料提取。&lt;/p&gt;&#xA;&lt;h3 id=&#34;核心特徵&#34;&gt;核心特徵&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;模式-動作程式設計&lt;/strong&gt;：基於模式匹配執行相應動作&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;自動欄位分割&lt;/strong&gt;：自動將輸入行分割為欄位&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;強大的內建變數&lt;/strong&gt;：提供豐富的環境資訊&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;數學運算能力&lt;/strong&gt;：支援完整的算術和字串操作&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;正規表達式支援&lt;/strong&gt;：強大的模式匹配功能&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;相容性注意事項&#34;&gt;相容性注意事項&lt;/h2&gt;&#xA;&lt;h3 id=&#34;macos-vs-linux-差異&#34;&gt;macOS vs Linux 差異&lt;/h3&gt;&#xA;&lt;p&gt;macOS 內建的 &lt;code&gt;awk&lt;/code&gt; 是 &lt;strong&gt;BSD awk&lt;/strong&gt;（One True AWK），而 Linux 發行版通常是 &lt;strong&gt;GNU awk (gawk)&lt;/strong&gt;。兩者差異：&lt;/p&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;功能&lt;/th&gt;&#xA;          &lt;th&gt;GNU awk (gawk)&lt;/th&gt;&#xA;          &lt;th&gt;BSD awk (macOS)&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;code&gt;gensub()&lt;/code&gt;&lt;/td&gt;&#xA;          &lt;td&gt;支援&lt;/td&gt;&#xA;          &lt;td&gt;不支援&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;TCP/IP 連線 (&lt;code&gt;/inet/tcp&lt;/code&gt;)&lt;/td&gt;&#xA;          &lt;td&gt;支援&lt;/td&gt;&#xA;          &lt;td&gt;不支援&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;code&gt;PROCINFO&lt;/code&gt;&lt;/td&gt;&#xA;          &lt;td&gt;支援&lt;/td&gt;&#xA;          &lt;td&gt;不支援&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;code&gt;printf &amp;quot;%&#39;d&amp;quot;&lt;/code&gt; 千位分隔&lt;/td&gt;&#xA;          &lt;td&gt;支援&lt;/td&gt;&#xA;          &lt;td&gt;不支援&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;正規表達式 interval (&lt;code&gt;{n,m}&lt;/code&gt;)&lt;/td&gt;&#xA;          &lt;td&gt;支援&lt;/td&gt;&#xA;          &lt;td&gt;不支援（需 &amp;ndash;re-interval）&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;&lt;strong&gt;gawk-only 功能請明確標注&lt;/strong&gt;，或提供替代寫法。macOS 用戶如需完整功能：&lt;code&gt;brew install gawk&lt;/code&gt;。&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>AWK on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/awk/</link>
+		<description>Recent content in AWK on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sat, 06 Apr 2019 23:18:56 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/awk/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>AWK 程式設計完整指南：Linux 文本處理與資料分析利器</title>
+				<link>https://xinqilin.github.io/post/cli/awk/</link>
+				<pubDate>Sat, 06 Apr 2019 23:18:56 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/cli/awk/</guid>
+				<description>&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;&#xA;&lt;p&gt;AWK 是一種強大的模式掃描和處理語言，由 Alfred Aho、Peter Weinberger 和 Brian Kernighan 於 1977 年在貝爾實驗室開發。AWK 特別適合處理結構化文本資料，能夠進行複雜的文本分析、報表生成和資料提取。&lt;/p&gt;&#xA;&lt;h3 id=&#34;核心特徵&#34;&gt;核心特徵&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;模式-動作程式設計&lt;/strong&gt;：基於模式匹配執行相應動作&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;自動欄位分割&lt;/strong&gt;：自動將輸入行分割為欄位&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;強大的內建變數&lt;/strong&gt;：提供豐富的環境資訊&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;數學運算能力&lt;/strong&gt;：支援完整的算術和字串操作&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;正規表達式支援&lt;/strong&gt;：強大的模式匹配功能&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;相容性注意事項&#34;&gt;相容性注意事項&lt;/h2&gt;&#xA;&lt;h3 id=&#34;macos-vs-linux-差異&#34;&gt;macOS vs Linux 差異&lt;/h3&gt;&#xA;&lt;p&gt;macOS 內建的 &lt;code&gt;awk&lt;/code&gt; 是 &lt;strong&gt;BSD awk&lt;/strong&gt;（One True AWK），而 Linux 發行版通常是 &lt;strong&gt;GNU awk (gawk)&lt;/strong&gt;。兩者差異：&lt;/p&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;功能&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;GNU awk (gawk)&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;BSD awk (macOS)&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;gensub()&lt;/code&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;不支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;TCP/IP 連線 (&lt;code&gt;/inet/tcp&lt;/code&gt;)&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;不支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;PROCINFO&lt;/code&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;不支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;printf &amp;quot;%&#39;d&amp;quot;&lt;/code&gt; 千位分隔&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;不支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;正規表達式 interval (&lt;code&gt;{n,m}&lt;/code&gt;)&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;支援&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;不支援（需 &amp;ndash;re-interval）&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;&lt;strong&gt;gawk-only 功能請明確標注&lt;/strong&gt;，或提供替代寫法。macOS 用戶如需完整功能：&lt;code&gt;brew install gawk&lt;/code&gt;。&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

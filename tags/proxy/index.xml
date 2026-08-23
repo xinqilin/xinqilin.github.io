@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Proxy on Bill.Lin&#39;s Notes</title>
-    <link>https://xinqilin.github.io/tags/proxy/</link>
-    <description>Recent content in Proxy on Bill.Lin&#39;s Notes</description>
-    <generator>Hugo</generator>
-    <language>zh-tw</language>
-    <lastBuildDate>Tue, 07 Aug 2018 12:15:41 +0800</lastBuildDate>
-    <atom:link href="https://xinqilin.github.io/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Proxy — 控制物件存取的代理層</title>
-      <link>https://xinqilin.github.io/post/designpattern/proxy/</link>
-      <pubDate>Tue, 07 Aug 2018 12:15:41 +0800</pubDate>
-      <guid>https://xinqilin.github.io/post/designpattern/proxy/</guid>
-      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;為另一個物件提供替代品（surrogate），在不改變用戶端介面的前提下，攔截並控制對原始物件的存取。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;h3 id=&#34;靜態-proxy&#34;&gt;靜態 Proxy&lt;/h3&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Subject {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +request()&#xA;    }&#xA;    class RealSubject {&#xA;        +request()&#xA;    }&#xA;    class Proxy {&#xA;        -realSubject RealSubject&#xA;        +request()&#xA;    }&#xA;    Subject &lt;|.. RealSubject&#xA;    Subject &lt;|.. Proxy&#xA;    Proxy --&gt; RealSubject&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h3 id=&#34;jdk-dynamic-proxy&#34;&gt;JDK Dynamic Proxy&lt;/h3&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class InvocationHandler {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +invoke(proxy, method, args) Object&#xA;    }&#xA;    class LoggingHandler {&#xA;        -target Object&#xA;        +invoke(proxy, method, args) Object&#xA;    }&#xA;    class Proxy {&#xA;        +newProxyInstance(loader, interfaces, handler)$&#xA;    }&#xA;    InvocationHandler &lt;|.. LoggingHandler&#xA;    LoggingHandler --&gt; Proxy : creates&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>Proxy on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/proxy/</link>
+		<description>Recent content in Proxy on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 07 Aug 2018 12:15:41 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Proxy — 控制物件存取的代理層</title>
+				<link>https://xinqilin.github.io/post/designpattern/proxy/</link>
+				<pubDate>Tue, 07 Aug 2018 12:15:41 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/designpattern/proxy/</guid>
+				<description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;為另一個物件提供替代品（surrogate），在不改變用戶端介面的前提下，攔截並控制對原始物件的存取。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;h3 id=&#34;靜態-proxy&#34;&gt;靜態 Proxy&lt;/h3&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Subject {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +request()&#xA;    }&#xA;    class RealSubject {&#xA;        +request()&#xA;    }&#xA;    class Proxy {&#xA;        -realSubject RealSubject&#xA;        +request()&#xA;    }&#xA;    Subject &lt;|.. RealSubject&#xA;    Subject &lt;|.. Proxy&#xA;    Proxy --&gt; RealSubject&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h3 id=&#34;jdk-dynamic-proxy&#34;&gt;JDK Dynamic Proxy&lt;/h3&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class InvocationHandler {&#xA;        &lt;&lt;interface&gt;&gt;&#xA;        +invoke(proxy, method, args) Object&#xA;    }&#xA;    class LoggingHandler {&#xA;        -target Object&#xA;        +invoke(proxy, method, args) Object&#xA;    }&#xA;    class Proxy {&#xA;        +newProxyInstance(loader, interfaces, handler)$&#xA;    }&#xA;    InvocationHandler &lt;|.. LoggingHandler&#xA;    LoggingHandler --&gt; Proxy : creates&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

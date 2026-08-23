@@ -1,89 +1,94 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Categories on Bill.Lin&#39;s Notes</title>
-    <link>https://xinqilin.github.io/categories/</link>
-    <description>Recent content in Categories on Bill.Lin&#39;s Notes</description>
-    <generator>Hugo</generator>
-    <language>zh-tw</language>
-    <lastBuildDate>Tue, 28 Apr 2026 00:00:00 +0800</lastBuildDate>
-    <atom:link href="https://xinqilin.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Security</title>
-      <link>https://xinqilin.github.io/categories/security/</link>
-      <pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/security/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Algorithm</title>
-      <link>https://xinqilin.github.io/categories/algorithm/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/algorithm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Architecture</title>
-      <link>https://xinqilin.github.io/categories/architecture/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/architecture/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Backend</title>
-      <link>https://xinqilin.github.io/categories/backend/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/backend/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>CLI</title>
-      <link>https://xinqilin.github.io/categories/cli/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/cli/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Container</title>
-      <link>https://xinqilin.github.io/categories/container/</link>
-      <pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/container/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tools</title>
-      <link>https://xinqilin.github.io/categories/tools/</link>
-      <pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/tools/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Git</title>
-      <link>https://xinqilin.github.io/categories/git/</link>
-      <pubDate>Wed, 09 Feb 2022 19:46:19 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/git/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>DevOps</title>
-      <link>https://xinqilin.github.io/categories/devops/</link>
-      <pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/devops/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Linux</title>
-      <link>https://xinqilin.github.io/categories/linux/</link>
-      <pubDate>Sun, 16 Jan 2022 22:35:54 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/linux/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>DesignPattern</title>
-      <link>https://xinqilin.github.io/categories/designpattern/</link>
-      <pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
-      <guid>https://xinqilin.github.io/categories/designpattern/</guid>
-      <description></description>
-    </item>
-  </channel>
+	<channel>
+		<title>Categories on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/categories/</link>
+		<description>Recent content in Categories on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 23 Aug 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>CLI</title>
+				<link>https://xinqilin.github.io/categories/cli/</link>
+				<pubDate>Sun, 23 Aug 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/cli/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Security</title>
+				<link>https://xinqilin.github.io/categories/security/</link>
+				<pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/security/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Algorithm</title>
+				<link>https://xinqilin.github.io/categories/algorithm/</link>
+				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/algorithm/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Architecture</title>
+				<link>https://xinqilin.github.io/categories/architecture/</link>
+				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/architecture/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Backend</title>
+				<link>https://xinqilin.github.io/categories/backend/</link>
+				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/backend/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Container</title>
+				<link>https://xinqilin.github.io/categories/container/</link>
+				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/container/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Tools</title>
+				<link>https://xinqilin.github.io/categories/tools/</link>
+				<pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/tools/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Git</title>
+				<link>https://xinqilin.github.io/categories/git/</link>
+				<pubDate>Wed, 09 Feb 2022 19:46:19 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/git/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>DevOps</title>
+				<link>https://xinqilin.github.io/categories/devops/</link>
+				<pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/devops/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Linux</title>
+				<link>https://xinqilin.github.io/categories/linux/</link>
+				<pubDate>Sun, 16 Jan 2022 22:35:54 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/linux/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>DesignPattern</title>
+				<link>https://xinqilin.github.io/categories/designpattern/</link>
+				<pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/designpattern/</guid>
+				<description></description>
+			</item>
+	</channel>
 </rss>

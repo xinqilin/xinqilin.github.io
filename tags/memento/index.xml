@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Memento on Bill.Lin&#39;s Notes</title>
-    <link>https://xinqilin.github.io/tags/memento/</link>
-    <description>Recent content in Memento on Bill.Lin&#39;s Notes</description>
-    <generator>Hugo</generator>
-    <language>zh-tw</language>
-    <lastBuildDate>Tue, 07 Aug 2018 22:39:01 +0800</lastBuildDate>
-    <atom:link href="https://xinqilin.github.io/tags/memento/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Memento — 不破壞封裝的快照與復原</title>
-      <link>https://xinqilin.github.io/post/designpattern/memento/</link>
-      <pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
-      <guid>https://xinqilin.github.io/post/designpattern/memento/</guid>
-      <description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;在不破壞封裝的前提下，擷取並儲存物件的內部狀態，並能在稍後將物件恢復至該狀態。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Originator {&#xA;        -state String&#xA;        +save() Memento&#xA;        +restore(Memento)&#xA;    }&#xA;    class Memento {&#xA;        -state String&#xA;        +getState() String&#xA;    }&#xA;    class Caretaker {&#xA;        -history Deque~Memento~&#xA;        +backup(Originator)&#xA;        +undo(Originator)&#xA;    }&#xA;    Originator --&gt; Memento : creates&#xA;    Caretaker --&gt; Memento : stores&#xA;    Caretaker --&gt; Originator&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;需要 undo/redo（文字編輯器、繪圖工具、棋局）&lt;/li&gt;&#xA;&lt;li&gt;交易 savepoint：資料庫 JTA rollback、遊戲存檔&lt;/li&gt;&#xA;&lt;li&gt;需要「時光機」式還原，但又不想讓外部直接存取物件欄位&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;狀態物件很大（大量圖片、深層 object graph），每次快照記憶體開銷不可接受&lt;/li&gt;&#xA;&lt;li&gt;外部已有持久化機制（DB、Redis）可直接記錄版本，不需再包一層&lt;/li&gt;&#xA;&lt;li&gt;狀態欄位非常簡單，直接暴露欄位或用 Builder 更清楚&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;使用 Java record 作為不可變快照（Java 16+）：&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>Memento on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/memento/</link>
+		<description>Recent content in Memento on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 07 Aug 2018 22:39:01 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/memento/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Memento — 不破壞封裝的快照與復原</title>
+				<link>https://xinqilin.github.io/post/designpattern/memento/</link>
+				<pubDate>Tue, 07 Aug 2018 22:39:01 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/designpattern/memento/</guid>
+				<description>&lt;h2 id=&#34;1-意圖&#34;&gt;1. 意圖&lt;/h2&gt;&#xA;&lt;p&gt;在不破壞封裝的前提下，擷取並儲存物件的內部狀態，並能在稍後將物件恢復至該狀態。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-uml-類圖&#34;&gt;2. UML 類圖&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;classDiagram&#xA;    class Originator {&#xA;        -state String&#xA;        +save() Memento&#xA;        +restore(Memento)&#xA;    }&#xA;    class Memento {&#xA;        -state String&#xA;        +getState() String&#xA;    }&#xA;    class Caretaker {&#xA;        -history Deque~Memento~&#xA;        +backup(Originator)&#xA;        +undo(Originator)&#xA;    }&#xA;    Originator --&gt; Memento : creates&#xA;    Caretaker --&gt; Memento : stores&#xA;    Caretaker --&gt; Originator&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;h2 id=&#34;3-何時用--何時別用&#34;&gt;3. 何時用 / 何時別用&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;需要 undo/redo（文字編輯器、繪圖工具、棋局）&lt;/li&gt;&#xA;&lt;li&gt;交易 savepoint：資料庫 JTA rollback、遊戲存檔&lt;/li&gt;&#xA;&lt;li&gt;需要「時光機」式還原，但又不想讓外部直接存取物件欄位&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;別用&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;狀態物件很大（大量圖片、深層 object graph），每次快照記憶體開銷不可接受&lt;/li&gt;&#xA;&lt;li&gt;外部已有持久化機制（DB、Redis）可直接記錄版本，不需再包一層&lt;/li&gt;&#xA;&lt;li&gt;狀態欄位非常簡單，直接暴露欄位或用 Builder 更清楚&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;4-java-範例&#34;&gt;4. Java 範例&lt;/h2&gt;&#xA;&lt;p&gt;使用 Java record 作為不可變快照（Java 16+）：&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>CURL on Bill.Lin&#39;s Notes</title>
-    <link>https://xinqilin.github.io/tags/curl/</link>
-    <description>Recent content in CURL on Bill.Lin&#39;s Notes</description>
-    <generator>Hugo</generator>
-    <language>zh-tw</language>
-    <lastBuildDate>Tue, 03 Aug 2021 10:23:31 +0800</lastBuildDate>
-    <atom:link href="https://xinqilin.github.io/tags/curl/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>cURL 完整指南：HTTP 客戶端工具與 API 測試利器</title>
-      <link>https://xinqilin.github.io/post/cli/curl/</link>
-      <pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-      <guid>https://xinqilin.github.io/post/cli/curl/</guid>
-      <description>&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;&#xA;&lt;p&gt;cURL（Client URL）是一個功能強大的命令行工具和函式庫，用於傳輸各種網路協定的資料。它支援 HTTP、HTTPS、FTP、SFTP、TELNET 等多種協定，是開發者進行 API 測試、網路除錯和自動化腳本的必備工具。&lt;/p&gt;&#xA;&lt;h3 id=&#34;核心特徵&#34;&gt;核心特徵&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;多協定支援&lt;/strong&gt;：HTTP/HTTPS、FTP、SFTP、SMTP、POP3 等&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;豐富的選項&lt;/strong&gt;：支援各種 HTTP 方法、標頭、認證方式&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;跨平台&lt;/strong&gt;：適用於 Linux、macOS、Windows 等系統&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;腳本友好&lt;/strong&gt;：輸出格式化，適合自動化處理&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;安全性&lt;/strong&gt;：支援 SSL/TLS、各種認證機制&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;安全注意事項&#34;&gt;安全注意事項&lt;/h2&gt;&#xA;&lt;h3 id=&#34;-k----insecuremitm-風險&#34;&gt;&lt;code&gt;-k&lt;/code&gt; / &lt;code&gt;--insecure&lt;/code&gt;：MITM 風險&lt;/h3&gt;&#xA;&lt;p&gt;&lt;code&gt;curl -k https://example.com&lt;/code&gt; 跳過 TLS 憑證驗證，會讓你容易受到中間人攻擊（MITM）。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;僅允許使用場景&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;本機測試自簽憑證的開發環境&lt;/li&gt;&#xA;&lt;li&gt;CI/CD 內部系統（確定網路是受信任的）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;正確做法&lt;/strong&gt;（而非跳過驗證）：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 指定自訂 CA&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl --cacert /path/to/ca.crt https://internal-service/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 或設定 SSL_CERT_FILE 環境變數&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;SSL_CERT_FILE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/ca-bundle.crt curl https://internal-service/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;h3 id=&#34;--fail-with-bodycurl-776&#34;&gt;&lt;code&gt;--fail-with-body&lt;/code&gt;（curl 7.76+）&lt;/h3&gt;&#xA;&lt;p&gt;比 &lt;code&gt;--fail&lt;/code&gt; 更好的錯誤處理：&lt;code&gt;--fail&lt;/code&gt; 在 HTTP 4xx/5xx 時靜默失敗，&lt;code&gt;--fail-with-body&lt;/code&gt; 同樣在 4xx/5xx 時返回非 0 exit code，但同時&lt;strong&gt;顯示 response body&lt;/strong&gt;（對排查錯誤有幫助）：&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>CURL on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/curl/</link>
+		<description>Recent content in CURL on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 03 Aug 2021 10:23:31 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/curl/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>cURL 完整指南：HTTP 客戶端工具與 API 測試利器</title>
+				<link>https://xinqilin.github.io/post/cli/curl/</link>
+				<pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/cli/curl/</guid>
+				<description>&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;&#xA;&lt;p&gt;cURL（Client URL）是一個功能強大的命令行工具和函式庫，用於傳輸各種網路協定的資料。它支援 HTTP、HTTPS、FTP、SFTP、TELNET 等多種協定，是開發者進行 API 測試、網路除錯和自動化腳本的必備工具。&lt;/p&gt;&#xA;&lt;h3 id=&#34;核心特徵&#34;&gt;核心特徵&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;多協定支援&lt;/strong&gt;：HTTP/HTTPS、FTP、SFTP、SMTP、POP3 等&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;豐富的選項&lt;/strong&gt;：支援各種 HTTP 方法、標頭、認證方式&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;跨平台&lt;/strong&gt;：適用於 Linux、macOS、Windows 等系統&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;腳本友好&lt;/strong&gt;：輸出格式化，適合自動化處理&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;安全性&lt;/strong&gt;：支援 SSL/TLS、各種認證機制&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;安全注意事項&#34;&gt;安全注意事項&lt;/h2&gt;&#xA;&lt;h3 id=&#34;-k----insecuremitm-風險&#34;&gt;&lt;code&gt;-k&lt;/code&gt; / &lt;code&gt;--insecure&lt;/code&gt;：MITM 風險&lt;/h3&gt;&#xA;&lt;p&gt;&lt;code&gt;curl -k https://example.com&lt;/code&gt; 跳過 TLS 憑證驗證，會讓你容易受到中間人攻擊（MITM）。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;僅允許使用場景&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;本機測試自簽憑證的開發環境&lt;/li&gt;&#xA;&lt;li&gt;CI/CD 內部系統（確定網路是受信任的）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;正確做法&lt;/strong&gt;（而非跳過驗證）：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 指定自訂 CA&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl --cacert /path/to/ca.crt https://internal-service/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 或設定 SSL_CERT_FILE 環境變數&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;SSL_CERT_FILE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/ca-bundle.crt curl https://internal-service/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;h3 id=&#34;--fail-with-bodycurl-776&#34;&gt;&lt;code&gt;--fail-with-body&lt;/code&gt;（curl 7.76+）&lt;/h3&gt;&#xA;&lt;p&gt;比 &lt;code&gt;--fail&lt;/code&gt; 更好的錯誤處理：&lt;code&gt;--fail&lt;/code&gt; 在 HTTP 4xx/5xx 時靜默失敗，&lt;code&gt;--fail-with-body&lt;/code&gt; 同樣在 4xx/5xx 時返回非 0 exit code，但同時&lt;strong&gt;顯示 response body&lt;/strong&gt;（對排查錯誤有幫助）：&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>
