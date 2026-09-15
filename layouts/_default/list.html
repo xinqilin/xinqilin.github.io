@@ -57,7 +57,7 @@
                 <div class="exp-card">
                     <div class="exp-head">
                         <h3 class="exp-role">Software Engineer</h3>
-                        <span class="exp-period">2021/07 — Present · 4 yr 10 mo</span>
+                        <span class="exp-period" data-tenure-start="2021-07">2021/07 — Present</span>
                     </div>
                     <p class="exp-company">104 Corporation · New Taipei City, Taiwan</p>
                     <ul class="exp-bullets">
@@ -257,6 +257,18 @@
         </div>
         {{ end }}
     </section>
+
+    <script>
+    (function () {
+        var el = document.querySelector('[data-tenure-start]');
+        if (!el) return;
+        var start = el.dataset.tenureStart.split('-');
+        var now = new Date();
+        var months = (now.getFullYear() - +start[0]) * 12 + (now.getMonth() + 1 - +start[1]);
+        var yr = Math.floor(months / 12), mo = months % 12;
+        el.textContent += ' \u00b7 ' + yr + ' yr' + (mo ? ' ' + mo + ' mo' : '');
+    })();
+    </script>
 </div>
 {{ else }}
 <div class="post-index-page">

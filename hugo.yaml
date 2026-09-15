@@ -72,6 +72,10 @@ params:
   socialIcons:
     - name: github
       url: "https://github.com/xinqilin"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/bill-lin-47348017a/"
+    - name: email
+      url: "mailto:zzx123bill@gmail.com"
 menu:
   main:
     - identifier: categories

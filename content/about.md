@@ -57,7 +57,8 @@ showToc: false
 如果您對文章內容有任何問題或建議，歡迎透過以下方式聯絡：
 
 - **GitHub**: [xinqilin](https://github.com/xinqilin)
-- **Email**: 請透過 GitHub 聯絡
+- **LinkedIn**: [Bill Lin](https://www.linkedin.com/in/bill-lin-47348017a/)
+- **Email**: [zzx123bill@gmail.com](mailto:zzx123bill@gmail.com)
 
 ## 🙏 致謝
 
