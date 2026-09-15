@@ -12,7 +12,7 @@
             <p class="home-hero-role">Senior Backend Engineer</p>
             <p class="home-hero-loc">Working in Taipei, Taiwan</p>
             <p class="home-hero-bio">
-                Senior backend engineer with 7+ years on Java / Spring, mostly on
+                Senior backend engineer with <span data-total-years>7+ years</span> on Java / Spring, mostly on
                 billing &amp; payment systems. Cross-trained on Vue / React and Kotlin
                 for Android &mdash; the frontend background helps me ship full-stack,
                 but I focus on the server side.
@@ -49,7 +49,7 @@
                 <svg class="home-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                 Experience
             </h2>
-            <span class="home-section-side">7+ years · Java backend</span>
+            <span class="home-section-side"><span data-total-years>7+ years</span> · Java backend</span>
         </div>
         <ol class="exp-timeline">
             <li class="exp-item exp-item-current">
@@ -81,7 +81,7 @@
                 <div class="exp-card">
                     <div class="exp-head">
                         <h3 class="exp-role">Software Engineer</h3>
-                        <span class="exp-period">2020/08 — 2021/03 · 8 mo</span>
+                        <span class="exp-period" data-months="8">2020/08 — 2021/03 · 8 mo</span>
                     </div>
                     <p class="exp-company">CASHIER TECH. CORP., LTD. · Xizhi, New Taipei</p>
                     <ul class="exp-bullets">
@@ -100,7 +100,7 @@
                 <div class="exp-card">
                     <div class="exp-head">
                         <h3 class="exp-role">Software Engineer</h3>
-                        <span class="exp-period">2019/09 — 2020/07 · 11 mo</span>
+                        <span class="exp-period" data-months="11">2019/09 — 2020/07 · 11 mo</span>
                     </div>
                     <p class="exp-company">Hongyang Tech · on-site at Far EasTone</p>
                     <ul class="exp-bullets">
@@ -118,7 +118,7 @@
                 <div class="exp-card">
                     <div class="exp-head">
                         <h3 class="exp-role">Software Engineer</h3>
-                        <span class="exp-period">2018/01 — 2019/01 · 1 yr 1 mo</span>
+                        <span class="exp-period" data-months="13">2018/01 — 2019/01 · 1 yr 1 mo</span>
                     </div>
                     <p class="exp-company">Eagle Industry Taiwan · Kaohsiung</p>
                     <ul class="exp-bullets">
@@ -260,13 +260,26 @@
 
     <script>
     (function () {
-        var el = document.querySelector('[data-tenure-start]');
-        if (!el) return;
-        var start = el.dataset.tenureStart.split('-');
         var now = new Date();
-        var months = (now.getFullYear() - +start[0]) * 12 + (now.getMonth() + 1 - +start[1]);
-        var yr = Math.floor(months / 12), mo = months % 12;
-        el.textContent += ' \u00b7 ' + yr + ' yr' + (mo ? ' ' + mo + ' mo' : '');
+        var currentMonths = 0;
+
+        var el = document.querySelector('[data-tenure-start]');
+        if (el) {
+            var start = el.dataset.tenureStart.split('-');
+            currentMonths = (now.getFullYear() - +start[0]) * 12 + (now.getMonth() + 1 - +start[1]);
+            var yr = Math.floor(currentMonths / 12), mo = currentMonths % 12;
+            el.textContent += ' \u00b7 ' + yr + ' yr' + (mo ? ' ' + mo + ' mo' : '');
+        }
+
+        var pastMonths = 0;
+        document.querySelectorAll('[data-months]').forEach(function (node) {
+            pastMonths += +node.dataset.months;
+        });
+
+        var totalYears = Math.floor((pastMonths + currentMonths) / 12);
+        document.querySelectorAll('[data-total-years]').forEach(function (node) {
+            node.textContent = totalYears + '+ years';
+        });
     })();
     </script>
 </div>
