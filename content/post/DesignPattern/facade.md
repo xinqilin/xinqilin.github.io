@@ -9,6 +9,7 @@ Categories: ["DesignPattern"]
 DisableComments: false
 aliases:
   - /post/DesignPattern/Facade/
+  - /post/architecture/facade/
 
 ---
 

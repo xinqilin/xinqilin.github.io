@@ -11,7 +11,7 @@ commit_message="$1"
 
 # 建構 Hugo 網站
 echo "🔨 正在建構 Hugo 網站..."
-hugo build
+hugo build --cleanDestinationDir
 
 # 檢查建構是否成功
 if [ $? -ne 0 ]; then

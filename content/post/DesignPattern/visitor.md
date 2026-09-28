@@ -7,6 +7,8 @@ tags: ["DesignPattern", "Behavioral", "Visitor"]
 Description: "訪問者模式透過雙分派將操作邏輯從物件結構抽離，適合在穩定的元素層級上頻繁新增操作"
 Categories: ["DesignPattern"]
 DisableComments: false
+aliases:
+  - /post/architecture/visitor/
 ---
 
 ## 1. 意圖

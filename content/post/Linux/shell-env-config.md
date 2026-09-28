@@ -9,6 +9,7 @@ Categories: ["Linux"]
 DisableComments: false
 aliases:
   - /post/Others/Env/
+  - /post/tools/env/
 ---
 
 ### Basic

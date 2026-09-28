@@ -9,6 +9,7 @@ Categories: ["DevOps"]
 DisableComments: false
 aliases:
   - /post/DevOps/Docker-Network/
+  - /post/devops/network/
 
 ---
 

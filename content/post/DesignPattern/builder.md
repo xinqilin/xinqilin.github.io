@@ -7,6 +7,8 @@ tags: ["DesignPattern", "Creational", "Builder"]
 Description: "GoF Builder 模式：用流式介面解決 telescoping constructor 問題，比較 Lombok @Builder 底層實作與 Java Records 的適用邊界"
 Categories: ["DesignPattern"]
 DisableComments: false
+aliases:
+  - /post/architecture/builder/
 ---
 
 ## 1. 意圖

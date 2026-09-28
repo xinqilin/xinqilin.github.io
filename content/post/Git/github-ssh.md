@@ -9,6 +9,7 @@ Categories: ["Git"]
 DisableComments: false
 aliases:
   - /post/Others/Github-ssh/
+  - /post/tools/github-ssh/
 
 ---
 

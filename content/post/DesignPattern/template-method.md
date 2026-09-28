@@ -9,6 +9,7 @@ Categories: ["DesignPattern"]
 DisableComments: false
 aliases:
   - /post/DesignPattern/TemplateMethod/
+  - /post/architecture/templatemethod/
 ---
 
 ## 1. 意圖

@@ -9,6 +9,7 @@ Categories: ["Tools"]
 DisableComments: false
 aliases:
   - /post/Others/Git/
+  - /post/tools/git/
 
 ---
 

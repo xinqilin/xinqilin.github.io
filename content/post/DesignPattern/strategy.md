@@ -9,6 +9,7 @@ Categories: ["DesignPattern"]
 DisableComments: false
 aliases:
   - /post/DesignPattern/Strategy/
+  - /post/architecture/strategy/
 ---
 
 ## 1. 意圖

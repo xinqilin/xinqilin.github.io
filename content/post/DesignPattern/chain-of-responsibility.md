@@ -9,6 +9,7 @@ Categories: ["DesignPattern"]
 DisableComments: false
 aliases:
   - /post/DesignPattern/ChainOfResponsibility/
+  - /post/architecture/chainofresponsibility/
 ---
 
 ## 1. 意圖

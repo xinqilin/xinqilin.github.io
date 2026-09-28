@@ -9,6 +9,7 @@ Categories: ["DesignPattern"]
 DisableComments: false
 aliases:
   - /post/DesignPattern/Iterator/
+  - /post/architecture/iterator/
 ---
 
 ## 1. 意圖

@@ -7,6 +7,8 @@ tags: ["DesignPattern", "Structural", "Composite"]
 Description: "Composite 模式讓客戶端以一致方式處理單個物件與物件組合，適合樹狀結構如目錄、組織圖、UI 元件。"
 Categories: ["DesignPattern"]
 DisableComments: false
+aliases:
+  - /post/architecture/composite/
 ---
 
 ## 1. 意圖
