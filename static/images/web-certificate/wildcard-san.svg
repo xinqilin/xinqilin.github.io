@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 466" width="720" height="466" role="img" aria-labelledby="t d">
+<title id="t">Wildcard 與 SAN 主機名比對動畫</title>
+<desc id="d">憑證的 SAN 清單有 example.com 與 *.example.com。example.com 完全相同而通過；api.example.com 由 * 匹配一層而通過；a.b.example.com 因為 * 只能匹配一層而失敗；example.org 不在清單上而失敗。</desc>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;fill:#1a202c;font-size:16px}
+.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+.t{font-size:20px;font-weight:700}
+.s{font-size:15px}
+.b{font-weight:700}
+.mu{fill:#4a5568}
+.c{text-anchor:middle}
+.an{animation-duration:10s;animation-timing-function:linear;animation-iteration-count:infinite}
+.h0{animation-name:h0}.h1{animation-name:h1}.h2{animation-name:h2}.h3{animation-name:h3}
+.v0{animation-name:v0}.v1{animation-name:v1}.v2{animation-name:v2}.v3{animation-name:v3}.ru{animation-name:ru}
+@keyframes h0{0%,5%{opacity:0}7.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes v0{0%,11%{opacity:0}13.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes h1{0%,19%{opacity:0}21.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes v1{0%,25%{opacity:0}27.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes h2{0%,33%{opacity:0}35.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes v2{0%,39%{opacity:0}41.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes h3{0%,47%{opacity:0}49.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes v3{0%,53%{opacity:0}55.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes ru{0%,60%{opacity:0}63%,93%{opacity:1}96.5%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.an{animation:none!important}}
+</style>
+<rect width="720" height="466" fill="#ffffff"/>
+<text x="360" y="36" class="t c">Wildcard 與 SAN：連線的主機名怎麼比對</text>
+<rect x="30" y="68" width="250" height="252" rx="12" fill="#ffffff" stroke="#2d3748" stroke-width="2"/>
+<text x="155" y="100" class="c b">憑證的 SAN 清單</text>
+<rect x="50" y="122" width="210" height="40" rx="8" fill="#e6f7fb" stroke="#61c8e0" stroke-width="1.5"/>
+<text x="155" y="148" class="c mono b">example.com</text>
+<rect x="50" y="182" width="210" height="40" rx="8" fill="#e6f7fb" stroke="#61c8e0" stroke-width="1.5"/>
+<text x="155" y="208" class="c mono b">*.example.com</text>
+<text x="155" y="264" class="c s mu">Subject CN 不參與比對</text>
+<text x="155" y="288" class="c s mu">（RFC 9525）</text>
+<text x="520" y="62" class="c s mu">使用者連到的主機名</text>
+<g class="an h0">
+<line x1="260" y1="142" x2="340" y2="99" stroke="#22c55e" stroke-width="2"/>
+<rect x="340" y="74" width="360" height="50" rx="10" fill="#f7fafc" stroke="#cbd5e0"/>
+<text x="356" y="105" class="mono b">example.com</text>
+</g>
+<g class="an v0"><rect x="536" y="83" width="154" height="32" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/><text x="613" y="104" class="c s b" style="fill:#15803d">✓ 完全相同</text></g>
+<g class="an h1">
+<line x1="260" y1="202" x2="340" y2="161" stroke="#22c55e" stroke-width="2"/>
+<rect x="340" y="136" width="360" height="50" rx="10" fill="#f7fafc" stroke="#cbd5e0"/>
+<text x="356" y="167" class="mono b">api.example.com</text>
+</g>
+<g class="an v1"><rect x="536" y="145" width="154" height="32" rx="16" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/><text x="613" y="166" class="c s b" style="fill:#15803d">✓ * 匹配一層</text></g>
+<g class="an h2">
+<rect x="340" y="198" width="360" height="50" rx="10" fill="#f7fafc" stroke="#cbd5e0"/>
+<text x="356" y="229" class="mono b">a.b.example.com</text>
+</g>
+<g class="an v2"><rect x="536" y="207" width="154" height="32" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/><text x="613" y="228" class="c s b" style="fill:#b91c1c">✗ * 不能跨兩層</text></g>
+<g class="an h3">
+<rect x="340" y="260" width="360" height="50" rx="10" fill="#f7fafc" stroke="#cbd5e0"/>
+<text x="356" y="291" class="mono b">example.org</text>
+</g>
+<g class="an v3"><rect x="536" y="269" width="154" height="32" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/><text x="613" y="290" class="c s b" style="fill:#b91c1c">✗ 不在清單上</text></g>
+<g class="an ru">
+<rect x="30" y="344" width="670" height="104" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="52" y="374" class="s">規則一：只拿 SAN 比對，Subject 的 CN 不算數。</text>
+<text x="52" y="400" class="s">規則二：* 只能是最左邊完整的一格，而且只代表一層。</text>
+<text x="52" y="426" class="s b">所以 *.example.com 不包含 example.com 本身，兩個通常都要列。</text>
+</g>
+</svg>

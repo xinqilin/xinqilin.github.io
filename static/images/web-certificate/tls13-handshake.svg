@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 640" width="720" height="640" role="img" aria-labelledby="t d">
+<title id="t">TLS 1.3 handshake 動畫</title>
+<desc id="d">瀏覽器送出 ClientHello，伺服器回 ServerHello，雙方算出同一把金鑰；伺服器接著送出加密的 Certificate、CertificateVerify、Finished，瀏覽器驗證憑證鏈後回 Finished，之後 HTTP 全程加密。</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2d3748"/></marker>
+<marker id="ae" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0e7490"/></marker>
+</defs>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;fill:#1a202c;font-size:16px}
+.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+.t{font-size:20px;font-weight:700}
+.s{font-size:15px}
+.b{font-weight:700}
+.mu{fill:#4a5568}
+.tl{fill:#0e7490}
+.c{text-anchor:middle}
+.e{text-anchor:end}
+.an{animation-duration:14s;animation-timing-function:linear;animation-iteration-count:infinite}
+.dt{opacity:0}
+.m1{animation-name:m1}.m2{animation-name:m2}.k{animation-name:k}.m3{animation-name:m3}.m4{animation-name:m4}
+.v{animation-name:v}.m5{animation-name:m5}.m6{animation-name:m6}.m7{animation-name:m7}
+.d1{animation-name:d1}.d2{animation-name:d2}.d3{animation-name:d3}.d4{animation-name:d4}
+.d5{animation-name:d5}.d6{animation-name:d6}.d7a{animation-name:d7a}.d7b{animation-name:d7b}
+@keyframes m1{0%,4%{opacity:0}6.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m2{0%,12.5%{opacity:0}15%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes k{0%,20.5%{opacity:0}23%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m3{0%,25.5%{opacity:0}28%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m4{0%,32.5%{opacity:0}35%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes v{0%,39%{opacity:0}41.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m5{0%,44%{opacity:0}46.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m6{0%,51%{opacity:0}53.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m7{0%,59%{opacity:0}61.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes d1{0%,4%{opacity:0;transform:translateX(0)}4.5%{opacity:1;transform:translateX(0)}10%{opacity:1;transform:translateX(486px)}10.5%,100%{opacity:0;transform:translateX(486px)}}
+@keyframes d2{0%,12.5%{opacity:0;transform:translateX(0)}13%{opacity:1;transform:translateX(0)}18.5%{opacity:1;transform:translateX(-486px)}19%,100%{opacity:0;transform:translateX(-486px)}}
+@keyframes d3{0%,25.5%{opacity:0;transform:translateX(0)}26%{opacity:1;transform:translateX(0)}31.5%{opacity:1;transform:translateX(-486px)}32%,100%{opacity:0;transform:translateX(-486px)}}
+@keyframes d4{0%,32.5%{opacity:0;transform:translateX(0)}33%{opacity:1;transform:translateX(0)}38.5%{opacity:1;transform:translateX(-486px)}39%,100%{opacity:0;transform:translateX(-486px)}}
+@keyframes d5{0%,44%{opacity:0;transform:translateX(0)}44.5%{opacity:1;transform:translateX(0)}50%{opacity:1;transform:translateX(-486px)}50.5%,100%{opacity:0;transform:translateX(-486px)}}
+@keyframes d6{0%,51%{opacity:0;transform:translateX(0)}51.5%{opacity:1;transform:translateX(0)}57%{opacity:1;transform:translateX(486px)}57.5%,100%{opacity:0;transform:translateX(486px)}}
+@keyframes d7a{0%,59%{opacity:0;transform:translateX(0)}59.5%{opacity:1;transform:translateX(0)}65%{opacity:1;transform:translateX(486px)}65.5%,100%{opacity:0;transform:translateX(486px)}}
+@keyframes d7b{0%,59%{opacity:0;transform:translateX(0)}59.5%{opacity:1;transform:translateX(0)}65%{opacity:1;transform:translateX(-486px)}65.5%,100%{opacity:0;transform:translateX(-486px)}}
+@media (prefers-reduced-motion:reduce){.an{animation:none!important}.dt{opacity:0!important}}
+</style>
+<rect width="720" height="640" fill="#ffffff"/>
+<text x="360" y="36" class="t c">TLS 1.3 握手：一個來回就建立加密通道</text>
+<text x="360" y="60" class="s mu c">{ } 包起來的訊息已經加密</text>
+<rect x="56" y="330" width="608" height="298" rx="14" fill="#ecfdf7" stroke="#72e5c5" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="648" y="352" class="s tl e">以下全程加密</text>
+<line x1="110" y1="122" x2="110" y2="630" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5 5"/>
+<line x1="610" y1="122" x2="610" y2="630" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5 5"/>
+<rect x="40" y="78" width="140" height="44" rx="10" fill="#e6f7fb" stroke="#61c8e0" stroke-width="2"/>
+<text x="110" y="106" class="c b">瀏覽器 Client</text>
+<rect x="540" y="78" width="140" height="44" rx="10" fill="#e6f7fb" stroke="#61c8e0" stroke-width="2"/>
+<text x="610" y="106" class="c b">伺服器 Server</text>
+<g class="an m1">
+<text x="360" y="158" class="c b mono">ClientHello</text>
+<line x1="116" y1="168" x2="602" y2="168" stroke="#2d3748" stroke-width="2" marker-end="url(#a)"/>
+<text x="360" y="192" class="s mu c">SNI・ALPN・key_share（我的 ECDHE 公鑰）</text>
+</g>
+<g class="an m2">
+<text x="360" y="230" class="c b mono">ServerHello</text>
+<line x1="604" y1="240" x2="118" y2="240" stroke="#2d3748" stroke-width="2" marker-end="url(#a)"/>
+<text x="360" y="264" class="s mu c">key_share（伺服器的 ECDHE 公鑰）</text>
+</g>
+<g class="an k">
+<rect x="150" y="282" width="420" height="32" rx="16" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="360" y="303" class="s c" style="fill:#92400e">雙方各自算出同一把金鑰，旁觀者算不出來</text>
+</g>
+<g class="an m3">
+<text x="360" y="372" class="c b mono tl">{Certificate}</text>
+<line x1="604" y1="382" x2="118" y2="382" stroke="#0e7490" stroke-width="2" marker-end="url(#ae)"/>
+<text x="360" y="406" class="s mu c">憑證鏈：伺服器的身分證</text>
+</g>
+<g class="an m4">
+<text x="360" y="440" class="c b mono tl">{CertificateVerify}</text>
+<line x1="604" y1="450" x2="118" y2="450" stroke="#0e7490" stroke-width="2" marker-end="url(#ae)"/>
+<text x="360" y="474" class="s mu c">用私鑰簽名，證明憑證真的是我的</text>
+</g>
+<g class="an v">
+<rect x="22" y="480" width="176" height="30" rx="15" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+<text x="110" y="500" class="s c b" style="fill:#15803d">✓ 驗證憑證鏈</text>
+</g>
+<g class="an m5">
+<text x="360" y="514" class="c b mono tl">{Finished}</text>
+<line x1="604" y1="524" x2="118" y2="524" stroke="#0e7490" stroke-width="2" marker-end="url(#ae)"/>
+</g>
+<g class="an m6">
+<text x="360" y="558" class="c b mono tl">{Finished}</text>
+<line x1="116" y1="568" x2="602" y2="568" stroke="#0e7490" stroke-width="2" marker-end="url(#ae)"/>
+</g>
+<g class="an m7">
+<text x="360" y="600" class="c b tl">HTTP 請求與回應（加密）</text>
+<line x1="118" y1="612" x2="602" y2="612" stroke="#0e7490" stroke-width="2.5" marker-start="url(#ae)" marker-end="url(#ae)"/>
+</g>
+<circle class="an dt d1" cx="116" cy="168" r="7" fill="#61c8e0" stroke="#ffffff" stroke-width="2"/>
+<circle class="an dt d2" cx="604" cy="240" r="7" fill="#61c8e0" stroke="#ffffff" stroke-width="2"/>
+<circle class="an dt d3" cx="604" cy="382" r="7" fill="#0e7490" stroke="#ffffff" stroke-width="2"/>
+<circle class="an dt d4" cx="604" cy="450" r="7" fill="#0e7490" stroke="#ffffff" stroke-width="2"/>
+<circle class="an dt d5" cx="604" cy="524" r="7" fill="#0e7490" stroke="#ffffff" stroke-width="2"/>
+<circle class="an dt d6" cx="116" cy="568" r="7" fill="#0e7490" stroke="#ffffff" stroke-width="2"/>
+<circle class="an dt d7a" cx="116" cy="612" r="7" fill="#0e7490" stroke="#ffffff" stroke-width="2"/>
+<circle class="an dt d7b" cx="604" cy="612" r="7" fill="#72e5c5" stroke="#ffffff" stroke-width="2"/>
+</svg>

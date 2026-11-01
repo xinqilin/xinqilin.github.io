@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 450" width="720" height="450" role="img" aria-labelledby="t d">
+<title id="t">憑證生命週期與 ACME 自動續約動畫</title>
+<desc id="d">一張 90 天效期的憑證，時間從第 0 天往前走，到第 60 天（剩三分之一）進入續約窗，ACME 用戶端自動建立訂單、完成網域挑戰、送 CSR 取得新憑證並 reload 伺服器。續約成功則倒數重新開始；續約失敗又沒人發現，第 90 天憑證過期，瀏覽器顯示 NET::ERR_CERT_DATE_INVALID。</desc>
+<defs>
+<marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2d3748"/></marker>
+</defs>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;fill:#1a202c;font-size:16px}
+.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+.t{font-size:20px;font-weight:700}
+.s{font-size:15px}
+.b{font-weight:700}
+.mu{fill:#4a5568}
+.c{text-anchor:middle}
+.gr{fill:#15803d}
+.rd{fill:#b91c1c}
+.am{fill:#b45309}
+.an{animation-duration:14s;animation-timing-function:linear;animation-iteration-count:infinite}
+.pr{animation-name:pr;transform-box:fill-box;transform-origin:0 50%}
+.mk{animation-name:mk}
+.zn{animation-name:zn}
+.k1{animation-name:k1}.k2{animation-name:k2}.k3{animation-name:k3}.k4{animation-name:k4}.ok{animation-name:ok}.ng{animation-name:ng}
+@keyframes pr{0%,2.1%{transform:scaleX(0.001);opacity:1}42.9%,93%{transform:scaleX(1);opacity:1}96.5%,100%{transform:scaleX(1);opacity:0}}
+@keyframes mk{0%,2.1%{transform:translateX(0);opacity:1}42.9%,93%{transform:translateX(400px);opacity:1}96.5%,100%{transform:translateX(400px);opacity:0}}
+@keyframes zn{0%,42.9%{opacity:0}45%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes k1{0%,47%{opacity:0}49.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes k2{0%,52%{opacity:0}54.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes k3{0%,57%{opacity:0}59.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes k4{0%,62%{opacity:0}64.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes ok{0%,67%{opacity:0}69.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes ng{0%,72%{opacity:0}74.5%,93%{opacity:1}96.5%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.an{animation:none!important}.mk{transform:translateX(400px)}}
+</style>
+<rect width="720" height="450" fill="#ffffff"/>
+<text x="360" y="34" class="t c">憑證生命週期：剩 1/3 效期時就自動續約</text>
+<text x="360" y="58" class="s mu c">以 90 天效期為例（Let's Encrypt 目前的預設）</text>
+<rect x="60" y="104" width="600" height="24" rx="12" fill="#edf2f7"/>
+<rect x="460" y="104" width="200" height="24" rx="12" fill="#fef3c7"/>
+<rect x="460" y="104" width="20" height="24" fill="#fef3c7"/>
+<rect class="an pr" x="60" y="104" width="400" height="24" rx="12" fill="#61c8e0"/>
+<text x="560" y="94" class="c s b am">續約窗</text>
+<rect class="an zn" x="456" y="100" width="208" height="32" rx="14" fill="none" stroke="#f59e0b" stroke-width="3"/>
+<g stroke="#a0aec0" stroke-width="2">
+<line x1="60" y1="132" x2="60" y2="140"/><line x1="260" y1="132" x2="260" y2="140"/>
+<line x1="460" y1="132" x2="460" y2="140"/><line x1="660" y1="132" x2="660" y2="140"/>
+</g>
+<text x="60" y="158" class="c s">第 0 天</text>
+<text x="260" y="158" class="c s">第 30 天</text>
+<text x="460" y="158" class="c s">第 60 天</text>
+<text x="660" y="158" class="c s">第 90 天</text>
+<text x="60" y="180" class="c s mu">簽發</text>
+<text x="460" y="180" class="c s b am">開始續約</text>
+<text x="660" y="180" class="c s b rd">到期</text>
+<circle class="an mk" cx="60" cy="116" r="10" fill="#0e7490" stroke="#ffffff" stroke-width="3"/>
+<rect x="40" y="198" width="640" height="116" rx="12" fill="#f7fafc" stroke="#e2e8f0"/>
+<text x="60" y="224" class="s b">ACME 自動續約（certbot、Caddy、cert-manager、AWS ACM 都在做這件事）</text>
+<g class="an k1">
+<rect x="56" y="240" width="140" height="58" rx="10" fill="#ffffff" stroke="#61c8e0" stroke-width="1.5"/>
+<text x="126" y="263" class="c s b">① 建立訂單</text>
+<text x="126" y="285" class="c s mu">要簽哪些網域</text>
+</g>
+<g class="an k2">
+<line x1="197" y1="269" x2="210" y2="269" stroke="#2d3748" stroke-width="2" marker-end="url(#ak)"/>
+<rect x="212" y="240" width="140" height="58" rx="10" fill="#ffffff" stroke="#61c8e0" stroke-width="1.5"/>
+<text x="282" y="263" class="c s b">② 完成挑戰</text>
+<text x="282" y="285" class="c s mu">HTTP-01・DNS-01</text>
+</g>
+<g class="an k3">
+<line x1="353" y1="269" x2="366" y2="269" stroke="#2d3748" stroke-width="2" marker-end="url(#ak)"/>
+<rect x="368" y="240" width="140" height="58" rx="10" fill="#ffffff" stroke="#61c8e0" stroke-width="1.5"/>
+<text x="438" y="263" class="c s b">③ 送 CSR</text>
+<text x="438" y="285" class="c s mu">CA 簽發新憑證</text>
+</g>
+<g class="an k4">
+<line x1="509" y1="269" x2="522" y2="269" stroke="#2d3748" stroke-width="2" marker-end="url(#ak)"/>
+<rect x="524" y="240" width="140" height="58" rx="10" fill="#ffffff" stroke="#61c8e0" stroke-width="1.5"/>
+<text x="594" y="263" class="c s b">④ 換上新憑證</text>
+<text x="594" y="285" class="c s mu">reload 伺服器</text>
+</g>
+<g class="an ok">
+<rect x="40" y="332" width="310" height="66" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+<text x="56" y="358" class="s b gr">✓ 新憑證上線，倒數重新開始</text>
+<text x="56" y="384" class="s">使用者完全無感</text>
+</g>
+<g class="an ng">
+<rect x="370" y="332" width="310" height="66" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+<text x="386" y="358" class="s b rd">✗ 續約失敗沒人發現，第 90 天過期</text>
+<text x="386" y="384" class="s">→ <tspan class="mono">NET::ERR_CERT_DATE_INVALID</tspan></text>
+</g>
+<text x="360" y="430" class="c s mu">Let's Encrypt 從 2025 年 6 月起不再寄到期通知信，監控要自己做</text>
+</svg>
