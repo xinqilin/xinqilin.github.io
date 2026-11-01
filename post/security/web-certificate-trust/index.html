@@ -1,0 +1,992 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>網頁憑證信任圖解：TLS 握手、憑證鏈、Trust Store 到 openssl 排錯 - Bill.Lin's Notes</title><meta name=description content="圖解網頁憑證信任：TLS 1.3 握手、X.509、憑證鏈與 Root CA、trust store、wildcard/SAN、防火牆 SSL inspection、HSTS、過期續約，附 openssl 與 Java 實測排錯"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="網頁憑證信任圖解：TLS 握手、憑證鏈、Trust Store 到 openssl 排錯"><meta property="og:description" content="圖解網頁憑證信任：TLS 1.3 握手、X.509、憑證鏈與 Root CA、trust store、wildcard/SAN、防火牆 SSL inspection、HSTS、過期續約，附 openssl 與 Java 實測排錯"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/security/web-certificate-trust/"></head><body><div class=container><header class=site-header><nav class=site-nav><a href=https://xinqilin.github.io/ class=site-brand><img src=/images/Bill-coding.svg alt class=site-brand-icon aria-hidden=true>
+<span class=site-brand-name>Bill.Lin's Notes</span></a><ul class=site-nav-menu><li><a href=https://xinqilin.github.io/ class=site-nav-link>Me</a></li><li><a href=/posts/ class=site-nav-link>Posts</a></li><li><a href=/categories/ class=site-nav-link>Categories</a></li><li><a href=/tags/ class=site-nav-link>Tags</a></li><li id=search-container class=site-nav-search><a href=# id=search-trigger class=site-nav-link aria-label=Search>Search</a>
+<input type=text id=search-input placeholder=搜尋文章...><div id=search-results-container></div></li></ul></nav></header><style>.container{max-width:1100px}.site-header{background:rgba(243,246,247,.85);backdrop-filter:saturate(180%)blur(8px);-webkit-backdrop-filter:saturate(180%)blur(8px);border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:100}.site-nav{max-width:1100px;margin:0 auto;padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:1rem}.site-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#2d3748;font-weight:600;font-size:1rem;transition:color .15s ease}.site-brand:hover{color:#36b9d8;text-decoration:none}.site-brand-icon{width:28px;height:28px;border-radius:6px}.site-brand-name{letter-spacing:.01em}.site-nav-menu{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:.4rem}.site-nav-menu li{display:inline-flex;align-items:center}.site-nav-link{color:#4a5568;text-decoration:none;font-size:.92rem;padding:7px 12px;border-radius:8px;transition:color .15s ease,background-color .15s ease}.site-nav-link:hover{color:#1a8eb3;background:rgba(97,200,224,.12);text-decoration:none}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.post-content table:not(.lntable){border-collapse:collapse;margin:1.2em 0;display:block;overflow-x:auto;max-width:100%;font-size:.95em}.post-content table:not(.lntable) thead{background-color:#f6f8fa}.post-content table:not(.lntable) th,.post-content table:not(.lntable) td{padding:.5em .9em;border:1px solid #d0d7de;text-align:left;vertical-align:top;line-height:1.55}.post-content table:not(.lntable) th{font-weight:600}.post-content table:not(.lntable) tbody tr:nth-child(even){background-color:#fafbfc}.post-content table:not(.lntable) code{background-color:rgba(175,184,193,.2);padding:.1em .35em;border-radius:3px;font-size:.9em}html{background-color:#f3f6f7}body{background-color:transparent}#particles-bg-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}.container{position:relative;z-index:1}.post-content{max-width:720px;margin:0 auto}.post-content p,.post-content li{line-height:1.75;color:#2d3748}.post-content li{line-height:2}.post-content h1,.post-title,.post-header h1{border-left:4px solid #61c8e0;padding-left:16px;line-height:1.4}.post-content blockquote{border:2px solid #61c8e0;border-left:2px solid #61c8e0;background-color:transparent;padding:15px 20px;margin:1.2em 0;color:#2d3748}.post-content a{color:#36b9d8;text-decoration:none}.post-content a:hover{text-decoration:underline}.post-content :not(pre)>code{background-color:#e6e6e6;color:#526367;padding:2px 6px;border-radius:4px;font-size:.92em}.post-content hr{border:0;border-top:1px solid #d0d7de;margin:2.5em 0}.cat-index-page{max-width:960px;margin:0 auto;padding:2rem 1rem}.cat-index-head{text-align:center;margin-bottom:2.5rem}.cat-index-head h1{font-size:2rem;font-weight:700;color:#2d3748;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;margin:0}.cat-index-sub{color:#718096;margin-top:.5rem;font-size:.95rem}.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}.cat-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.6rem;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;position:relative;overflow:hidden}.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#61c8e0,transparent);opacity:0;transition:opacity .2s ease}.cat-card:hover{transform:translateY(-3px);border-color:#61c8e0;box-shadow:0 6px 20px rgba(97,200,224,.15);text-decoration:none}.cat-card:hover::before{opacity:1}.cat-card-icon{font-size:2.4rem;line-height:1}.cat-card-name{font-size:1.15rem;font-weight:700;color:#2d3748;margin:0;border-left:none;padding-left:0;line-height:1.3}.cat-card-count{font-size:.85rem;color:#36b9d8;margin:0;font-weight:500}.cat-card-desc{font-size:.88rem;color:#718096;margin:0;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.tags-cloud-page{max-width:900px;margin:0 auto;padding:2rem 1rem}.tags-header{text-align:center;margin-bottom:2.5rem}.tags-header h1{font-size:2rem;font-weight:700;color:#2d3748;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;margin:0}.tags-subtitle{color:#718096;margin-top:.5rem;font-size:.95rem}.tags-cloud{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;justify-content:center}.tag-pill{display:inline-flex;align-items:baseline;gap:6px;padding:6px 14px;border-radius:999px;text-decoration:none;border:1px solid transparent;transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease;line-height:1.4}.tag-pill:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(97,200,224,.2);text-decoration:none}.tag-pill .tag-count{font-size:.7em;opacity:.65;font-weight:500}.tag-pill.tag-sm{background:#f0f4f5;color:#718096;font-size:13px}.tag-pill.tag-sm:hover{background:#e2e8f0;color:#2d3748}.tag-pill.tag-md{background:#e8f4f7;color:#2d3748;font-size:15px;font-weight:500}.tag-pill.tag-md:hover{background:#d4ebf2;border-color:#36b9d8}.tag-pill.tag-lg{background:#d4f1f8;color:#1a8eb3;font-size:17px;font-weight:600;border-color:#61c8e0}.tag-pill.tag-lg:hover{background:#b8e4f0;color:#0e6e8f}.term-page{max-width:760px;margin:0 auto;padding:2rem 1rem}.term-page-head{text-align:center;margin-bottom:2.5rem}.term-page-icon{font-size:3rem;line-height:1;margin-bottom:.6rem}.term-page-title{font-size:2rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;line-height:1.3}.term-page-meta{color:#718096;margin-top:.6rem;font-size:.95rem}.term-page-desc{color:#4a5568;font-size:.95rem;line-height:1.7;margin:1rem auto 0;max-width:620px}.term-page-back{text-align:center;margin-top:2.5rem}.term-back-link{color:#36b9d8;text-decoration:none;font-size:.95rem;border:1px solid #e2e8f0;padding:8px 16px;border-radius:999px;transition:all .2s ease;background:#fff}.term-back-link:hover{border-color:#61c8e0;background:#d4f1f8;text-decoration:none}.post-index-page{max-width:800px;margin:0 auto;padding:2rem 1rem}.post-index-head{text-align:center;margin-bottom:2.5rem}.post-index-title{font-size:2rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px}.post-index-sub{color:#718096;margin-top:.5rem;font-size:.95rem}.post-list{display:flex;flex-direction:column;gap:.85rem}.post-list-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.2rem 1.4rem;text-decoration:none;color:inherit;display:block;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;position:relative}.post-list-card::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:0;background:#61c8e0;border-radius:2px;transition:height .2s ease}.post-list-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.12);text-decoration:none;transform:translateX(2px)}.post-list-card:hover::before{height:60%}.post-list-card-title{font-size:1.1rem;font-weight:600;color:#2d3748;margin:0 0 .4rem;line-height:1.45;border-left:none;padding-left:0}.post-list-card-desc{font-size:.9rem;color:#718096;margin:0 0 .6rem;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.post-list-card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.82rem;color:#a0aec0}.post-list-card-meta time{font-feature-settings:"tnum"}.post-list-card-dot{color:#cbd5e0}.post-list-card-tags{display:inline-flex;flex-wrap:wrap;gap:.3rem}.post-list-card-tag{color:#718096;font-size:.78rem}.post-list-card-cat{color:#36b9d8;font-weight:500}.post-list-empty{text-align:center;padding:3rem 1rem;color:#a0aec0}.home-page{max-width:800px;margin:0 auto;padding:2rem 1rem}.home-hero{padding:1.5rem 0 2.5rem;border-bottom:1px solid #e2e8f0;margin-bottom:2.5rem;display:flex;align-items:flex-start;gap:1.5rem}.home-hero-text{flex:1;min-width:0}.home-hero-avatar-wrap{position:relative;flex-shrink:0;width:110px;height:110px;display:flex;align-items:center;justify-content:center;cursor:pointer}.home-hero-avatar-ring{position:absolute;inset:0;border-radius:50%;background:linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#feca57,#ff9ff3,#54a0ff,#5f27cd,#ff6b6b);background-size:400% 400%;animation:heroAvatarRotate 3s ease-in-out infinite;opacity:.85;will-change:transform,background-position}.home-hero-avatar-ring::before{content:'';position:absolute;inset:4px;background:#f3f6f7;border-radius:50%;z-index:1}.home-hero-avatar{position:relative;width:96px;height:96px;border-radius:50%;z-index:2;object-fit:cover;transition:transform .3s ease,filter .3s ease}.home-hero-avatar-wrap::after{content:'✨';position:absolute;top:-8px;right:-4px;font-size:16px;animation:heroAvatarSparkle 2.5s ease-in-out infinite;pointer-events:none;z-index:3}.home-hero-avatar-wrap:hover .home-hero-avatar-ring{animation:heroAvatarRotate 1.2s ease-in-out infinite,heroAvatarPulse 2s ease-in-out infinite}.home-hero-avatar-wrap:hover .home-hero-avatar{transform:scale(1.08);filter:brightness(1.08)saturate(1.1)}.home-hero-avatar-wrap:active .home-hero-avatar{transform:scale(.96)}@keyframes heroAvatarRotate{0%{background-position:0;transform:rotate(0)}25%{background-position:100%;transform:rotate(90deg)}50%{background-position:100%;transform:rotate(180deg)}75%{background-position:0;transform:rotate(270deg)}100%{background-position:0;transform:rotate(360deg)}}@keyframes heroAvatarPulse{0%,100%{opacity:.85}50%{opacity:1;box-shadow:0 0 18px rgba(97,200,224,.45)}}@keyframes heroAvatarSparkle{0%,100%{opacity:0;transform:scale(.8)rotate(0)}50%{opacity:1;transform:scale(1.2)rotate(180deg)}}@media(max-width:600px){.home-hero{flex-direction:column;gap:1rem;align-items:flex-start}.home-hero-avatar-wrap{width:92px;height:92px}.home-hero-avatar{width:80px;height:80px}}.home-hero-eyebrow{color:#36b9d8;font-size:.95rem;font-weight:500;margin:0 0 .3rem;letter-spacing:.04em}.home-hero-name{font-size:2.6rem;font-weight:800;color:#1a202c;margin:0 0 .5rem;line-height:1.1;border-left:4px solid #61c8e0;padding-left:16px}.home-hero-role{font-size:1.05rem;color:#4a5568;margin:0 0 .25rem;font-weight:500}.home-hero-loc{font-size:.92rem;color:#718096;margin:0 0 1rem}.home-hero-bio{font-size:.98rem;color:#4a5568;line-height:1.75;margin:0 0 1.4rem;max-width:640px}.home-hero-links{display:flex;flex-wrap:wrap;gap:.6rem}.home-link-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;color:#2d3748;text-decoration:none;font-size:.88rem;font-weight:500;transition:all .18s ease}.home-link-pill:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none;transform:translateY(-1px)}.home-section{margin-bottom:2.5rem}.home-section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}.home-section-title{font-size:1.4rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;padding-left:12px;line-height:1.2;display:inline-flex;align-items:center;gap:.55rem}.home-section-icon{width:22px;height:22px;color:#36b9d8;flex-shrink:0}.exp-bullets .metric{color:#1a8eb3;font-weight:600;font-feature-settings:"tnum"}.home-section-more{font-size:.88rem;color:#36b9d8;text-decoration:none;transition:color .15s ease}.home-section-more:hover{color:#1a8eb3;text-decoration:underline}.home-cat-pills{display:flex;flex-wrap:wrap;gap:.6rem}.home-cat-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;color:#2d3748;text-decoration:none;font-size:.9rem;transition:all .18s ease}.home-cat-pill:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none;transform:translateY(-1px)}.home-cat-pill-icon{font-size:1.1em;line-height:1}.home-cat-pill-count{font-size:.75em;color:#a0aec0;background:#f0f4f5;padding:1px 7px;border-radius:999px;font-weight:500}.home-cat-pill:hover .home-cat-pill-count{background:rgba(97,200,224,.15);color:#1a8eb3}.home-hero-bio-aside{color:#718096!important;font-size:.92rem!important;margin-top:-.7rem!important;font-style:italic}.home-link-pill-icon{width:16px;height:16px;flex-shrink:0;color:#4a5568;transition:color .18s ease}.home-link-pill:hover .home-link-pill-icon{color:#1a8eb3}.home-hero-footnote{font-size:.78rem;color:#a0aec0;margin:.9rem 0 0;font-feature-settings:"tnum"}.home-hero-footnote a{color:#36b9d8;text-decoration:none}.home-hero-footnote a:hover{text-decoration:underline}.skill-aside{margin:.6rem 0 0;font-size:.8rem;color:#718096;font-style:italic}.cert-subhead{font-size:.78rem;color:#36b9d8;margin:1.4rem 0 .7rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-left:none;padding-left:0}.cert-subhead:first-of-type{margin-top:0}.home-section-side{font-size:.85rem;color:#a0aec0}.exp-timeline{list-style:none;margin:0;padding:0;position:relative}.exp-timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#61c8e0 0%,#e2e8f0 100%);border-radius:1px}.exp-item{position:relative;padding-left:38px;padding-bottom:1.6rem}.exp-item:last-child{padding-bottom:0}.exp-dot{position:absolute;left:4px;top:8px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid #cbd5e0;box-shadow:0 0 0 4px #f3f6f7;z-index:1}.exp-item-current .exp-dot{border-color:#61c8e0;background:#61c8e0;box-shadow:0 0 0 4px #f3f6f7,0 0 0 7px rgba(97,200,224,.25)}.exp-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.1rem 1.3rem;transition:border-color .18s ease,box-shadow .18s ease}.exp-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.1)}.exp-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem;margin-bottom:.2rem}.exp-role{font-size:1.05rem;font-weight:700;color:#2d3748;margin:0;border-left:none;padding-left:0;line-height:1.3}.exp-period{font-size:.82rem;color:#a0aec0;font-feature-settings:"tnum"}.exp-company{font-size:.92rem;color:#36b9d8;margin:0 0 .6rem;font-weight:500}.exp-bullets{margin:.4rem 0 .7rem;padding-left:1.1rem;color:#4a5568;font-size:.9rem;line-height:1.7}.exp-bullets li{margin-bottom:.18rem}.exp-bullets li::marker{color:#61c8e0}.exp-skills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}.exp-skill{font-size:.75rem;color:#4a5568;background:#f0f4f5;padding:2px 9px;border-radius:999px;line-height:1.5}.skill-cluster{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}.skill-group{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1rem 1.2rem}.skill-group-name{font-size:.82rem;color:#36b9d8;margin:0 0 .6rem;text-transform:uppercase;letter-spacing:.06em;font-weight:600;border-left:none;padding-left:0}.skill-pills{display:flex;flex-wrap:wrap;gap:.35rem}.skill-pill{display:inline-block;font-size:.82rem;color:#2d3748;background:#f0f4f5;border:1px solid transparent;padding:3px 10px;border-radius:999px;line-height:1.55;transition:all .15s ease}.skill-pill.skill-primary{background:#d4f1f8;color:#1a8eb3;font-weight:500;border-color:rgba(97,200,224,.4)}.skill-pill.skill-interest{background:#fff;color:#718096;border-color:#e2e8f0;border-style:dashed}.cert-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.85rem}.cert-card{display:flex;align-items:center;gap:1rem;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1rem 1.2rem;transition:border-color .18s ease,box-shadow .18s ease}.cert-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.1)}.cert-icon{flex-shrink:0;width:44px;height:44px;border-radius:8px;background:#1a1a1a;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;font-family:helvetica neue,sans-serif;letter-spacing:0}.cert-icon-anthropic{background:#1a1a1a}.cert-icon-oracle{background:#c74634}.cert-icon-erp{background:#2b6cb0;font-size:.8rem;letter-spacing:.02em}.cert-body{flex:1;min-width:0}.cert-name{font-size:.95rem;font-weight:600;color:#2d3748;margin:0 0 .2rem;border-left:none;padding-left:0;line-height:1.4}.cert-issuer{font-size:.82rem;color:#718096;margin:0;font-feature-settings:"tnum"}.post-index-head-row{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:.8rem;text-align:left}.post-index-head-row .post-index-title{border-left:4px solid #61c8e0;padding:0 14px}.post-index-head-row .post-index-sub{margin-top:.3rem;margin-left:14px}.post-index-side-link{color:#36b9d8;text-decoration:none;font-size:.92rem;padding:6px 14px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;transition:all .18s ease;white-space:nowrap}.post-index-side-link:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none}@media(max-width:600px){.cat-grid{grid-template-columns:1fr}.post-content{padding:0 1rem}.tag-pill.tag-lg{font-size:16px}.tag-pill.tag-md{font-size:14px}.home-hero-name{font-size:2.1rem}.post-list-card{padding:1rem 1.1rem}.site-nav{padding:0 1rem;gap:.5rem}.site-nav-menu{gap:.1rem}.site-nav-link{padding:7px 8px;font-size:.85rem}.site-brand-name{font-size:.92rem}}.footer{background:0 0!important;border-top:1px solid #e2e8f0;margin-top:4rem;padding:1.6rem 1rem!important}.footer-content{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem}.footer-content p{margin:0;color:#718096;font-size:.85rem}.footer .social-links{display:inline-flex;gap:.6rem}.footer .social-link{color:#718096;text-decoration:none;font-size:.85rem;transition:color .15s ease}.footer .social-link:hover{color:#36b9d8;text-decoration:underline}.main-content{min-height:calc(100vh - 60px - 100px)}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>網頁憑證信任圖解：TLS 握手、憑證鏈、Trust Store 到 openssl 排錯</h1><div class=post-meta><div class=post-info><time class=post-date>2026年11月01日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>34 分鐘閱讀</span></div><div class=post-categories><a href=/categories/security class=category-link>Security</a></div></div></header><div class=post-content><p>在瀏覽器打開網站一切正常，同一個網址換成 <code>mvn</code>、<code>curl</code>、<code>docker build</code> 或 Spring Boot 的 <code>RestClient</code> 卻跳出 <code>PKIX path building failed</code>、<code>self signed certificate in certificate chain</code>。遇到這種狀況，很多人會加 <code>-k</code>、關掉驗證，或者到處亂 import 憑證，然後問題就這樣過去了，下次再碰到還是不知道原因。</p><p>這篇把「憑證為什麼被信任」從頭拆一次，依序講 9 個主題。每一節的格式都一樣：</p><ol><li><strong>白話版</strong>：先用一個生活比喻建立直覺</li><li><strong>動態圖</strong>：點圖可以開原尺寸（手機上建議點開看）</li><li><strong>工程師版</strong>：欄位、規則、實測輸出</li><li><strong>常見誤解與踩坑</strong></li></ol><p>最後是兩個實戰案例（公司防火牆 SSL inspection、自建內部 CA）和一張速查表。</p><blockquote><p><strong>實測環境</strong>：macOS、OpenSSL 4.1.0（Homebrew）、macOS 內建 curl 8.7.1（LibreSSL）、Amazon Corretto 21（<code>keytool</code>、<code>java.net.http.HttpClient</code>），測試站台用 <code>github.com</code> 與 <a href=https://badssl.com/>badssl.com</a>。指令輸出都是實際跑出來的結果，原樣貼在 <code>#</code> 註解或輸出區塊。Dockerfile、Spring Boot 設定、Keychain 匯出、Windows 相關的內容是依官方文件撰寫的，沒有在本機實跑，文中會標註。</p></blockquote><hr><h2 id=目錄>目錄</h2><ul><li><a href=#overview>打開 https://github.com 時，依序發生了什麼</a></li><li><a href=#tls-handshake>1. TLS Handshake：先握手，再講話</a></li><li><a href=#x509>2. X.509 憑證：網站的身分證</a></li><li><a href=#chain-of-trust>3. Chain of Trust：根憑證 → 中繼憑證 → 網站憑證</a></li><li><a href=#trust-store>4. Root CA 與 Trust Store：信任名單在誰手上</a></li><li><a href=#wildcard-san>5. Wildcard 與 SAN：這張證件能代表哪些名字</a></li><li><a href=#firewall>6. 防火牆：中間人合法化之後</a></li><li><a href=#hsts>7. HSTS：讓瀏覽器記住只走 HTTPS</a></li><li><a href=#renewal>8. 憑證過期、續約與「自動信任」</a></li><li><a href=#openssl>9. openssl 排錯工具箱：自己當一次 CA</a></li><li><a href=#case-firewall>實戰案例 A：公司防火牆 SSL inspection</a></li><li><a href=#case-internal-ca>實戰案例 B：自簽憑證與內部 CA</a></li><li><a href=#cheatsheet>速查表：錯誤訊息 → 原因 → 第一個指令</a></li><li><a href=#references>參考資料</a></li></ul><hr><h2 id=overview>打開 <a href=https://github.com>https://github.com</a> 時，依序發生了什麼</h2><p>先看全貌。9 個主題其實是同一件事的不同步驟：</p><table><thead><tr><th>順序</th><th>發生的事</th><th>對應章節</th></tr></thead><tbody><tr><td>1</td><td>你輸入 <code>github.com</code>，瀏覽器查 HSTS 清單，發現它「只能走 HTTPS」，內部直接改成 <code>https://</code></td><td><a href=#hsts>7. HSTS</a></td></tr><tr><td>2</td><td>如果你在公司網路，這條連線可能先被防火牆接走</td><td><a href=#firewall>6. 防火牆</a></td></tr><tr><td>3</td><td>瀏覽器送出 ClientHello，雙方協商出加密金鑰</td><td><a href=#tls-handshake>1. TLS Handshake</a></td></tr><tr><td>4</td><td>伺服器送來憑證：一張 leaf 加上一張中繼憑證</td><td><a href=#x509>2. X.509</a></td></tr><tr><td>5</td><td>瀏覽器檢查憑證的 SAN 有沒有包含 <code>github.com</code></td><td><a href=#wildcard-san>5. Wildcard / SAN</a></td></tr><tr><td>6</td><td>從 leaf 往上一張一張驗簽章，直到某張 root</td><td><a href=#chain-of-trust>3. Chain of Trust</a></td></tr><tr><td>7</td><td>確認這張 root 在自己的信任名單（trust store）裡</td><td><a href=#trust-store>4. Root CA / Trust Store</a></td></tr><tr><td>8</td><td>確認每張憑證都在效期內</td><td><a href=#renewal>8. 過期與續約</a></td></tr><tr><td>9</td><td>全部通過，網址列出現鎖頭；任何一步失敗，你就會看到錯誤頁</td><td><a href=#openssl>9. openssl</a> 教你把每一步拆開來看</td></tr></tbody></table><p>記住一件事就好：<strong>「信任」不是伺服器說了算，是 client 拿自己手上的名單判斷的</strong>。同一張憑證，Chrome 說 OK、Java 說不行，兩邊都沒有錯，因為它們拿的是不同的名單。後面幾乎所有的踩坑都是從這句話延伸出來的。</p><hr><h2 id=tls-handshake>1. TLS Handshake：先握手，再講話</h2><blockquote><p><strong>白話版</strong>
+你要和一個沒見過面的人講悄悄話，周圍都是偷聽的人。你們先當著大家的面各出一半密碼（偷聽的人就算聽到兩半，也拼不出完整的密碼），然後對方亮出一張由公家機關發的身分證，並當場簽名，證明證件真的是他的。確認身分之後，接下來的對話全部用剛剛拼出來的密碼加密。
+「拼密碼」是金鑰交換，「亮證件並簽名」是憑證和 CertificateVerify。<strong>憑證只負責證明「你是誰」，不負責加密資料。</strong></p></blockquote><p><a href=/images/web-certificate/tls13-handshake.svg><img src=/images/web-certificate/tls13-handshake.svg alt="TLS 1.3 handshake 動畫：ClientHello、ServerHello、加密的 Certificate、CertificateVerify、Finished"></a></p><h3 id=tls-要達成的三件事>TLS 要達成的三件事</h3><table><thead><tr><th>目標</th><th>意思</th><th>靠什麼達成</th></tr></thead><tbody><tr><td>機密性</td><td>路上的人看不懂內容</td><td>握手協商出的對稱金鑰（AES-GCM、ChaCha20-Poly1305）</td></tr><tr><td>完整性</td><td>內容被改過會被發現</td><td>AEAD 加密模式內建的驗證標籤</td></tr><tr><td>身分驗證</td><td>確定對方真的是 <code>github.com</code>，不是冒牌貨</td><td><strong>憑證 + 憑證鏈 + trust store</strong></td></tr></tbody></table><p>前兩項是密碼學的事，幾乎不會出錯。實務上碰到的「憑證問題」，99% 都卡在第三項：client 不相信伺服器的身分。</p><h3 id=tls-13-一步一步拆解>TLS 1.3 一步一步拆解</h3><p>用 <code>openssl s_client -msg</code> 對 <code>github.com</code> 抓到的實際順序（只留訊息名稱）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>&gt;&gt;&gt; ClientHello
+</span></span><span class=line><span class=cl>&lt;&lt;&lt; ServerHello
+</span></span><span class=line><span class=cl>&lt;&lt;&lt; ChangeCipherSpec        # 相容舊中介設備用的假訊息，1.3 沒有實際作用
+</span></span><span class=line><span class=cl>&lt;&lt;&lt; EncryptedExtensions     # 從這裡開始已經加密
+</span></span><span class=line><span class=cl>&lt;&lt;&lt; Certificate
+</span></span><span class=line><span class=cl>&lt;&lt;&lt; CertificateVerify
+</span></span><span class=line><span class=cl>&lt;&lt;&lt; Finished
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; ChangeCipherSpec
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; Finished
+</span></span></code></pre></td></tr></table></div></div><table><thead><tr><th>訊息</th><th>方向</th><th>內容與用途</th></tr></thead><tbody><tr><td>ClientHello</td><td>C → S</td><td>支援的 cipher suite、<strong>SNI</strong>（要連哪個網域）、<strong>ALPN</strong>（要講 <code>h2</code> 還是 <code>http/1.1</code>）、<strong>key_share</strong>（client 的 ECDHE 公鑰，通常是 X25519）</td></tr><tr><td>ServerHello</td><td>S → C</td><td>選定的 cipher suite、伺服器的 key_share。到這一步，雙方用 ECDHE 各自算出同一把共享密鑰，路上的人算不出來</td></tr><tr><td>EncryptedExtensions</td><td>S → C</td><td>其他協商結果（例如 ALPN 選了 <code>h2</code>），<strong>已經加密</strong></td></tr><tr><td>Certificate</td><td>S → C</td><td>憑證鏈（leaf + 中繼憑證），<strong>在 1.3 也是加密傳送的</strong></td></tr><tr><td>CertificateVerify</td><td>S → C</td><td>伺服器用<strong>憑證對應的私鑰</strong>，對「到目前為止的握手內容」簽名。client 用憑證裡的公鑰驗這個簽名，確認對方手上真的有私鑰</td></tr><tr><td>Finished</td><td>雙向</td><td>對整段握手做 MAC，確認雙方看到的握手內容一致、沒被竄改</td></tr></tbody></table><p>只要 client 驗證憑證鏈失敗，就會在收到 Certificate 之後送出 alert 並中斷連線。Java 的 <code>SSLHandshakeException</code> 就是在這一步丟出來的。</p><h3 id=憑證的公鑰在-13-不是拿來加密-session-key>憑證的公鑰在 1.3 不是拿來加密 session key</h3><p>很多教材還在講 TLS 1.2 RSA 金鑰交換的流程：「client 產生 pre-master secret，用伺服器憑證的公鑰加密送過去」。<strong>TLS 1.3 已經拿掉這種做法</strong>，現在一律是：</p><ul><li>金鑰交換：ECDHE（每次連線產生新的臨時金鑰對）</li><li>憑證的公鑰：<strong>只用來驗證 CertificateVerify 的簽名</strong></li></ul><p>這就是 <strong>forward secrecy</strong>：就算伺服器的私鑰哪天外洩，攻擊者拿著私鑰也解不開以前錄下來的流量，因為每次連線的金鑰都是臨時算出來、用完就丟的。</p><h3 id=tls-12-vs-13>TLS 1.2 vs 1.3</h3><table><thead><tr><th>項目</th><th>TLS 1.2</th><th>TLS 1.3</th></tr></thead><tbody><tr><td>完整握手來回次數</td><td>2-RTT</td><td><strong>1-RTT</strong></td></tr><tr><td>金鑰交換</td><td>RSA 或 (EC)DHE 都可以</td><td>只剩 (EC)DHE，強制 forward secrecy</td></tr><tr><td>憑證傳送</td><td>明文，路上看得到</td><td><strong>加密</strong></td></tr><tr><td>Cipher suite 範例</td><td><code>ECDHE-ECDSA-AES128-GCM-SHA256</code></td><td><code>TLS_AES_128_GCM_SHA256</code>（金鑰交換和簽章另外協商）</td></tr><tr><td>0-RTT</td><td>無</td><td>有（重連時可以直接送資料，但有 replay 風險，只適合冪等請求）</td></tr><tr><td>SNI</td><td>明文</td><td><strong>還是明文</strong>（除非啟用 ECH）</td></tr></tbody></table><p>實測同一台伺服器，強制用 1.2 會拿到不同的 cipher suite 命名格式：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl s_client -connect github.com:443 -servername github.com -brief &lt;/dev/null
+</span></span><span class=line><span class=cl><span class=c1># CONNECTION ESTABLISHED</span>
+</span></span><span class=line><span class=cl><span class=c1># Protocol version: TLSv1.3</span>
+</span></span><span class=line><span class=cl><span class=c1># Ciphersuite: TLS_AES_128_GCM_SHA256</span>
+</span></span><span class=line><span class=cl><span class=c1># Peer certificate: CN=github.com</span>
+</span></span><span class=line><span class=cl><span class=c1># Hash used: SHA256</span>
+</span></span><span class=line><span class=cl><span class=c1># Signature type: ecdsa_secp256r1_sha256</span>
+</span></span><span class=line><span class=cl><span class=c1># Verification: OK</span>
+</span></span><span class=line><span class=cl><span class=c1># Peer Temp Key: X25519, 253 bits</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl s_client -connect github.com:443 -servername github.com -tls1_2 -brief &lt;/dev/null
+</span></span><span class=line><span class=cl><span class=c1># Protocol version: TLSv1.2</span>
+</span></span><span class=line><span class=cl><span class=c1># Ciphersuite: ECDHE-ECDSA-AES128-GCM-SHA256</span>
+</span></span></code></pre></td></tr></table></div></div><p>輸出怎麼對應到握手：</p><ul><li><code>Peer Temp Key: X25519</code>：ECDHE 用的臨時金鑰（key_share）</li><li><code>Signature type: ecdsa_secp256r1_sha256</code>：CertificateVerify 用的簽章演算法，代表憑證是 EC P-256 金鑰</li><li><code>Verification: OK</code>：憑證鏈驗證通過（第 3、4 節的內容）</li></ul><h3 id=sni-為什麼重要>SNI 為什麼重要</h3><p>一台伺服器（一個 IP）常常同時服務好幾個網域。伺服器在送憑證之前，需要先知道 client 要連哪個網域，才知道該送哪一張憑證，這就是 SNI 的用途。</p><ul><li><code>openssl s_client</code> 在 OpenSSL 1.1.1 之後預設會帶 SNI（用 <code>-connect</code> 的主機名），但連 IP 或要測別的網域時，要自己加 <code>-servername</code></li><li>SNI 在 ClientHello 裡<strong>是明文</strong>。這就是為什麼公司防火牆不用解密，也能知道你連到哪個網站（第 6 節）</li><li>ECH（Encrypted Client Hello）可以把 SNI 也加密，但需要伺服器和 DNS 都支援。本機 OpenSSL 4.1 對 github.com 的輸出是 <code>ECH: NOT CONFIGURED</code>，代表 github.com 目前沒有啟用</li></ul><h3 id=常見誤解與踩坑>常見誤解與踩坑</h3><ul><li><strong>「HTTPS 很慢，因為要做非對稱加密」</strong>：握手只做一次，之後全部是對稱加密，CPU 有 AES-NI 指令的話幾乎沒有負擔。真正的延遲在 RTT，所以 1.3 把握手從 2-RTT 減為 1-RTT。</li><li><strong>「憑證的公鑰用來加密資料」</strong>：不是。1.3 的憑證只用來驗證身分。</li><li><strong>「握手失敗一定是憑證問題」</strong>：不一定。<code>handshake_failure</code> 也可能是雙方沒有共同支援的版本或 cipher suite，例如很舊的 Java 6/7 client 連只開 TLS 1.3 的伺服器。看錯誤訊息裡有沒有 <code>PKIX</code>、<code>certificate</code> 字樣可以快速分辨。</li><li><strong>連 IP 卻拿到錯的憑證</strong>：用 <code>openssl s_client -connect 1.2.3.4:443</code> 沒加 <code>-servername</code>，伺服器只能送預設憑證，看起來就像「憑證錯了」。</li></ul><hr><h2 id=x509>2. X.509 憑證：網站的身分證</h2><blockquote><p><strong>白話版</strong>
+憑證就像身分證：上面有姓名（Subject、SAN）、發證機關（Issuer）、有效期限（Validity）、照片（公鑰），最後蓋上發證機關的防偽鋼印（Signature）。
+身分證本身誰都可以影印，所以<strong>拿得出證件不代表你就是本人</strong>。能證明你是本人的，是「只有本人才有的東西」，也就是私鑰。握手時的 CertificateVerify 就是當場用私鑰簽名給你看。</p></blockquote><p><a href=/images/web-certificate/x509-anatomy.svg><img src=/images/web-certificate/x509-anatomy.svg alt="X.509 憑證欄位圖解：Subject、Issuer、Validity、公鑰、Extensions、Signature"></a></p><h3 id=結構被簽的內容--簽章>結構：被簽的內容 + 簽章</h3><p>X.509 v3（RFC 5280）的結構只有三塊：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Certificate
+</span></span><span class=line><span class=cl>├── tbsCertificate        # &#34;to be signed&#34;，所有欄位都在這裡
+</span></span><span class=line><span class=cl>│   ├── version, serialNumber, signature algorithm
+</span></span><span class=line><span class=cl>│   ├── issuer, validity, subject
+</span></span><span class=line><span class=cl>│   ├── subjectPublicKeyInfo
+</span></span><span class=line><span class=cl>│   └── extensions        # v3 才有，現代驗證規則幾乎都在這裡
+</span></span><span class=line><span class=cl>├── signatureAlgorithm
+</span></span><span class=line><span class=cl>└── signatureValue        # Issuer 用自己的私鑰，對 tbsCertificate 簽名
+</span></span></code></pre></td></tr></table></div></div><p>改了 tbsCertificate 裡任何一個 byte，簽章就對不上。所以沒人能把 <code>example.com</code> 的憑證改成 <code>github.com</code> 再拿來用。</p><h3 id=實際看一張githubcom-的-leaf>實際看一張：github.com 的 leaf</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl x509 -in github-0.pem -noout -text
+</span></span></code></pre></td></tr></table></div></div><p>以下是實際輸出（刪掉了 SCT 簽章的 hex，加上 <code>#</code> 註解）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Certificate:
+</span></span><span class=line><span class=cl>    Data:
+</span></span><span class=line><span class=cl>        Version: 3 (0x2)
+</span></span><span class=line><span class=cl>        Serial Number:
+</span></span><span class=line><span class=cl>            3e:1d:60:26:b4:b0:ae:a2:79:dc:a2:ef:bb:ce:d8:2b     # CA 內唯一，撤銷時靠它識別
+</span></span><span class=line><span class=cl>        Signature Algorithm: ecdsa-with-SHA256
+</span></span><span class=line><span class=cl>        Issuer: C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA DV E36
+</span></span><span class=line><span class=cl>        Validity
+</span></span><span class=line><span class=cl>            Not Before: Oct 30 00:00:00 2026 GMT
+</span></span><span class=line><span class=cl>            Not After : Jan 27 23:59:59 2027 GMT                # 約 90 天
+</span></span><span class=line><span class=cl>        Subject: CN=github.com                                   # 只有 CN，沒有 O：這是 DV 憑證
+</span></span><span class=line><span class=cl>        Subject Public Key Info:
+</span></span><span class=line><span class=cl>            Public Key Algorithm: id-ecPublicKey
+</span></span><span class=line><span class=cl>                Public-Key: (256 bit field, 128 bit security level)
+</span></span><span class=line><span class=cl>                ASN1 OID: prime256v1
+</span></span><span class=line><span class=cl>                NIST CURVE: P-256
+</span></span><span class=line><span class=cl>        X509v3 extensions:
+</span></span><span class=line><span class=cl>            X509v3 Authority Key Identifier:
+</span></span><span class=line><span class=cl>                17:99:A8:04:C1:6F:E4:2D:70:A8:0A:10:3D:03:D3:E9:1A:B8:26:63   # = 上一層的 SKI
+</span></span><span class=line><span class=cl>            X509v3 Subject Key Identifier:
+</span></span><span class=line><span class=cl>                8C:B0:2A:1E:AE:EE:86:5D:00:01:35:B1:E5:8B:69:23:A5:3E:3C:71
+</span></span><span class=line><span class=cl>            X509v3 Key Usage: critical
+</span></span><span class=line><span class=cl>                Digital Signature
+</span></span><span class=line><span class=cl>            X509v3 Basic Constraints: critical
+</span></span><span class=line><span class=cl>                CA:FALSE                                         # 不能再拿去簽別的憑證
+</span></span><span class=line><span class=cl>            X509v3 Extended Key Usage:
+</span></span><span class=line><span class=cl>                TLS Web Server Authentication                    # serverAuth
+</span></span><span class=line><span class=cl>            X509v3 Certificate Policies:
+</span></span><span class=line><span class=cl>                Policy: 1.3.6.1.4.1.6449.1.2.2.7
+</span></span><span class=line><span class=cl>                  CPS: https://sectigo.com/CPS
+</span></span><span class=line><span class=cl>                Policy: 2.23.140.1.2.1                           # CA/B Forum 的 DV 標記
+</span></span><span class=line><span class=cl>            Authority Information Access:
+</span></span><span class=line><span class=cl>                CA Issuers - URI:http://crt.sectigo.com/SectigoPublicServerAuthenticationCADVE36.crt
+</span></span><span class=line><span class=cl>                OCSP - URI:http://ocsp.sectigo.com
+</span></span><span class=line><span class=cl>            X509v3 Subject Alternative Name:
+</span></span><span class=line><span class=cl>                DNS:github.com, DNS:www.github.com               # 主機名比對只看這裡
+</span></span><span class=line><span class=cl>            CT Precertificate SCTs:
+</span></span><span class=line><span class=cl>                Signed Certificate Timestamp:                    # 已登錄到公開的 CT log
+</span></span><span class=line><span class=cl>                    Timestamp : Oct 30 00:21:07.488 2026 GMT
+</span></span><span class=line><span class=cl>                ...
+</span></span><span class=line><span class=cl>    Signature Algorithm: ecdsa-with-SHA256
+</span></span><span class=line><span class=cl>    Signature Value:
+</span></span><span class=line><span class=cl>        30:44:02:20:22:21:55:0b:...
+</span></span></code></pre></td></tr></table></div></div><h3 id=欄位對照表>欄位對照表</h3><table><thead><tr><th>欄位</th><th>用途</th><th>排錯時要注意的事</th></tr></thead><tbody><tr><td>Serial Number</td><td>CA 內唯一的編號</td><td>CRL 撤銷名單用它來列</td></tr><tr><td>Issuer</td><td>誰簽的</td><td>必須<strong>等於</strong>上一層憑證的 Subject，鏈才串得起來</td></tr><tr><td>Validity</td><td><code>notBefore</code> ～ <code>notAfter</code></td><td>client 時鐘不準也會讓它失敗</td></tr><tr><td>Subject</td><td>持有者名稱</td><td>現代 client <strong>不再用 CN 比對主機名</strong>（第 5 節）</td></tr><tr><td>Subject Public Key Info</td><td>公鑰與演算法</td><td>必須跟伺服器上的私鑰成對（第 9 節有比對指令）</td></tr><tr><td>Subject Alternative Name (SAN)</td><td>這張憑證能代表的主機名 / IP</td><td>少了 SAN，Chrome、Java、OpenSSL 都會判失敗</td></tr><tr><td>Key Usage</td><td>金鑰能做什麼（簽章、簽憑證…）</td><td>CA 憑證必須有 <code>Certificate Sign</code></td></tr><tr><td>Extended Key Usage (EKU)</td><td>用途：<code>serverAuth</code>、<code>clientAuth</code>…</td><td>TLS 伺服器憑證要有 <code>serverAuth</code>，Apple 平台強制要求</td></tr><tr><td>Basic Constraints</td><td><code>CA:TRUE/FALSE</code>、<code>pathlen</code></td><td>中繼憑證少了 <code>CA:TRUE</code> 會讓整條鏈失效</td></tr><tr><td>AKI / SKI</td><td>金鑰識別碼</td><td>子憑證的 AKI = 父憑證的 SKI，用來在多張同名 CA 中挑出正確的那張</td></tr><tr><td>Authority Information Access (AIA)</td><td>上一層憑證的下載網址、OCSP 網址</td><td>瀏覽器會用它自動補抓中繼憑證（第 3 節）</td></tr><tr><td>CRL Distribution Points</td><td>撤銷名單的網址</td><td>防火牆擋掉這個網址時，某些 client 會失敗</td></tr><tr><td>CT SCTs</td><td>憑證已經公開登錄的證明</td><td>Chrome、Safari 要求公開信任的憑證一定要有</td></tr><tr><td>Certificate Policies</td><td>驗證等級</td><td><code>2.23.140.1.2.1</code> = DV、<code>.2.2</code> = OV、<code>2.23.140.1.1</code> = EV</td></tr></tbody></table><h3 id=dv--ov--ev>DV / OV / EV</h3><table><thead><tr><th>等級</th><th>CA 驗證了什麼</th><th>Subject 長怎樣</th></tr></thead><tbody><tr><td>DV（Domain Validated）</td><td>你控制這個網域（DNS 或 HTTP 驗證）</td><td>只有 <code>CN=網域</code></td></tr><tr><td>OV（Organization Validated）</td><td>加驗公司實體</td><td>有 <code>O=公司名</code>、<code>L=</code>、<code>C=</code></td></tr><tr><td>EV（Extended Validation）</td><td>更嚴格的公司驗證</td><td>有更多欄位</td></tr></tbody></table><p>瀏覽器早就不在網址列顯示公司名稱，對連線安全性來說三者<strong>沒有差別</strong>，加密強度和驗證邏輯完全一樣。github.com 用的就是 DV。</p><h3 id=私鑰公鑰csr憑證的關係>私鑰、公鑰、CSR、憑證的關係</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>你產生私鑰 (private key) ──推導出──&gt; 公鑰 (public key)
+</span></span><span class=line><span class=cl>        │                                 │
+</span></span><span class=line><span class=cl>        │                                 ▼
+</span></span><span class=line><span class=cl>        └──── 用私鑰簽名 ────────&gt; CSR（公鑰 + 想要的名稱）
+</span></span><span class=line><span class=cl>                                          │ 送給 CA
+</span></span><span class=line><span class=cl>                                          ▼
+</span></span><span class=line><span class=cl>                    CA 驗證你擁有網域後，用「CA 自己的私鑰」簽名
+</span></span><span class=line><span class=cl>                                          │
+</span></span><span class=line><span class=cl>                                          ▼
+</span></span><span class=line><span class=cl>                            憑證（你的公鑰 + 名稱 + CA 簽章）
+</span></span></code></pre></td></tr></table></div></div><ul><li><strong>私鑰從頭到尾不離開你的機器</strong>，CA 從來不會看到你的私鑰</li><li>CSR 上的簽名只是證明「送 CSR 的人手上有對應私鑰」</li><li>憑證過期續約時，可以沿用舊私鑰，也可以換新私鑰，自動化工具通常會換新的</li></ul><h3 id=檔案格式與副檔名>檔案格式與副檔名</h3><table><thead><tr><th>名稱</th><th>實際內容</th><th>常見副檔名</th></tr></thead><tbody><tr><td>PEM</td><td>Base64 文字，<code>-----BEGIN CERTIFICATE-----</code> 開頭；一個檔案可以放多張</td><td><code>.pem</code>、<code>.crt</code>、<code>.cer</code>、<code>.key</code></td></tr><tr><td>DER</td><td>同樣的 ASN.1 結構，二進位</td><td><code>.der</code>、<code>.cer</code></td></tr><tr><td>PKCS#12</td><td>憑證 + 私鑰 + 鏈打包成一個檔案，可加密碼</td><td><code>.p12</code>、<code>.pfx</code></td></tr><tr><td>JKS</td><td>Java 舊的專有格式</td><td><code>.jks</code>（JDK 9 之後預設改用 PKCS#12）</td></tr></tbody></table><p>副檔名<strong>不可靠</strong>：<code>.crt</code> 和 <code>.cer</code> 可能是 PEM 也可能是 DER，用 <code>head -1</code> 看一眼就知道。格式轉換的指令請看 <a href=https://xinqilin.github.io/post/cli/openssl/>openssl 指令筆記</a>。</p><h3 id=常見誤解與踩坑-1>常見誤解與踩坑</h3><ul><li><strong>「憑證要保密」</strong>：憑證是公開的，每次握手都會送給任何連進來的人。要保密的是<strong>私鑰</strong>。</li><li><strong>「EV 憑證比較安全」</strong>：加密強度一樣，瀏覽器也不再特別顯示。</li><li><strong>「憑證和私鑰放錯檔案」</strong>：上線後一直握手失敗，原因可能是 <code>cert.pem</code> 跟 <code>key.pem</code> 不是一對（例如續約時換了私鑰卻沒換憑證）。比對方法在第 9 節。</li><li><strong><code>.cer</code> 給 Windows 用、<code>.crt</code> 給 Linux 用</strong>：這只是習慣，不是格式差異。看內容，不要看副檔名。</li></ul><hr><h2 id=chain-of-trust>3. Chain of Trust：根憑證 → 中繼憑證 → 網站憑證</h2><blockquote><p><strong>白話版</strong>
+你不認識這家餐廳的廚師，但你信任衛生局。衛生局授權給縣市衛生所（中繼），衛生所發合格證給這家餐廳（網站）。你看到合格證時，會一層一層往上確認：合格證上的章是衛生所的、衛生所的授權是衛生局給的，而衛生局本來就在你「信得過」的名單裡。
+最上面的衛生局沒有人替它背書，<strong>它被信任的唯一原因，是它本來就在你的名單裡</strong>。</p></blockquote><p><a href=/images/web-certificate/chain-of-trust.svg><img src=/images/web-certificate/chain-of-trust.svg alt="Chain of Trust 驗證動畫：從網站憑證往上驗到根憑證，最後確認根憑證在 trust store 裡"></a></p><h3 id=實際的鏈githubcom>實際的鏈：github.com</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl s_client -connect github.com:443 -servername github.com -showcerts &lt;/dev/null
+</span></span></code></pre></td></tr></table></div></div><p>只留憑證鏈的部分：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Certificate chain
+</span></span><span class=line><span class=cl> 0 s:CN=github.com
+</span></span><span class=line><span class=cl>   i:C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA DV E36
+</span></span><span class=line><span class=cl>   a:PKEY: EC, (prime256v1); sigalg: ecdsa-with-SHA256
+</span></span><span class=line><span class=cl>   v:NotBefore: Oct 30 00:00:00 2026 GMT; NotAfter: Jan 27 23:59:59 2027 GMT
+</span></span><span class=line><span class=cl> 1 s:C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA DV E36
+</span></span><span class=line><span class=cl>   i:C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication Root E46
+</span></span><span class=line><span class=cl>   a:PKEY: EC, (prime256v1); sigalg: ecdsa-with-SHA384
+</span></span><span class=line><span class=cl>   v:NotBefore: Mar 22 00:00:00 2021 GMT; NotAfter: Mar 21 23:59:59 2036 GMT
+</span></span><span class=line><span class=cl> 2 s:C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication Root E46
+</span></span><span class=line><span class=cl>   i:C=US, ST=New Jersey, L=Jersey City, O=The USERTRUST Network, CN=USERTrust ECC Certification Authority
+</span></span><span class=line><span class=cl>   a:PKEY: EC, (secp384r1); sigalg: ecdsa-with-SHA384
+</span></span><span class=line><span class=cl>   v:NotBefore: Mar 22 00:00:00 2021 GMT; NotAfter: Jan 18 23:59:59 2038 GMT
+</span></span></code></pre></td></tr></table></div></div><p>怎麼讀：</p><ul><li><code>s:</code> 是 Subject，<code>i:</code> 是 Issuer</li><li><strong>第 N 張的 <code>i:</code> 要等於第 N+1 張的 <code>s:</code></strong>，鏈才串得起來：0 的 issuer 是 DV E36 → 1 的 subject 就是 DV E36</li><li>第 2 張比較特別：它是 <code>Root E46</code> 的<strong>交叉簽署（cross-sign）版本</strong>，issuer 是更老的 <code>USERTrust ECC</code>。用意是讓還沒把 Root E46 放進名單的舊 client，也能一路驗到 USERTrust ECC</li></ul><p>再看金鑰識別碼，也對得上：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>leaf          AKI = 17:99:A8:...    ──等於──&gt;  DV E36 的 SKI
+</span></span><span class=line><span class=cl>DV E36 中繼   AKI = D1:22:DA:...    ──等於──&gt;  Root E46 的 SKI
+</span></span></code></pre></td></tr></table></div></div><h3 id=client-實際做了哪些檢查>Client 實際做了哪些檢查</h3><p>RFC 5280 的 path validation 很長，簡化成實務上會碰到的幾步：</p><table><thead><tr><th>步驟</th><th>檢查內容</th><th>失敗時 OpenSSL 的錯誤碼</th></tr></thead><tbody><tr><td>1. 建鏈</td><td>從 leaf 開始，用 Issuer（加上 AKI）找上一層，直到找到 trust store 裡的某張 root</td><td>20 <code>unable to get local issuer certificate</code>、2 <code>unable to get issuer certificate</code></td></tr><tr><td>2. 驗簽章</td><td>用上一層的公鑰驗下一層的簽章</td><td>7 <code>certificate signature failure</code></td></tr><tr><td>3. 效期</td><td>每一張都要在效期內（用 client 自己的時鐘）</td><td>10 <code>certificate has expired</code>、9 <code>not yet valid</code></td></tr><tr><td>4. CA 權限</td><td>除了 leaf，每張都要 <code>CA:TRUE</code>；<code>pathlen</code> 限制下面還能有幾層 CA</td><td>79 <code>invalid CA certificate</code>（OpenSSL 4.1 實測）</td></tr><tr><td>5. 用途</td><td>leaf 的 EKU 要有 <code>serverAuth</code></td><td>26 <code>unsuitable certificate purpose</code></td></tr><tr><td>6. 主機名</td><td>SAN 要包含連線的主機名（第 5 節）</td><td>62 <code>hostname mismatch</code></td></tr><tr><td>7. 撤銷</td><td>CRL / OCSP（很多 client 預設不檢查，或 soft-fail）</td><td>23 <code>certificate revoked</code></td></tr><tr><td>8. 終點</td><td>鏈的最上面必須是 <strong>trust store 裡的</strong> root</td><td>19 <code>self-signed certificate in certificate chain</code>、18 <code>self-signed certificate</code></td></tr></tbody></table><p>注意第 8 步：伺服器送了 root 也沒用。<strong>root 一定要從 client 自己的 trust store 來</strong>，否則任何人都能自己生一張 root 並跟著鏈一起送來。</p><h3 id=為什麼需要中繼憑證>為什麼需要中繼憑證</h3><p>如果 root 直接簽網站憑證，root 的私鑰就必須一直在線上工作。root 一旦外洩，所有信任它的裝置都要更新名單，這可能要花好幾年。所以 CA 的做法是：</p><ul><li><strong>Root 的私鑰離線保存</strong>（在 HSM 裡、鎖在機房），只在簽中繼憑證時才拿出來</li><li><strong>中繼憑證負責日常簽發</strong>，效期較短；出事時撤銷這張中繼憑證、換一張新的就好，root 不受影響</li></ul><p>Basic Constraints 的 <code>pathlen:0</code> 意思是「這張 CA 下面不能再有 CA，只能簽 leaf」。github.com 的中繼憑證就是 <code>pathlen:0</code>。</p><h3 id=伺服器該送哪幾張>伺服器該送哪幾張</h3><table><thead><tr><th>要不要送</th><th>原因</th></tr></thead><tbody><tr><td><strong>Leaf</strong>：一定要送</td><td>這是主角</td></tr><tr><td><strong>所有中繼憑證</strong>：一定要送</td><td>client 的名單裡只有 root，沒有中繼憑證</td></tr><tr><td>Root：可以不送</td><td>client 一定用自己名單裡的那張，送了只是浪費流量（送了通常也不會出錯）</td></tr></tbody></table><p>Nginx 的 <code>ssl_certificate</code> 要指向 <strong>fullchain</strong>（leaf + 中繼，順序是 leaf 在前），不是只有 leaf 的 <code>cert.pem</code>。這是最常見的上線錯誤之一。</p><h3 id=缺中繼憑證為什麼瀏覽器-okcurl-和-java-卻失敗>缺中繼憑證：為什麼瀏覽器 OK、curl 和 Java 卻失敗</h3><p>伺服器忘了送中繼憑證時，各 client 的表現不一樣：</p><table><thead><tr><th>Client</th><th>結果</th><th>原因</th></tr></thead><tbody><tr><td>Chrome、Edge、Safari</td><td>通常 OK</td><td>會讀 leaf 的 <strong>AIA <code>CA Issuers</code> 網址，自動下載中繼憑證</strong>；或者之前造訪其他網站時已經快取過</td></tr><tr><td>Firefox</td><td>通常 OK</td><td>內建一份常見中繼憑證的清單（preload）</td></tr><tr><td>curl、git、OpenSSL</td><td>失敗</td><td>不會自動補抓</td></tr><tr><td>Java</td><td>失敗</td><td>預設不補抓，要加 <code>-Dcom.sun.security.enableAIAcaIssuers=true</code> 才會</td></tr></tbody></table><p>用 badssl.com 實測：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl s_client -connect incomplete-chain.badssl.com:443 -servername incomplete-chain.badssl.com &lt;/dev/null 2&gt;/dev/null <span class=p>|</span> grep -E <span class=s1>&#39;verify error|Verify return&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># verify error:num=20:unable to get local issuer certificate</span>
+</span></span><span class=line><span class=cl><span class=c1># verify error:num=21:unable to verify the first certificate</span>
+</span></span><span class=line><span class=cl><span class=c1># Verify return code: 21 (unable to verify the first certificate)</span>
+</span></span></code></pre></td></tr></table></div></div><p>Java（<code>HttpClient</code> 對同一個網址發 GET）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl># 預設
+</span></span><span class=line><span class=cl>javax.net.ssl.SSLHandshakeException: PKIX path building failed:
+</span></span><span class=line><span class=cl>  sun.security.provider.certpath.SunCertPathBuilderException:
+</span></span><span class=line><span class=cl>  unable to find valid certification path to requested target
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># 加上 -Dcom.sun.security.enableAIAcaIssuers=true
+</span></span><span class=line><span class=cl>200
+</span></span></code></pre></td></tr></table></div></div><p>這就是「瀏覽器明明可以開」的經典陷阱：<strong>瀏覽器幫你掩蓋了伺服器的設定錯誤</strong>。正確的修法是讓伺服器送完整的鏈，而不是在每個 client 開 AIA 補抓。</p><h3 id=cross-sign-與-2021-年的-lets-encrypt-事件>Cross-sign 與 2021 年的 Let&rsquo;s Encrypt 事件</h3><p>新的 root 要被各家 OS 和裝置收進名單，需要好幾年。這段期間，CA 會請一家老牌 root 幫新 root「交叉簽署」，讓舊裝置也能透過老 root 驗過。</p><p>Let&rsquo;s Encrypt 早期就是靠 IdenTrust 的 <strong>DST Root CA X3</strong> 交叉簽署 ISRG Root X1。2021 年 9 月 30 日 DST Root CA X3 到期時：</p><ul><li>新的 OS、瀏覽器：名單裡已經有 ISRG Root X1，建鏈時直接停在 X1，不受影響</li><li>舊的 OpenSSL 1.0.x 等：建鏈演算法會一路走到過期的 DST Root CA X3，然後判定失敗，即使名單裡也有 X1</li><li>沒更新 trust store 的老舊 Docker image、嵌入式裝置：名單裡沒有 X1，只能失敗</li></ul><p>教訓：<strong>同一張 leaf，不同 client 可能建出不同的鏈</strong>。排錯時要看「這個 client 建出來的是哪一條鏈」，<code>openssl verify -show_chain</code> 可以看到（第 9 節）。</p><h3 id=常見誤解與踩坑-2>常見誤解與踩坑</h3><ul><li><strong>「把 root 一起送給 client，client 就會信任」</strong>：不會。root 只能來自 client 自己的名單。</li><li><strong>「憑證鏈的順序隨便放」</strong>：leaf 一定要放第一張。RFC 8446 要求實作容忍中繼憑證的順序混亂，但舊 client 不一定做得到。一律照 leaf → 中繼 → (root) 的順序放。</li><li><strong>只在瀏覽器測試新憑證</strong>：瀏覽器會補抓中繼憑證，這會讓你看不到問題。上線後一定要用 <code>openssl s_client</code> 或 <code>curl</code> 再測一次。</li><li><strong>Issuer「看起來」一樣就好</strong>：RFC 5280 的名稱比對會忽略大小寫和多餘空白，但欄位種類和順序必須相同。自建 CA 時，Subject 跟 Issuer 最好都從同一份設定產生，不要手打。</li></ul><hr><h2 id=trust-store>4. Root CA 與 Trust Store：信任名單在誰手上</h2><blockquote><p><strong>白話版</strong>
+每間公司的警衛手上都有一份「認可的發證機關」名單。同一張識別證，A 公司的警衛認得、B 公司的警衛不認得，不是證件有問題，是<strong>兩位警衛拿的名單不一樣</strong>。
+你電腦上的 Chrome、Java、curl、Docker container 就是好幾位不同的警衛，各自拿著各自的名單。</p></blockquote><p><a href=/images/web-certificate/trust-stores.svg><img src=/images/web-certificate/trust-stores.svg alt="不同 client 的 trust store 對照：Chrome 與 Safari 認得公司 root，curl、Java、IntelliJ Gradle、Docker 不認得"></a></p><h3 id=root-憑證的信任從哪裡來>Root 憑證的信任從哪裡來</h3><p>Root 憑證是<strong>自簽</strong>的：Issuer 等於 Subject，簽章是用它自己的私鑰簽的。驗證自簽的簽章只能證明「這張憑證沒被改過」，不能證明「它值得信任」，因為任何人都能在 10 秒內生一張自簽的 root。</p><p>所以 root 的信任只有一個來源：<strong>它被放進了 client 的 trust store</strong>。誰決定放進去？</p><table><thead><tr><th>Root program</th><th>管理者</th><th>影響範圍</th></tr></thead><tbody><tr><td>Chrome Root Program</td><td>Google</td><td>Chrome（iOS 版除外，iOS 上的 Chrome 用的是 Apple 的名單）</td></tr><tr><td>Apple Root Certificate Program</td><td>Apple</td><td>macOS、iOS 的系統 store 與 Safari</td></tr><tr><td>Microsoft Trusted Root Program</td><td>Microsoft</td><td>Windows 系統 store、Edge</td></tr><tr><td>Mozilla CA Certificate Program</td><td>Mozilla</td><td>Firefox，以及<strong>大多數 Linux 發行版的 <code>ca-certificates</code> 套件</strong>（Debian、Ubuntu、Alpine 都從 Mozilla 名單產生）</td></tr></tbody></table><p>Java 的 <code>cacerts</code> 則是 JDK 廠商（Oracle、Amazon Corretto、Eclipse Temurin…）各自維護的名單。</p><p>一家 CA 犯錯（例如誤發憑證、稽核不合格）時，root program 可以把它踢出名單。例如 Chrome 從 131 版起，不再信任 2024 年 11 月 11 日之後簽發的 Entrust 憑證（以 SCT 的時間戳記判斷）。被踢掉的 CA 簽出來的憑證，在 Chrome 會失敗，但在還沒更新名單的 Java 可能照樣通過。</p><h3 id=實際數一數同一台-mac-上有幾份名單>實際數一數：同一台 Mac 上有幾份名單</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># macOS 系統內建的 root（Safari、多數 macOS App 用這份）</span>
+</span></span><span class=line><span class=cl>security find-certificate -a /System/Library/Keychains/SystemRootCertificates.keychain <span class=p>|</span> grep -c <span class=s1>&#39;&#34;labl&#34;&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># 151</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># macOS 內建 curl（LibreSSL）用的 bundle</span>
+</span></span><span class=line><span class=cl>grep -c <span class=s1>&#39;BEGIN CERTIFICATE&#39;</span> /etc/ssl/cert.pem
+</span></span><span class=line><span class=cl><span class=c1># 128</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Homebrew 的 OpenSSL 用的 bundle</span>
+</span></span><span class=line><span class=cl>grep -c <span class=s1>&#39;BEGIN CERTIFICATE&#39;</span> /opt/homebrew/etc/openssl@4/cert.pem
+</span></span><span class=line><span class=cl><span class=c1># 188</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Java（Corretto 21 GA 版，2023-09 發佈）</span>
+</span></span><span class=line><span class=cl>keytool -list -cacerts -storepass changeit <span class=p>|</span> grep -c trustedCertEntry
+</span></span><span class=line><span class=cl><span class=c1># 145</span>
+</span></span></code></pre></td></tr></table></div></div><p>同一台機器，四份名單，張數都不一樣。再看 Java 的名單裡有沒有 github.com 用的 <code>Sectigo Root E46</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>keytool -list -cacerts -storepass changeit <span class=p>|</span> grep -iE <span class=s1>&#39;usertrustecc|sectigo|isrg&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># letsencryptisrgx1 [jdk], ..., trustedCertEntry,</span>
+</span></span><span class=line><span class=cl><span class=c1># usertrusteccca [jdk], ..., trustedCertEntry,</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>沒有 Sectigo Root E46</strong>。那 Java 為什麼還能連 github.com？因為 github.com 有送第 3 節看到的交叉簽署版 E46，它的 issuer 是 <code>USERTrust ECC Certification Authority</code>，而這張在 Java 的名單裡。這就是交叉簽署存在的意義。</p><p>Java 查 truststore 的順序：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>1. -Djavax.net.ssl.trustStore 指定的檔案
+</span></span><span class=line><span class=cl>2. $JAVA_HOME/lib/security/jssecacerts（如果存在）
+</span></span><span class=line><span class=cl>3. $JAVA_HOME/lib/security/cacerts
+</span></span></code></pre></td></tr></table></div></div><p>JVM 加上 <code>-Djavax.net.debug=ssl:trustmanager</code> 就能在 log 看到這個過程。實測沒指定時，log 會先嘗試 jssecacerts（<code>Inaccessible</code>，因為檔案不存在），然後才讀 cacerts。</p><h3 id=trust-store-位置總表>Trust store 位置總表</h3><table><thead><tr><th>Client</th><th>用的名單</th><th>位置 / 管理方式</th></tr></thead><tbody><tr><td>macOS（Safari、多數 App）</td><td>系統 Keychain</td><td>「鑰匙圈存取」；系統 root 在 <code>SystemRootCertificates.keychain</code>，自己加的放在 System 或 login keychain</td></tr><tr><td>Windows（Edge、多數 App）</td><td>系統憑證存放區</td><td><code>certlm.msc</code>（本機電腦）→ 受信任的根憑證授權單位</td></tr><tr><td>Debian / Ubuntu</td><td><code>ca-certificates</code></td><td>放到 <code>/usr/local/share/ca-certificates/*.crt</code>，執行 <code>update-ca-certificates</code>，產生 <code>/etc/ssl/certs/ca-certificates.crt</code></td></tr><tr><td>RHEL / Amazon Linux</td><td><code>ca-certificates</code></td><td>放到 <code>/etc/pki/ca-trust/source/anchors/</code>，執行 <code>update-ca-trust</code></td></tr><tr><td>Alpine</td><td><code>ca-certificates</code></td><td>跟 Debian 一樣用 <code>update-ca-certificates</code>，但 image 預設<strong>可能沒裝</strong>這個套件</td></tr><tr><td>Chrome / Edge</td><td>Chrome Root Store + OS 裡使用者或企業自己加的 root</td><td>公開 root 由 Google 管；你加進 OS 的 root 會被採用</td></tr><tr><td>Firefox</td><td>自己內建的 NSS 名單</td><td>預設不看 OS；<code>security.enterprise_roots.enabled = true</code> 時才讀 OS 裡加的 root</td></tr><tr><td>curl（macOS 內建）</td><td><code>/etc/ssl/cert.pem</code></td><td><code>curl -v</code> 會印 <code>CAfile: /etc/ssl/cert.pem</code></td></tr><tr><td>curl（Linux）</td><td>發行版的 bundle</td><td>通常是 <code>/etc/ssl/certs/ca-certificates.crt</code></td></tr><tr><td>git</td><td>編譯時決定的 bundle</td><td>可用 <code>http.sslCAInfo</code> 指定檔案</td></tr><tr><td>Java</td><td><code>cacerts</code></td><td><code>$JAVA_HOME/lib/security/cacerts</code>，用 <code>keytool -cacerts</code> 管理</td></tr><tr><td>IntelliJ 裡跑的 Gradle / Maven</td><td><strong>IDE 選定的那個 JDK 的 cacerts</strong></td><td>如果用 IDE 自帶的 JBR，就是 JBR 裡的另一份 cacerts</td></tr><tr><td>Docker container</td><td><strong>image 裡的</strong> <code>/etc/ssl/certs</code></td><td>跟 host 完全無關，是 build image 那一刻的 <code>ca-certificates</code> 版本</td></tr></tbody></table><h3 id=信任是-client-自己的決定>「信任」是 client 自己的決定</h3><p>把上面那張表記住，第 6 節和案例 A 的問題就幾乎都能解釋：</p><ul><li>公司 IT 用 MDM 把公司 root 裝進 macOS 系統 Keychain → Safari、Chrome 立刻信任</li><li>但 Java 的 cacerts、curl 的 <code>/etc/ssl/cert.pem</code>、Docker image 裡的 <code>/etc/ssl/certs</code> <strong>都沒被動到</strong> → 這些 client 全部失敗</li></ul><p>所以修法永遠是：<strong>找到那個 client 用的是哪一份名單，把 root 加到那一份</strong>。</p><h3 id=加入一張-root-的代價>加入一張 root 的代價</h3><p>在名單裡加一張 root，等於宣告「這張 root 簽的任何網域，我都相信」。它簽 <code>github.com</code>、<code>yourbank.com.tw</code> 都會被接受。</p><ul><li>只加你確定來源的 root，並且跟發放者（例如公司 IT）<strong>核對 SHA-256 指紋</strong></li><li>自建 CA 的私鑰外洩，所有信任它的電腦都會暴露在中間人攻擊之下</li><li>能用 Name Constraints 限制網域範圍的話就加上（例如只允許簽 <code>*.corp.internal</code>），但不是所有 client 都支援這個擴充欄位</li></ul><h3 id=常見誤解與踩坑-3>常見誤解與踩坑</h3><ul><li><strong>「我已經把憑證裝進 Keychain 了，為什麼 Java 還是不行？」</strong>：Java 不讀 Keychain，讀的是自己的 cacerts。</li><li><strong>「升級 JDK 就好了」</strong>：升級 JDK 會拿到新的 cacerts，但<strong>你之前手動 import 的憑證不會跟著搬過去</strong>，要重新匯入。</li><li><strong>把 leaf 憑證加進 trust store</strong>：可以讓那一台伺服器暫時通過，但憑證一續約，指紋就變了，又會失敗。應該加的是簽發它的 root。</li><li><strong>改 cacerts 改到錯的 JDK</strong>：一台機器上常常有好幾個 JDK（<code>/usr/libexec/java_home -V</code> 可以列出來）。Maven、Gradle、IDE 各自用的可能不是同一個。</li></ul><hr><h2 id=wildcard-san>5. Wildcard 與 SAN：這張證件能代表哪些名字</h2><blockquote><p><strong>白話版</strong>
+憑證的 SAN 欄位是一張「名字清單」，上面寫的每個名字這張憑證都可以代表。<code>*.example.com</code> 是一張「萬用名牌」，可以代表 <code>api.example.com</code>、<code>www.example.com</code>，但<strong>只能往下代表一層</strong>：它不能代表 <code>a.b.example.com</code>，也不能代表沒有前綴的 <code>example.com</code> 本身。</p></blockquote><p><a href=/images/web-certificate/wildcard-san.svg><img src=/images/web-certificate/wildcard-san.svg alt="Wildcard 與 SAN 主機名比對動畫：example.com 與 api.example.com 通過，a.b.example.com 與 example.org 失敗"></a></p><h3 id=比對規則rfc-9525>比對規則（RFC 9525）</h3><p>RFC 9525 在 2023 年取代了 RFC 6125，把現代 client 早就在做的規則寫成標準：</p><table><thead><tr><th>規則</th><th>說明</th></tr></thead><tbody><tr><td><strong>只看 SAN</strong></td><td>不能再用 Subject 的 CN 比對主機名。憑證只有 CN、沒有 SAN 的話，就是不符</td></tr><tr><td>wildcard 只能是<strong>最左邊、完整的一個 label</strong></td><td><code>*.example.com</code> 合法；<code>api.*.example.com</code>、<code>a*.example.com</code> 現代 client 不接受（部分舊實作會接受 <code>a*</code> 這種寫法）</td></tr><tr><td>wildcard 只代表<strong>一層</strong></td><td><code>*.example.com</code> 不符合 <code>a.b.example.com</code></td></tr><tr><td>wildcard 不包含<strong>父網域本身</strong></td><td><code>*.example.com</code> 不符合 <code>example.com</code></td></tr><tr><td>IP 必須<strong>完全相同</strong></td><td>連 <code>https://10.0.0.5</code> 時，SAN 裡要有 <code>IP:10.0.0.5</code>，寫成 <code>DNS:10.0.0.5</code> 不算</td></tr><tr><td>比對不分大小寫</td><td><code>GitHub.com</code> 等於 <code>github.com</code></td></tr></tbody></table><p>CA/B Forum 的規範還禁止公開 CA 簽 public suffix 的 wildcard（例如 <code>*.com</code>、<code>*.co.uk</code>）。</p><h3 id=實測自建-ca-簽一張-wildcard-憑證>實測：自建 CA 簽一張 wildcard 憑證</h3><p>第 9 節的實驗會簽出一張 SAN 為 <code>DNS:localhost, DNS:*.lab.test, IP:127.0.0.1</code> 的憑證，用 <code>openssl verify -verify_hostname</code> 一個一個試：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl x509 -in leaf.pem -noout -ext subjectAltName
+</span></span><span class=line><span class=cl><span class=c1># X509v3 Subject Alternative Name:</span>
+</span></span><span class=line><span class=cl><span class=c1>#     DNS:localhost, DNS:*.lab.test, IP Address:127.0.0.1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem -verify_hostname api.lab.test leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># leaf.pem: OK</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem -verify_hostname lab.test leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># CN=localhost</span>
+</span></span><span class=line><span class=cl><span class=c1># error 62 at 0 depth lookup: hostname mismatch</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf.pem: verification failed</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem -verify_hostname a.b.lab.test leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># CN=localhost</span>
+</span></span><span class=line><span class=cl><span class=c1># error 62 at 0 depth lookup: hostname mismatch</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf.pem: verification failed</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem -verify_ip 127.0.0.2 leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># CN=localhost</span>
+</span></span><span class=line><span class=cl><span class=c1># error 64 at 0 depth lookup: IP address mismatch</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf.pem: verification failed</span>
+</span></span></code></pre></td></tr></table></div></div><p>只有 CN、沒有 SAN 的憑證，就算主機名跟 CN 一模一樣，OpenSSL 4.1 也判失敗，不會退回去比對 CN：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl x509 -in cn-only.pem -noout -subject -ext subjectAltName
+</span></span><span class=line><span class=cl><span class=c1># No extensions in certificate          （沒有 SAN）</span>
+</span></span><span class=line><span class=cl><span class=c1># subject=CN=legacy.lab.test</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem cn-only.pem
+</span></span><span class=line><span class=cl><span class=c1># cn-only.pem: OK                        （不檢查主機名時，鏈本身沒問題）</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem -verify_hostname legacy.lab.test cn-only.pem
+</span></span><span class=line><span class=cl><span class=c1># CN=legacy.lab.test</span>
+</span></span><span class=line><span class=cl><span class=c1># error 62 at 0 depth lookup: hostname mismatch</span>
+</span></span><span class=line><span class=cl><span class=c1># error cn-only.pem: verification failed</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=主機名不符時各工具怎麼說>主機名不符時，各工具怎麼說</h3><p>用 <code>https://wrong.host.badssl.com/</code> 實測（它的 SAN 是 <code>*.badssl.com</code> 和 <code>badssl.com</code>，<code>wrong.host.badssl.com</code> 有兩層，不符）：</p><table><thead><tr><th>工具</th><th>錯誤訊息</th></tr></thead><tbody><tr><td>Chrome</td><td><code>NET::ERR_CERT_COMMON_NAME_INVALID</code></td></tr><tr><td>curl</td><td><code>SSL: no alternative certificate subject name matches target host name 'wrong.host.badssl.com'</code></td></tr><tr><td>openssl s_client（加 <code>-verify_hostname</code>）</td><td><code>verify error:num=62:hostname mismatch</code></td></tr><tr><td>Java</td><td><code>javax.net.ssl.SSLHandshakeException: No subject alternative DNS name matching wrong.host.badssl.com found.</code></td></tr></tbody></table><p>Java 的訊息很直白，有出現 <code>subject alternative</code> 就是這一類。注意 <code>openssl s_client</code> <strong>預設不檢查主機名</strong>，只驗鏈；要加 <code>-verify_hostname 主機名</code> 才會檢查。</p><h3 id=wildcard-還是多個-san>Wildcard 還是多個 SAN</h3><table><thead><tr><th>考量</th><th>Wildcard（<code>*.example.com</code>）</th><th>多個 SAN（逐一列出）</th></tr></thead><tbody><tr><td>新增子網域</td><td>不用重簽</td><td>要重簽</td></tr><tr><td>私鑰外洩的影響範圍</td><td><strong>所有子網域</strong>都能被冒充</td><td>只有列出的那幾個</td></tr><tr><td>私鑰散布</td><td>常常被複製到很多台機器，外洩機率跟著變高</td><td>可以每個服務一張，各自保管私鑰</td></tr><tr><td>暴露子網域</td><td>不會在 CT log 透露子網域名稱</td><td>每個 SAN 都會出現在公開的 CT log</td></tr><tr><td>Let&rsquo;s Encrypt</td><td><strong>只能用 DNS-01 驗證</strong></td><td>HTTP-01 或 DNS-01 都可以</td></tr><tr><td>EV</td><td>不能簽 wildcard</td><td>可以</td></tr></tbody></table><p>實務建議：</p><ul><li>對外服務，能自動化的話，每個服務一張多 SAN 的憑證，影響範圍最小</li><li>子網域多又常變動（例如每個 PR 一個預覽環境），用 wildcard 比較省事，但私鑰要集中管理（例如只放在 ingress 或 load balancer）</li><li>兩者可以並用：<code>SAN: example.com, *.example.com</code> 是最常見的組合</li></ul><h3 id=ct-log你的-san-是公開的>CT log：你的 SAN 是公開的</h3><p>公開 CA 簽出來的每張憑證都要登錄到 Certificate Transparency log，第 2 節看到的 <code>CT Precertificate SCTs</code> 就是登錄證明。任何人都可以到 <a href=https://crt.sh/>crt.sh</a> 查某個網域簽過哪些憑證。</p><ul><li>好處：網域擁有者可以監控「有沒有人幫我的網域誤簽或惡意簽發憑證」</li><li>代價：<code>staging-internal-admin.example.com</code> 這種名字只要出現在公開憑證的 SAN 裡，全世界都看得到。不想曝光的內部主機名，用 wildcard 或內部 CA（案例 B）</li></ul><h3 id=常見誤解與踩坑-4>常見誤解與踩坑</h3><ul><li><strong>「<code>*.example.com</code> 也包含 <code>example.com</code>」</strong>：不包含，兩個都要列。</li><li><strong>「CN 寫對就好」</strong>：Chrome 58（2017）之後就不看 CN 了，Java、OpenSSL 也一樣。自簽憑證最常漏的就是 SAN。</li><li><strong>用 IP 連線卻只放了 DNS SAN</strong>：內部服務用 IP 互連時，SAN 要有 <code>IP:</code>。</li><li><strong>多層子網域用一張 wildcard</strong>：<code>*.example.com</code> 蓋不到 <code>api.dev.example.com</code>，要另外簽 <code>*.dev.example.com</code>。</li></ul><hr><h2 id=firewall>6. 防火牆：中間人合法化之後</h2><blockquote><p><strong>白話版</strong>
+公司收發室規定所有包裹都要拆開檢查。收發室把你寄出去的包裹拆開、檢查完，重新封好，寄給收件人；收件人回寄的包裹也一樣先被拆開、檢查，再用<strong>收發室自己的封條</strong>重新封好交給你。
+你看到的封條不是原寄件人的，而是收發室的。你願意收，是因為公司事先告訴你「認得收發室的封條就好」。這張封條就是<strong>公司 root</strong>。</p></blockquote><p><a href=/images/web-certificate/tls-inspection.svg><img src=/images/web-certificate/tls-inspection.svg alt="公司防火牆 SSL inspection 動畫：一條 HTTPS 連線拆成兩段，瀏覽器信任、Java 與 curl 報錯"></a></p><h3 id=防火牆碰-tls-的三種程度>防火牆碰 TLS 的三種程度</h3><table><thead><tr><th>程度</th><th>做法</th><th>你會感覺到什麼</th></tr></thead><tbody><tr><td>1. 不解密，只看名字</td><td>讀 ClientHello 裡的明文 <strong>SNI</strong> 和 DNS 查詢，決定放行或阻擋</td><td>被擋時連線直接斷掉或 timeout，憑證<strong>不會</strong>變</td></tr><tr><td>2. SSL inspection（解密重簽）</td><td>防火牆終結你的 TLS 連線，自己再連真正的伺服器；然後用<strong>公司 root 即時簽一張同名的假憑證</strong>給你</td><td>憑證的 Issuer 變成公司的 CA；沒裝公司 root 的 client 全部報錯</td></tr><tr><td>3. 擋掉憑證相關的附屬流量</td><td>擋 OCSP、CRL、AIA 的 HTTP 網址</td><td>要上網撤銷檢查或補抓中繼憑證的 client 會變慢或失敗</td></tr></tbody></table><p>第 2 種就是大家最常碰到的狀況。各家產品名稱不同：SSL inspection、SSL decryption、TLS interception、HTTPS scanning，原理都一樣，就是<strong>一個公司授權的中間人</strong>。</p><h3 id=怎麼確認自己被攔截>怎麼確認自己被攔截</h3><p>最直接的方法：看 issuer 是誰。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl s_client -connect github.com:443 -servername github.com &lt;/dev/null 2&gt;/dev/null <span class=se>\
+</span></span></span><span class=line><span class=cl>  <span class=p>|</span> openssl x509 -noout -issuer -fingerprint -sha256
+</span></span></code></pre></td></tr></table></div></div><ul><li>在家或手機熱點：<code>issuer=C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA DV E36</code></li><li>在公司網路：如果變成 <code>issuer=... CN=Corp Firewall Root</code>、<code>Zscaler</code>、<code>Fortinet</code>、<code>Palo Alto</code> 之類的名字，就是被攔截了</li></ul><p>也可以比對 SHA-256 指紋。github.com 的 leaf 在本文撰寫時是 <code>7D:C4:D8:5C:...:2C:27:76</code>。同一個時間點在公司和在家拿到的指紋不一樣，就代表中間有人換了憑證。（憑證續約後指紋會變，所以要在同一個時段比對。）</p><p>瀏覽器也看得到：點網址列的鎖頭 → 連線安全 → 憑證，看「簽發者」。</p><h3 id=為什麼瀏覽器-ok工具全掛>為什麼瀏覽器 OK，工具全掛</h3><p>這就是第 4 節講的「每個 client 拿自己的名單」：</p><table><thead><tr><th>誰</th><th>公司 root 有沒有在它的名單裡</th><th>結果</th></tr></thead><tbody><tr><td>Chrome、Edge、Safari</td><td>公司用 MDM（macOS）或 GPO（Windows）裝進 OS store，瀏覽器會讀</td><td>正常</td></tr><tr><td>Firefox</td><td>預設不讀 OS 的 store；企業政策開了 <code>security.enterprise_roots.enabled</code> 才會讀</td><td>看公司有沒有設定</td></tr><tr><td>Java（Maven、Gradle、Spring Boot）</td><td>讀自己的 <code>cacerts</code>，MDM 不會碰</td><td><code>PKIX path building failed</code></td></tr><tr><td>curl、git</td><td>讀 <code>/etc/ssl/cert.pem</code> 或自己指定的 bundle</td><td><code>self signed certificate in certificate chain</code></td></tr><tr><td>Docker container</td><td>讀 image 裡的名單</td><td><code>docker build</code> 裡的 <code>apt-get</code>、<code>mvn</code> 全部失敗</td></tr></tbody></table><p>這也解釋了為什麼錯誤訊息常常是 <strong>self signed certificate in certificate chain</strong>：防火牆把公司 root（自簽）跟著鏈一起送過來，client 驗到最上面發現是一張不在名單裡的自簽憑證，就判定失敗（對應 OpenSSL 的錯誤碼 19）。</p><h3 id=會被-ssl-inspection-弄壞的東西>會被 SSL inspection 弄壞的東西</h3><p>就算你把公司 root 加進所有名單，有些東西還是會壞：</p><ul><li><strong>Certificate pinning</strong>：App 或 SDK 寫死了只接受特定的公鑰或 CA，換成公司 root 簽的憑證一律拒絕。手機 App、某些 SDK 的更新檢查會遇到</li><li><strong>mTLS（雙向 TLS）</strong>：client 要出示自己的憑證給伺服器，但防火牆終結了連線，伺服器看到的是防火牆，不是你。這類流量通常要請 IT 加進「不解密」的例外清單</li><li><strong>HSTS 網站的錯誤頁不能略過</strong>：沒裝公司 root 時，瀏覽器碰到 HSTS 網站（例如 github.com）會直接擋下，連「繼續前往」的按鈕都沒有（第 7 節）</li></ul><h3 id=常見誤解與踩坑-5>常見誤解與踩坑</h3><ul><li><strong>「HTTPS 加密了，公司看不到我在做什麼」</strong>：有 SSL inspection 的網路，公司看得到完整內容。沒有 SSL inspection 時，公司也看得到你連到哪個網域（SNI 是明文）。</li><li><strong>「錯誤是 self signed，代表網站自己簽憑證」</strong>：在公司網路上，十之八九是防火牆的公司 root，不是網站的問題。先看 issuer。</li><li><strong>在家可以、到公司不行</strong>（或反過來）：先懷疑網路路徑上的 SSL inspection 或 proxy，不要先懷疑程式碼。</li><li><strong>一律關掉驗證</strong>：<code>curl -k</code>、trust-all <code>TrustManager</code> 能讓錯誤消失，但也等於接受任何中間人。正確修法見<a href=#case-firewall>案例 A</a>。</li></ul><hr><h2 id=hsts>7. HSTS：讓瀏覽器記住只走 HTTPS</h2><blockquote><p><strong>白話版</strong>
+你第一次去朋友家時走錯門，朋友在後門告訴你：「以後都走前門，一年內都不要再走後門了。」從那天起，你每次去都直接走前門，連後門都不會靠近。
+後門就是 <code>http://</code>，前門就是 <code>https://</code>。HSTS 就是那句「以後都走前門」，而且<strong>瀏覽器會記住</strong>。</p></blockquote><p><a href=/images/web-certificate/hsts-flow.svg><img src=/images/web-certificate/hsts-flow.svg alt="HSTS 運作流程動畫：第一次造訪經 301 轉到 HTTPS 並收到 STS header，之後瀏覽器內部 307 直接改走 HTTPS"></a></p><h3 id=它要解決的問題ssl-stripping>它要解決的問題：SSL stripping</h3><p>使用者在網址列打 <code>github.com</code>，瀏覽器傳統上會先送 <code>http://github.com</code>，伺服器再用 301 導到 HTTPS。問題出在<strong>第一個 http 請求是明文的</strong>：</p><ol><li>攻擊者在咖啡廳 Wi-Fi 上攔截這個明文請求</li><li>攻擊者自己用 HTTPS 去連 github.com，再用 <strong>http</strong> 把內容轉給你</li><li>你一直停在 <code>http://</code>，網址列沒有鎖頭，但大多數人不會注意到，帳號密碼就這樣被看光</li></ol><p>HSTS（RFC 6797）讓瀏覽器在第一次收到 header 之後，<strong>以後連第一個 http 請求都不送</strong>，攻擊者就沒有機會攔截。</p><h3 id=header-語法>Header 語法</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+</span></span></code></pre></td></tr></table></div></div><table><thead><tr><th>參數</th><th>意思</th></tr></thead><tbody><tr><td><code>max-age=秒數</code></td><td>瀏覽器要記住多久。<code>31536000</code> = 一年。設成 <code>0</code> 等於叫瀏覽器忘掉</td></tr><tr><td><code>includeSubDomains</code></td><td>所有子網域也一起適用</td></tr><tr><td><code>preload</code></td><td>表示你同意被收進瀏覽器內建的 preload 清單（這個參數本身不在 RFC 裡，是 hstspreload.org 的要求）</td></tr></tbody></table><p>實測 github.com：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl -sI https://github.com <span class=p>|</span> grep -i <span class=s1>&#39;^strict&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># strict-transport-security: max-age=31536000; includeSubdomains; preload</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>curl -sI http://github.com <span class=p>|</span> grep -iE <span class=s1>&#39;^HTTP|^location&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># HTTP/1.1 301 Moved Permanently</span>
+</span></span><span class=line><span class=cl><span class=c1># location: https://github.com/</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=運作細節>運作細節</h3><ul><li><strong>只有透過 HTTPS 收到的 header 才算數</strong>。在 http 回應裡放這個 header 會被忽略，否則攻擊者也能偽造一個來搗亂</li><li>記住之後，使用者再輸入 <code>http://github.com</code>，瀏覽器會在<strong>內部</strong>改寫成 https。Chrome DevTools 的 Network 分頁會看到一筆 <code>307 Internal Redirect</code>，response header 有 <code>Non-Authoritative-Reason: HSTS</code>。這個 307 不是伺服器回的</li><li>每次收到新的 header 就重新起算 <code>max-age</code></li></ul><h3 id=hsts-網站的憑證錯誤不能略過>HSTS 網站的憑證錯誤不能略過</h3><p>這是 HSTS 對排錯影響最大的地方。一般網站的憑證有問題時，Chrome 錯誤頁有「進階 → 繼續前往」；<strong>HSTS 網站沒有這個按鈕</strong>（RFC 6797 規定瀏覽器不能讓使用者略過）。</p><p>所以在公司網路沒裝公司 root 時：</p><ul><li>一般網站：還能點「繼續前往」（不建議）</li><li>github.com、google.com 這類 HSTS 網站：完全打不開，只能修 trust store</li></ul><h3 id=preload-清單與-dev-陷阱>Preload 清單與 <code>.dev</code> 陷阱</h3><p>第一次造訪前，瀏覽器還不知道這個網站有 HSTS，第一個請求仍然是明文的。<strong>Preload 清單</strong>就是用來補這個洞：Chrome 內建一份清單（Firefox、Safari、Edge 也採用），清單上的網域從一開始就只走 HTTPS。</p><p>到 <a href=https://hstspreload.org/>hstspreload.org</a> 申請的條件：</p><ul><li>有效的憑證</li><li>http 導向同一個主機的 https</li><li>所有子網域都支援 HTTPS</li><li>主網域的 header 要有 <code>max-age</code> 至少一年（<code>31536000</code>）、<code>includeSubDomains</code>、<code>preload</code></li></ul><p>查 github.com 的狀態（hstspreload.org 的 API）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl -s <span class=s1>&#39;https://hstspreload.org/api/v2/status?domain=github.com&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># {</span>
+</span></span><span class=line><span class=cl><span class=c1>#   &#34;name&#34;: &#34;github.com&#34;,</span>
+</span></span><span class=line><span class=cl><span class=c1>#   &#34;status&#34;: &#34;preloaded&#34;,</span>
+</span></span><span class=line><span class=cl><span class=c1>#   &#34;bulk&#34;: true,</span>
+</span></span><span class=line><span class=cl><span class=c1>#   &#34;preloadedDomain&#34;: &#34;github.com&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># }</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>整個 TLD 也可以被 preload</strong>。Google 管理的 <code>.dev</code>、<code>.app</code> 就是整個頂級網域都在清單上，API 查 <code>dev</code> 會回 <code>preloaded</code>。所以：</p><ul><li>本機開發用 <code>myapp.dev</code> 當主機名，瀏覽器一定強制 https，你的 http dev server 永遠打不開</li><li>本機開發請用 <code>.test</code>、<code>.localhost</code>（RFC 6761 保留給測試用，不會有人註冊），或公司內部專用的網域</li></ul><h3 id=includesubdomains-的風險與漸進上線><code>includeSubDomains</code> 的風險與漸進上線</h3><p><code>includeSubDomains</code> 一開，所有子網域都會被強制 https，包括你忘記的那台 <code>legacy.example.com</code>（只有 http）、內部的 <code>printer.example.com</code>。而且<strong>瀏覽器會記住整整 <code>max-age</code> 那麼久</strong>，你把 header 拿掉也沒用，已經記住的瀏覽器要等到期才會忘。被收進 preload 清單後要移除更久，要等瀏覽器的版本更新。</p><p>安全的上線方式：</p><ol><li>先 <code>max-age=300</code>（5 分鐘），不加 <code>includeSubDomains</code>，觀察一陣子</li><li>確認所有子網域都有 HTTPS 之後，加 <code>includeSubDomains</code>，<code>max-age</code> 拉長到一週、一個月</li><li>最後才用 <code>max-age=31536000</code>，確定要的話再加 <code>preload</code> 並申請</li></ol><p>本機要清掉某個網域的 HSTS 紀錄：Chrome 打開 <code>chrome://net-internals/#hsts</code>，在「Delete domain security policies」輸入網域。preload 清單上的網域刪不掉。</p><h3 id=在伺服器設定-hsts>在伺服器設定 HSTS</h3><p><strong>Spring Security</strong>：預設就會加 HSTS header，內容是 <code>max-age=31536000 ; includeSubDomains</code>，但<strong>只在 <code>request.isSecure()</code> 為 true 時才加</strong>。要加上 <code>preload</code> 時要自己設定：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>SecurityFilterChain</span><span class=w> </span><span class=nf>securityFilterChain</span><span class=p>(</span><span class=n>HttpSecurity</span><span class=w> </span><span class=n>http</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>http</span><span class=p>.</span><span class=na>headers</span><span class=p>(</span><span class=n>headers</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>headers</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>.</span><span class=na>httpStrictTransportSecurity</span><span class=p>(</span><span class=n>hsts</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=n>hsts</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>.</span><span class=na>includeSubDomains</span><span class=p>(</span><span class=kc>true</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>.</span><span class=na>preload</span><span class=p>(</span><span class=kc>true</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>.</span><span class=na>maxAgeInSeconds</span><span class=p>(</span><span class=n>31536000</span><span class=p>)));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>http</span><span class=p>.</span><span class=na>build</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>常見坑：Spring Boot 跑在 load balancer 或 reverse proxy 後面，TLS 在 LB 就結束了，應用程式收到的是 http，<code>isSecure()</code> 是 false，<strong>HSTS header 就不會出現</strong>。要讓應用程式讀 <code>X-Forwarded-Proto</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>server</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>forward-headers-strategy</span><span class=p>:</span><span class=w> </span><span class=l>NATIVE  </span><span class=w> </span><span class=c># 或 FRAMEWORK；Tomcat 也可以用 server.tomcat.remoteip.*</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><strong>Nginx</strong>（依官方文件撰寫，未在本機實跑）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>add_header</span> <span class=s>Strict-Transport-Security</span> <span class=s>&#34;max-age=31536000</span><span class=p>;</span> <span class=k>includeSubDomains&#34;</span> <span class=s>always</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><code>always</code> 讓 4xx、5xx 回應也帶上 header</li><li>Nginx 的 <code>add_header</code> 有繼承陷阱：<code>location</code> 區塊裡只要寫了任何一個 <code>add_header</code>，就不會繼承 <code>server</code> 區塊的 <code>add_header</code></li></ul><h3 id=https-first>HTTPS-First</h3><p>除了 HSTS，瀏覽器本身也在往「預設 HTTPS」移動。Chrome 有「Always Use Secure Connections」設定，開啟後所有網站都先試 https，失敗才問你要不要退回 http。Google 在 2025 年 10 月宣布，預計從 2026 年 10 月的 Chrome 154 起，對公開網站預設開啟這個設定（撰寫本文時無法確認是否已全面上線）。</p><h3 id=常見誤解與踩坑-6>常見誤解與踩坑</h3><ul><li><strong>「有 HSTS 就不用 301 了」</strong>：還是要。第一次造訪（沒被 preload 時）仍然靠 301 把使用者導到 https，才能收到 header。</li><li><strong>「在 http 回應加 HSTS header」</strong>：無效，瀏覽器會忽略。</li><li><strong>在 staging 開了 <code>includeSubDomains</code> 加長 <code>max-age</code></strong>：如果 staging 跟其他內部服務共用主網域，可能把整個內網的 http 服務都封掉。</li><li><strong>本機用 <code>.dev</code> 網域</strong>：一定會被強制 https，改用 <code>.test</code> 或 <code>.localhost</code>。</li></ul><hr><h2 id=renewal>8. 憑證過期、續約與「自動信任」</h2><blockquote><p><strong>白話版</strong>
+憑證跟護照一樣有期限，過期就不能用，就算你本人一點都沒變也一樣。聰明的做法是設個提醒，在<strong>還剩三分之一效期時</strong>就去換新的，不要等到要出國的前一天。
+現在的效期越縮越短，短到人工根本來不及換，所以「自動續約」已經不是加分項，而是必備功能。</p></blockquote><p><a href=/images/web-certificate/cert-lifecycle.svg><img src=/images/web-certificate/cert-lifecycle.svg alt="憑證生命週期動畫：90 天效期，第 60 天進入續約窗，ACME 自動續約成功則重新倒數，失敗則第 90 天過期"></a></p><h3 id=效期越來越短>效期越來越短</h3><p>CA/Browser Forum 在 2025 年 4 月通過 Ballot SC-081v3，公開信任的 TLS 憑證最長效期會分階段縮短：</p><table><thead><tr><th>生效日</th><th>最長效期</th><th>網域驗證結果可重用多久</th></tr></thead><tbody><tr><td>2026-03-15 以前</td><td>398 天</td><td>398 天</td></tr><tr><td>2026-03-15 起</td><td><strong>200 天</strong></td><td>200 天</td></tr><tr><td>2027-03-15 起</td><td>100 天</td><td>100 天</td></tr><tr><td>2029-03-15 起</td><td><strong>47 天</strong></td><td><strong>10 天</strong></td></tr></tbody></table><p>本文撰寫時（2026 年 11 月）已經是 200 天的階段。到 2029 年，一年至少要換 8 次憑證，而且網域驗證每 10 天就要重做，人工續約已經不可行。</p><p>Let&rsquo;s Encrypt 走得更快：</p><ul><li>預設（<code>classic</code> profile）目前是 90 天，2027-02-10 起改為 64 天，2028-02-16 起改為 45 天</li><li><code>tlsserver</code> profile 從 2026-05-13 起可以選 45 天</li><li><code>shortlived</code> profile 是 6 天</li></ul><h3 id=過期時各工具怎麼說>過期時各工具怎麼說</h3><p>用 <code>https://expired.badssl.com/</code>（2015 年 4 月就過期了）實測：</p><table><thead><tr><th>工具</th><th>錯誤訊息</th></tr></thead><tbody><tr><td>Chrome</td><td><code>NET::ERR_CERT_DATE_INVALID</code></td></tr><tr><td>openssl</td><td><code>verify error:num=10:certificate has expired</code></td></tr><tr><td>curl</td><td><code>SSL certificate problem: certificate has expired</code></td></tr><tr><td>Java</td><td><code>PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed</code>，往下追 cause 是 <code>java.security.cert.CertificateExpiredException: NotAfter: Mon Apr 13 07:59:59 CST 2015</code></td></tr></tbody></table><p>注意 Java 這裡是 <strong>path validation failed</strong>（鏈建得起來，但驗證沒過），跟 trust store 問題的 <strong>path building failed</strong>（連鏈都建不起來）不一樣。看到 <code>validation</code> 先查效期，看到 <code>building</code> 先查 trust store。</p><h3 id=client-時鐘不準也會過期>Client 時鐘不準也會「過期」</h3><p>效期是用 <strong>client 自己的時鐘</strong>判斷的。時鐘錯了，好好的憑證也會被判過期或「還沒生效」：</p><ul><li>虛擬機休眠後恢復、容器沒同步時間、CMOS 電池沒電的舊機器</li><li>開發時把系統時間調到未來測試</li></ul><p>用 <code>openssl verify -attime</code> 可以模擬「如果現在是某個時間點」：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 假裝現在是 2027-03-01（leaf 在 2027-01-30 到期）</span>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem <span class=se>\
+</span></span></span><span class=line><span class=cl>  -attime <span class=k>$(</span>date -j -f %Y-%m-%d 2027-03-01 +%s<span class=k>)</span> leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># CN=localhost</span>
+</span></span><span class=line><span class=cl><span class=c1># error 10 at 0 depth lookup: certificate has expired</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf.pem: verification failed</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 假裝現在是 2026-01-01（root 是 2026-11 才建立的）</span>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem <span class=se>\
+</span></span></span><span class=line><span class=cl>  -attime <span class=k>$(</span>date -j -f %Y-%m-%d 2026-01-01 +%s<span class=k>)</span> leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># C=TW, O=Bill Lab, CN=Bill Lab Root CA</span>
+</span></span><span class=line><span class=cl><span class=c1># error 9 at 2 depth lookup: certificate is not yet valid or the system clock is incorrect</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf.pem: verification failed</span>
+</span></span></code></pre></td></tr></table></div></div><p>（<code>date -j -f</code> 是 macOS 的寫法，GNU date 用 <code>date -d 2027-03-01 +%s</code>。）</p><p>錯誤碼 9 的訊息直接提示「或是系統時鐘不正確」。看到這個錯誤，先跑 <code>date</code> 確認時間。</p><h3 id=歷史案例root-過期一樣會出事>歷史案例：root 過期一樣會出事</h3><p>Leaf 自動續約了，root 也會過期：</p><table><thead><tr><th>日期</th><th>事件</th><th>誰受影響</th></tr></thead><tbody><tr><td>2020-05-30</td><td>Sectigo 的 <strong>AddTrust External CA Root</strong> 到期</td><td>伺服器還在送舊的交叉簽署鏈，舊版 OpenSSL、GnuTLS 建鏈時走到過期的 AddTrust 就失敗</td></tr><tr><td>2021-09-30</td><td>IdenTrust 的 <strong>DST Root CA X3</strong> 到期</td><td>第 3 節講過，Let&rsquo;s Encrypt 的舊交叉簽署鏈</td></tr></tbody></table><p>共同點：<strong>新的 client 不受影響，舊的 client 和沒更新 trust store 的系統大量失敗</strong>。如果你的服務要呼叫一大堆外部 API，又跑在很久沒更新的 base image 上，就很容易中招。</p><h3 id=acme自動續約的標準協定>ACME：自動續約的標準協定</h3><p>ACME（RFC 8555）是 Let&rsquo;s Encrypt 推出、現在多數 CA 都支援的自動簽發協定，流程就是圖上的四步：</p><ol><li><strong>建立訂單</strong>：告訴 CA 要簽哪些網域</li><li><strong>完成挑戰</strong>：證明你控制這些網域</li><li><strong>送 CSR</strong>：CA 驗證通過後簽發憑證</li><li><strong>換上新憑證</strong>：reload 伺服器</li></ol><p>挑戰（challenge）有三種：</p><table><thead><tr><th>類型</th><th>怎麼證明</th><th>適合</th><th>限制</th></tr></thead><tbody><tr><td>HTTP-01</td><td>在 <code>http://網域/.well-known/acme-challenge/&lt;token></code> 放一個檔案</td><td>一般網站</td><td>需要 port 80 對外開放；<strong>不能簽 wildcard</strong></td></tr><tr><td>DNS-01</td><td>新增一筆 <code>_acme-challenge.網域</code> 的 TXT 記錄</td><td>wildcard、內網服務、沒開 port 80</td><td>需要 DNS 供應商的 API 權限</td></tr><tr><td>TLS-ALPN-01</td><td>在 port 443 用特殊的 ALPN（<code>acme-tls/1</code>）回應一張驗證用憑證</td><td>只開 443 的環境</td><td>需要伺服器支援，較少用</td></tr></tbody></table><p><strong>ARI</strong>（ACME Renewal Information，RFC 9773，2025 年 6 月發佈）讓 CA 告訴 client「建議什麼時候續約」。CA 需要大量撤銷憑證時，可以透過 ARI 通知 client 提早續約。</p><p>Let&rsquo;s Encrypt 官方建議：<strong>在效期剩三分之一時續約，不要寫死「每 60 天跑一次」</strong>，因為效期會變。支援 ARI 的 client 就照 ARI 的建議時間。</p><p>常見的自動化工具：</p><table><thead><tr><th>工具</th><th>適用情境</th></tr></thead><tbody><tr><td>certbot</td><td>傳統 VM 上的 Nginx / Apache</td></tr><tr><td>Caddy</td><td>Web server 本身內建 ACME，設定網域就自動處理</td></tr><tr><td>cert-manager</td><td>Kubernetes，把憑證當成 CRD 管理</td></tr><tr><td>AWS Certificate Manager（ACM）</td><td>憑證掛在 ALB、CloudFront 上，AWS 代管續約（用 DNS 驗證並保留 CNAME 記錄就能全自動）</td></tr></tbody></table><h3 id=監控自動化會失敗>監控：自動化會失敗</h3><p>自動續約最大的風險是「<strong>壞掉了沒人知道</strong>」：DNS API 的 token 過期、防火牆規則改了擋住 port 80、cron 沒跑、reload 指令失敗。</p><p>Let&rsquo;s Encrypt 從 2025 年 6 月起<strong>不再寄到期通知信</strong>，監控要自己做。</p><p>用 <code>openssl x509 -checkend</code> 檢查「N 秒內會不會過期」，exit code 0 表示不會、1 表示會：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl x509 -in leaf.pem -noout -enddate -checkend <span class=k>$((</span><span class=m>30</span><span class=o>*</span><span class=m>86400</span><span class=k>))</span>
+</span></span><span class=line><span class=cl><span class=c1># notAfter=Jan 30 15:35:13 2027 GMT</span>
+</span></span><span class=line><span class=cl><span class=c1># Certificate will not expire</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$?</span>
+</span></span><span class=line><span class=cl><span class=c1># 0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl x509 -in leaf.pem -noout -checkend <span class=k>$((</span><span class=m>100</span><span class=o>*</span><span class=m>86400</span><span class=k>))</span>
+</span></span><span class=line><span class=cl><span class=c1># Certificate will expire</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$?</span>
+</span></span><span class=line><span class=cl><span class=c1># 1</span>
+</span></span></code></pre></td></tr></table></div></div><p>批次檢查線上服務（可以放進 cron 或 CI）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>for</span> host in github.com expired.badssl.com<span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>  <span class=nv>pem</span><span class=o>=</span><span class=k>$(</span>openssl s_client -connect <span class=s2>&#34;</span><span class=nv>$host</span><span class=s2>:443&#34;</span> -servername <span class=s2>&#34;</span><span class=nv>$host</span><span class=s2>&#34;</span> &lt;/dev/null 2&gt;/dev/null<span class=k>)</span>
+</span></span><span class=line><span class=cl>  <span class=nv>end</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$pem</span><span class=s2>&#34;</span> <span class=p>|</span> openssl x509 -noout -enddate <span class=p>|</span> cut -d<span class=o>=</span> -f2<span class=k>)</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$pem</span><span class=s2>&#34;</span> <span class=p>|</span> openssl x509 -noout -checkend <span class=k>$((</span><span class=m>30</span><span class=o>*</span><span class=m>86400</span><span class=k>))</span> &gt;/dev/null<span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;OK     </span><span class=nv>$host</span><span class=s2>  </span><span class=nv>$end</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;RENEW  </span><span class=nv>$host</span><span class=s2>  </span><span class=nv>$end</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl><span class=c1># OK     github.com  Jan 27 23:59:59 2027 GMT</span>
+</span></span><span class=line><span class=cl><span class=c1># RENEW  expired.badssl.com  Apr 12 23:59:59 2015 GMT</span>
+</span></span></code></pre></td></tr></table></div></div><p>有 Prometheus 的話，用 <code>blackbox_exporter</code> 的 <code>probe_ssl_earliest_cert_expiry</code> 指標設告警，例如剩不到 14 天就通知。它看的是整條鏈中<strong>最早</strong>到期的那張，中繼憑證快過期也抓得到。</p><h3 id=自動信任的四層意思>「自動信任」的四層意思</h3><p>「自動信任」這個詞在不同的情境指不同的事。我的整理如下，分成四層：</p><p><strong>1. Leaf 自動續約</strong>：就是上面的 ACME。伺服器端自己換新憑證，client 不用做任何事，因為新憑證還是同一個 CA 簽的，鏈的上游不變。</p><p><strong>2. Trust store 自動更新</strong>：root 名單本身也會變（新 CA 加入、出事的 CA 被移除）。</p><table><thead><tr><th>名單</th><th>怎麼更新</th></tr></thead><tbody><tr><td>macOS、Windows</td><td>跟著 OS 更新</td></tr><tr><td>Chrome</td><td>跟著瀏覽器更新（Chrome Root Store 是瀏覽器自己帶的）</td></tr><tr><td>Linux</td><td>更新 <code>ca-certificates</code> 套件</td></tr><tr><td>Java</td><td><strong>跟著 JDK 版本走</strong>。本文用的 Corretto 21 GA 版是 2023 年 9 月的，cacerts 停在那個時間點，裡面就沒有 Sectigo Root E46</td></tr><tr><td>Docker container</td><td><strong>停在 build image 的那一刻</strong>。兩年沒重 build 的 image，<code>ca-certificates</code> 就是兩年前的版本</td></tr></tbody></table><p>所以「定期重 build image、跟上 JDK 的 patch 版本」不只是為了安全修補，也是為了更新 trust store。</p><p><strong>3. AIA 自動補抓中繼憑證</strong>：第 3 節講的，瀏覽器會自動下載缺少的中繼憑證，curl 和 Java 預設不會。這是 client 端的「自動」，會掩蓋伺服器的設定錯誤。</p><p><strong>4. 撤銷（revocation）</strong>：憑證還沒過期，但私鑰外洩了，CA 要宣告這張憑證作廢。</p><table><thead><tr><th>機制</th><th>做法</th><th>現況</th></tr></thead><tbody><tr><td>CRL</td><td>CA 定期發佈一份作廢憑證的序號清單</td><td>Let&rsquo;s Encrypt 現在只剩這個</td></tr><tr><td>OCSP</td><td>client 即時問 CA「這張憑證還有效嗎」</td><td>有隱私問題（CA 知道你連了哪些網站）。Let&rsquo;s Encrypt 從 2025 年 5 月起憑證不再帶 OCSP 網址，2025 年 8 月關閉 OCSP 服務</td></tr><tr><td>OCSP Stapling</td><td>伺服器先問好，把回應「釘」在握手裡一起送</td><td>解決隱私和效能問題，但 OCSP 本身在退場</td></tr><tr><td>瀏覽器推送</td><td>Chrome 用 CRLSets、Firefox 用 CRLite，把撤銷資料壓縮後推給瀏覽器</td><td>主流瀏覽器的實際做法</td></tr></tbody></table><p>大部分 client 對撤銷檢查是 <strong>soft-fail</strong>：查不到撤銷資訊（例如防火牆擋了 OCSP）就當作沒被撤銷。Java 的預設 TrustManager 甚至<strong>預設不檢查撤銷</strong>。這也是效期一直縮短的原因之一：撤銷機制不可靠，那就讓憑證短命一點，外洩的私鑰最多也只能用幾十天。</p><h3 id=常見誤解與踩坑-7>常見誤解與踩坑</h3><ul><li><strong>「我們有自動續約，不用監控」</strong>：自動續約最常見的失敗就是靜悄悄地壞掉，一定要有獨立的到期監控。</li><li><strong>「憑證續約了，可是使用者還是看到舊的」</strong>：伺服器沒有 reload，記憶體裡還是舊憑證。Spring Boot 的 SSL bundle 可以設 <code>reload-on-update: true</code> 自動重載（案例 B）。</li><li><strong>續約後只換了 leaf，沒換中繼憑證</strong>：CA 換了中繼憑證時，舊的 fullchain 會對不上。用 ACME client 產出的 <code>fullchain.pem</code>，不要自己拼。</li><li><strong>長效期的內部憑證</strong>：內部 CA 簽 10 年的 leaf 看似省事，但私鑰外洩就要撐 10 年。內部也盡量自動化、縮短效期。</li></ul><hr><h2 id=openssl>9. openssl 排錯工具箱：自己當一次 CA</h2><blockquote><p><strong>白話版</strong>
+前面 8 節講的都是「瀏覽器在背後偷偷做的事」。openssl 就像一台透視機，讓你把握手、憑證、鏈、名單一步一步攤開來看。看得到之後，排錯就從「猜」變成「查」。</p></blockquote><p>金鑰產生、格式轉換、<code>enc</code> / <code>dgst</code> 這些基礎指令請看 <a href=https://xinqilin.github.io/post/cli/openssl/>openssl 指令筆記</a>，這一節只講跟「信任」有關的排錯。</p><p>先確認自己用的是哪個 openssl。macOS 內建的 <code>/usr/bin/openssl</code> 其實是 LibreSSL，選項和輸出格式跟 OpenSSL 有差異；本文的指令都是用 Homebrew 的 OpenSSL 4.1 跑的：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>/usr/bin/openssl version
+</span></span><span class=line><span class=cl><span class=c1># LibreSSL 3.3.6</span>
+</span></span><span class=line><span class=cl>openssl version
+</span></span><span class=line><span class=cl><span class=c1># OpenSSL 4.1.0 23 Oct 2026 (Library: OpenSSL 4.1.0 23 Oct 2026)</span>
+</span></span><span class=line><span class=cl>openssl version -d          <span class=c1># 預設 trust store 所在的目錄</span>
+</span></span><span class=line><span class=cl><span class=c1># OPENSSLDIR: &#34;/opt/homebrew/etc/openssl@4&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=抓下伺服器送來的整條鏈>抓下伺服器送來的整條鏈</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl s_client -connect github.com:443 -servername github.com -showcerts &lt;/dev/null
+</span></span></code></pre></td></tr></table></div></div><table><thead><tr><th>參數</th><th>用途</th></tr></thead><tbody><tr><td><code>-servername</code></td><td>送出 SNI。連 IP 或測試別的網域時一定要加</td></tr><tr><td><code>-showcerts</code></td><td>印出伺服器送來的<strong>每一張</strong>憑證（不加的話只印 leaf）</td></tr><tr><td><code>&lt;/dev/null</code></td><td>握手完立刻結束，不會停在那邊等你輸入</td></tr><tr><td><code>-verify_hostname 名稱</code></td><td>順便檢查主機名，s_client 預設不檢查</td></tr><tr><td><code>-CAfile 檔案</code></td><td>改用指定的 root 驗證，不用預設名單</td></tr><tr><td><code>-brief</code></td><td>只印摘要</td></tr></tbody></table><p>輸出最重要的幾段（第 3 節已經逐行解讀過 <code>Certificate chain</code>）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Certificate chain
+</span></span><span class=line><span class=cl> 0 s:CN=github.com
+</span></span><span class=line><span class=cl>   i:C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA DV E36
+</span></span><span class=line><span class=cl> ...
+</span></span><span class=line><span class=cl>---
+</span></span><span class=line><span class=cl>Server certificate
+</span></span><span class=line><span class=cl>subject=CN=github.com
+</span></span><span class=line><span class=cl>issuer=C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA DV E36
+</span></span><span class=line><span class=cl>---
+</span></span><span class=line><span class=cl>Peer signature type: ecdsa_secp256r1_sha256
+</span></span><span class=line><span class=cl>Peer Temp Key: X25519, 253 bits
+</span></span><span class=line><span class=cl>---
+</span></span><span class=line><span class=cl>SSL handshake has read 3133 bytes and written 1835 bytes
+</span></span><span class=line><span class=cl>Verification: OK
+</span></span><span class=line><span class=cl>---
+</span></span><span class=line><span class=cl>New, TLSv1.3, Cipher is TLS_AES_128_GCM_SHA256
+</span></span><span class=line><span class=cl>Protocol: TLSv1.3
+</span></span><span class=line><span class=cl>Verify return code: 0 (ok)
+</span></span></code></pre></td></tr></table></div></div><p>排錯時先看最後一行 <code>Verify return code</code>，0 就是驗證通過，其他數字對照下面的錯誤碼表。</p><h3 id=把鏈拆成一張一張的檔案>把鏈拆成一張一張的檔案</h3><p><code>-showcerts</code> 的輸出有好幾段 <code>BEGIN/END CERTIFICATE</code>，用 awk 拆成 <code>github-0.pem</code>、<code>github-1.pem</code>…：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl s_client -connect github.com:443 -servername github.com -showcerts &lt;/dev/null 2&gt;/dev/null <span class=se>\
+</span></span></span><span class=line><span class=cl>  <span class=p>|</span> awk <span class=s1>&#39;/BEGIN CERTIFICATE/{n++; f=sprintf(&#34;github-%d.pem&#34;, n-1)}
+</span></span></span><span class=line><span class=cl><span class=s1>         /BEGIN CERTIFICATE/,/END CERTIFICATE/{print &gt; f}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>ls github-*.pem
+</span></span><span class=line><span class=cl><span class=c1># github-0.pem  github-1.pem  github-2.pem</span>
+</span></span></code></pre></td></tr></table></div></div><p>接著就能逐張看：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl x509 -in github-0.pem -noout -subject -issuer -dates -ext subjectAltName
+</span></span><span class=line><span class=cl>openssl x509 -in github-0.pem -noout -fingerprint -sha256
+</span></span><span class=line><span class=cl><span class=c1># sha256 Fingerprint=7D:C4:D8:5C:F1:E3:10:97:12:25:BC:9A:92:57:67:90:43:A2:43:D7:0A:3C:C2:A9:1C:C5:D3:89:89:2C:27:76</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=離線驗證openssl-verify>離線驗證：<code>openssl verify</code></h3><p><code>openssl verify</code> 不用連線，直接拿檔案驗。最重要的是分清楚兩種輸入：</p><table><thead><tr><th>參數</th><th>意思</th></tr></thead><tbody><tr><td><code>-CAfile</code></td><td><strong>信任的</strong> root（trust anchor）。不給的話用 OpenSSL 預設的名單</td></tr><tr><td><code>-untrusted</code></td><td><strong>不信任但可以拿來建鏈</strong>的中繼憑證，相當於伺服器送來的那些</td></tr></tbody></table><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 只給 leaf：預設名單裡沒有中繼憑證，建不了鏈</span>
+</span></span><span class=line><span class=cl>openssl verify github-0.pem
+</span></span><span class=line><span class=cl><span class=c1># CN=github.com</span>
+</span></span><span class=line><span class=cl><span class=c1># error 20 at 0 depth lookup: unable to get local issuer certificate</span>
+</span></span><span class=line><span class=cl><span class=c1># error github-0.pem: verification failed</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 補上中繼憑證</span>
+</span></span><span class=line><span class=cl>openssl verify -untrusted github-1.pem github-0.pem
+</span></span><span class=line><span class=cl><span class=c1># github-0.pem: OK</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># -show_chain 看實際建出來的鏈</span>
+</span></span><span class=line><span class=cl>openssl verify -untrusted github-1.pem -show_chain github-0.pem
+</span></span><span class=line><span class=cl><span class=c1># github-0.pem: OK</span>
+</span></span><span class=line><span class=cl><span class=c1># Chain:</span>
+</span></span><span class=line><span class=cl><span class=c1># depth=0: CN=github.com (untrusted)</span>
+</span></span><span class=line><span class=cl><span class=c1># depth=1: C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA DV E36 (untrusted)</span>
+</span></span><span class=line><span class=cl><span class=c1># depth=2: C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication Root E46</span>
+</span></span></code></pre></td></tr></table></div></div><p>注意 depth=2：Homebrew OpenSSL 的名單裡<strong>有</strong> Root E46，所以鏈停在自簽的 E46（沒有標 untrusted，表示來自名單）。第 4 節看過，Java 的 cacerts <strong>沒有</strong> E46，Java 會改走交叉簽署那張，一路驗到 USERTrust ECC。<strong>同一張 leaf，不同 client 建出不同的鏈</strong>，<code>-show_chain</code> 讓你看到這件事。</p><h3 id=錯誤碼對照表>錯誤碼對照表</h3><p>以下都是本文用 OpenSSL 4.1 實際跑出來的錯誤碼：</p><table><thead><tr><th>Code</th><th>訊息</th><th>意思</th><th>第一個要查的</th></tr></thead><tbody><tr><td>0</td><td><code>ok</code></td><td>通過</td><td></td></tr><tr><td>9</td><td><code>certificate is not yet valid or the system clock is incorrect</code></td><td>還沒生效</td><td>client 的時鐘</td></tr><tr><td>10</td><td><code>certificate has expired</code></td><td>過期</td><td><code>-dates</code>、client 的時鐘</td></tr><tr><td>18</td><td><code>self-signed certificate</code></td><td>leaf 本身就是自簽，而且不在名單裡</td><td>是不是自簽憑證；要信任的話加進名單</td></tr><tr><td>19</td><td><code>self-signed certificate in certificate chain</code></td><td>鏈的頂端是一張不在名單裡的自簽 root</td><td><strong>防火牆 SSL inspection</strong>、內部 CA 沒加進名單</td></tr><tr><td>20</td><td><code>unable to get local issuer certificate</code></td><td>往上找不到任何在名單裡的憑證</td><td>缺中繼憑證，或 root 不在名單裡</td></tr><tr><td>21</td><td><code>unable to verify the first certificate</code></td><td>連 leaf 的上一層都找不到</td><td>伺服器沒送中繼憑證</td></tr><tr><td>26</td><td><code>unsuitable certificate purpose</code></td><td>EKU 不符（例如只有 clientAuth）</td><td><code>-ext extendedKeyUsage</code></td></tr><tr><td>62</td><td><code>hostname mismatch</code></td><td>SAN 不包含這個主機名</td><td><code>-ext subjectAltName</code></td></tr><tr><td>64</td><td><code>IP address mismatch</code></td><td>SAN 不包含這個 IP</td><td>SAN 有沒有 <code>IP:</code></td></tr><tr><td>79</td><td><code>invalid CA certificate</code></td><td>鏈中的 CA 沒有 <code>CA:TRUE</code></td><td>中繼憑證的 Basic Constraints</td></tr></tbody></table><p>錯誤訊息裡的 <code>at N depth</code> 告訴你是哪一張出問題：0 是 leaf、1 是 leaf 的上一層，依此類推。</p><h3 id=私鑰和憑證是不是一對>私鑰和憑證是不是一對</h3><p>比對兩邊<strong>公鑰</strong>的 hash，一樣就是一對：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl x509 -in leaf.pem -noout -pubkey <span class=p>|</span> openssl sha256
+</span></span><span class=line><span class=cl><span class=c1># SHA2-256(stdin)= 80ccfd2ffa6dfd8225a479c6ec3134022c54934820d0956864243e1484215af5</span>
+</span></span><span class=line><span class=cl>openssl pkey -in leaf.key -pubout <span class=p>|</span> openssl sha256
+</span></span><span class=line><span class=cl><span class=c1># SHA2-256(stdin)= 80ccfd2ffa6dfd8225a479c6ec3134022c54934820d0956864243e1484215af5   ← 相同，是一對</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>openssl pkey -in intermediate.key -pubout <span class=p>|</span> openssl sha256
+</span></span><span class=line><span class=cl><span class=c1># SHA2-256(stdin)= b369fc0f2f16fb1b374ec572e0d1ec7f6f1dd1a59a9670381dfd6a27ff125a8c   ← 不同</span>
+</span></span></code></pre></td></tr></table></div></div><p>這個方法 RSA 和 EC 金鑰都適用。網路上常見的 <code>openssl rsa -modulus</code> 只能比 RSA。</p><h3 id=實驗自己當一次-ca>實驗：自己當一次 CA</h3><p>自己做一次 Root → Intermediate → Leaf，第 3、4、5 節的觀念就會串起來。案例 B 也會沿用這裡產出的檔案。以下指令用 OpenSSL 4.1 實跑，語法在 OpenSSL 3.x 也適用；macOS 內建的 LibreSSL 3.3.6 缺少部分參數（例如 <code>verify -show_chain</code>、<code>x509 -ext</code>），請改用 Homebrew 的 OpenSSL。</p><p><strong>準備兩個擴充欄位設定檔</strong>：</p><p><code>intermediate.ext</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=line><span class=cl><span class=na>basicConstraints</span><span class=o>=</span><span class=s>critical,CA:TRUE,pathlen:0</span>
+</span></span><span class=line><span class=cl><span class=na>keyUsage</span><span class=o>=</span><span class=s>critical,keyCertSign,cRLSign</span>
+</span></span><span class=line><span class=cl><span class=na>subjectKeyIdentifier</span><span class=o>=</span><span class=s>hash</span>
+</span></span><span class=line><span class=cl><span class=na>authorityKeyIdentifier</span><span class=o>=</span><span class=s>keyid:always</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>leaf.ext</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=line><span class=cl><span class=na>basicConstraints</span><span class=o>=</span><span class=s>critical,CA:FALSE</span>
+</span></span><span class=line><span class=cl><span class=na>keyUsage</span><span class=o>=</span><span class=s>critical,digitalSignature</span>
+</span></span><span class=line><span class=cl><span class=na>extendedKeyUsage</span><span class=o>=</span><span class=s>serverAuth</span>
+</span></span><span class=line><span class=cl><span class=na>subjectAltName</span><span class=o>=</span><span class=s>DNS:localhost,DNS:*.lab.test,IP:127.0.0.1</span>
+</span></span><span class=line><span class=cl><span class=na>subjectKeyIdentifier</span><span class=o>=</span><span class=s>hash</span>
+</span></span><span class=line><span class=cl><span class=na>authorityKeyIdentifier</span><span class=o>=</span><span class=s>keyid:always</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>1. Root CA</strong>（自簽，10 年）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out root.key
+</span></span><span class=line><span class=cl>openssl req -x509 -new -key root.key -sha256 -days <span class=m>3650</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -subj <span class=s2>&#34;/C=TW/O=Bill Lab/CN=Bill Lab Root CA&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -addext <span class=s2>&#34;basicConstraints=critical,CA:TRUE&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -addext <span class=s2>&#34;keyUsage=critical,keyCertSign,cRLSign&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -out root.pem
+</span></span></code></pre></td></tr></table></div></div><p><strong>2. Intermediate CA</strong>（由 root 簽，5 年，<code>pathlen:0</code>）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out intermediate.key
+</span></span><span class=line><span class=cl>openssl req -new -key intermediate.key <span class=se>\
+</span></span></span><span class=line><span class=cl>  -subj <span class=s2>&#34;/C=TW/O=Bill Lab/CN=Bill Lab Intermediate CA&#34;</span> -out intermediate.csr
+</span></span><span class=line><span class=cl>openssl x509 -req -in intermediate.csr -CA root.pem -CAkey root.key <span class=se>\
+</span></span></span><span class=line><span class=cl>  -days <span class=m>1825</span> -sha256 -extfile intermediate.ext -out intermediate.pem
+</span></span><span class=line><span class=cl><span class=c1># Certificate request self-signature ok</span>
+</span></span><span class=line><span class=cl><span class=c1># subject=C=TW, O=Bill Lab, CN=Bill Lab Intermediate CA</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>3. Leaf</strong>（由中繼簽，90 天）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out leaf.key
+</span></span><span class=line><span class=cl>openssl req -new -key leaf.key -subj <span class=s2>&#34;/CN=localhost&#34;</span> -out leaf.csr
+</span></span><span class=line><span class=cl>openssl x509 -req -in leaf.csr -CA intermediate.pem -CAkey intermediate.key <span class=se>\
+</span></span></span><span class=line><span class=cl>  -days <span class=m>90</span> -sha256 -extfile leaf.ext -out leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># Certificate request self-signature ok</span>
+</span></span><span class=line><span class=cl><span class=c1># subject=CN=localhost</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>cat leaf.pem intermediate.pem &gt; fullchain.pem      <span class=c1># 給伺服器用：leaf 在前</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>req -new</code> 只會產生 CSR，SAN、EKU 這些擴充欄位是在 CA 簽發時（<code>x509 -req -extfile</code>）才加上去的。這也是真實世界的運作方式：<strong>憑證裡有什麼欄位，最終由 CA 決定</strong>。</p><p><strong>4. 故意失敗，再讓它成功</strong>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 只信任 root，沒給中繼憑證 → 20（伺服器沒送中繼憑證就是這個狀況）</span>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># CN=localhost</span>
+</span></span><span class=line><span class=cl><span class=c1># error 20 at 0 depth lookup: unable to get local issuer certificate</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf.pem: verification failed</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 補上中繼憑證 → OK</span>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem -show_chain leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># leaf.pem: OK</span>
+</span></span><span class=line><span class=cl><span class=c1># Chain:</span>
+</span></span><span class=line><span class=cl><span class=c1># depth=0: CN=localhost (untrusted)</span>
+</span></span><span class=line><span class=cl><span class=c1># depth=1: C=TW, O=Bill Lab, CN=Bill Lab Intermediate CA (untrusted)</span>
+</span></span><span class=line><span class=cl><span class=c1># depth=2: C=TW, O=Bill Lab, CN=Bill Lab Root CA</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 把 root 跟著鏈一起「送」，但不放進信任名單 → 19（防火牆 SSL inspection 就是這個狀況）</span>
+</span></span><span class=line><span class=cl>cat intermediate.pem root.pem &gt; chain-with-root.pem
+</span></span><span class=line><span class=cl>openssl verify -untrusted chain-with-root.pem leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># C=TW, O=Bill Lab, CN=Bill Lab Root CA</span>
+</span></span><span class=line><span class=cl><span class=c1># error 19 at 2 depth lookup: self-signed certificate in certificate chain</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf.pem: verification failed</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 只用系統名單 → 20 at 1（內部 CA 沒加進名單）</span>
+</span></span><span class=line><span class=cl>openssl verify -untrusted intermediate.pem leaf.pem
+</span></span><span class=line><span class=cl><span class=c1># C=TW, O=Bill Lab, CN=Bill Lab Intermediate CA</span>
+</span></span><span class=line><span class=cl><span class=c1># error 20 at 1 depth lookup: unable to get local issuer certificate</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf.pem: verification failed</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 單獨驗 root → 18</span>
+</span></span><span class=line><span class=cl>openssl verify root.pem
+</span></span><span class=line><span class=cl><span class=c1># C=TW, O=Bill Lab, CN=Bill Lab Root CA</span>
+</span></span><span class=line><span class=cl><span class=c1># error 18 at 0 depth lookup: self-signed certificate</span>
+</span></span><span class=line><span class=cl><span class=c1># error root.pem: verification failed</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>5. 故意簽錯的憑證</strong>：簽發指令跟上面一樣，只是換掉 <code>-extfile</code>。<code>bad-int.pem</code> 是把 <code>intermediate.ext</code> 的 Basic Constraints 改成 <code>critical,CA:FALSE</code> 簽出來的中繼憑證，<code>leaf-bad.pem</code> 是用它簽的 leaf；<code>leaf-client.pem</code> 是把 <code>leaf.ext</code> 的 EKU 改成 <code>clientAuth</code> 簽出來的 leaf。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 中繼憑證設成 CA:FALSE，再用它簽 leaf → 79</span>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted bad-int.pem leaf-bad.pem
+</span></span><span class=line><span class=cl><span class=c1># C=TW, O=Bill Lab, CN=Bad Intermediate</span>
+</span></span><span class=line><span class=cl><span class=c1># error 79 at 1 depth lookup: invalid CA certificate</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf-bad.pem: verification failed</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># leaf 的 EKU 只有 clientAuth</span>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem leaf-client.pem
+</span></span><span class=line><span class=cl><span class=c1># leaf-client.pem: OK                     ← 不指定用途時不檢查 EKU</span>
+</span></span><span class=line><span class=cl>openssl verify -CAfile root.pem -untrusted intermediate.pem -purpose sslserver leaf-client.pem
+</span></span><span class=line><span class=cl><span class=c1># CN=localhost</span>
+</span></span><span class=line><span class=cl><span class=c1># error 26 at 0 depth lookup: unsuitable certificate purpose</span>
+</span></span><span class=line><span class=cl><span class=c1># error leaf-client.pem: verification failed</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>openssl verify</code> 預設不檢查用途，所以 EKU 寫錯時它會說 OK，但瀏覽器和 Java 會拒絕。驗伺服器憑證時記得加 <code>-purpose sslserver</code>。</p><p><strong>6. 實際跑一次 TLS 握手</strong>（<strong>這一步沒有實跑</strong>：sandbox 不允許綁定本機 port，連 Unix socket 也不行。以下是依官方文件寫的指令與預期結果）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 終端機 A：用 leaf + 中繼憑證開一個 TLS server</span>
+</span></span><span class=line><span class=cl>openssl s_server -accept <span class=m>8443</span> -cert leaf.pem -key leaf.key -cert_chain intermediate.pem -www
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 終端機 B：用自己的 root 驗證</span>
+</span></span><span class=line><span class=cl>openssl s_client -connect localhost:8443 -CAfile root.pem -verify_hostname localhost &lt;/dev/null
+</span></span><span class=line><span class=cl><span class=c1># 預期：Verify return code: 0 (ok)</span>
+</span></span><span class=line><span class=cl><span class=c1># 拿掉 -CAfile 改用系統名單：預期 Verify return code: 20</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=常見誤解與踩坑-8>常見誤解與踩坑</h3><ul><li><strong>用 macOS 內建的 <code>openssl</code></strong>：那是 LibreSSL，<code>-show_chain</code>、<code>x509 -ext</code> 等參數沒有，輸出格式也不同。<code>which openssl</code> 確認一下。</li><li><strong><code>s_client</code> 顯示 <code>Verification: OK</code> 就代表一切正常</strong>：s_client 預設不檢查主機名，要加 <code>-verify_hostname</code>。</li><li><strong>搞混 <code>-CAfile</code> 和 <code>-untrusted</code></strong>：把中繼憑證放進 <code>-CAfile</code> 會讓它變成 trust anchor，驗證會通過，但跟真實 client 的行為不同，可能讓你漏掉「伺服器沒送中繼憑證」的問題。</li><li><strong><code>openssl verify</code> 說 OK，Java 卻失敗</strong>：兩邊用的名單不同。用 <code>-CAfile</code> 指定跟目標 client 相同的名單再驗一次（Java 的 cacerts 可以用 <code>keytool -exportcert -rfc</code> 匯出成 PEM）。</li></ul><hr><h2 id=case-firewall>實戰案例 A：公司防火牆 SSL inspection</h2><p>情境：到新公司報到，瀏覽器一切正常，但 <code>mvn package</code> 下載不了依賴、<code>git clone</code> 失敗、<code>docker build</code> 裡的 <code>apt-get update</code> 也掛了。第 6 節已經解釋原因，這裡講怎麼一步一步修。</p><h3 id=症狀對照這些錯誤都是同一個原因>症狀對照：這些錯誤都是同一個原因</h3><table><thead><tr><th>工具</th><th>錯誤訊息</th></tr></thead><tbody><tr><td>Java（Spring Boot <code>RestClient</code>、<code>HttpClient</code>）</td><td><code>javax.net.ssl.SSLHandshakeException: PKIX path building failed: ... unable to find valid certification path to requested target</code></td></tr><tr><td>Maven</td><td>下載依賴時出現上面那串 PKIX 訊息，前面通常是 <code>Could not transfer artifact</code></td></tr><tr><td>Gradle</td><td><code>Could not resolve ...</code>，往下翻會看到同樣的 PKIX 訊息</td></tr><tr><td>curl</td><td><code>curl: (60) SSL certificate problem: self signed certificate in certificate chain</code></td></tr><tr><td>git</td><td><code>SSL certificate problem: self signed certificate in certificate chain</code></td></tr><tr><td><code>docker build</code></td><td>容器裡的 <code>apt-get</code>、<code>apk</code>、<code>mvn</code> 出現上面任一種</td></tr></tbody></table><p>Java 的訊息特別麻煩：<strong>root 不在名單、缺中繼憑證、自簽憑證，三種原因都是同一句 <code>PKIX path building failed</code></strong>（實測 untrusted-root、incomplete-chain、self-signed 三個 badssl 站台，訊息一字不差）。所以碰到 PKIX 錯誤時，不要猜，先用 openssl 看鏈。</p><h3 id=step-1確認真的被攔截>Step 1：確認真的被攔截</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl s_client -connect repo.maven.apache.org:443 -servername repo.maven.apache.org -showcerts &lt;/dev/null 2&gt;/dev/null <span class=se>\
+</span></span></span><span class=line><span class=cl>  <span class=p>|</span> grep -E <span class=s1>&#39;^ *[0-9] s:|^ *i:&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><p>如果最上面那張的 <code>s:</code> 和 <code>i:</code> 一樣、而且是公司或資安廠商的名字（<code>Corp Root CA</code>、<code>Zscaler Root CA</code>、<code>Fortinet</code>…），就確定是 SSL inspection。</p><p>也可以用 Java 自己看：在 JVM 加上 <code>-Djavax.net.debug=ssl:handshake</code>，log 裡會印出伺服器送來的每張憑證的 Subject 和 Issuer。</p><h3 id=step-2取得公司-root並核對指紋>Step 2：取得公司 root，並核對指紋</h3><table><thead><tr><th>來源</th><th>做法</th><th>備註</th></tr></thead><tbody><tr><td><strong>IT 部門提供</strong>（優先）</td><td>通常放在內部 wiki 或 MDM 入口</td><td>最可靠</td></tr><tr><td>macOS Keychain 匯出</td><td><code>security find-certificate -c "Corp Root CA" -p /Library/Keychains/System.keychain > corp-root.pem</code></td><td>依官方文件撰寫，未在本機實跑；<code>-c</code> 後面換成實際的憑證名稱</td></tr><tr><td>從連線中擷取</td><td>用第 9 節的 awk 拆鏈，最後一張自簽的就是</td><td><strong>一定要跟 IT 核對指紋</strong>，否則你可能信任了一個真正的攻擊者</td></tr></tbody></table><p>核對指紋：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>openssl x509 -in corp-root.pem -noout -subject -fingerprint -sha256
+</span></span></code></pre></td></tr></table></div></div><p>把 SHA-256 指紋跟 IT 公告的值逐字比對，一樣才往下做。</p><h3 id=step-3每個-client-各自加進去附加還是取代>Step 3：每個 client 各自加進去：「附加」還是「取代」</h3><p>這是最容易做錯的地方。各工具的設定可以分成兩類：</p><ul><li><strong>附加</strong>：在原本的名單<strong>之外</strong>多信任一張。設完之後，公開網站和公司 root 都會通過</li><li><strong>取代</strong>：<strong>只信任</strong>你給的這份名單。如果只放公司 root，連 github.com 這種正常網站都會失敗（在不經過防火牆的網路時）</li></ul><p>實測結果（用 badssl.com 的 untrusted root 扮演公司 root）：</p><table><thead><tr><th>做法</th><th>類型</th><th>實測結果</th></tr></thead><tbody><tr><td>複製一份 cacerts，用 <code>keytool -importcert</code> 加入那張 root</td><td>附加</td><td>badssl 和 github 都 200</td></tr><tr><td>新建一個<strong>只含那張 root</strong> 的 PKCS12 truststore，用 <code>-Djavax.net.ssl.trustStore</code> 指定</td><td><strong>取代</strong></td><td>badssl 200，<strong>github 出現 PKIX 錯誤</strong></td></tr><tr><td><code>curl --cacert 只含那張root.pem</code></td><td><strong>取代</strong></td><td>github 回 <code>(60)</code></td></tr><tr><td><code>curl --cacert (系統 bundle + 那張 root)</code></td><td>取代，但名單完整</td><td>兩邊都 200</td></tr><tr><td><code>git -c http.sslCAInfo=只含那張root.pem</code></td><td><strong>取代</strong></td><td>github 失敗</td></tr><tr><td><code>git -c http.sslCAInfo=(系統 bundle + 那張 root)</code></td><td>取代，但名單完整</td><td>兩邊都成功</td></tr></tbody></table><p>結論：<strong>凡是「指定一個檔案」的設定，幾乎都是取代</strong>。要嘛用附加的方式，要嘛給一份「系統名單 + 公司 root」合併後的完整 bundle。</p><h3 id=java加進-cacerts>Java：加進 cacerts</h3><p><strong>做法 1：直接改 JDK 的 cacerts</strong>（最簡單，影響這個 JDK 的所有程式）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo keytool -importcert -cacerts -alias corp-root -file corp-root.pem -storepass changeit -noprompt
+</span></span><span class=line><span class=cl>keytool -list -cacerts -storepass changeit -alias corp-root
+</span></span></code></pre></td></tr></table></div></div><ul><li><code>-cacerts</code> 會自動找到目前 <code>JAVA_HOME</code> 的 cacerts，不用自己拼路徑</li><li>cacerts 的預設密碼是 <code>changeit</code></li><li>需要 sudo，因為 cacerts 在 JDK 的安裝目錄下</li></ul><p><strong>做法 2：複製一份，不動 JDK</strong>（推薦，升級 JDK 也不會不見）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>mkdir -p ~/.certs
+</span></span><span class=line><span class=cl>cp <span class=s2>&#34;</span><span class=nv>$JAVA_HOME</span><span class=s2>/lib/security/cacerts&#34;</span> ~/.certs/java-cacerts
+</span></span><span class=line><span class=cl>keytool -importcert -keystore ~/.certs/java-cacerts -storepass changeit <span class=se>\
+</span></span></span><span class=line><span class=cl>  -alias corp-root -file corp-root.pem -noprompt
+</span></span></code></pre></td></tr></table></div></div><p>然後讓 JVM 用這份：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>java -Djavax.net.ssl.trustStore<span class=o>=</span><span class=nv>$HOME</span>/.certs/java-cacerts <span class=se>\
+</span></span></span><span class=line><span class=cl>     -Djavax.net.ssl.trustStorePassword<span class=o>=</span>changeit -jar app.jar
+</span></span></code></pre></td></tr></table></div></div><p>要讓這台機器上所有的 Java 程式都套用，可以放進環境變數 <code>JAVA_TOOL_OPTIONS</code>（JVM 啟動時會印出 <code>Picked up JAVA_TOOL_OPTIONS: ...</code>）。</p><p><strong>Maven、Gradle</strong>（依官方文件撰寫，未在本機實跑）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Maven：放在專案的 .mvn/jvm.config，或環境變數 MAVEN_OPTS</span>
+</span></span><span class=line><span class=cl>-Djavax.net.ssl.trustStore<span class=o>=</span>/Users/you/.certs/java-cacerts
+</span></span><span class=line><span class=cl>-Djavax.net.ssl.trustStorePassword<span class=o>=</span>changeit
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-properties data-lang=properties><span class=line><span class=cl><span class=c1># Gradle：~/.gradle/gradle.properties（不要提交到專案的 git）</span>
+</span></span><span class=line><span class=cl><span class=na>systemProp.javax.net.ssl.trustStore</span><span class=o>=</span><span class=s>/Users/you/.certs/java-cacerts</span>
+</span></span><span class=line><span class=cl><span class=na>systemProp.javax.net.ssl.trustStorePassword</span><span class=o>=</span><span class=s>changeit</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>IntelliJ</strong>（依官方文件撰寫）：IntelliJ 裡跑的 Gradle 用的是 Settings → Build Tools → Gradle → <strong>Gradle JVM</strong> 選的那個 JDK，Maven 則是 Maven → Runner → JRE。如果選的是 IDE 自帶的 JBR，它有自己的 cacerts，你在系統 JDK 做的修改不會生效。最簡單的做法是把它改成你已經修好的那個 JDK。IDE 自己連外的時候（外掛市集、Git 整合）用的是 Settings → Tools → <strong>Server Certificates</strong>，那又是另一份名單。</p><p><strong>升級 JDK 之後</strong>：做法 1 改的是舊 JDK 的 cacerts，新 JDK 要重做一次。做法 2 的那份副本是從舊 JDK 複製的，新 JDK 新增的 root 不會出現在裡面，所以升級後最好重新複製再匯入。</p><p><strong>Windows</strong>（依官方文件撰寫，未實跑）：JDK 可以直接讀 Windows 的系統憑證存放區，公司用 GPO 推送的 root 就會生效：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>java -Djavax.net.ssl.trustStoreType<span class=o>=</span>Windows-ROOT -jar app.jar
+</span></span></code></pre></td></tr></table></div></div><h3 id=用一支小程式確認-java-看到什麼>用一支小程式確認 Java 看到什麼</h3><p>改完設定後，用下面這支程式確認（JDK 11 之後可以直接 <code>java TlsCheck.java</code> 執行，不用先編譯）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.net.URI</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.net.http.HttpClient</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.net.http.HttpRequest</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.net.http.HttpResponse</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>TlsCheck</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>HttpClient</span><span class=w> </span><span class=n>client</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>HttpClient</span><span class=p>.</span><span class=na>newHttpClient</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>url</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>HttpRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>HttpRequest</span><span class=p>.</span><span class=na>newBuilder</span><span class=p>(</span><span class=n>URI</span><span class=p>.</span><span class=na>create</span><span class=p>(</span><span class=n>url</span><span class=p>)).</span><span class=na>build</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=kt>int</span><span class=w> </span><span class=n>status</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>client</span><span class=p>.</span><span class=na>send</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpResponse</span><span class=p>.</span><span class=na>BodyHandlers</span><span class=p>.</span><span class=na>discarding</span><span class=p>()).</span><span class=na>statusCode</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>url</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>status</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>Throwable</span><span class=w> </span><span class=n>root</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>e</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>while</span><span class=w> </span><span class=p>(</span><span class=n>root</span><span class=p>.</span><span class=na>getCause</span><span class=p>()</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>root</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>root</span><span class=p>.</span><span class=na>getCause</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>url</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; FAIL &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>e</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;  root cause: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>root</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>java -Djavax.net.ssl.trustStore<span class=o>=</span><span class=nv>$HOME</span>/.certs/java-cacerts -Djavax.net.ssl.trustStorePassword<span class=o>=</span>changeit <span class=se>\
+</span></span></span><span class=line><span class=cl>  TlsCheck.java https://github.com https://repo.maven.apache.org
+</span></span></code></pre></td></tr></table></div></div><p>（本文的實測是用同樣邏輯的程式，另外加上 sandbox 需要的 proxy 設定。）印出 root cause 很重要：<code>PKIX path building failed</code> 往下追，才看得到 <code>CertificateExpiredException</code> 這類真正的原因。</p><h3 id=curlgit給一份完整的-bundle>curl、git：給一份完整的 bundle</h3><p>兩者都是取代，所以先做一份「系統名單 + 公司 root」：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>cat /etc/ssl/cert.pem corp-root.pem &gt; ~/.certs/ca-bundle.pem
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># curl：單次用 --cacert，長期用環境變數</span>
+</span></span><span class=line><span class=cl>curl --cacert ~/.certs/ca-bundle.pem https://github.com
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>CURL_CA_BUNDLE</span><span class=o>=</span><span class=nv>$HOME</span>/.certs/ca-bundle.pem
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># git</span>
+</span></span><span class=line><span class=cl>git config --global http.sslCAInfo ~/.certs/ca-bundle.pem
+</span></span></code></pre></td></tr></table></div></div><p>系統名單更新時（macOS 更新），這份合併的 bundle 不會跟著更新，記得偶爾重新產生。</p><h3 id=docker容器有自己的名單>Docker：容器有自己的名單</h3><p><code>docker build</code> 裡的每一個 <code>RUN</code> 都跑在 image 的環境裡，看的是 <strong>image 裡的</strong> <code>/etc/ssl/certs</code>，跟 host 的 Keychain、cacerts 完全無關。（以下 Dockerfile 依官方文件撰寫，未在本機實跑。）</p><p><strong>Debian / Ubuntu 系的 image</strong>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>COPY</span> corp-root.pem /usr/local/share/ca-certificates/corp-root.crt<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> update-ca-certificates<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>檔案一定要是 <code>.crt</code> 副檔名、PEM 格式，<code>update-ca-certificates</code> 才會讀</li><li>Alpine 要先 <code>apk add ca-certificates</code></li></ul><p><strong>JDK 的 image</strong>：系統名單和 Java 的 cacerts 是兩份。<code>update-ca-certificates</code> 不一定會更新 Java 的 cacerts，要看 image 怎麼做。以 <code>eclipse-temurin</code> 為例，它的 entrypoint 支援在<strong>容器啟動時</strong>匯入憑證：把憑證掛載到 <code>/certificates</code>，並設定環境變數 <code>USE_SYSTEM_CA_CERTS=1</code>。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -v <span class=s2>&#34;</span><span class=k>$(</span><span class=nb>pwd</span><span class=k>)</span><span class=s2>/certs:/certificates/&#34;</span> -e <span class=nv>USE_SYSTEM_CA_CERTS</span><span class=o>=</span><span class=m>1</span> eclipse-temurin:21
+</span></span></code></pre></td></tr></table></div></div><p>但這只在容器啟動時生效，<code>docker build</code> 期間的 <code>RUN mvn ...</code> 用不到。build 期間需要的話，直接在 Dockerfile 用 keytool 匯入。</p><p><strong>公司 CA 不要燒進要上 production 的 image</strong>：用 multi-stage build，只在 build stage 加公司 root：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>eclipse-temurin:21-jdk</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=s>build</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> corp-root.pem /tmp/corp-root.pem<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> keytool -importcert -cacerts -storepass changeit -noprompt -alias corp-root -file /tmp/corp-root.pem<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> . /app<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>WORKDIR</span><span class=w> </span><span class=s>/app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>RUN</span> ./mvnw -q package -DskipTests<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>eclipse-temurin:21-jre</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>COPY</span> --from<span class=o>=</span>build /app/target/app.jar /app/app.jar<span class=err>
+</span></span></span><span class=line><span class=cl><span class=k>ENTRYPOINT</span> <span class=p>[</span><span class=s2>&#34;java&#34;</span><span class=p>,</span> <span class=s2>&#34;-jar&#34;</span><span class=p>,</span> <span class=s2>&#34;/app/app.jar&#34;</span><span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><p>最終的 runtime image 從乾淨的 <code>eclipse-temurin:21-jre</code> 開始，不含公司 root。CI 不經過公司防火牆時，build stage 那段也可以用 build arg 控制要不要加。</p><h3 id=反模式不要這樣修>反模式：不要這樣修</h3><table><thead><tr><th>寫法</th><th>問題</th></tr></thead><tbody><tr><td><code>curl -k</code> / <code>curl --insecure</code></td><td>完全不驗證，接受任何中間人</td></tr><tr><td><code>git config --global http.sslVerify false</code></td><td>全域關掉 git 的驗證，而且很容易忘記改回來</td></tr><tr><td>Java 自己寫 trust-all <code>X509TrustManager</code>（<code>checkServerTrusted</code> 什麼都不做）</td><td>同上，而且常常不小心被帶進 production</td></tr><tr><td><code>HostnameVerifier</code> 永遠回傳 <code>true</code></td><td>任何網站的合法憑證都能冒充你要連的網站</td></tr><tr><td><code>-Dmaven.wagon.http.ssl.insecure=true</code> 等關閉驗證的參數</td><td>依賴可能在路上被換掉，供應鏈攻擊的入口</td></tr><tr><td>把公司 root 加進要上 production 的 image</td><td>production 環境開始信任一張跟它無關的 root</td></tr></tbody></table><p>這些寫法能讓錯誤消失，代價是<strong>整條連線失去身分驗證</strong>。正確的修法一定是「把正確的 root 加到正確的名單」。</p><hr><h2 id=case-internal-ca>實戰案例 B：自簽憑證與內部 CA</h2><p>情境：內部服務之間要走 HTTPS（例如 Spring Boot 服務互相呼叫、內部管理後台），但這些主機名不對外，公開 CA 簽不了（或你不想讓主機名出現在公開的 CT log 上）。</p><h3 id=自簽-leaf-還是內部-ca>自簽 leaf 還是內部 CA</h3><table><thead><tr><th>做法</th><th>怎麼做</th><th>優點</th><th>缺點</th></tr></thead><tbody><tr><td>每台伺服器自簽 leaf</td><td><code>openssl req -x509</code> 直接產生</td><td>最快</td><td>每台都要各自被信任；憑證一換，所有 client 都要重新信任；錯誤碼 18</td></tr><tr><td><strong>內部 CA</strong>（推薦）</td><td>建一個 root，用它簽各台的 leaf</td><td>client 只要信任 root 一次；leaf 可以短效期、自動續約</td><td>要保管好 root 私鑰</td></tr></tbody></table><p>自簽 leaf 的問題就是第 4 節說的「把 leaf 加進 trust store」：每次續約都要重來一次。只要服務超過一兩台，就值得建內部 CA。</p><h3 id=工具選擇>工具選擇</h3><table><thead><tr><th>情境</th><th>工具</th><th>說明</th></tr></thead><tbody><tr><td>個人本機開發</td><td><strong>mkcert</strong></td><td><code>mkcert -install</code> 建立本機 CA，並裝進 macOS / Windows / Linux 系統名單、Firefox（macOS、Linux）、Chrome，以及 Java（需要設定 <code>JAVA_HOME</code>）。然後 <code>mkcert localhost 127.0.0.1</code> 簽發</td></tr><tr><td>團隊、測試環境</td><td>step-ca、HashiCorp Vault PKI</td><td>支援 ACME，可以用第 8 節的自動續約流程</td></tr><tr><td>雲端</td><td>AWS Private CA</td><td>代管 root 私鑰，可以跟 ACM 整合</td></tr><tr><td>學習、一次性實驗</td><td>純 openssl</td><td>第 9 節的實驗</td></tr></tbody></table><p>mkcert 的 root 私鑰就放在你的電腦上，只適合本機開發，<strong>不要把它產生的 root 發給別人信任</strong>。（mkcert 的部分依官方 README 撰寫，未在本機實跑。）</p><h3 id=沿用第-9-節的實驗結果>沿用第 9 節的實驗結果</h3><p>第 9 節已經簽好了：</p><table><thead><tr><th>檔案</th><th>內容</th><th>給誰</th></tr></thead><tbody><tr><td><code>root.pem</code></td><td>Bill Lab Root CA</td><td><strong>發給所有 client 信任</strong></td></tr><tr><td><code>root.key</code></td><td>root 私鑰</td><td><strong>離線保管</strong>，只有簽中繼憑證時才用</td></tr><tr><td><code>intermediate.pem</code> / <code>.key</code></td><td>中繼 CA</td><td>簽發 leaf 用</td></tr><tr><td><code>fullchain.pem</code></td><td>leaf + 中繼</td><td>給伺服器</td></tr><tr><td><code>leaf.key</code></td><td>leaf 私鑰</td><td>給伺服器</td></tr></tbody></table><p>實際使用時，root 私鑰至少要加密碼保護（<code>genpkey</code> 加上 <code>-aes256</code>），並放在離線的地方。</p><h3 id=把-root-發佈到各個-client>把 root 發佈到各個 client</h3><p>依官方文件撰寫，未在本機實跑：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># macOS：加進系統 Keychain 並設為信任（Safari、Chrome 會生效）</span>
+</span></span><span class=line><span class=cl>sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain root.pem
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Ubuntu / Debian</span>
+</span></span><span class=line><span class=cl>sudo cp root.pem /usr/local/share/ca-certificates/bill-lab-root.crt
+</span></span><span class=line><span class=cl>sudo update-ca-certificates
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># RHEL / Amazon Linux</span>
+</span></span><span class=line><span class=cl>sudo cp root.pem /etc/pki/ca-trust/source/anchors/bill-lab-root.pem
+</span></span><span class=line><span class=cl>sudo update-ca-trust
+</span></span></code></pre></td></tr></table></div></div><p>Java 的做法跟案例 A 一樣（<code>keytool -importcert</code>），或者用下面的 Spring Boot SSL bundle，只讓需要的 client 信任。</p><p>公司規模大的話，用 MDM（macOS）或 GPO（Windows）統一推送，就是案例 A 裡公司 root 的做法。</p><h3 id=spring-boot用-ssl-bundle-設定伺服器與-client>Spring Boot：用 SSL bundle 設定伺服器與 client</h3><p>Spring Boot 的 SSL bundle 可以直接讀 PEM 檔，不用先轉成 JKS / PKCS12。以下設定依 Spring Boot 官方文件撰寫（4.1 版），未在本機啟動驗證。</p><p><strong>伺服器端</strong>：用 fullchain + 私鑰開 HTTPS</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>spring</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ssl</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>bundle</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pem</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>server</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>reload-on-update</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>keystore</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>certificate</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;file:/etc/app/tls/fullchain.pem&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>private-key</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;file:/etc/app/tls/leaf.key&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>server</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>8443</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ssl</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>bundle</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;server&#34;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li><code>certificate</code> 要放 <strong>fullchain</strong>（leaf + 中繼），不然 client 會遇到第 3 節的「缺中繼憑證」</li><li><code>reload-on-update: true</code>：檔案更新時自動重新載入，不用重啟（Tomcat、Netty 支援）。搭配 cert-manager 或 ACME client 自動續約時很好用；它的 file watcher 會跟隨 symlink，所以 Kubernetes Secret 掛載的檔案也能偵測到</li></ul><p><strong>Client 端</strong>：只信任內部 root</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>spring</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ssl</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>bundle</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pem</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>internal-ca</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>truststore</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>certificate</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;classpath:certs/root.pem&#34;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.boot.restclient.autoconfigure.RestClientSsl</span><span class=p>;</span><span class=w>   </span><span class=c1>// Spring Boot 4.x</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.context.annotation.Bean</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.context.annotation.Configuration</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.web.client.RestClient</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>class</span> <span class=nc>InternalApiClientConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>RestClient</span><span class=w> </span><span class=nf>internalApiClient</span><span class=p>(</span><span class=n>RestClient</span><span class=p>.</span><span class=na>Builder</span><span class=w> </span><span class=n>builder</span><span class=p>,</span><span class=w> </span><span class=n>RestClientSsl</span><span class=w> </span><span class=n>ssl</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>builder</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>baseUrl</span><span class=p>(</span><span class=s>&#34;https://api.lab.test:8443&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>apply</span><span class=p>(</span><span class=n>ssl</span><span class=p>.</span><span class=na>fromBundle</span><span class=p>(</span><span class=s>&#34;internal-ca&#34;</span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>build</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>（Spring Boot 3.x 的 <code>RestClientSsl</code> 在不同的 package，讓 IDE 自動 import 就好。）</p><p>注意這個 bundle 的 truststore <strong>只有內部 root</strong>，是案例 A 說的「取代」：這個 <code>RestClient</code> 只能連內部服務，連 github.com 會失敗。這在這裡反而是<strong>好事</strong>：</p><ul><li>信任範圍被限制在這一個 client，其他 <code>RestClient</code> 和整個 JVM 的 cacerts 都不受影響</li><li>就算內部 CA 被盜用，攻擊者也只能冒充內部服務給這個 client，不能冒充公開網站</li></ul><p>比起直接改 JDK 的 cacerts，這是更乾淨的做法。</p><h3 id=常見錯誤>常見錯誤</h3><table><thead><tr><th>症狀</th><th>原因</th><th>怎麼確認</th></tr></thead><tbody><tr><td>Chrome <code>NET::ERR_CERT_COMMON_NAME_INVALID</code>、Java <code>No subject alternative DNS name matching</code></td><td>只有 CN、沒有 SAN</td><td><code>openssl x509 -noout -ext subjectAltName</code></td></tr><tr><td>openssl 錯誤碼 79 <code>invalid CA certificate</code></td><td>中繼憑證沒有 <code>CA:TRUE</code></td><td><code>openssl x509 -noout -ext basicConstraints</code></td></tr><tr><td>openssl 錯誤碼 26（加 <code>-purpose sslserver</code> 時）、macOS / iOS 拒絕</td><td>leaf 沒有 EKU <code>serverAuth</code></td><td><code>openssl x509 -noout -ext extendedKeyUsage</code></td></tr><tr><td>openssl 錯誤碼 21、Java PKIX</td><td>伺服器只送 leaf，沒送中繼憑證</td><td><code>openssl s_client -showcerts</code> 看送了幾張</td></tr><tr><td>openssl 錯誤碼 19 / 20、Java PKIX</td><td>client 沒有信任 root</td><td>確認 root 在那個 client 的名單裡（第 4 節總表）</td></tr><tr><td>macOS / iOS 不信任，其他平台正常</td><td>不符合 Apple 的 TLS 憑證規定</td><td>見下方</td></tr><tr><td>本機 <code>https://myapp.dev</code> 被強制 https 且打不開</td><td><code>.dev</code> 整個 TLD 在 HSTS preload 清單上</td><td>改用 <code>.test</code>、<code>.localhost</code>（第 7 節）</td></tr></tbody></table><p><strong>Apple 對 TLS 伺服器憑證的要求</strong>（<a href=https://support.apple.com/103769>support.apple.com/103769</a>，連你自己的內部 CA 簽的也適用）：</p><ul><li>效期<strong>不能超過 825 天</strong></li><li>主機名必須放在 <strong>SAN</strong>，不看 CN</li><li>必須有 EKU <strong><code>serverAuth</code></strong></li><li>RSA 金鑰至少 2048 bit</li></ul><p>內部 CA 很常簽 10 年效期的 leaf「一勞永逸」，在 macOS 和 iOS 上會直接被拒絕。leaf 的效期控制在一年內，配合自動續約，是比較好的做法。</p><hr><h2 id=cheatsheet>速查表：錯誤訊息 → 原因 → 第一個指令</h2><table><thead><tr><th>你看到的錯誤</th><th>最可能的原因</th><th>第一個要跑的指令</th></tr></thead><tbody><tr><td>Java <code>PKIX path building failed</code></td><td>root 不在 Java 的 cacerts（防火牆、內部 CA）、伺服器缺中繼憑證、自簽憑證（<a href=#chain-of-trust>第 3 節</a>、<a href=#case-firewall>案例 A</a>）</td><td><code>s_client -showcerts</code>（<a href=#openssl>第 9 節</a>）看鏈的頂端是誰</td></tr><tr><td>Java <code>PKIX path validation failed ... validity check failed</code></td><td>憑證過期或 client 時鐘錯誤（<a href=#renewal>第 8 節</a>）</td><td><code>date</code>；<code>openssl x509 -noout -dates</code></td></tr><tr><td>Java <code>No subject alternative DNS name matching</code></td><td>SAN 不含這個主機名（<a href=#wildcard-san>第 5 節</a>）</td><td><code>openssl x509 -noout -ext subjectAltName</code></td></tr><tr><td>curl <code>(60) self signed certificate in certificate chain</code> / openssl 19</td><td>鏈頂端是不在名單的 root，<strong>最常見是公司防火牆</strong>（<a href=#firewall>第 6 節</a>）</td><td><code>... -showcerts</code> 看最後一張的 <code>s:</code> / <code>i:</code></td></tr><tr><td>curl <code>(60) unable to get local issuer certificate</code> / openssl 20</td><td>缺中繼憑證或 root 不在名單（<a href=#openssl>第 9 節</a>）</td><td><code>openssl verify -show_chain -untrusted 中繼.pem leaf.pem</code></td></tr><tr><td>openssl 21 <code>unable to verify the first certificate</code></td><td>伺服器沒送中繼憑證（<a href=#chain-of-trust>第 3 節</a>）</td><td><code>... -showcerts</code> 數一數送了幾張</td></tr><tr><td>curl <code>self signed certificate</code> / openssl 18</td><td>leaf 就是自簽（<a href=#case-internal-ca>案例 B</a>）</td><td><code>openssl x509 -noout -subject -issuer</code>（兩者相同）</td></tr><tr><td>curl <code>certificate has expired</code> / openssl 10 / Chrome <code>NET::ERR_CERT_DATE_INVALID</code></td><td>過期（<a href=#renewal>第 8 節</a>）</td><td><code>openssl x509 -noout -enddate -checkend 0</code></td></tr><tr><td>openssl 9 <code>not yet valid or the system clock is incorrect</code></td><td>client 時鐘落後（<a href=#renewal>第 8 節</a>）</td><td><code>date</code></td></tr><tr><td>curl <code>no alternative certificate subject name matches</code> / openssl 62 / Chrome <code>NET::ERR_CERT_COMMON_NAME_INVALID</code></td><td>主機名不符、wildcard 跨層、只有 CN（<a href=#wildcard-san>第 5 節</a>）</td><td><code>openssl x509 -noout -ext subjectAltName</code></td></tr><tr><td>openssl 64 <code>IP address mismatch</code></td><td>用 IP 連線，但 SAN 沒有 <code>IP:</code>（<a href=#wildcard-san>第 5 節</a>）</td><td>同上</td></tr><tr><td>openssl 79 <code>invalid CA certificate</code></td><td>中繼憑證沒有 <code>CA:TRUE</code>（<a href=#case-internal-ca>案例 B</a>）</td><td><code>openssl x509 -noout -ext basicConstraints</code></td></tr><tr><td>openssl 26 <code>unsuitable certificate purpose</code></td><td>EKU 沒有 <code>serverAuth</code>（<a href=#case-internal-ca>案例 B</a>）</td><td><code>openssl x509 -noout -ext extendedKeyUsage</code></td></tr><tr><td>瀏覽器可以，curl / Java 不行</td><td>名單不同（防火牆），或伺服器缺中繼憑證（瀏覽器靠 AIA 補抓）（<a href=#chain-of-trust>第 3 節</a>、<a href=#trust-store>第 4 節</a>）</td><td>先看 issuer 是不是公司 CA；再看 <code>-showcerts</code> 送了幾張</td></tr><tr><td>本機可以，Docker container 裡不行</td><td>container 用 image 裡的名單（<a href=#case-firewall>案例 A</a>）</td><td><code>docker run --rm 你的image ls /etc/ssl/certs</code></td></tr><tr><td>Chrome 錯誤頁沒有「繼續前往」</td><td>網站有 HSTS（<a href=#hsts>第 7 節</a>）</td><td>修 trust store，不要想辦法略過</td></tr><tr><td>憑證續約了，使用者還是拿到舊的</td><td>伺服器沒有 reload（<a href=#renewal>第 8 節</a>）</td><td><code>openssl s_client ... | openssl x509 -noout -dates</code> 看線上那張</td></tr><tr><td>伺服器啟動失敗，或握手時 <code>CertificateVerify</code> 驗不過</td><td>私鑰和憑證不是一對（<a href=#openssl>第 9 節</a>）</td><td>比對 <code>x509 -pubkey</code> 與 <code>pkey -pubout</code> 的 sha256</td></tr></tbody></table><hr><h2 id=references>參考資料</h2><p><strong>RFC 與標準</strong></p><ul><li><a href=https://www.rfc-editor.org/rfc/rfc8446>RFC 8446 - The Transport Layer Security (TLS) Protocol Version 1.3</a></li><li><a href=https://www.rfc-editor.org/rfc/rfc5280>RFC 5280 - Internet X.509 Public Key Infrastructure Certificate and CRL Profile</a></li><li><a href=https://www.rfc-editor.org/rfc/rfc9525>RFC 9525 - Service Identity in TLS</a></li><li><a href=https://www.rfc-editor.org/rfc/rfc6797>RFC 6797 - HTTP Strict Transport Security (HSTS)</a></li><li><a href=https://www.rfc-editor.org/rfc/rfc8555>RFC 8555 - Automatic Certificate Management Environment (ACME)</a></li><li><a href=https://www.rfc-editor.org/rfc/rfc9773>RFC 9773 - ACME Renewal Information (ARI) Extension</a></li><li><a href=https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/>CA/Browser Forum - Ballot SC-081v3: Introduce Schedule of Reducing Validity and Data Reuse Periods</a></li></ul><p><strong>瀏覽器與平台</strong></p><ul><li><a href=https://chromium.googlesource.com/chromium/src/+/main/net/data/ssl/chrome_root_store/faq.md>Chrome Root Program - FAQ</a></li><li><a href=https://security.googleblog.com/2024/06/sustaining-digital-certificate-security.html>Google Security Blog - Sustaining Digital Certificate Security - Entrust Certificate Distrust</a></li><li><a href=https://security.googleblog.com/2025/10/https-by-default.html>Google Security Blog - HTTPS by default</a></li><li><a href=https://support.apple.com/103769>Apple - Requirements for trusted certificates in iOS 13 and macOS 10.15</a></li><li><a href=https://support.mozilla.org/kb/how-disable-enterprise-roots-preference>Mozilla - How to disable the Enterprise Roots preference</a></li><li><a href=https://hstspreload.org/>HSTS Preload List Submission</a></li></ul><p><strong>Let&rsquo;s Encrypt</strong></p><ul><li><a href=https://letsencrypt.org/docs/challenge-types/>Challenge Types</a></li><li><a href=https://letsencrypt.org/2025/12/02/from-90-to-45>Decreasing Certificate Lifetimes to 45 Days</a></li><li><a href=https://letsencrypt.org/2025/08/06/ocsp-service-has-reached-end-of-life>OCSP Service Has Reached End of Life</a></li><li><a href=https://letsencrypt.org/2025/09/16/ari-rfc>ACME Renewal Information (ARI) Published as RFC 9773</a></li></ul><p><strong>工具文件</strong></p><ul><li><a href=https://docs.openssl.org/master/man1/openssl-s_client/>OpenSSL - openssl-s_client</a></li><li><a href=https://docs.openssl.org/master/man1/openssl-verify/>OpenSSL - openssl-verify</a></li><li><a href=https://docs.oracle.com/en/java/javase/21/docs/specs/man/keytool.html>Oracle JDK 21 - keytool</a></li><li><a href=https://docs.oracle.com/en/java/javase/21/security/java-secure-socket-extension-jsse-reference-guide.html>Oracle JDK 21 - Java Secure Socket Extension (JSSE) Reference Guide</a></li><li><a href=https://mail.openjdk.org/pipermail/net-dev/2020-July/014161.html>OpenJDK net-dev 郵件論壇 - AIA caIssuers 屬性說明</a></li><li><a href=https://docs.spring.io/spring-boot/reference/features/ssl.html>Spring Boot - SSL</a></li><li><a href=https://docs.spring.io/spring-boot/reference/io/rest-client.html>Spring Boot - Calling REST Services (RestClient SSL)</a></li><li><a href=https://docs.spring.io/spring-security/reference/features/exploits/headers.html>Spring Security - Security HTTP Response Headers</a></li><li><a href=https://github.com/docker-library/docs/blob/master/eclipse-temurin/README.md>Eclipse Temurin Docker image - README</a></li><li><a href=https://github.com/FiloSottile/mkcert>mkcert</a></li><li><a href=https://badssl.com/>badssl.com</a></li><li><a href=https://xinqilin.github.io/post/cli/openssl/>openssl 指令筆記</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/tls class=tag-link>#TLS</a>
+<a href=/tags/x.509 class=tag-link>#X.509</a>
+<a href=/tags/pki class=tag-link>#PKI</a>
+<a href=/tags/https class=tag-link>#HTTPS</a>
+<a href=/tags/openssl class=tag-link>#OpenSSL</a>
+<a href=/tags/hsts class=tag-link>#HSTS</a>
+<a href=/tags/java class=tag-link>#Java</a>
+<a href=/tags/security class=tag-link>#Security</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/security/cloudflare-turnstile-vue-spring-boot/ class=post-nav-link>Cloudflare Turnstile 實戰：Vue 3 + Spring Boot 雙端整合</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a>
+<a href=https://www.linkedin.com/in/bill-lin-developer/ class=social-link target=_blank rel=noopener>linkedin</a>
+<a href=mailto:zzx123bill@gmail.com class=social-link target=_blank rel=noopener>email</a></div></div></footer><script src=/js/search.js></script><script src=/js/particles-bg.js defer></script></div><script src=/js/code-enhance.js></script></body></html>

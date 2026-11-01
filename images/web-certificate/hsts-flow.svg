@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" width="720" height="540" role="img" aria-labelledby="t d">
+<title id="t">HSTS 運作流程動畫</title>
+<desc id="d">第一次造訪時，瀏覽器先用 http 連線，被 301 導到 https，伺服器回應帶上 Strict-Transport-Security header，瀏覽器記住一年。之後使用者再輸入 http 網址，瀏覽器在內部直接 307 改成 https，不送出 http 請求；如果憑證有問題，瀏覽器直接擋下，使用者無法略過。</desc>
+<defs>
+<marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2d3748"/></marker>
+<marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b45309"/></marker>
+<marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0e7490"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15803d"/></marker>
+</defs>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;fill:#1a202c;font-size:16px}
+.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+.t{font-size:20px;font-weight:700}
+.s{font-size:15px}
+.b{font-weight:700}
+.mu{fill:#4a5568}
+.c{text-anchor:middle}
+.gr{fill:#15803d}
+.rd{fill:#b91c1c}
+.am{fill:#b45309}
+.tl{fill:#0e7490}
+.an{animation-duration:13s;animation-timing-function:linear;animation-iteration-count:infinite}
+.m1{animation-name:m1}.m2{animation-name:m2}.m3{animation-name:m3}.m4{animation-name:m4}.mem{animation-name:mem}
+.b1{animation-name:b1}.ir{animation-name:ir}.b2{animation-name:b2}.wa{animation-name:wa}
+@keyframes m1{0%,3.8%{opacity:0}6.3%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m2{0%,12.3%{opacity:0}14.8%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m3{0%,20.8%{opacity:0}23.3%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes m4{0%,29.2%{opacity:0}31.7%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes mem{0%,36.9%{opacity:0}39.4%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes b1{0%,46.2%{opacity:0}48.7%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes ir{0%,52.3%{opacity:0}54.8%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes b2{0%,58.5%{opacity:0}61%,93%{opacity:1}96.5%,100%{opacity:0}}
+@keyframes wa{0%,66.2%{opacity:0}68.7%,93%{opacity:1}96.5%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.an{animation:none!important}}
+</style>
+<rect width="720" height="540" fill="#ffffff"/>
+<text x="360" y="34" class="t c">HSTS：讓瀏覽器記住「這個網站只走 HTTPS」</text>
+<rect x="20" y="52" width="680" height="248" rx="12" fill="#f7fafc" stroke="#e2e8f0"/>
+<text x="36" y="78" class="b">第一次造訪</text>
+<text x="120" y="104" class="c b">瀏覽器</text>
+<text x="600" y="104" class="c b mono">github.com</text>
+<line x1="120" y1="112" x2="120" y2="290" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5 5"/>
+<line x1="600" y1="112" x2="600" y2="290" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5 5"/>
+<g class="an m1">
+<text x="360" y="134" class="c s am">http://github.com（明文，路上可被竄改）</text>
+<line x1="124" y1="144" x2="594" y2="144" stroke="#b45309" stroke-width="2" marker-end="url(#aa)"/>
+</g>
+<g class="an m2">
+<text x="360" y="176" class="c s">301 Moved Permanently → https://github.com/</text>
+<line x1="596" y1="186" x2="126" y2="186" stroke="#2d3748" stroke-width="2" marker-end="url(#ak)"/>
+</g>
+<g class="an m3">
+<text x="360" y="218" class="c s tl">https://github.com</text>
+<line x1="124" y1="228" x2="594" y2="228" stroke="#0e7490" stroke-width="2" marker-end="url(#at)"/>
+</g>
+<g class="an m4">
+<text x="360" y="260" class="c s b gr">200 + Strict-Transport-Security: max-age=31536000</text>
+<line x1="596" y1="270" x2="126" y2="270" stroke="#15803d" stroke-width="2" marker-end="url(#ag)"/>
+</g>
+<rect x="20" y="316" width="680" height="212" rx="12" fill="#f7fafc" stroke="#e2e8f0"/>
+<text x="36" y="342" class="b">之後一年內再造訪</text>
+<g class="an b1">
+<rect x="36" y="358" width="200" height="40" rx="8" fill="#ffffff" stroke="#cbd5e0"/>
+<text x="136" y="384" class="c s"><tspan>輸入 </tspan><tspan class="mono">http://github.com</tspan></text>
+</g>
+<g class="an ir">
+<text x="358" y="370" class="c s b tl">307 Internal Redirect</text>
+<line x1="240" y1="380" x2="474" y2="380" stroke="#0e7490" stroke-width="2" marker-end="url(#at)"/>
+<text x="358" y="400" class="c s mu">瀏覽器內部改寫，不送出 http</text>
+</g>
+<g class="an b2">
+<rect x="480" y="358" width="204" height="40" rx="8" fill="#ffffff" stroke="#0e7490" stroke-width="1.5"/>
+<text x="582" y="384" class="c s mono tl">https://github.com</text>
+</g>
+<g class="an mem">
+<rect x="36" y="420" width="308" height="92" rx="10" fill="#e6f7fb" stroke="#61c8e0" stroke-width="1.5"/>
+<text x="52" y="446" class="b">瀏覽器記住的 HSTS 清單</text>
+<text x="52" y="472" class="s mono">github.com</text>
+<text x="52" y="496" class="s mu">一年內只走 HTTPS・含子網域</text>
+</g>
+<g class="an wa">
+<rect x="364" y="420" width="320" height="92" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+<text x="380" y="446" class="b rd">憑證有問題時</text>
+<text x="380" y="472" class="s">直接擋下，沒有「繼續前往」按鈕</text>
+<text x="380" y="496" class="s">使用者無法自己略過</text>
+</g>
+</svg>

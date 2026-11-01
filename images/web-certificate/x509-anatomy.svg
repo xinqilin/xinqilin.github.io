@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 530" width="720" height="530" role="img" aria-labelledby="t d">
+<title id="t">X.509 憑證欄位圖解</title>
+<desc id="d">把 X.509 憑證比喻成身分證：Subject 與 SAN 是姓名、Issuer 是發證機關、Validity 是有效期限、公鑰是照片、Extensions 是用途註記、Signature 是發證機關蓋的防偽鋼印。</desc>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;fill:#1a202c;font-size:16px}
+.mono{font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace}
+.t{font-size:20px;font-weight:700}
+.s{font-size:15px}
+.b{font-weight:700}
+.mu{fill:#4a5568}
+.tl{fill:#0e7490}
+.c{text-anchor:middle}
+.an{animation-duration:12s;animation-timing-function:linear;animation-iteration-count:infinite}
+.hl{opacity:0;animation-name:hl}
+.st{animation-name:st;transform-box:fill-box;transform-origin:50% 50%}
+.nt{animation-name:nt}
+@keyframes hl{0%{opacity:1;transform:translateY(0)}10.8%{transform:translateY(0)}11.3%{transform:translateY(52px)}21.7%{transform:translateY(52px)}22.2%{transform:translateY(104px)}32.5%{transform:translateY(104px)}33%{transform:translateY(156px)}43.3%{transform:translateY(156px)}43.8%{transform:translateY(208px)}54.2%{transform:translateY(208px)}54.7%{transform:translateY(260px)}66%{opacity:1;transform:translateY(260px)}68%,100%{opacity:0;transform:translateY(260px)}}
+@keyframes st{0%,57%{opacity:0;transform:rotate(-12deg) scale(1.5)}60%,94%{opacity:1;transform:rotate(-12deg) scale(1)}97%,100%{opacity:0;transform:rotate(-12deg) scale(1)}}
+@keyframes nt{0%,66%{opacity:0}69%,94%{opacity:1}97%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.an{animation:none!important}.hl{opacity:0!important}}
+</style>
+<rect width="720" height="530" fill="#ffffff"/>
+<text x="360" y="40" class="t c">X.509 憑證：網站的身分證</text>
+<rect x="30" y="64" width="660" height="392" rx="16" fill="#ffffff" stroke="#2d3748" stroke-width="2"/>
+<rect x="30" y="64" width="660" height="52" rx="16" fill="#2d3748"/>
+<rect x="30" y="96" width="660" height="20" fill="#2d3748"/>
+<text x="56" y="97" class="b" style="fill:#ffffff;font-size:18px">X.509 v3 憑證（github.com）</text>
+<text x="664" y="97" class="s" style="fill:#e2e8f0;text-anchor:end">身分證比喻 ／ 欄位</text>
+<rect class="an hl" x="40" y="132" width="640" height="52" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+<g>
+<rect x="48" y="140" width="120" height="34" rx="17" fill="#e6f7fb"/>
+<text x="108" y="162" class="c b tl">姓名</text>
+<text x="188" y="154" class="b mono">Subject / SAN</text>
+<text x="188" y="176" class="s mu">CN=github.com・SAN: github.com, www.github.com</text>
+<line x1="44" y1="184" x2="676" y2="184" stroke="#e2e8f0"/>
+</g>
+<g>
+<rect x="48" y="192" width="120" height="34" rx="17" fill="#e6f7fb"/>
+<text x="108" y="214" class="c b tl">發證機關</text>
+<text x="188" y="206" class="b mono">Issuer</text>
+<text x="188" y="228" class="s mu">Sectigo Public Server Authentication CA DV E36</text>
+<line x1="44" y1="236" x2="676" y2="236" stroke="#e2e8f0"/>
+</g>
+<g>
+<rect x="48" y="244" width="120" height="34" rx="17" fill="#e6f7fb"/>
+<text x="108" y="266" class="c b tl">有效期限</text>
+<text x="188" y="258" class="b mono">Validity</text>
+<text x="188" y="280" class="s mu">2026-10-30 ～ 2027-01-27（約 90 天）</text>
+<line x1="44" y1="288" x2="676" y2="288" stroke="#e2e8f0"/>
+</g>
+<g>
+<rect x="48" y="296" width="120" height="34" rx="17" fill="#e6f7fb"/>
+<text x="108" y="318" class="c b tl">照片</text>
+<text x="188" y="310" class="b mono">Subject Public Key Info</text>
+<text x="188" y="332" class="s mu">EC P-256 公鑰（對應的私鑰只在伺服器上）</text>
+<line x1="44" y1="340" x2="676" y2="340" stroke="#e2e8f0"/>
+</g>
+<g>
+<rect x="48" y="348" width="120" height="34" rx="17" fill="#e6f7fb"/>
+<text x="108" y="370" class="c b tl">用途註記</text>
+<text x="188" y="362" class="b mono">Extensions</text>
+<text x="188" y="384" class="s mu">CA:FALSE・Key Usage・EKU: serverAuth</text>
+<line x1="44" y1="392" x2="676" y2="392" stroke="#e2e8f0"/>
+</g>
+<g>
+<rect x="48" y="400" width="120" height="34" rx="17" fill="#e6f7fb"/>
+<text x="108" y="422" class="c b tl">防偽鋼印</text>
+<text x="188" y="414" class="b mono">Signature</text>
+<text x="188" y="436" class="s mu">Issuer 用自己的私鑰簽在整張憑證上</text>
+</g>
+<g class="an st">
+<circle cx="610" cy="402" r="38" fill="#ffffff" fill-opacity="0.85" stroke="#dc2626" stroke-width="3"/>
+<circle cx="610" cy="402" r="31" fill="none" stroke="#dc2626" stroke-width="1.2"/>
+<text x="610" y="400" class="c b" style="fill:#dc2626;font-size:18px">CA</text>
+<text x="610" y="420" class="c s b" style="fill:#dc2626">簽章</text>
+</g>
+<g class="an nt">
+<text x="360" y="488" class="s c mu">憑證本身是公開的，任何人都拿得到、也都能複製。</text>
+<text x="360" y="512" class="s c b">能證明「我就是 github.com」的，是只有伺服器才有的私鑰。</text>
+</g>
+</svg>

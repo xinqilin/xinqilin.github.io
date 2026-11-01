@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>PKI on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/pki/</link>
+		<description>Recent content in PKI on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 01 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/pki/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>網頁憑證信任圖解：TLS 握手、憑證鏈、Trust Store 到 openssl 排錯</title>
+				<link>https://xinqilin.github.io/post/security/web-certificate-trust/</link>
+				<pubDate>Sun, 01 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/security/web-certificate-trust/</guid>
+				<description>&lt;p&gt;在瀏覽器打開網站一切正常，同一個網址換成 &lt;code&gt;mvn&lt;/code&gt;、&lt;code&gt;curl&lt;/code&gt;、&lt;code&gt;docker build&lt;/code&gt; 或 Spring Boot 的 &lt;code&gt;RestClient&lt;/code&gt; 卻跳出 &lt;code&gt;PKIX path building failed&lt;/code&gt;、&lt;code&gt;self signed certificate in certificate chain&lt;/code&gt;。遇到這種狀況，很多人會加 &lt;code&gt;-k&lt;/code&gt;、關掉驗證，或者到處亂 import 憑證，然後問題就這樣過去了，下次再碰到還是不知道原因。&lt;/p&gt;&#xA;&lt;p&gt;這篇把「憑證為什麼被信任」從頭拆一次，依序講 9 個主題。每一節的格式都一樣：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;白話版&lt;/strong&gt;：先用一個生活比喻建立直覺&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;動態圖&lt;/strong&gt;：點圖可以開原尺寸（手機上建議點開看）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;工程師版&lt;/strong&gt;：欄位、規則、實測輸出&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;常見誤解與踩坑&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;最後是兩個實戰案例（公司防火牆 SSL inspection、自建內部 CA）和一張速查表。&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;實測環境&lt;/strong&gt;：macOS、OpenSSL 4.1.0（Homebrew）、macOS 內建 curl 8.7.1（LibreSSL）、Amazon Corretto 21（&lt;code&gt;keytool&lt;/code&gt;、&lt;code&gt;java.net.http.HttpClient&lt;/code&gt;），測試站台用 &lt;code&gt;github.com&lt;/code&gt; 與 &lt;a href=&#34;https://badssl.com/&#34;&gt;badssl.com&lt;/a&gt;。指令輸出都是實際跑出來的結果，原樣貼在 &lt;code&gt;#&lt;/code&gt; 註解或輸出區塊。Dockerfile、Spring Boot 設定、Keychain 匯出、Windows 相關的內容是依官方文件撰寫的，沒有在本機實跑，文中會標註。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;目錄&#34;&gt;目錄&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#overview&#34;&gt;打開 https://github.com 時，依序發生了什麼&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#tls-handshake&#34;&gt;1. TLS Handshake：先握手，再講話&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#x509&#34;&gt;2. X.509 憑證：網站的身分證&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#chain-of-trust&#34;&gt;3. Chain of Trust：根憑證 → 中繼憑證 → 網站憑證&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#trust-store&#34;&gt;4. Root CA 與 Trust Store：信任名單在誰手上&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#wildcard-san&#34;&gt;5. Wildcard 與 SAN：這張證件能代表哪些名字&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#firewall&#34;&gt;6. 防火牆：中間人合法化之後&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#hsts&#34;&gt;7. HSTS：讓瀏覽器記住只走 HTTPS&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#renewal&#34;&gt;8. 憑證過期、續約與「自動信任」&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#openssl&#34;&gt;9. openssl 排錯工具箱：自己當一次 CA&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#case-firewall&#34;&gt;實戰案例 A：公司防火牆 SSL inspection&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#case-internal-ca&#34;&gt;實戰案例 B：自簽憑證與內部 CA&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#cheatsheet&#34;&gt;速查表：錯誤訊息 → 原因 → 第一個指令&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;#references&#34;&gt;參考資料&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;overview&#34;&gt;打開 &lt;a href=&#34;https://github.com&#34;&gt;https://github.com&lt;/a&gt; 時，依序發生了什麼&lt;/h2&gt;&#xA;&lt;p&gt;先看全貌。9 個主題其實是同一件事的不同步驟：&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>
