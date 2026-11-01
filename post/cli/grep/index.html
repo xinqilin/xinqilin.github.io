@@ -1,0 +1,732 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>grep — 文字搜尋、正規表達式與 Log 排查命令列指南 - Bill.Lin's Notes</title><meta name=description content="grep 完整指令筆記：-i -v -w -o -c 等常用旗標、前後文與遞迴搜尋、BRE/ERE/PCRE 正規表達式、macOS BSD 與 GNU grep 差異，以及 Log 排查實戰"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="grep — 文字搜尋、正規表達式與 Log 排查命令列指南"><meta property="og:description" content="grep 完整指令筆記：-i -v -w -o -c 等常用旗標、前後文與遞迴搜尋、BRE/ERE/PCRE 正規表達式、macOS BSD 與 GNU grep 差異，以及 Log 排查實戰"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/cli/grep/"></head><body><div class=container><header class=site-header><nav class=site-nav><a href=https://xinqilin.github.io/ class=site-brand><img src=/images/Bill-coding.svg alt class=site-brand-icon aria-hidden=true>
+<span class=site-brand-name>Bill.Lin's Notes</span></a><ul class=site-nav-menu><li><a href=https://xinqilin.github.io/ class=site-nav-link>Me</a></li><li><a href=/posts/ class=site-nav-link>Posts</a></li><li><a href=/categories/ class=site-nav-link>Categories</a></li><li><a href=/tags/ class=site-nav-link>Tags</a></li><li id=search-container class=site-nav-search><a href=# id=search-trigger class=site-nav-link aria-label=Search>Search</a>
+<input type=text id=search-input placeholder=搜尋文章...><div id=search-results-container></div></li></ul></nav></header><style>.container{max-width:1100px}.site-header{background:rgba(243,246,247,.85);backdrop-filter:saturate(180%)blur(8px);-webkit-backdrop-filter:saturate(180%)blur(8px);border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:100}.site-nav{max-width:1100px;margin:0 auto;padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:1rem}.site-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#2d3748;font-weight:600;font-size:1rem;transition:color .15s ease}.site-brand:hover{color:#36b9d8;text-decoration:none}.site-brand-icon{width:28px;height:28px;border-radius:6px}.site-brand-name{letter-spacing:.01em}.site-nav-menu{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:.4rem}.site-nav-menu li{display:inline-flex;align-items:center}.site-nav-link{color:#4a5568;text-decoration:none;font-size:.92rem;padding:7px 12px;border-radius:8px;transition:color .15s ease,background-color .15s ease}.site-nav-link:hover{color:#1a8eb3;background:rgba(97,200,224,.12);text-decoration:none}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.post-content table:not(.lntable){border-collapse:collapse;margin:1.2em 0;display:block;overflow-x:auto;max-width:100%;font-size:.95em}.post-content table:not(.lntable) thead{background-color:#f6f8fa}.post-content table:not(.lntable) th,.post-content table:not(.lntable) td{padding:.5em .9em;border:1px solid #d0d7de;text-align:left;vertical-align:top;line-height:1.55}.post-content table:not(.lntable) th{font-weight:600}.post-content table:not(.lntable) tbody tr:nth-child(even){background-color:#fafbfc}.post-content table:not(.lntable) code{background-color:rgba(175,184,193,.2);padding:.1em .35em;border-radius:3px;font-size:.9em}html{background-color:#f3f6f7}body{background-color:transparent}#particles-bg-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}.container{position:relative;z-index:1}.post-content{max-width:720px;margin:0 auto}.post-content p,.post-content li{line-height:1.75;color:#2d3748}.post-content li{line-height:2}.post-content h1,.post-title,.post-header h1{border-left:4px solid #61c8e0;padding-left:16px;line-height:1.4}.post-content blockquote{border:2px solid #61c8e0;border-left:2px solid #61c8e0;background-color:transparent;padding:15px 20px;margin:1.2em 0;color:#2d3748}.post-content a{color:#36b9d8;text-decoration:none}.post-content a:hover{text-decoration:underline}.post-content :not(pre)>code{background-color:#e6e6e6;color:#526367;padding:2px 6px;border-radius:4px;font-size:.92em}.post-content hr{border:0;border-top:1px solid #d0d7de;margin:2.5em 0}.cat-index-page{max-width:960px;margin:0 auto;padding:2rem 1rem}.cat-index-head{text-align:center;margin-bottom:2.5rem}.cat-index-head h1{font-size:2rem;font-weight:700;color:#2d3748;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;margin:0}.cat-index-sub{color:#718096;margin-top:.5rem;font-size:.95rem}.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}.cat-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.6rem;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;position:relative;overflow:hidden}.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#61c8e0,transparent);opacity:0;transition:opacity .2s ease}.cat-card:hover{transform:translateY(-3px);border-color:#61c8e0;box-shadow:0 6px 20px rgba(97,200,224,.15);text-decoration:none}.cat-card:hover::before{opacity:1}.cat-card-icon{font-size:2.4rem;line-height:1}.cat-card-name{font-size:1.15rem;font-weight:700;color:#2d3748;margin:0;border-left:none;padding-left:0;line-height:1.3}.cat-card-count{font-size:.85rem;color:#36b9d8;margin:0;font-weight:500}.cat-card-desc{font-size:.88rem;color:#718096;margin:0;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.tags-cloud-page{max-width:900px;margin:0 auto;padding:2rem 1rem}.tags-header{text-align:center;margin-bottom:2.5rem}.tags-header h1{font-size:2rem;font-weight:700;color:#2d3748;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;margin:0}.tags-subtitle{color:#718096;margin-top:.5rem;font-size:.95rem}.tags-cloud{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;justify-content:center}.tag-pill{display:inline-flex;align-items:baseline;gap:6px;padding:6px 14px;border-radius:999px;text-decoration:none;border:1px solid transparent;transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease;line-height:1.4}.tag-pill:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(97,200,224,.2);text-decoration:none}.tag-pill .tag-count{font-size:.7em;opacity:.65;font-weight:500}.tag-pill.tag-sm{background:#f0f4f5;color:#718096;font-size:13px}.tag-pill.tag-sm:hover{background:#e2e8f0;color:#2d3748}.tag-pill.tag-md{background:#e8f4f7;color:#2d3748;font-size:15px;font-weight:500}.tag-pill.tag-md:hover{background:#d4ebf2;border-color:#36b9d8}.tag-pill.tag-lg{background:#d4f1f8;color:#1a8eb3;font-size:17px;font-weight:600;border-color:#61c8e0}.tag-pill.tag-lg:hover{background:#b8e4f0;color:#0e6e8f}.term-page{max-width:760px;margin:0 auto;padding:2rem 1rem}.term-page-head{text-align:center;margin-bottom:2.5rem}.term-page-icon{font-size:3rem;line-height:1;margin-bottom:.6rem}.term-page-title{font-size:2rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;line-height:1.3}.term-page-meta{color:#718096;margin-top:.6rem;font-size:.95rem}.term-page-desc{color:#4a5568;font-size:.95rem;line-height:1.7;margin:1rem auto 0;max-width:620px}.term-page-back{text-align:center;margin-top:2.5rem}.term-back-link{color:#36b9d8;text-decoration:none;font-size:.95rem;border:1px solid #e2e8f0;padding:8px 16px;border-radius:999px;transition:all .2s ease;background:#fff}.term-back-link:hover{border-color:#61c8e0;background:#d4f1f8;text-decoration:none}.post-index-page{max-width:800px;margin:0 auto;padding:2rem 1rem}.post-index-head{text-align:center;margin-bottom:2.5rem}.post-index-title{font-size:2rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px}.post-index-sub{color:#718096;margin-top:.5rem;font-size:.95rem}.post-list{display:flex;flex-direction:column;gap:.85rem}.post-list-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.2rem 1.4rem;text-decoration:none;color:inherit;display:block;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;position:relative}.post-list-card::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:0;background:#61c8e0;border-radius:2px;transition:height .2s ease}.post-list-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.12);text-decoration:none;transform:translateX(2px)}.post-list-card:hover::before{height:60%}.post-list-card-title{font-size:1.1rem;font-weight:600;color:#2d3748;margin:0 0 .4rem;line-height:1.45;border-left:none;padding-left:0}.post-list-card-desc{font-size:.9rem;color:#718096;margin:0 0 .6rem;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.post-list-card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.82rem;color:#a0aec0}.post-list-card-meta time{font-feature-settings:"tnum"}.post-list-card-dot{color:#cbd5e0}.post-list-card-tags{display:inline-flex;flex-wrap:wrap;gap:.3rem}.post-list-card-tag{color:#718096;font-size:.78rem}.post-list-card-cat{color:#36b9d8;font-weight:500}.post-list-empty{text-align:center;padding:3rem 1rem;color:#a0aec0}.home-page{max-width:800px;margin:0 auto;padding:2rem 1rem}.home-hero{padding:1.5rem 0 2.5rem;border-bottom:1px solid #e2e8f0;margin-bottom:2.5rem;display:flex;align-items:flex-start;gap:1.5rem}.home-hero-text{flex:1;min-width:0}.home-hero-avatar-wrap{position:relative;flex-shrink:0;width:110px;height:110px;display:flex;align-items:center;justify-content:center;cursor:pointer}.home-hero-avatar-ring{position:absolute;inset:0;border-radius:50%;background:linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#feca57,#ff9ff3,#54a0ff,#5f27cd,#ff6b6b);background-size:400% 400%;animation:heroAvatarRotate 3s ease-in-out infinite;opacity:.85;will-change:transform,background-position}.home-hero-avatar-ring::before{content:'';position:absolute;inset:4px;background:#f3f6f7;border-radius:50%;z-index:1}.home-hero-avatar{position:relative;width:96px;height:96px;border-radius:50%;z-index:2;object-fit:cover;transition:transform .3s ease,filter .3s ease}.home-hero-avatar-wrap::after{content:'✨';position:absolute;top:-8px;right:-4px;font-size:16px;animation:heroAvatarSparkle 2.5s ease-in-out infinite;pointer-events:none;z-index:3}.home-hero-avatar-wrap:hover .home-hero-avatar-ring{animation:heroAvatarRotate 1.2s ease-in-out infinite,heroAvatarPulse 2s ease-in-out infinite}.home-hero-avatar-wrap:hover .home-hero-avatar{transform:scale(1.08);filter:brightness(1.08)saturate(1.1)}.home-hero-avatar-wrap:active .home-hero-avatar{transform:scale(.96)}@keyframes heroAvatarRotate{0%{background-position:0;transform:rotate(0)}25%{background-position:100%;transform:rotate(90deg)}50%{background-position:100%;transform:rotate(180deg)}75%{background-position:0;transform:rotate(270deg)}100%{background-position:0;transform:rotate(360deg)}}@keyframes heroAvatarPulse{0%,100%{opacity:.85}50%{opacity:1;box-shadow:0 0 18px rgba(97,200,224,.45)}}@keyframes heroAvatarSparkle{0%,100%{opacity:0;transform:scale(.8)rotate(0)}50%{opacity:1;transform:scale(1.2)rotate(180deg)}}@media(max-width:600px){.home-hero{flex-direction:column;gap:1rem;align-items:flex-start}.home-hero-avatar-wrap{width:92px;height:92px}.home-hero-avatar{width:80px;height:80px}}.home-hero-eyebrow{color:#36b9d8;font-size:.95rem;font-weight:500;margin:0 0 .3rem;letter-spacing:.04em}.home-hero-name{font-size:2.6rem;font-weight:800;color:#1a202c;margin:0 0 .5rem;line-height:1.1;border-left:4px solid #61c8e0;padding-left:16px}.home-hero-role{font-size:1.05rem;color:#4a5568;margin:0 0 .25rem;font-weight:500}.home-hero-loc{font-size:.92rem;color:#718096;margin:0 0 1rem}.home-hero-bio{font-size:.98rem;color:#4a5568;line-height:1.75;margin:0 0 1.4rem;max-width:640px}.home-hero-links{display:flex;flex-wrap:wrap;gap:.6rem}.home-link-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;color:#2d3748;text-decoration:none;font-size:.88rem;font-weight:500;transition:all .18s ease}.home-link-pill:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none;transform:translateY(-1px)}.home-section{margin-bottom:2.5rem}.home-section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}.home-section-title{font-size:1.4rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;padding-left:12px;line-height:1.2;display:inline-flex;align-items:center;gap:.55rem}.home-section-icon{width:22px;height:22px;color:#36b9d8;flex-shrink:0}.exp-bullets .metric{color:#1a8eb3;font-weight:600;font-feature-settings:"tnum"}.home-section-more{font-size:.88rem;color:#36b9d8;text-decoration:none;transition:color .15s ease}.home-section-more:hover{color:#1a8eb3;text-decoration:underline}.home-cat-pills{display:flex;flex-wrap:wrap;gap:.6rem}.home-cat-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;color:#2d3748;text-decoration:none;font-size:.9rem;transition:all .18s ease}.home-cat-pill:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none;transform:translateY(-1px)}.home-cat-pill-icon{font-size:1.1em;line-height:1}.home-cat-pill-count{font-size:.75em;color:#a0aec0;background:#f0f4f5;padding:1px 7px;border-radius:999px;font-weight:500}.home-cat-pill:hover .home-cat-pill-count{background:rgba(97,200,224,.15);color:#1a8eb3}.home-hero-bio-aside{color:#718096!important;font-size:.92rem!important;margin-top:-.7rem!important;font-style:italic}.home-link-pill-icon{width:16px;height:16px;flex-shrink:0;color:#4a5568;transition:color .18s ease}.home-link-pill:hover .home-link-pill-icon{color:#1a8eb3}.home-hero-footnote{font-size:.78rem;color:#a0aec0;margin:.9rem 0 0;font-feature-settings:"tnum"}.home-hero-footnote a{color:#36b9d8;text-decoration:none}.home-hero-footnote a:hover{text-decoration:underline}.skill-aside{margin:.6rem 0 0;font-size:.8rem;color:#718096;font-style:italic}.cert-subhead{font-size:.78rem;color:#36b9d8;margin:1.4rem 0 .7rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-left:none;padding-left:0}.cert-subhead:first-of-type{margin-top:0}.home-section-side{font-size:.85rem;color:#a0aec0}.exp-timeline{list-style:none;margin:0;padding:0;position:relative}.exp-timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#61c8e0 0%,#e2e8f0 100%);border-radius:1px}.exp-item{position:relative;padding-left:38px;padding-bottom:1.6rem}.exp-item:last-child{padding-bottom:0}.exp-dot{position:absolute;left:4px;top:8px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid #cbd5e0;box-shadow:0 0 0 4px #f3f6f7;z-index:1}.exp-item-current .exp-dot{border-color:#61c8e0;background:#61c8e0;box-shadow:0 0 0 4px #f3f6f7,0 0 0 7px rgba(97,200,224,.25)}.exp-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.1rem 1.3rem;transition:border-color .18s ease,box-shadow .18s ease}.exp-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.1)}.exp-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem;margin-bottom:.2rem}.exp-role{font-size:1.05rem;font-weight:700;color:#2d3748;margin:0;border-left:none;padding-left:0;line-height:1.3}.exp-period{font-size:.82rem;color:#a0aec0;font-feature-settings:"tnum"}.exp-company{font-size:.92rem;color:#36b9d8;margin:0 0 .6rem;font-weight:500}.exp-bullets{margin:.4rem 0 .7rem;padding-left:1.1rem;color:#4a5568;font-size:.9rem;line-height:1.7}.exp-bullets li{margin-bottom:.18rem}.exp-bullets li::marker{color:#61c8e0}.exp-skills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}.exp-skill{font-size:.75rem;color:#4a5568;background:#f0f4f5;padding:2px 9px;border-radius:999px;line-height:1.5}.skill-cluster{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}.skill-group{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1rem 1.2rem}.skill-group-name{font-size:.82rem;color:#36b9d8;margin:0 0 .6rem;text-transform:uppercase;letter-spacing:.06em;font-weight:600;border-left:none;padding-left:0}.skill-pills{display:flex;flex-wrap:wrap;gap:.35rem}.skill-pill{display:inline-block;font-size:.82rem;color:#2d3748;background:#f0f4f5;border:1px solid transparent;padding:3px 10px;border-radius:999px;line-height:1.55;transition:all .15s ease}.skill-pill.skill-primary{background:#d4f1f8;color:#1a8eb3;font-weight:500;border-color:rgba(97,200,224,.4)}.skill-pill.skill-interest{background:#fff;color:#718096;border-color:#e2e8f0;border-style:dashed}.cert-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.85rem}.cert-card{display:flex;align-items:center;gap:1rem;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1rem 1.2rem;transition:border-color .18s ease,box-shadow .18s ease}.cert-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.1)}.cert-icon{flex-shrink:0;width:44px;height:44px;border-radius:8px;background:#1a1a1a;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;font-family:helvetica neue,sans-serif;letter-spacing:0}.cert-icon-anthropic{background:#1a1a1a}.cert-icon-oracle{background:#c74634}.cert-icon-erp{background:#2b6cb0;font-size:.8rem;letter-spacing:.02em}.cert-body{flex:1;min-width:0}.cert-name{font-size:.95rem;font-weight:600;color:#2d3748;margin:0 0 .2rem;border-left:none;padding-left:0;line-height:1.4}.cert-issuer{font-size:.82rem;color:#718096;margin:0;font-feature-settings:"tnum"}.post-index-head-row{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:.8rem;text-align:left}.post-index-head-row .post-index-title{border-left:4px solid #61c8e0;padding:0 14px}.post-index-head-row .post-index-sub{margin-top:.3rem;margin-left:14px}.post-index-side-link{color:#36b9d8;text-decoration:none;font-size:.92rem;padding:6px 14px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;transition:all .18s ease;white-space:nowrap}.post-index-side-link:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none}@media(max-width:600px){.cat-grid{grid-template-columns:1fr}.post-content{padding:0 1rem}.tag-pill.tag-lg{font-size:16px}.tag-pill.tag-md{font-size:14px}.home-hero-name{font-size:2.1rem}.post-list-card{padding:1rem 1.1rem}.site-nav{padding:0 1rem;gap:.5rem}.site-nav-menu{gap:.1rem}.site-nav-link{padding:7px 8px;font-size:.85rem}.site-brand-name{font-size:.92rem}}.footer{background:0 0!important;border-top:1px solid #e2e8f0;margin-top:4rem;padding:1.6rem 1rem!important}.footer-content{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem}.footer-content p{margin:0;color:#718096;font-size:.85rem}.footer .social-links{display:inline-flex;gap:.6rem}.footer .social-link{color:#718096;text-decoration:none;font-size:.85rem;transition:color .15s ease}.footer .social-link:hover{color:#36b9d8;text-decoration:underline}.main-content{min-height:calc(100vh - 60px - 100px)}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>grep — 文字搜尋、正規表達式與 Log 排查命令列指南</h1><div class=post-meta><div class=post-info><time class=post-date>2026年11月01日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>18 分鐘閱讀</span></div><div class=post-categories><a href=/categories/cli class=category-link>CLI</a></div></div></header><div class=post-content><p><code>grep</code> 幾乎每天都在用，但多數時候只用到 <code>grep 字串 檔案</code>。真正讓排查變快的是那些旗標組合：<code>-i</code>、<code>-v</code>、<code>-o</code>、<code>-A</code>、<code>-r --include</code>、<code>-q</code>。本文整理這些進階但常用的功能。所有範例都對同一份範例資料實際跑過，輸出原樣貼在 <code>#</code> 註解裡；macOS 內建的 BSD grep 和 GNU grep 行為不同的地方會另外標註。</p><hr><h2 id=先確認你用的是哪個-grep>先確認你用的是哪個 grep</h2><p>同樣叫 <code>grep</code>，不同系統上的實作不一樣：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep --version
+</span></span><span class=line><span class=cl><span class=c1># grep (BSD grep, GNU compatible) 2.6.0-FreeBSD   &lt;- macOS 內建</span>
+</span></span><span class=line><span class=cl><span class=c1># grep (GNU grep) 3.12                             &lt;- Linux 發行版、Homebrew 的 ggrep</span>
+</span></span></code></pre></td></tr></table></div></div><table><thead><tr><th>環境</th><th>實作</th><th>備註</th></tr></thead><tbody><tr><td>macOS</td><td>BSD grep</td><td>號稱 GNU compatible，但<strong>沒有 <code>-P</code></strong>，部分長選項不支援</td></tr><tr><td>Ubuntu / Debian / RHEL</td><td>GNU grep</td><td>功能最完整</td></tr><tr><td>Alpine container</td><td>BusyBox grep</td><td>選項更少，寫 Dockerfile 腳本時要注意</td></tr></tbody></table><p>macOS 想用 GNU grep：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>brew install grep
+</span></span><span class=line><span class=cl>ggrep --version        <span class=c1># Homebrew 裝成 ggrep，不會蓋掉系統的 grep</span>
+</span></span></code></pre></td></tr></table></div></div><p>Homebrew 的安裝說明（caveats）寫得很清楚：所有指令都加了 <code>g</code> 前綴。想直接用 <code>grep</code> 這個名字呼叫 GNU 版，把 gnubin 目錄加到 PATH 最前面：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=s2>&#34;/opt/homebrew/opt/grep/libexec/gnubin:</span><span class=nv>$PATH</span><span class=s2>&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><p>不過這樣會讓本機腳本「剛好能動」、換到別台 Mac 卻壞掉。比較保險的做法是保留系統的 <code>grep</code>，需要 GNU 功能時明確打 <code>ggrep</code>。</p><p>原則：<strong>本機互動式查詢用什麼都行；寫進 CI 或伺服器腳本的，只用兩邊共通的語法</strong>。下面遇到差異都會標「GNU 限定」或「BSD 限定」。</p><hr><h2 id=範例資料>範例資料</h2><p>全文範例都對這兩個檔案操作。<code>app.log</code> 是簡化過的 Spring Boot log（含一段 stack trace），<code>access.log</code> 是 nginx access log：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>cat &gt; app.log <span class=s>&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:00:01.123  INFO [main] c.e.o.OrderApplication : Starting OrderApplication v1.4.2 using Java 21
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:00:04.567  INFO [main] c.e.o.OrderApplication : Started OrderApplication in 3.444 seconds
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:01:10.001 DEBUG [exec-1] c.e.o.web.OrderController : traceId=a1b2c3 GET /api/orders/1001
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:01:10.050  INFO [exec-1] c.e.o.service.OrderService : traceId=a1b2c3 order 1001 found, took 49ms
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:01:15.200  WARN [exec-2] c.e.o.client.PaymentClient : traceId=d4e5f6 payment API slow, took 2350ms
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed
+</span></span></span><span class=line><span class=cl><span class=s>java.lang.IllegalStateException: Payment declined
+</span></span></span><span class=line><span class=cl><span class=s>	at com.example.order.service.OrderService.create(OrderService.java:88)
+</span></span></span><span class=line><span class=cl><span class=s>	at com.example.order.web.OrderController.create(OrderController.java:42)
+</span></span></span><span class=line><span class=cl><span class=s>Caused by: java.net.SocketTimeoutException: Read timed out
+</span></span></span><span class=line><span class=cl><span class=s>	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:288)
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:01:20.000 DEBUG [exec-3] o.s.b.a.health.HealthEndpoint : GET /actuator/health UP
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:01:30.000  INFO [exec-4] c.e.o.service.OrderService : traceId=g7h8i9 user_id=7 order 1002 created, took 120ms
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:01:31.000 error [sched-1] c.e.o.job.SyncJob : sync timeout (timeout=30s), id=55
+</span></span></span><span class=line><span class=cl><span class=s>2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>cat &gt; access.log <span class=s>&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class=line><span class=cl><span class=s>10.0.0.1 - - [01/Nov/2026:09:01:10 +0800] &#34;GET /api/orders/1001 HTTP/1.1&#34; 200 512 &#34;-&#34; &#34;curl/8.7.1&#34;
+</span></span></span><span class=line><span class=cl><span class=s>10.0.0.2 - - [01/Nov/2026:09:01:15 +0800] &#34;POST /api/orders HTTP/1.1&#34; 500 87 &#34;-&#34; &#34;okhttp/4.12.0&#34;
+</span></span></span><span class=line><span class=cl><span class=s>10.0.0.1 - - [01/Nov/2026:09:01:20 +0800] &#34;GET /actuator/health HTTP/1.1&#34; 200 15 &#34;-&#34; &#34;kube-probe/1.31&#34;
+</span></span></span><span class=line><span class=cl><span class=s>10.0.0.3 - - [01/Nov/2026:09:01:30 +0800] &#34;POST /api/orders HTTP/1.1&#34; 201 256 &#34;-&#34; &#34;okhttp/4.12.0&#34;
+</span></span></span><span class=line><span class=cl><span class=s>10.0.0.10 - - [01/Nov/2026:09:01:35 +0800] &#34;GET /api/orders/9999 HTTP/1.1&#34; 404 64 &#34;-&#34; &#34;curl/8.7.1&#34;
+</span></span></span><span class=line><span class=cl><span class=s>10.0.0.2 - - [01/Nov/2026:09:01:40 +0800] &#34;GET /api/orders/1002 HTTP/1.1&#34; 502 157 &#34;-&#34; &#34;okhttp/4.12.0&#34;
+</span></span></span><span class=line><span class=cl><span class=s>10.0.0.1 - - [01/Nov/2026:09:01:50 +0800] &#34;GET /actuator/health HTTP/1.1&#34; 200 15 &#34;-&#34; &#34;kube-probe/1.31&#34;
+</span></span></span><span class=line><span class=cl><span class=s>10.0.0.3 - - [01/Nov/2026:09:02:00 +0800] &#34;GET /api/orders/1001 HTTP/1.1&#34; 200 512 &#34;-&#34; &#34;curl/8.7.1&#34;
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span></code></pre></td></tr></table></div></div><p>（stack trace 的 <code>at</code> 前面是 tab，跟真實 Java log 一樣。）</p><hr><h2 id=常用組合速查>常用組合速查</h2><table><thead><tr><th>指令</th><th>用途</th></tr></thead><tbody><tr><td><code>grep -i error app.log</code></td><td>不分大小寫</td></tr><tr><td><code>grep -v DEBUG app.log</code></td><td>反向：排除符合的行</td></tr><tr><td><code>grep -n ERROR app.log</code></td><td>顯示行號</td></tr><tr><td><code>grep -c ERROR app.log</code></td><td>計算符合的<strong>行數</strong></td></tr><tr><td><code>grep -oE 'took [0-9]+ms' app.log</code></td><td>只印出符合的片段</td></tr><tr><td><code>grep -w id app.log</code></td><td>只比對完整的字</td></tr><tr><td><code>grep -F '[ERROR]' app.log</code></td><td>當成純字串，不解析 regex</td></tr><tr><td><code>grep -E 'ERROR|WARN' app.log</code></td><td>多選一（ERE）</td></tr><tr><td><code>grep -A 4 -B 1 'Exception' app.log</code></td><td>顯示前後文</td></tr><tr><td><code>grep -rn --include='*.java' RestTemplate src/</code></td><td>遞迴搜尋 + 篩副檔名</td></tr><tr><td><code>grep -rl RestTemplate src/</code></td><td>只列出有符合的檔名</td></tr><tr><td><code>grep -q UP &lt;&lt;&lt; "$body" && echo ok</code></td><td>只看 exit code，不輸出</td></tr><tr><td><code>grep -m1 'Started' app.log</code></td><td>找到第一筆就停</td></tr><tr><td><code>tail -f app.log | grep --line-buffered ERROR</code></td><td>即時追蹤 log</td></tr><tr><td><code>ps aux | grep '[j]ava'</code></td><td>找 process 又不抓到 grep 自己</td></tr><tr><td><code>grep -vE '^[[:space:]]*(#|$)' nginx.conf</code></td><td>去掉註解和空行</td></tr></tbody></table><hr><h2 id=基本語法>基本語法</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep <span class=o>[</span>OPTIONS<span class=o>]</span> PATTERN <span class=o>[</span>FILE...<span class=o>]</span>
+</span></span><span class=line><span class=cl>grep <span class=o>[</span>OPTIONS<span class=o>]</span> -e PATTERN -e PATTERN ... <span class=o>[</span>FILE...<span class=o>]</span>
+</span></span><span class=line><span class=cl>grep <span class=o>[</span>OPTIONS<span class=o>]</span> -f PATTERN_FILE <span class=o>[</span>FILE...<span class=o>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>沒給檔案就讀 stdin，所以 <code>grep</code> 最常出現在 pipe 的中間。給多個檔案時，每一行前面會自動加上 <code>檔名:</code>；<code>-h</code> 關掉、<code>-H</code> 強制加上（單一檔案也加）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep ERROR app.log access.log
+</span></span><span class=line><span class=cl><span class=c1># app.log:2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed</span>
+</span></span><span class=line><span class=cl><span class=c1># app.log:2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -h POST app.log access.log
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.2 - - [01/Nov/2026:09:01:15 +0800] &#34;POST /api/orders HTTP/1.1&#34; 500 87 &#34;-&#34; &#34;okhttp/4.12.0&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.3 - - [01/Nov/2026:09:01:30 +0800] &#34;POST /api/orders HTTP/1.1&#34; 201 256 &#34;-&#34; &#34;okhttp/4.12.0&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=pattern-一律加單引號>Pattern 一律加單引號</h3><p>shell 會先處理 <code>*</code>、<code>?</code>、<code>[]</code>、<code>$</code>、<code>\</code>，再把結果交給 grep。zsh（macOS 預設 shell）更嚴格，glob 沒有對應的檔案就直接報錯：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep took.*ms app.log
+</span></span><span class=line><span class=cl><span class=c1># zsh: no matches found: took.*ms        &lt;- grep 根本沒被執行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep <span class=s1>&#39;took.*ms&#39;</span> app.log                  <span class=c1># 正確</span>
+</span></span></code></pre></td></tr></table></div></div><p>bash 預設會把沒對應到檔案的 glob 原樣傳下去，所以「剛好能動」，但哪天目錄裡出現一個符合的檔名就會出錯。養成單引號的習慣最保險。</p><h3 id=pattern-以---開頭>Pattern 以 <code>-</code> 開頭</h3><p><code>grep '-v'</code> 會被當成 <code>-v</code> 選項。用 <code>-e</code> 明確指定 pattern，或用 <code>--</code> 表示選項到此結束：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;-v is a flag&#39;</span> <span class=p>|</span> grep -e <span class=s1>&#39;-v&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># -v is a flag</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;-v is a flag&#39;</span> <span class=p>|</span> grep -- <span class=s1>&#39;-v&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># -v is a flag</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=比對控制>比對控制</h2><h3 id=-i不分大小寫><code>-i</code>：不分大小寫</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -i error app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:31.000 error [sched-1] c.e.o.job.SyncJob : sync timeout (timeout=30s), id=55</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502</span>
+</span></span></code></pre></td></tr></table></div></div><p>第二行是某個 logger 用了小寫 <code>error</code>，不加 <code>-i</code> 就會漏掉。搭配 <code>-o</code> 時，印出的是原文的大小寫：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -io error app.log
+</span></span><span class=line><span class=cl><span class=c1># ERROR</span>
+</span></span><span class=line><span class=cl><span class=c1># error</span>
+</span></span><span class=line><span class=cl><span class=c1># ERROR</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=-v反向排除雜訊><code>-v</code>：反向，排除雜訊</h3><p><code>-v</code> 印出<strong>不符合</strong>的行。多個條件用 <code>-e</code> 疊加，或用 ERE 的 <code>|</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -vE <span class=s1>&#39;DEBUG|^[[:space:]]+at &#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:00:01.123  INFO [main] c.e.o.OrderApplication : Starting OrderApplication v1.4.2 using Java 21</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:00:04.567  INFO [main] c.e.o.OrderApplication : Started OrderApplication in 3.444 seconds</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:10.050  INFO [exec-1] c.e.o.service.OrderService : traceId=a1b2c3 order 1001 found, took 49ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.200  WARN [exec-2] c.e.o.client.PaymentClient : traceId=d4e5f6 payment API slow, took 2350ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed</span>
+</span></span><span class=line><span class=cl><span class=c1># java.lang.IllegalStateException: Payment declined</span>
+</span></span><span class=line><span class=cl><span class=c1># Caused by: java.net.SocketTimeoutException: Read timed out</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:30.000  INFO [exec-4] c.e.o.service.OrderService : traceId=g7h8i9 user_id=7 order 1002 created, took 120ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:31.000 error [sched-1] c.e.o.job.SyncJob : sync timeout (timeout=30s), id=55</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502</span>
+</span></span></code></pre></td></tr></table></div></div><p>一口氣去掉 DEBUG 和 stack trace 的 <code>at ...</code> 行，只留下例外的標題。實務上常見的是「先抓、再排除」的 pipeline：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -E <span class=s1>&#39;ERROR|WARN&#39;</span> app.log <span class=p>|</span> grep -v PaymentClient
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=-w只比對完整的字><code>-w</code>：只比對完整的字</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep id app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:30.000  INFO [exec-4] c.e.o.service.OrderService : traceId=g7h8i9 user_id=7 order 1002 created, took 120ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:31.000 error [sched-1] c.e.o.job.SyncJob : sync timeout (timeout=30s), id=55</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -w id app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:31.000 error [sched-1] c.e.o.job.SyncJob : sync timeout (timeout=30s), id=55</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>-w</code> 要求符合的字串前後<strong>不是</strong>「字母、數字、底線」。<code>user_id</code> 裡的 <code>id</code> 前面是 <code>_</code>，所以不算一個獨立的字。（<code>traceId</code> 是大寫 <code>I</code>，本來就不符合。）</p><p>找 IP 時特別有用。<code>10.0.0.1</code> 會連 <code>10.0.0.10</code> 一起抓到：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -F <span class=s1>&#39;10.0.0.1&#39;</span> access.log
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.1 - - [01/Nov/2026:09:01:10 +0800] &#34;GET /api/orders/1001 HTTP/1.1&#34; 200 512 &#34;-&#34; &#34;curl/8.7.1&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.1 - - [01/Nov/2026:09:01:20 +0800] &#34;GET /actuator/health HTTP/1.1&#34; 200 15 &#34;-&#34; &#34;kube-probe/1.31&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.10 - - [01/Nov/2026:09:01:35 +0800] &#34;GET /api/orders/9999 HTTP/1.1&#34; 404 64 &#34;-&#34; &#34;curl/8.7.1&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.1 - - [01/Nov/2026:09:01:50 +0800] &#34;GET /actuator/health HTTP/1.1&#34; 200 15 &#34;-&#34; &#34;kube-probe/1.31&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -Fw <span class=s1>&#39;10.0.0.1&#39;</span> access.log
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.1 - - [01/Nov/2026:09:01:10 +0800] &#34;GET /api/orders/1001 HTTP/1.1&#34; 200 512 &#34;-&#34; &#34;curl/8.7.1&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.1 - - [01/Nov/2026:09:01:20 +0800] &#34;GET /actuator/health HTTP/1.1&#34; 200 15 &#34;-&#34; &#34;kube-probe/1.31&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.1 - - [01/Nov/2026:09:01:50 +0800] &#34;GET /actuator/health HTTP/1.1&#34; 200 15 &#34;-&#34; &#34;kube-probe/1.31&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=-x整行完全符合><code>-x</code>：整行完全符合</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -x <span class=s1>&#39;java.lang.IllegalStateException: Payment declined&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># java.lang.IllegalStateException: Payment declined</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=-f當成純字串><code>-F</code>：當成純字串</h3><p>pattern 裡有 <code>.</code>、<code>[</code>、<code>*</code>、<code>$</code> 這類 regex 特殊字元時，用 <code>-F</code> 就不必一個個跳脫。最經典的坑是 <code>[ERROR]</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep <span class=s1>&#39;[ERROR]&#39;</span> app.log <span class=p>|</span> head -3
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:00:01.123  INFO [main] c.e.o.OrderApplication : Starting OrderApplication v1.4.2 using Java 21</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:00:04.567  INFO [main] c.e.o.OrderApplication : Started OrderApplication in 3.444 seconds</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:10.001 DEBUG [exec-1] c.e.o.web.OrderController : traceId=a1b2c3 GET /api/orders/1001</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -F <span class=s1>&#39;[ERROR]&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502</span>
+</span></span></code></pre></td></tr></table></div></div><p>不加 <code>-F</code> 時，<code>[ERROR]</code> 是 bracket expression，意思是「E、R、O 任一個字元」，幾乎每一行都符合。同理，<code>grep '10.0.0.1'</code> 裡的 <code>.</code> 是「任意字元」，連 <code>10a0b0c1</code> 都會符合。</p><h3 id=-e---f多個-pattern><code>-e</code> / <code>-f</code>：多個 pattern</h3><p><code>-f</code> 從檔案讀 pattern，一行一個。適合把「要排除的雜訊」整理成檔案：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>printf</span> <span class=s1>&#39;DEBUG\nHealthEndpoint\n&#39;</span> &gt; noise.txt
+</span></span><span class=line><span class=cl>grep -F -f noise.txt app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:10.001 DEBUG [exec-1] c.e.o.web.OrderController : traceId=a1b2c3 GET /api/orders/1001</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:20.000 DEBUG [exec-3] o.s.b.a.health.HealthEndpoint : GET /actuator/health UP</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -v -F -f noise.txt app.log <span class=p>|</span> wc -l
+</span></span><span class=line><span class=cl><span class=c1>#       13</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>-Fxf</code> 加 <code>-v</code> 還能當集合運算用（交集、差集），比寫程式快：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>printf</span> <span class=s1>&#39;alice\nbob\ncarol\ndave\n&#39;</span> &gt; users.txt
+</span></span><span class=line><span class=cl><span class=nb>printf</span> <span class=s1>&#39;bob\ndave\nmallory\n&#39;</span> &gt; blocked.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -Fxf blocked.txt users.txt      <span class=c1># 交集：users 裡被封鎖的</span>
+</span></span><span class=line><span class=cl><span class=c1># bob</span>
+</span></span><span class=line><span class=cl><span class=c1># dave</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -vFxf blocked.txt users.txt     <span class=c1># 差集：users 裡沒被封鎖的</span>
+</span></span><span class=line><span class=cl><span class=c1># alice</span>
+</span></span><span class=line><span class=cl><span class=c1># carol</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=輸出控制>輸出控制</h2><h3 id=-n行號><code>-n</code>：行號</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -n -i timeout app.log
+</span></span><span class=line><span class=cl><span class=c1># 10:Caused by: java.net.SocketTimeoutException: Read timed out</span>
+</span></span><span class=line><span class=cl><span class=c1># 14:2026-11-01 09:01:31.000 error [sched-1] c.e.o.job.SyncJob : sync timeout (timeout=30s), id=55</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=-c計的是行數不是出現次數><code>-c</code>：計的是「行數」，不是出現次數</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -ci timeout app.log
+</span></span><span class=line><span class=cl><span class=c1># 2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -oi timeout app.log <span class=p>|</span> wc -l
+</span></span><span class=line><span class=cl><span class=c1>#        3</span>
+</span></span></code></pre></td></tr></table></div></div><p>第 14 行有兩個 <code>timeout</code>，但 <code>-c</code> 只算一行。要算<strong>出現次數</strong>，用 <code>-o</code> 把每個符合的片段各印成一行，再交給 <code>wc -l</code>。</p><p>順帶一提，<code>grep -c '' file</code> 等於 <code>wc -l</code>（空字串符合每一行）。</p><h3 id=-l---l只要檔名><code>-l</code> / <code>-L</code>：只要檔名</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -l ERROR app.log access.log     <span class=c1># 有符合的檔案</span>
+</span></span><span class=line><span class=cl><span class=c1># app.log</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -L ERROR app.log access.log     <span class=c1># 沒有符合的檔案</span>
+</span></span><span class=line><span class=cl><span class=c1># access.log</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=-o只印符合的片段><code>-o</code>：只印符合的片段</h3><p>搭配 <code>-E</code> 從 log 裡抽資料，是 <code>-o</code> 最常見的用法：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oE <span class=s1>&#39;took [0-9]+ms&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># took 49ms</span>
+</span></span><span class=line><span class=cl><span class=c1># took 2350ms</span>
+</span></span><span class=line><span class=cl><span class=c1># took 120ms</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -oE <span class=s1>&#39;traceId=[a-z0-9]+&#39;</span> app.log <span class=p>|</span> sort -u
+</span></span><span class=line><span class=cl><span class=c1># traceId=a1b2c3</span>
+</span></span><span class=line><span class=cl><span class=c1># traceId=d4e5f6</span>
+</span></span><span class=line><span class=cl><span class=c1># traceId=g7h8i9</span>
+</span></span><span class=line><span class=cl><span class=c1># traceId=j1k2l3</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=-m-num找到-n-筆就停><code>-m NUM</code>：找到 N 筆就停</h3><p>不必讀完整個檔案，對大檔很有感。例如抓 Spring Boot 啟動花了多久：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -m1 <span class=s1>&#39;Started .* in&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:00:04.567  INFO [main] c.e.o.OrderApplication : Started OrderApplication in 3.444 seconds</span>
+</span></span></code></pre></td></tr></table></div></div><p>在 131 MB 的檔案上實測，macOS BSD grep 加 <code>-m1</code> 只要 0.01 秒，不加則要 0.30 秒（見後面「效能」一節）。</p><h3 id=-q---s腳本用><code>-q</code> / <code>-s</code>：腳本用</h3><p><code>-q</code> 什麼都不印，只回傳 exit code，而且找到第一筆就結束。<code>-s</code> 不印「檔案不存在」這類錯誤訊息：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -q ERROR app.log<span class=p>;</span> <span class=nb>echo</span> <span class=s2>&#34;exit=</span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># exit=0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -q FATAL app.log<span class=p>;</span> <span class=nb>echo</span> <span class=s2>&#34;exit=</span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># exit=1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep ERROR nope.log<span class=p>;</span> <span class=nb>echo</span> <span class=s2>&#34;exit=</span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># grep: nope.log: No such file or directory</span>
+</span></span><span class=line><span class=cl><span class=c1># exit=2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -s ERROR nope.log<span class=p>;</span> <span class=nb>echo</span> <span class=s2>&#34;exit=</span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># exit=2</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=--color搭配-less><code>--color</code>：搭配 less</h3><p>輸出到 pipe 時，<code>--color=auto</code> 會自動關閉顏色。想在 <code>less</code> 裡保留標示，要強制開啟並讓 <code>less</code> 解讀色碼：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep --color<span class=o>=</span>always -n ERROR app.log <span class=p>|</span> less -R
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=前後文-a---b---c>前後文：<code>-A</code> / <code>-B</code> / <code>-C</code></h2><table><thead><tr><th>旗標</th><th>意思</th></tr></thead><tbody><tr><td><code>-A N</code></td><td>After：符合行之後 N 行</td></tr><tr><td><code>-B N</code></td><td>Before：符合行之前 N 行</td></tr><tr><td><code>-C N</code></td><td>Context：前後各 N 行</td></tr></tbody></table><p>抓 Java stack trace 最實用。ERROR 那行之後通常就是例外內容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -A <span class=m>4</span> <span class=s1>&#39;ERROR \[&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed</span>
+</span></span><span class=line><span class=cl><span class=c1># java.lang.IllegalStateException: Payment declined</span>
+</span></span><span class=line><span class=cl><span class=c1># 	at com.example.order.service.OrderService.create(OrderService.java:88)</span>
+</span></span><span class=line><span class=cl><span class=c1># 	at com.example.order.web.OrderController.create(OrderController.java:42)</span>
+</span></span><span class=line><span class=cl><span class=c1># Caused by: java.net.SocketTimeoutException: Read timed out</span>
+</span></span></code></pre></td></tr></table></div></div><p>pattern 寫成 <code>'ERROR \['</code> 是為了排除 <code>[ERROR]</code> 那行；<code>[</code> 在 regex 裡是特殊字元，要用 <code>\[</code> 跳脫。</p><p>想知道 <code>Caused by</code> 是哪一行丟出來的，往前看一行：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -B <span class=m>1</span> <span class=s1>&#39;Caused by&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># 	at com.example.order.web.OrderController.create(OrderController.java:42)</span>
+</span></span><span class=line><span class=cl><span class=c1># Caused by: java.net.SocketTimeoutException: Read timed out</span>
+</span></span></code></pre></td></tr></table></div></div><p>多個符合的區塊不相鄰時，grep 會在中間插入 <code>--</code> 分隔：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -A <span class=m>1</span> WARN app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.200  WARN [exec-2] c.e.o.client.PaymentClient : traceId=d4e5f6 payment API slow, took 2350ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed</span>
+</span></span><span class=line><span class=cl><span class=c1># --</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502</span>
+</span></span></code></pre></td></tr></table></div></div><p>GNU 限定：<code>--no-group-separator</code> 拿掉 <code>--</code>，<code>--group-separator=XXX</code> 換成自訂字串。BSD grep 不支援：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep --no-group-separator -A1 WARN app.log      <span class=c1># macOS</span>
+</span></span><span class=line><span class=cl><span class=c1># grep: unrecognized option `--no-group-separator&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>ggrep --group-separator<span class=o>=</span><span class=s1>&#39;=====&#39;</span> -A1 WARN app.log      <span class=c1># GNU grep</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.200  WARN [exec-2] c.e.o.client.PaymentClient : traceId=d4e5f6 payment API slow, took 2350ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed</span>
+</span></span><span class=line><span class=cl><span class=c1># =====</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502</span>
+</span></span></code></pre></td></tr></table></div></div><p>stack trace 長度不固定時，<code>-A</code> 很難抓得剛好。這種「從某行開始，到下一個時間戳記為止」的需求交給 <a href=/post/CLI/awk/>awk</a> 比較適合。</p><hr><h2 id=正規表達式bre--ere--pcre>正規表達式：BRE / ERE / PCRE</h2><p>grep 支援三種 regex 語法：</p><table><thead><tr><th>旗標</th><th>語法</th><th>說明</th></tr></thead><tbody><tr><td>（預設）<code>-G</code></td><td>BRE（Basic）</td><td><code>+ ? | ( ) { }</code> 要加反斜線才有特殊意義</td></tr><tr><td><code>-E</code></td><td>ERE（Extended）</td><td>上述符號直接有特殊意義，<strong>建議預設用這個</strong></td></tr><tr><td><code>-P</code></td><td>PCRE（Perl）</td><td>支援 <code>\d</code>、lookaround、非貪婪；<strong>GNU 限定</strong></td></tr></tbody></table><p><code>egrep</code> 等於 <code>grep -E</code>、<code>fgrep</code> 等於 <code>grep -F</code>，但新版 GNU grep 已經會對這兩個指令印出過時警告，直接用 <code>-E</code> / <code>-F</code> 就好：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>gegrep -c ERROR app.log         <span class=c1># Homebrew 安裝的 GNU egrep</span>
+</span></span><span class=line><span class=cl><span class=c1># gegrep: warning: gegrep is obsolescent; using ggrep -E</span>
+</span></span><span class=line><span class=cl><span class=c1># 2</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=bre-vs-ere-對照>BRE vs ERE 對照</h3><table><thead><tr><th>意思</th><th>BRE</th><th>ERE</th></tr></thead><tbody><tr><td>一次以上</td><td><code>\+</code></td><td><code>+</code></td></tr><tr><td>零或一次</td><td><code>\?</code></td><td><code>?</code></td></tr><tr><td>多選一</td><td><code>\|</code></td><td><code>|</code></td></tr><tr><td>群組</td><td><code>\( \)</code></td><td><code>( )</code></td></tr><tr><td>次數</td><td><code>\{2,4\}</code></td><td><code>{2,4}</code></td></tr></tbody></table><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep <span class=s1>&#39;took [0-9]\+ms&#39;</span> app.log         <span class=c1># BRE</span>
+</span></span><span class=line><span class=cl>grep -E <span class=s1>&#39;took [0-9]+ms&#39;</span> app.log       <span class=c1># ERE，結果相同</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep <span class=s1>&#39;ERROR\|WARN&#39;</span> app.log            <span class=c1># BRE</span>
+</span></span><span class=line><span class=cl>grep -E <span class=s1>&#39;ERROR|WARN&#39;</span> app.log          <span class=c1># ERE，結果相同</span>
+</span></span></code></pre></td></tr></table></div></div><p>BRE 的 <code>\+</code>、<code>\?</code>、<code>\|</code> 其實是 GNU 擴充，POSIX 標準沒有定義。macOS 的 BSD grep 實測也支援，但要可攜就直接用 <code>-E</code>。</p><h3 id=字元類別與詞界>字元類別與詞界</h3><table><thead><tr><th>寫法</th><th>意思</th><th>可攜性</th></tr></thead><tbody><tr><td><code>[0-9]</code>、<code>[[:digit:]]</code></td><td>數字</td><td>POSIX，到處都能用</td></tr><tr><td><code>[[:alpha:]]</code>、<code>[[:alnum:]]</code>、<code>[[:upper:]]</code></td><td>字母、字母數字、大寫</td><td>POSIX</td></tr><tr><td><code>[[:space:]]</code></td><td>空白（含 tab）</td><td>POSIX</td></tr><tr><td><code>\w</code>、<code>\s</code></td><td>字元（字母數字底線）、空白</td><td>GNU 擴充；macOS BSD grep 實測支援</td></tr><tr><td><code>\b</code>、<code>\&lt;</code>、<code>\></code></td><td>詞界、字首、字尾</td><td>GNU 擴充；macOS BSD grep 實測支援</td></tr></tbody></table><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oE <span class=s1>&#39;[[:digit:]]{4,}ms&#39;</span> app.log        <span class=c1># 四位數以上的耗時</span>
+</span></span><span class=line><span class=cl><span class=c1># 2350ms</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -oE <span class=s1>&#39;traceId=\w+&#39;</span> app.log <span class=p>|</span> head -2
+</span></span><span class=line><span class=cl><span class=c1># traceId=a1b2c3</span>
+</span></span><span class=line><span class=cl><span class=c1># traceId=a1b2c3</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -E <span class=s1>&#39;\bid\b&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:31.000 error [sched-1] c.e.o.job.SyncJob : sync timeout (timeout=30s), id=55</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=backreference找重複>Backreference：找重複</h3><p><code>\1</code> 代表「第一個群組實際比對到的內容」。抓連續重複的字：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;retry retry failed&#39;</span> <span class=p>|</span> grep -oE <span class=s1>&#39;\b([a-z]+) \1\b&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># retry retry</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=貪婪比對>貪婪比對</h3><p><code>*</code> 和 <code>+</code> 會盡量吃多。想抓 <code>[...]</code> 的內容時，<code>.*</code> 會從第一個 <code>[</code> 一路吃到最後一個 <code>]</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oE <span class=s1>&#39;\[.*\]&#39;</span> app.log <span class=p>|</span> tail -1
+</span></span><span class=line><span class=cl><span class=c1># [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -oE <span class=s1>&#39;\[[^]]*\]&#39;</span> app.log <span class=p>|</span> tail -2       <span class=c1># 可攜寫法：中間不能出現 ]</span>
+</span></span><span class=line><span class=cl><span class=c1># [exec-5]</span>
+</span></span><span class=line><span class=cl><span class=c1># [ERROR]</span>
+</span></span></code></pre></td></tr></table></div></div><p>PCRE 可以直接寫非貪婪的 <code>.*?</code>，見下一節。</p><h3 id=-ppcregnu-限定><code>-P</code>：PCRE（GNU 限定）</h3><p>PCRE 最有用的是 lookaround：條件要符合，但不算進輸出。從 <code>took 2350ms</code> 只取出數字：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>ggrep -oP <span class=s1>&#39;(?&lt;=took )\d+(?=ms)&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># 49</span>
+</span></span><span class=line><span class=cl><span class=c1># 2350</span>
+</span></span><span class=line><span class=cl><span class=c1># 120</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>\K</code> 的意思是「前面比對到的都丟掉」，比 lookbehind 好寫（lookbehind 要求固定長度，<code>\K</code> 沒有這個限制）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>ggrep -oP <span class=s1>&#39;traceId=\K\w+&#39;</span> app.log <span class=p>|</span> sort -u
+</span></span><span class=line><span class=cl><span class=c1># a1b2c3</span>
+</span></span><span class=line><span class=cl><span class=c1># d4e5f6</span>
+</span></span><span class=line><span class=cl><span class=c1># g7h8i9</span>
+</span></span><span class=line><span class=cl><span class=c1># j1k2l3</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>ggrep -oP <span class=s1>&#39;\[.*?\]&#39;</span> app.log <span class=p>|</span> tail -2        <span class=c1># 非貪婪</span>
+</span></span><span class=line><span class=cl><span class=c1># [exec-5]</span>
+</span></span><span class=line><span class=cl><span class=c1># [ERROR]</span>
+</span></span></code></pre></td></tr></table></div></div><p>macOS 內建的 grep 沒有 <code>-P</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oP <span class=s1>&#39;(?&lt;=took )\d+(?=ms)&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># grep: invalid option -- P</span>
+</span></span></code></pre></td></tr></table></div></div><p>在 macOS 上的替代做法：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 1. ERE 先抽出片段，再抽一次數字（兩邊都能跑，最可攜）</span>
+</span></span><span class=line><span class=cl>grep -oE <span class=s1>&#39;took [0-9]+ms&#39;</span> app.log <span class=p>|</span> grep -oE <span class=s1>&#39;[0-9]+&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># 49</span>
+</span></span><span class=line><span class=cl><span class=c1># 2350</span>
+</span></span><span class=line><span class=cl><span class=c1># 120</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 2. perl（macOS 內建）</span>
+</span></span><span class=line><span class=cl>perl -nle <span class=s1>&#39;print $1 if /took (\d+)ms/&#39;</span> app.log
+</span></span><span class=line><span class=cl><span class=c1># 49</span>
+</span></span><span class=line><span class=cl><span class=c1># 2350</span>
+</span></span><span class=line><span class=cl><span class=c1># 120</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 3. 安裝 GNU grep 後用 ggrep -P</span>
+</span></span><span class=line><span class=cl><span class=c1># 4. ripgrep：rg -oP &#39;(?&lt;=took )\d+(?=ms)&#39; app.log</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=陷阱d-在-mac-能用上了伺服器就壞>陷阱：<code>\d</code> 在 Mac 能用，上了伺服器就壞</h3><p>這個坑剛好跟 <code>-P</code> 相反。macOS 的 BSD grep 在 <code>-E</code> 模式下也認得 <code>\d</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oE <span class=s1>&#39;\d+ms&#39;</span> app.log         <span class=c1># macOS BSD grep</span>
+</span></span><span class=line><span class=cl><span class=c1># 49ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 2350ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 120ms</span>
+</span></span></code></pre></td></tr></table></div></div><p>同一行指令丟到 GNU grep：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>ggrep -oE <span class=s1>&#39;\d+ms&#39;</span> app.log<span class=p>;</span> <span class=nb>echo</span> <span class=s2>&#34;exit=</span><span class=nv>$?</span><span class=s2>&#34;</span>    <span class=c1># GNU grep 3.12</span>
+</span></span><span class=line><span class=cl><span class=c1># ggrep: warning: stray \ before d</span>
+</span></span><span class=line><span class=cl><span class=c1># exit=1</span>
+</span></span></code></pre></td></tr></table></div></div><p>GNU grep 3.8 起會對這種沒有定義的跳脫印出警告，而且什麼都比對不到。</p><p>本機測試通過、丟上 Linux 就失效，非常難查。<strong>ERE 裡一律用 <code>[0-9]</code></strong>，<code>\d</code> 只在 <code>-P</code> 裡用。</p><hr><h2 id=遞迴搜尋與檔案篩選>遞迴搜尋與檔案篩選</h2><p>範例專案結構：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>proj/
+</span></span><span class=line><span class=cl>├── .git/ORIG                         RestTemplate in git
+</span></span><span class=line><span class=cl>├── application.yml                   resttemplate: enabled
+</span></span><span class=line><span class=cl>├── src/main/java/com/example/A.java  class A { RestTemplate rt; }
+</span></span><span class=line><span class=cl>├── src/main/java/com/example/B.java  class B { WebClient wc; }
+</span></span><span class=line><span class=cl>└── target/
+</span></span><span class=line><span class=cl>    ├── A.class.txt                   RestTemplate cached
+</span></span><span class=line><span class=cl>    └── blob.bin                      （二進位檔，內含 RestTemplate）
+</span></span></code></pre></td></tr></table></div></div><h3 id=-r-加上篩選><code>-r</code> 加上篩選</h3><p>不篩選的話，<code>.git</code>、<code>target</code> 全部會被翻出來：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -rn RestTemplate proj
+</span></span><span class=line><span class=cl><span class=c1># proj/target/A.class.txt:1:RestTemplate cached</span>
+</span></span><span class=line><span class=cl><span class=c1># Binary file proj/target/blob.bin matches</span>
+</span></span><span class=line><span class=cl><span class=c1># proj/.git/ORIG:1:RestTemplate in git</span>
+</span></span><span class=line><span class=cl><span class=c1># proj/src/main/java/com/example/A.java:1:class A { RestTemplate rt; }</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>--include</code> 限定檔名、<code>--exclude</code> 排除檔名、<code>--exclude-dir</code> 排除目錄：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -rn --include<span class=o>=</span><span class=s1>&#39;*.java&#39;</span> RestTemplate proj
+</span></span><span class=line><span class=cl><span class=c1># proj/src/main/java/com/example/A.java:1:class A { RestTemplate rt; }</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -rn --exclude-dir<span class=o>={</span>target,.git<span class=o>}</span> RestTemplate proj
+</span></span><span class=line><span class=cl><span class=c1># proj/src/main/java/com/example/A.java:1:class A { RestTemplate rt; }</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -rln --exclude-dir<span class=o>={</span>target,.git<span class=o>}</span> -i resttemplate proj
+</span></span><span class=line><span class=cl><span class=c1># proj/application.yml</span>
+</span></span><span class=line><span class=cl><span class=c1># proj/src/main/java/com/example/A.java</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>{target,.git}</code> 是 <strong>shell 的花括號展開</strong>，實際傳給 grep 的是 <code>--exclude-dir=target --exclude-dir=.git</code>。bash 和 zsh 都支援，但 POSIX <code>sh</code> 不支援，寫在 <code>#!/bin/sh</code> 腳本裡要拆開寫。<code>--include='*.java'</code> 一定要加引號，否則 shell 會先展開成目前目錄下的 <code>.java</code> 檔。</p><h3 id=二進位檔-i---a>二進位檔：<code>-I</code> / <code>-a</code></h3><p>grep 判斷是二進位檔時，只會印 <code>Binary file ... matches</code>。<code>-I</code> 直接跳過二進位檔，<code>-a</code> 則強制當成文字處理：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -rI --exclude-dir<span class=o>=</span>.git RestTemplate proj
+</span></span><span class=line><span class=cl><span class=c1># proj/target/A.class.txt:RestTemplate cached</span>
+</span></span><span class=line><span class=cl><span class=c1># proj/src/main/java/com/example/A.java:class A { RestTemplate rt; }</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=不給路徑時>不給路徑時</h3><p><code>grep -r pattern</code> 沒給路徑時，BSD 和 GNU 都會搜目前目錄，但輸出的路徑格式不同：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>cd</span> proj <span class=o>&amp;&amp;</span> grep -r WebClient           <span class=c1># macOS BSD grep</span>
+</span></span><span class=line><span class=cl><span class=c1># ./src/main/java/com/example/B.java:class B { WebClient wc; }</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>cd</span> proj <span class=o>&amp;&amp;</span> ggrep -r WebClient          <span class=c1># GNU grep</span>
+</span></span><span class=line><span class=cl><span class=c1># src/main/java/com/example/B.java:class B { WebClient wc; }</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=-r-vs--rsymbolic-link><code>-r</code> vs <code>-R</code>：symbolic link</h3><p>範例：<code>rtest/</code> 底下有一個一般檔案 <code>real.txt</code>，以及一個指向 <code>proj/src</code> 的 symlink <code>src-link</code>。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>ggrep -r RestTemplate rtest                 <span class=c1># GNU：遞迴時不跟隨 symlink</span>
+</span></span><span class=line><span class=cl><span class=c1># rtest/real.txt:RestTemplate here</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>ggrep -R RestTemplate rtest                 <span class=c1># GNU：-R 跟隨所有 symlink</span>
+</span></span><span class=line><span class=cl><span class=c1># rtest/real.txt:RestTemplate here</span>
+</span></span><span class=line><span class=cl><span class=c1># rtest/src-link/main/java/com/example/A.java:class A { RestTemplate rt; }</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>ggrep -r RestTemplate rtest/src-link        <span class=c1># GNU：命令列直接給的 symlink，-r 也會跟</span>
+</span></span><span class=line><span class=cl><span class=c1># rtest/src-link/main/java/com/example/A.java:class A { RestTemplate rt; }</span>
+</span></span></code></pre></td></tr></table></div></div><p>macOS 的 BSD grep 不一樣：<code>-r</code> 和 <code>-R</code> 都不跟隨 symlink，連命令列直接給的也不跟，要再加 BSD 限定的 <code>-S</code> 才會跟：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -R RestTemplate rtest/src-link<span class=p>;</span> <span class=nb>echo</span> <span class=s2>&#34;exit=</span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># exit=1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -RS RestTemplate rtest/src-link
+</span></span><span class=line><span class=cl><span class=c1># rtest/src-link/main/java/com/example/A.java:class A { RestTemplate rt; }</span>
+</span></span></code></pre></td></tr></table></div></div><table><thead><tr><th></th><th>遞迴途中遇到的 symlink</th><th>命令列直接給的 symlink</th></tr></thead><tbody><tr><td>GNU <code>-r</code></td><td>不跟隨</td><td>跟隨</td></tr><tr><td>GNU <code>-R</code></td><td>跟隨</td><td>跟隨</td></tr><tr><td>BSD <code>-r</code> / <code>-R</code></td><td>不跟隨</td><td>不跟隨</td></tr><tr><td>BSD <code>-R -S</code></td><td>跟隨</td><td>跟隨</td></tr></tbody></table><p>專案裡的 <code>node_modules</code>、monorepo 的 workspace 常常是 symlink，搜不到東西時先想到這一點。</p><h3 id=搭配-xargs--sed-批次修改>搭配 xargs / sed 批次修改</h3><p>找出檔案再交給 <code>sed</code> 取代，是重構時的常用招。檔名可能有空白，所以用 <code>--null</code> 讓檔名以 <code>\0</code> 分隔，再交給 <code>xargs -0</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -rl --null --include<span class=o>=</span><span class=s1>&#39;*.java&#39;</span> RestTemplate src <span class=se>\
+</span></span></span><span class=line><span class=cl>  <span class=p>|</span> xargs -0 sed -i <span class=s1>&#39;&#39;</span> <span class=s1>&#39;s/RestTemplate/RestClient/g&#39;</span>     <span class=c1># macOS sed</span>
+</span></span><span class=line><span class=cl><span class=c1># Linux 的 GNU sed 寫 sed -i &#39;s/.../.../g&#39;（-i 後面不接空字串）</span>
+</span></span></code></pre></td></tr></table></div></div><p>注意 <code>-Z</code> 在兩邊<strong>意思不同</strong>：GNU 的 <code>-Z</code> 是 <code>--null</code>，BSD 的 <code>-Z</code> 卻是「解壓縮後再搜尋」（等於 <code>zgrep</code>）。實測 macOS：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -l --null ERROR app.log access.log <span class=p>|</span> od -c <span class=p>|</span> head -1
+</span></span><span class=line><span class=cl><span class=c1># 0000000    a   p   p   .   l   o   g  \0           &lt;- 以 \0 結尾</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -lZ ERROR app.log access.log <span class=p>|</span> od -c <span class=p>|</span> head -1
+</span></span><span class=line><span class=cl><span class=c1># 0000000    a   p   p   .   l   o   g  \n           &lt;- 還是換行，-Z 根本不是 --null</span>
+</span></span></code></pre></td></tr></table></div></div><p>可攜寫法：<strong>一律寫 <code>--null</code></strong>。<code>xargs</code> 與 <code>sed</code> 的細節見 <a href=/post/CLI/xargs/>xargs</a> 和 <a href=/post/CLI/sed/>sed</a>。</p><h3 id=git-grep在-git-repo-裡更好用><code>git grep</code>：在 Git repo 裡更好用</h3><p>只搜 Git 追蹤中的檔案，自動略過 <code>.git</code>、build 產物和 <code>.gitignore</code> 裡的東西，速度也快：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>git grep -n baseURL -- <span class=s1>&#39;*.yaml&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># hugo.yaml:1:baseURL: https://xinqilin.github.io/</span>
+</span></span></code></pre></td></tr></table></div></div><p>需要依修改時間、檔案大小篩選時，改用 <a href=/post/CLI/find/>find</a> 搭配 grep：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>find . -name <span class=s1>&#39;*.log&#39;</span> -mtime -1 -exec grep -l ERROR <span class=o>{}</span> +
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=exit-code-與-shell-腳本>Exit code 與 shell 腳本</h2><table><thead><tr><th>Exit code</th><th>意思</th></tr></thead><tbody><tr><td>0</td><td>有找到</td></tr><tr><td>1</td><td>沒找到</td></tr><tr><td>2</td><td>發生錯誤（檔案不存在、regex 語法錯誤等）</td></tr></tbody></table><p><code>if</code> 判斷直接吃 exit code，搭配 <code>-q</code> 最乾淨：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>if</span> grep -q FATAL app.log<span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;found FATAL&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;not found, script continues&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=c1># not found, script continues</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=set--euo-pipefail-下的陷阱><code>set -euo pipefail</code> 下的陷阱</h3><p>「沒找到」也是非 0 的 exit code。在開了 <code>set -e</code> 和 <code>pipefail</code> 的腳本裡，這會直接讓腳本中斷，而且<strong>沒有任何錯誤訊息</strong>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>set</span> -euo pipefail
+</span></span><span class=line><span class=cl><span class=nv>n</span><span class=o>=</span><span class=k>$(</span>grep FATAL app.log <span class=p>|</span> wc -l<span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;count=</span><span class=nv>$n</span><span class=s2>&#34;</span>          <span class=c1># 永遠不會執行到，腳本已經以 exit 1 結束</span>
+</span></span></code></pre></td></tr></table></div></div><p>「找不到是正常情況」時，要明確吞掉 exit code：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>set</span> -euo pipefail
+</span></span><span class=line><span class=cl><span class=nv>n</span><span class=o>=</span><span class=k>$(</span>grep -c FATAL app.log <span class=o>||</span> <span class=nb>true</span><span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;count=</span><span class=nv>$n</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># count=0</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>-c</code> 找不到時會印出 <code>0</code>，但 exit code 仍然是 1：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -c FATAL app.log<span class=p>;</span> <span class=nb>echo</span> <span class=s2>&#34;exit=</span><span class=nv>$?</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 0</span>
+</span></span><span class=line><span class=cl><span class=c1># exit=1</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=後端實戰>後端實戰</h2><h3 id=用-traceid-串起一個請求>用 traceId 串起一個請求</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep <span class=nv>traceId</span><span class=o>=</span>d4e5f6 app.log
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.200  WARN [exec-2] c.e.o.client.PaymentClient : traceId=d4e5f6 payment API slow, took 2350ms</span>
+</span></span><span class=line><span class=cl><span class=c1># 2026-11-01 09:01:15.210 ERROR [exec-2] c.e.o.service.OrderService : traceId=d4e5f6 create order failed</span>
+</span></span></code></pre></td></tr></table></div></div><p>先用 ERROR 找到 traceId，再用 traceId 撈出同一個請求的所有 log，是排查分散式系統問題最快的路徑。</p><h3 id=找慢請求>找慢請求</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oE <span class=s1>&#39;took [0-9]+ms&#39;</span> app.log <span class=p>|</span> grep -oE <span class=s1>&#39;[0-9]+&#39;</span> <span class=p>|</span> sort -n <span class=p>|</span> tail -1
+</span></span><span class=line><span class=cl><span class=c1># 2350</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -oE <span class=s1>&#39;took [0-9]+ms&#39;</span> app.log <span class=p>|</span> grep -oE <span class=s1>&#39;[0-9]+&#39;</span> <span class=p>|</span> awk <span class=s1>&#39;$1 &gt; 100&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># 2350</span>
+</span></span><span class=line><span class=cl><span class=c1># 120</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=access-log-統計>access log 統計</h3><p>狀態碼分布：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oE <span class=s1>&#39;&#34; [0-9]{3} &#39;</span> access.log <span class=p>|</span> sort <span class=p>|</span> uniq -c <span class=p>|</span> sort -nr
+</span></span><span class=line><span class=cl><span class=c1>#    4 &#34; 200</span>
+</span></span><span class=line><span class=cl><span class=c1>#    1 &#34; 502</span>
+</span></span><span class=line><span class=cl><span class=c1>#    1 &#34; 500</span>
+</span></span><span class=line><span class=cl><span class=c1>#    1 &#34; 404</span>
+</span></span><span class=line><span class=cl><span class=c1>#    1 &#34; 201</span>
+</span></span></code></pre></td></tr></table></div></div><p>pattern 前面的 <code>" </code>是為了錨定在 <code>"GET ... HTTP/1.1"</code> 之後，避免抓到 body 大小欄位的數字。只看 5xx：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -E <span class=s1>&#39;&#34; 5[0-9]{2} &#39;</span> access.log
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.2 - - [01/Nov/2026:09:01:15 +0800] &#34;POST /api/orders HTTP/1.1&#34; 500 87 &#34;-&#34; &#34;okhttp/4.12.0&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># 10.0.0.2 - - [01/Nov/2026:09:01:40 +0800] &#34;GET /api/orders/1002 HTTP/1.1&#34; 502 157 &#34;-&#34; &#34;okhttp/4.12.0&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><p>每分鐘請求數（時間戳記截到分鐘再 <code>uniq -c</code>）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oE <span class=s1>&#39;[0-9]{2}/[A-Za-z]{3}/[0-9]{4}:[0-9]{2}:[0-9]{2}&#39;</span> access.log <span class=p>|</span> uniq -c
+</span></span><span class=line><span class=cl><span class=c1>#    7 01/Nov/2026:09:01</span>
+</span></span><span class=line><span class=cl><span class=c1>#    1 01/Nov/2026:09:02</span>
+</span></span></code></pre></td></tr></table></div></div><p>最常被呼叫的 endpoint：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -oE <span class=s1>&#39;&#34;[A-Z]+ [^ ]+&#39;</span> access.log <span class=p>|</span> sort <span class=p>|</span> uniq -c <span class=p>|</span> sort -nr
+</span></span><span class=line><span class=cl><span class=c1>#    2 &#34;POST /api/orders</span>
+</span></span><span class=line><span class=cl><span class=c1>#    2 &#34;GET /api/orders/1001</span>
+</span></span><span class=line><span class=cl><span class=c1>#    2 &#34;GET /actuator/health</span>
+</span></span><span class=line><span class=cl><span class=c1>#    1 &#34;GET /api/orders/9999</span>
+</span></span><span class=line><span class=cl><span class=c1>#    1 &#34;GET /api/orders/1002</span>
+</span></span></code></pre></td></tr></table></div></div><p>需要依欄位做更複雜的統計時，交給 <a href=/post/CLI/awk/>awk</a>。</p><h3 id=即時追蹤--line-buffered>即時追蹤：<code>--line-buffered</code></h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>tail -f app.log <span class=p>|</span> grep --line-buffered ERROR <span class=p>|</span> tee errors.log
+</span></span></code></pre></td></tr></table></div></div><p>grep 的輸出接到 pipe 時會改成區塊緩衝（累積到一定大小才輸出），下游的 <code>tee</code> 可能好幾分鐘都看不到東西。<code>--line-buffered</code> 強制每一行就輸出一次。如果 grep 是 pipeline 的最後一個（直接輸出到終端機），就不需要加。</p><h3 id=搜尋壓縮過的-log>搜尋壓縮過的 log</h3><p>被 logrotate 壓縮的 <code>.gz</code> 直接 grep 是搜不到的：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>gzip -c app.log &gt; app.log.1.gz
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -c <span class=s1>&#39;Payment declined&#39;</span> app.log.1.gz
+</span></span><span class=line><span class=cl><span class=c1># 0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>zgrep -c ERROR app.log.1.gz
+</span></span><span class=line><span class=cl><span class=c1># 2</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=找-process-又不抓到-grep-自己>找 process 又不抓到 grep 自己</h3><p><code>ps aux | grep java</code> 的結果裡會出現 <code>grep java</code> 這個 process 本身，因為它的命令列也包含 <code>java</code>。把 pattern 改成 <code>[j]ava</code> 就能避開：regex <code>[j]ava</code> 會符合 <code>java</code>，但 grep 自己的命令列是 <code>grep [j]ava</code>，字面上的 <code>[j]ava</code> 並不符合 regex <code>[j]ava</code>。用模擬的 <code>ps</code> 輸出示範：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>printf</span> <span class=s1>&#39;bill  123  java -jar order.jar\nbill  456  grep java\n&#39;</span> <span class=p>|</span> grep <span class=s1>&#39;java&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># bill  123  java -jar order.jar</span>
+</span></span><span class=line><span class=cl><span class=c1># bill  456  grep java                &lt;- 抓到自己</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>printf</span> <span class=s1>&#39;bill  123  java -jar order.jar\nbill  456  grep [j]ava\n&#39;</span> <span class=p>|</span> grep <span class=s1>&#39;[j]ava&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># bill  123  java -jar order.jar</span>
+</span></span></code></pre></td></tr></table></div></div><p>不過更直接的做法是用 <code>pgrep -fl java</code>，它本來就會排除自己。</p><h3 id=清掉設定檔的註解與空行>清掉設定檔的註解與空行</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>printf</span> <span class=s1>&#39;# nginx\n\nworker_processes 4;\n  # comment\nevents {\n    worker_connections 1024;\n}\n&#39;</span> &gt; nginx.conf
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>grep -vE <span class=s1>&#39;^[[:space:]]*(#|$)&#39;</span> nginx.conf
+</span></span><span class=line><span class=cl><span class=c1># worker_processes 4;</span>
+</span></span><span class=line><span class=cl><span class=c1># events {</span>
+</span></span><span class=line><span class=cl><span class=c1>#     worker_connections 1024;</span>
+</span></span><span class=line><span class=cl><span class=c1># }</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>^[[:space:]]*(#|$)</code> 的意思是「行首可以有空白，接著是 <code>#</code>（註解）或直接結束（空行）」，再用 <code>-v</code> 反向排除。</p><h3 id=容器與-kubernetes>容器與 Kubernetes</h3><p>以下指令需要對應的環境，僅列寫法：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl get pods -A <span class=p>|</span> grep -v Running              <span class=c1># 找出不健康的 pod</span>
+</span></span><span class=line><span class=cl>kubectl logs deploy/order-service --since<span class=o>=</span>10m <span class=p>|</span> grep -E <span class=s1>&#39;ERROR|WARN&#39;</span>
+</span></span><span class=line><span class=cl>docker logs order-service 2&gt;<span class=p>&amp;</span><span class=m>1</span> <span class=p>|</span> grep ERROR        <span class=c1># 容器寫到 stderr 的 log，docker logs 也從 stderr 輸出，要加 2&gt;&amp;1</span>
+</span></span><span class=line><span class=cl>env <span class=p>|</span> grep -i proxy                                <span class=c1># 確認 proxy 環境變數</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=效能>效能</h2><p>用範例 <code>app.log</code> 複製成 131 MB（1,474,560 行）的檔案，在同一台 Mac（Apple Silicon）上比較 macOS BSD grep 和 GNU grep 3.12，各跑兩次，取較穩定的數字：</p><table><thead><tr><th>指令</th><th>BSD grep</th><th>GNU grep</th></tr></thead><tbody><tr><td><code>grep -c 'Payment declined'</code></td><td>0.30s</td><td>0.06s</td></tr><tr><td><code>grep -cF 'Payment declined'</code></td><td>0.30s</td><td>0.06s</td></tr><tr><td><code>grep -ci 'payment declined'</code></td><td>2.62s</td><td>0.13s</td></tr><tr><td><code>LC_ALL=C grep -ci 'payment declined'</code></td><td>2.54s</td><td>0.06s</td></tr><tr><td><code>grep -cE 'took [0-9]+ms'</code></td><td>0.74s</td><td>0.13s</td></tr><tr><td><code>grep -m1 'Payment declined'</code></td><td>0.01s</td><td>0.01s</td></tr></tbody></table><p>觀察：</p><ul><li>GNU grep 整體快了約 5 倍。在 Mac 上要翻 GB 等級的 log，裝 <code>ggrep</code> 很值得。</li><li><code>-i</code> 在 BSD grep 上慢了將近 9 倍，在 GNU grep 上慢了約 2 倍。</li><li><code>LC_ALL=C</code> 在 GNU grep 上能把 <code>-i</code> 的額外成本抵銷（UTF-8 locale 下的大小寫轉換比較貴），在 BSD grep 上則幾乎沒有效果。只在資料確定是 ASCII 時使用，否則中文等多位元組字元的比對結果可能不同。</li><li><code>-F</code> 對純字串沒有差別，兩邊對字面字串本來就有最佳化；<code>-F</code> 的價值在「不必跳脫特殊字元」。</li><li><code>-m</code> / <code>-q</code> 提早結束的效果遠大於其他任何調整。</li><li>檔案數量很多（整個 monorepo）時，瓶頸在走訪目錄而不是比對，改用 <code>git grep</code> 或 <code>rg</code>。</li></ul><p><strong>量測陷阱</strong>：GNU grep 發現輸出被導向 <code>/dev/null</code> 時，會跟 <code>-q</code> 一樣找到第一筆就結束。<code>time grep -c ... > /dev/null</code> 量到的會是 0.01 秒，數字完全失真。量效能時要把輸出導到一般檔案。</p><hr><h2 id=bsd-grep-vs-gnu-grep-差異對照>BSD grep vs GNU grep 差異對照</h2><p>本文實測到的差異整理（macOS BSD grep 2.6.0-FreeBSD vs GNU grep 3.12）：</p><table><thead><tr><th>項目</th><th>macOS BSD grep</th><th>GNU grep</th></tr></thead><tbody><tr><td><code>-P</code>（PCRE）</td><td>不支援</td><td>支援</td></tr><tr><td><code>-E</code> 裡的 <code>\d</code></td><td>當成數字</td><td>警告 <code>stray \ before d</code>，比對不到</td></tr><tr><td><code>-Z</code></td><td>解壓縮後搜尋（等於 <code>zgrep</code>）</td><td>等於 <code>--null</code></td></tr><tr><td><code>--null</code></td><td>支援</td><td>支援</td></tr><tr><td><code>--group-separator</code> / <code>--no-group-separator</code></td><td>不支援</td><td>支援</td></tr><tr><td><code>-r</code> 不給路徑</td><td>搜目前目錄，路徑帶 <code>./</code></td><td>搜目前目錄，路徑不帶 <code>./</code></td></tr><tr><td>symlink</td><td><code>-r</code>、<code>-R</code> 都不跟隨，加 <code>-S</code> 才跟隨</td><td><code>-r</code> 只跟隨命令列上的，<code>-R</code> 全部跟隨</td></tr><tr><td>BRE 的 <code>\+</code>、<code>\?</code>、<code>\|</code></td><td>支援</td><td>支援</td></tr><tr><td><code>\w</code>、<code>\s</code>、<code>\b</code>、<code>\&lt;</code>、<code>\></code></td><td>支援</td><td>支援</td></tr><tr><td>輸出導向 <code>/dev/null</code></td><td>照常執行</td><td>找到第一筆就結束</td></tr><tr><td>效能（131 MB，<code>-ci</code>）</td><td>2.62s</td><td>0.13s</td></tr></tbody></table><p>寫要在兩邊都能跑的腳本：用 <code>-E</code> 加 <code>[0-9]</code>、<code>[[:space:]]</code>，檔名分隔用 <code>--null</code>，不要用 <code>-P</code>、<code>-Z</code> 和 <code>--group-separator</code>。</p><hr><h2 id=什麼時候該換工具>什麼時候該換工具</h2><table><thead><tr><th>需求</th><th>工具</th></tr></thead><tbody><tr><td>在大型 repo 裡找程式碼</td><td><code>rg</code>（ripgrep）：預設遞迴、尊重 <code>.gitignore</code>、跳過二進位檔、速度快，<code>brew install ripgrep</code></td></tr><tr><td>只搜 Git 追蹤的檔案</td><td><code>git grep</code></td></tr><tr><td>需要依欄位判斷、加總、格式化</td><td><a href=/post/CLI/awk/>awk</a></td></tr><tr><td>找到之後要取代</td><td><a href=/post/CLI/sed/>sed</a></td></tr><tr><td>資料是 JSON</td><td><a href=/post/CLI/jq/>jq</a>，不要用 grep 硬抓 JSON</td></tr><tr><td>依檔案屬性（時間、大小）篩選</td><td><a href=/post/CLI/find/>find</a></td></tr></tbody></table><hr><h2 id=參考資料>參考資料</h2><ul><li><a href=https://www.gnu.org/software/grep/manual/grep.html>GNU grep manual</a></li><li><a href="https://man.freebsd.org/cgi/man.cgi?query=grep">FreeBSD grep(1) manual</a>（macOS 的 grep 源自 FreeBSD，本機可用 <code>man grep</code>）</li><li><a href=https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html>POSIX Regular Expressions</a></li><li><a href=https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md>ripgrep User Guide</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/cli class=tag-link>#CLI</a>
+<a href=/tags/grep class=tag-link>#grep</a>
+<a href=/tags/regex class=tag-link>#Regex</a>
+<a href=/tags/shell class=tag-link>#Shell</a>
+<a href=/tags/linux class=tag-link>#Linux</a>
+<a href=/tags/macos class=tag-link>#macOS</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/cli/openssl/ class=post-nav-link>openssl — 憑證、加密與 TLS 除錯命令列指南</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a>
+<a href=https://www.linkedin.com/in/bill-lin-developer/ class=social-link target=_blank rel=noopener>linkedin</a>
+<a href=mailto:zzx123bill@gmail.com class=social-link target=_blank rel=noopener>email</a></div></div></footer><script src=/js/search.js></script><script src=/js/particles-bg.js defer></script></div><script src=/js/code-enhance.js></script></body></html>

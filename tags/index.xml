@@ -10,21 +10,49 @@
 		
 		
 		
-			<lastBuildDate>Sun, 23 Aug 2026 00:00:00 +0800</lastBuildDate>
+			<lastBuildDate>Sun, 01 Nov 2026 00:00:00 +0800</lastBuildDate>
 		
 			<atom:link href="https://xinqilin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
 			<item>
 				<title>CLI</title>
 				<link>https://xinqilin.github.io/tags/cli/</link>
-				<pubDate>Sun, 23 Aug 2026 00:00:00 +0800</pubDate>
+				<pubDate>Sun, 01 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/cli/</guid>
 				<description></description>
 			</item>
 			<item>
-				<title>Macos</title>
+				<title>Grep</title>
+				<link>https://xinqilin.github.io/tags/grep/</link>
+				<pubDate>Sun, 01 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/grep/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Linux</title>
+				<link>https://xinqilin.github.io/tags/linux/</link>
+				<pubDate>Sun, 01 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/linux/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>MacOS</title>
 				<link>https://xinqilin.github.io/tags/macos/</link>
-				<pubDate>Sun, 23 Aug 2026 00:00:00 +0800</pubDate>
+				<pubDate>Sun, 01 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/macos/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Regex</title>
+				<link>https://xinqilin.github.io/tags/regex/</link>
+				<pubDate>Sun, 01 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/regex/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Shell</title>
+				<link>https://xinqilin.github.io/tags/shell/</link>
+				<pubDate>Sun, 01 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/shell/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -70,7 +98,7 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Spring-Boot</title>
+				<title>Spring Boot</title>
 				<link>https://xinqilin.github.io/tags/spring-boot/</link>
 				<pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/spring-boot/</guid>
@@ -329,13 +357,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Shell</title>
-				<link>https://xinqilin.github.io/tags/shell/</link>
-				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/shell/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Shortest Path</title>
 				<link>https://xinqilin.github.io/tags/shortest-path/</link>
 				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
@@ -410,13 +431,6 @@
 				<link>https://xinqilin.github.io/tags/command-line/</link>
 				<pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/command-line/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Linux</title>
-				<link>https://xinqilin.github.io/tags/linux/</link>
-				<pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/linux/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -497,7 +511,7 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Best-Practices</title>
+				<title>Best Practices</title>
 				<link>https://xinqilin.github.io/tags/best-practices/</link>
 				<pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/best-practices/</guid>
@@ -1036,10 +1050,17 @@
 				<description></description>
 			</item>
 			<item>
-				<title>CURL</title>
+				<title>Curl</title>
 				<link>https://xinqilin.github.io/tags/curl/</link>
 				<pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/curl/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Debugging</title>
+				<link>https://xinqilin.github.io/tags/debugging/</link>
+				<pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/debugging/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -1054,20 +1075,6 @@
 				<link>https://xinqilin.github.io/tags/network/</link>
 				<pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/network/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>REST</title>
-				<link>https://xinqilin.github.io/tags/rest/</link>
-				<pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/rest/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Web Development</title>
-				<link>https://xinqilin.github.io/tags/web-development/</link>
-				<pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/web-development/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -1288,6 +1295,13 @@
 				<description></description>
 			</item>
 			<item>
+				<title>REST</title>
+				<link>https://xinqilin.github.io/tags/rest/</link>
+				<pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/rest/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>SpringBoot</title>
 				<link>https://xinqilin.github.io/tags/springboot/</link>
 				<pubDate>Thu, 01 Jul 2021 20:47:27 +0800</pubDate>
@@ -1453,13 +1467,6 @@
 				<link>https://xinqilin.github.io/tags/tag/</link>
 				<pubDate>Mon, 01 Mar 2021 21:16:29 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/tag/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Debugging</title>
-				<link>https://xinqilin.github.io/tags/debugging/</link>
-				<pubDate>Fri, 08 Jan 2021 21:39:14 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/debugging/</guid>
 				<description></description>
 			</item>
 			<item>
