@@ -260,7 +260,7 @@ static boolean shouldRecomputeEarly(long nowMs, long expiresAtMs, long recompute
 
 - **TTL 加隨機值**：同一批寫入的資料，TTL 在基準值上加減 10%，讓它們分散在一段時間內過期
 - **快取高可用**：Redis 用 replica 加 Sentinel 或 Cluster，讓單一節點故障不會讓整個快取消失
-- **資料庫端的保護**：快取全掛時，用限流或熔斷擋住超出資料庫能力的請求，寧可部分請求失敗，也不要整個資料庫被打垮（Part 6）
+- **資料庫端的保護**：快取全掛時，用限流或熔斷擋住超出資料庫能力的請求，寧可部分請求失敗，也不要整個資料庫被打垮（Part 6 的 [Rate Limiting](/post/systemdesign/rate-limiting/) 與 [Circuit Breaker](/post/systemdesign/circuit-breaker-bulkhead/)）
 - **重啟後漸進放量**：Redis 重啟後是空的，先預熱熱門資料，或讓流量逐步回來
 
 ### 熱 key 與大 key

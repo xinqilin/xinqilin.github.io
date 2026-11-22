@@ -76,9 +76,9 @@ flowchart LR
 | `@Scheduled` 排程 | 每台各自觸發 | 同一個工作被執行 N 次 | 排程鎖（ShedLock）、獨立 worker、外部排程器 |
 | `synchronized`、`ReentrantLock` | JVM 內 | 只鎖得住自己那一台 | 資料庫條件式更新、唯一鍵、[分散式鎖](/post/systemdesign/distributed-lock/) |
 | 本機快取（`HashMap`、Caffeine） | JVM 記憶體 | 各台資料不一致 | 接受短暫不一致加 TTL，或集中快取加失效通知（[Cache 篇](/post/systemdesign/caching/)） |
-| 記憶體計數器（限流、統計） | JVM 記憶體 | 總限額變成 N 倍 | Redis 原子計數（Part 6 Rate Limiting） |
+| 記憶體計數器（限流、統計） | JVM 記憶體 | 總限額變成 N 倍 | Redis 原子計數（[Part 6 Rate Limiting](/post/systemdesign/rate-limiting/)） |
 | WebSocket 連線 | 綁在某一台 | 推播時要找到連線所在的那台 | 用 pub/sub 廣播給所有 instance（Part 5） |
-| 本機 log 檔 | 本機硬碟 | 查一個請求要登入每一台 | 集中收集（Part 6 Observability） |
+| 本機 log 檔 | 本機硬碟 | 查一個請求要登入每一台 | 集中收集（[Part 6 Observability](/post/systemdesign/observability/)） |
 
 這裡有一個很容易忽略的後果：**狀態往下推，瓶頸也跟著往下推**。應用伺服器可以無限加，但它們全部共用同一個 Redis、同一個 MySQL。所以水平擴展的下一步，必然是處理共用儲存層的擴展，也就是 Part 3、Part 4 的主題。
 

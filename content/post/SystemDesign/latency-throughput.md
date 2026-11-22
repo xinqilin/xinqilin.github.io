@@ -184,7 +184,7 @@ spring:
 
 1. **找出資料庫變慢的原因**（慢查詢、鎖等待），這才是根因
 2. **縮短 `connection-timeout`**，讓等不到連線的請求快點失敗、釋放 thread。但只要「到達率 × 等待時間」仍大於 thread 數，thread 還是會被吃光，所以還需要第 3 點
-3. **在呼叫端加上熔斷與降載**，不要讓壞掉的下游拖垮上游（Part 6 會談 Circuit Breaker 與 Bulkhead）
+3. **在呼叫端加上熔斷與降載**，不要讓壞掉的下游拖垮上游（[Part 6 的 Circuit Breaker 與 Bulkhead](/post/systemdesign/circuit-breaker-bulkhead/)）
 
 連線池大小的實務調校見 [HikariCP 調校](/post/database/hikaricp-tuning/)。
 

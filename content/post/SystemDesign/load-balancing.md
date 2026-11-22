@@ -352,7 +352,7 @@ Tomcat 只信任 `server.tomcat.remoteip.internal-proxies` 範圍內（預設是
 - **Liveness 檢查外部依賴**：外部服務掛掉時，所有 instance 被不斷重啟
 - **Health check 只看「活著」**：慢但沒死的節點會持續吃流量。要搭配會看負載的演算法或被動異常偵測
 - **LB 重試非冪等請求**：逾時不代表 backend 沒處理，重送可能造成重複下單。需要重試的寫入請求，要先做好冪等性（Part 5）
-- **每一層都重試**：client、LB、服務間呼叫各自最多嘗試 3 次，一個請求到最下游最多被放大成 3 × 3 × 3 = 27 次，正好在系統最脆弱時壓垮它（Part 6）
+- **每一層都重試**：client、LB、服務間呼叫各自最多嘗試 3 次，一個請求到最下游最多被放大成 3 × 3 × 3 = 27 次，正好在系統最脆弱時壓垮它（[Part 6 的 Timeout 與 Retry](/post/systemdesign/timeout-retry-backoff/)）
 - **長連線在 L4 下負載不均**：HTTP/2、gRPC、WebSocket 建立後就固定在某台。新增 instance 後舊連線不會重新分配，可以設定連線的最長存活時間，讓 client 定期重連
 - **Backend 的 keep-alive 比 LB 短**：出現間歇性 502
 - **排空時間設定不當**：太短會切斷進行中的請求，太長讓部署動輒好幾分鐘

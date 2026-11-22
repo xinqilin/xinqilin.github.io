@@ -657,7 +657,7 @@ public class RetryInterceptor implements ClientHttpRequestInterceptor {
                     
                     // 等待後重試
                     try {
-                        Thread.sleep(retryDelay * attempt); // 指數退避
+                        Thread.sleep(retryDelay * attempt); // 線性退避：等待時間 = retryDelay × 次數
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                         throw new IOException("Interrupted during retry delay", e);
@@ -695,6 +695,8 @@ public class RetryInterceptor implements ClientHttpRequestInterceptor {
     }
 }
 ```
+
+> 這個範例是線性退避，而且沒有 jitter，大量用戶端同時失敗時會在同一時間重試。指數退避、jitter、重試預算與哪些錯誤可以重試，請參考 [Timeout、Retry、Backoff 與 Jitter](/post/systemdesign/timeout-retry-backoff/)。
 
 ### 2. 自訂錯誤處理器
 

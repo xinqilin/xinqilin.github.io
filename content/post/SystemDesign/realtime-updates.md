@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "SSE", "WebSocket", "STOMP", "Spring", "Security"]
 ---
 
-> **System Design 系列** Part 5-5｜上一篇：[冪等性與 Idempotency Key](/post/systemdesign/idempotency-key/)｜下一篇：Part 6 可靠性（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 5-5｜上一篇：[冪等性與 Idempotency Key](/post/systemdesign/idempotency-key/)｜下一篇：[備援、故障轉移與災難復原](/post/systemdesign/redundancy-failover-dr/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 
@@ -103,7 +103,7 @@ SSE 的規格（WHATWG HTML Living Standard）內建了幾個重要的行為：
 - **中間設備的閒置逾時**：負載平衡器與反向代理會切斷一段時間沒有資料的連線（AWS ALB 預設 60 秒，nginx 的 `proxy_read_timeout` 預設也是 60 秒）。伺服器要定期送出心跳，間隔比最短的閒置逾時更短
 - **代理的緩衝**：反向代理可能把回應緩衝起來，累積到一定大小才轉送，SSE 事件就延遲送達。nginx 可以用回應 header `X-Accel-Buffering: no` 關閉單一回應的緩衝
 - **瀏覽器的連線上限**：在 HTTP/1.1 下，瀏覽器對同一個網域的同時連線數很少（常見是 6 條），而且是所有分頁共用。使用者開了 6 個講座分頁，第 7 個就連不上。HTTP/2 的多工可以解決這個問題
-- **部署就是大規模斷線**：滾動更新時，被關閉的那台伺服器上的所有連線同時斷開，同時重連。重連要加上隨機的延遲（jitter，Part 6 詳談），伺服器關閉前也應該先停止接受新連線、再分批關閉既有連線
+- **部署就是大規模斷線**：滾動更新時，被關閉的那台伺服器上的所有連線同時斷開，同時重連。重連要加上隨機的延遲（jitter，[Part 6 詳談](/post/systemdesign/timeout-retry-backoff/)），伺服器關閉前也應該先停止接受新連線、再分批關閉既有連線
 
 ### 多台伺服器的扇出
 

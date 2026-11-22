@@ -21,7 +21,7 @@ tags: ["System Design", "Idempotency", "Idempotency-Key", "REST", "Spring", "Sec
 - 使用者重按按鈕
 - App 或前端的 HTTP 用戶端自動重試
 - API gateway、service mesh 的重試設定
-- 服務之間呼叫的重試（Part 6 的 Timeout 與 Retry）
+- 服務之間呼叫的重試（[Part 6 的 Timeout 與 Retry](/post/systemdesign/timeout-retry-backoff/)）
 - Message queue 的重新投遞（[Message Queue 篇](/post/systemdesign/message-queue/)）
 
 前一篇已經說明，訊息系統的「exactly-once」實際上是「at-least-once + 冪等處理」。API 也一樣：**要讓重試安全，操作本身必須是冪等的**。
@@ -304,7 +304,7 @@ public void purgeExpiredKeys() {
 
 ```java
 String idempotencyKey = UUID.randomUUID().toString();           // 在使用者按下按鈕時產生，重試時沿用
-RegistrationView view = retryWithBackoff(() -> restClient.post()     // retryWithBackoff 代表任何有上限的重試機制（Part 6）
+RegistrationView view = retryWithBackoff(() -> restClient.post()     // retryWithBackoff 代表任何有上限的重試機制（見 Part 6 的 Timeout 與 Retry 篇）
         .uri("/v1/registrations")
         .header("Idempotency-Key", idempotencyKey)
         .body(request)

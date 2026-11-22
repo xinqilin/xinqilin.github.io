@@ -353,7 +353,7 @@ Spring Boot 會自動把 `Instrumentation` bean 註冊到 GraphQL 引擎。
 
 - **PATCH 被當成整份覆蓋**：PATCH 應該只更新請求裡出現的欄位。要整份取代就用 PUT
 - **分頁沒有排序**：沒有明確的 `ORDER BY`，翻頁時資料順序不穩定，會重複或遺漏
-- **gRPC 沒設 deadline**：下游卡住時，上游的執行緒與連線一起被佔住，整條呼叫鏈跟著卡死（Part 6 的 Timeout 與 Retry）
+- **gRPC 沒設 deadline**：下游卡住時，上游的執行緒與連線一起被佔住，整條呼叫鏈跟著卡死（[Part 6 的 Timeout 與 Retry](/post/systemdesign/timeout-retry-backoff/)）
 - **每次呼叫都建立新的 gRPC channel**：channel 內含連線池與名稱解析，建立成本高，應該共用
 - **串流的 `StreamObserver` 不是執行緒安全的**：多個執行緒同時呼叫 `onNext` 會出錯，要確保同一時間只有一個執行緒推送。用戶端讀得慢時，伺服器推送的訊息會在記憶體裡堆積，要用 `isReady()` 與 `setOnReadyHandler` 做流量控制
 - **Protobuf 欄位編號重用**：舊版本的服務把新欄位解讀成舊的意義，不會報錯，只會產生錯誤的資料
