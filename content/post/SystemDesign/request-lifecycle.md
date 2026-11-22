@@ -3,7 +3,7 @@ title: "一個 HTTP Request 的旅程：DNS、TCP、TLS、Load Balancer 到資�
 date: 2026-11-22
 draft: false
 author: Bill.Lin
-description: "System Design 系列 Part 1：拆解一個 HTTPS 請求從 DNS 查詢、TCP 與 TLS 握手、Load Balancer、Spring Boot 到 MySQL 的每一段耗時，說明為何跨區延遲救不回來，並用 curl 與 Java HttpClient 量測與最佳化"
+description: "System Design 系列 Part 1：拆解 HTTPS 請求經過 DNS、TCP 與 TLS 握手、LB、Spring Boot 到 MySQL 的每段耗時，說明跨區延遲為何救不回來，並實際量測與最佳化"
 categories: ["SystemDesign"]
 tags: ["System Design", "HTTP", "TCP", "TLS", "DNS", "Latency", "Java"]
 ---

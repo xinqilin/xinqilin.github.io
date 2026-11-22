@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "Capacity Planning", "Back-of-the-envelope", "Estimation", "Java"]
 ---
 
-> **System Design 系列** Part 1-3｜上一篇：[Latency、Throughput 與 p99](/post/systemdesign/latency-throughput/)｜下一篇：垂直/水平擴展與無狀態服務（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 1-3｜上一篇：[Latency、Throughput 與 p99](/post/systemdesign/latency-throughput/)｜下一篇：[垂直擴展、水平擴展與無狀態服務](/post/systemdesign/scaling-stateless/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 

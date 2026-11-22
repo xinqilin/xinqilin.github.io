@@ -19,7 +19,7 @@ tags: ["System Design", "Architecture", "Trade-off", "HLD", "LLD", "ADR"]
 3. **核心機制**：用 mermaid 圖說明原理
 4. **方案比較**：每個方案犧牲什麼、換到什麼
 5. **Java 落地**：Spring Boot、MySQL、Redis 的實作
-6. **踩坑與 Gotchas**
+6. **踩坑與 Gotchas**：有資安面向時，另列「資安相關」
 7. **何時用／何時別用**：包含「什麼條件下要重新評估」
 8. **參考資料**
 
@@ -27,14 +27,15 @@ tags: ["System Design", "Architecture", "Trade-off", "HLD", "LLD", "ADR"]
 |---|---|---|
 | 0 導讀 | 系統設計怎麼想 | 本篇 |
 | 1 量測基礎 | 先學會量、會估，才知道瓶頸在哪 | [一個 HTTP Request 的旅程](/post/systemdesign/request-lifecycle/)、[Latency、Throughput 與 p99](/post/systemdesign/latency-throughput/)、[Napkin Math 容量估算](/post/systemdesign/napkin-math/) |
-| 2 單機到多機 | 一台不夠時的第一步 | 垂直/水平擴展與無狀態服務、Load Balancing、Cache 策略與一致性、CDN（撰寫中） |
+| 2 單機到多機 | 一台不夠時的第一步 | [垂直擴展、水平擴展與無狀態服務](/post/systemdesign/scaling-stateless/)、[Load Balancing 深入](/post/systemdesign/load-balancing/)、[Cache 深入](/post/systemdesign/caching/)、[CDN 與 HTTP 快取](/post/systemdesign/cdn/) |
 | 3 儲存基礎 | 資料怎麼存、怎麼找 | SQL vs NoSQL、Index 與 B+Tree、B-Tree vs LSM-Tree、交易與隔離等級、檔案與物件儲存、Bloom Filter 與 HyperLogLog、全文搜尋與倒排索引、Geohash 地理索引（撰寫中） |
 | 4 分散式資料 | 一台資料庫裝不下、扛不住之後 | Replication 與 Replication Lag、Sharding、Consistent Hashing、分散式 ID、CAP 與 PACELC、共識與 Raft、分散式鎖與 Fencing Token（撰寫中） |
 | 5 服務通訊 | 服務之間怎麼說話 | REST/gRPC/GraphQL、Message Queue、Pub/Sub 與投遞語意、冪等性與 Idempotency Key、即時更新（撰寫中） |
 | 6 可靠性 | 壞掉時怎麼辦 | 備援、故障轉移與 DR、Timeout/Retry/Backoff 與 Jitter、Circuit Breaker 與 Bulkhead、Rate Limiting、Observability（撰寫中） |
 | 7 架構演進 | 系統和團隊一起長大 | 單體 vs 微服務、Service Discovery、Saga 與 Outbox、Batch 與 Stream（撰寫中） |
-| 8 安全與交付 | 從系統設計角度看安全與上線 | 身分驗證、授權、加密/TLS 與 Secrets、大規模系統的測試、CI/CD 與部署策略（撰寫中） |
+| 8 安全 | 從系統設計角度看安全 | 身分驗證：Session、Token 與 OAuth 2.0／OIDC、授權模型與 OWASP API Top 10、BOLA 穿過 BFF 之後：微服務的身分傳遞、傳輸與資料加密及 Secrets 管理、濫用防護（撰寫中） |
 | 9 實戰題 | 把前面的元件組起來 | URL Shortener、News Feed、聊天系統、秒殺搶票、通知系統、排行榜、分散式排程（撰寫中） |
+| 10 交付 | 安全地把變更送上線 | 大規模系統的測試、CI/CD 與部署策略（撰寫中） |
 
 ## 情境與問題
 
@@ -72,7 +73,8 @@ flowchart TD
     A[釐清需求：功能 / 非功能] --> B[粗估：QPS、儲存、頻寬]
     B --> C[定義 API 與資料模型]
     C --> D[HLD：元件與資料流]
-    D --> E[找瓶頸：深入一兩個關鍵點]
+    D --> T[威脅建模：標出信任邊界與攻擊面]
+    T --> E[找瓶頸：深入一兩個關鍵點]
     E --> F[列方案、比取捨、寫下決策]
     F --> G[演進路線：何時重新評估]
     G -. 規模或需求改變 .-> A
@@ -83,7 +85,7 @@ flowchart TD
 | 類型 | 報名系統的例子 | 決定了什麼 |
 |---|---|---|
 | 功能需求 | 報名、取消、查詢剩餘名額、額滿後候補 | API 與資料模型 |
-| 非功能需求 | 尖峰 800 次/秒寫入、**絕不超賣**、p99 < 500 ms、活動當天 99.9% 可用、報名資料保存 1 年 | 架構、元件選型、部署方式 |
+| 非功能需求 | 尖峰 800 次/秒寫入、**絕不超賣**、p99 < 500 ms、活動當天 99.9% 可用、報名資料保存 1 年、只有本人能查詢與取消自己的報名 | 架構、元件選型、部署方式 |
 
 非功能需求一定要有數字。「要很快」不是需求，「p99 < 500 ms」才是；「要很穩」不是需求，「活動當天可用率 99.9%（約 1.4 分鐘停機額度）」才是。
 
@@ -97,6 +99,21 @@ flowchart TD
 | 改錯的代價 | 高（資料庫選型、sharding key 幾乎不可逆） | 相對低（重構就能改） |
 
 面試的 system design 通常停在 HLD，再加一兩個 deep dive。實務上兩者互相影響：下一節會看到，LLD 裡「SQL 的執行順序」直接改變了 HLD 的容量上限。
+
+### 輕量的威脅建模
+
+HLD 畫出資料流之後，順著每一條資料流跨過的**信任邊界**（瀏覽器到 API、API 到資料庫、服務到服務），問六個問題。這六個問題的英文首字母合起來是 STRIDE：
+
+| 威脅 | 要問的問題 | 報名系統的例子 | 對策（系列中的位置） |
+|---|---|---|---|
+| Spoofing 冒充 | 誰能假裝成別人？ | 盜用帳號替別人報名 | 身分驗證（Part 8） |
+| Tampering 竄改 | 誰能改掉傳輸中或儲存的資料？ | 把請求裡的 memberId 改成別人的，幫他取消報名 | 身分只從驗證過的 token 取，不信任請求參數（Part 8） |
+| Repudiation 否認 | 事後能證明誰做了什麼嗎？ | 使用者堅稱自己沒有取消 | 稽核紀錄（Part 6） |
+| Information disclosure 洩漏 | 誰能看到不該看的資料？ | 用遞增的報名編號，逐一查出別人的報名資料 | 物件層授權（Part 8） |
+| Denial of service 阻斷 | 誰能讓服務對別人不可用？ | 機器人在開放瞬間搶光名額 | 限流、驗證碼（Part 6、Part 8） |
+| Elevation of privilege 提權 | 誰能做超出權限的事？ | 一般會員呼叫管理員的「匯出名單」API | 功能層授權（Part 8） |
+
+不需要一開始就寫成完整報告。目的是在架構還容易改的時候，把「誰可以碰什麼資料」列成需求，而不是上線後才補。
 
 ## 方案比較：Trade-off 框架
 
@@ -262,4 +279,6 @@ public class SoldOutFlag {
 - Jeff Bezos, 2015 Letter to Shareholders：可逆（two-way door）與不可逆（one-way door）決策
 - MySQL 8.0 Reference Manual — InnoDB Locking：<https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html>
 - Spring Framework Reference — JDBC Core Classes（`JdbcClient`）：<https://docs.spring.io/spring-framework/reference/data-access/jdbc/core.html>
+- Adam Shostack, *Threat Modeling: Designing for Security*, Wiley, 2014
+- OWASP — Threat Modeling Cheat Sheet：<https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html>
 - 互動圖解延伸：Dilum Sanjaya，System Design — an interactive course：<https://designed-to-scale.vercel.app/>（本系列的主題規劃參考了這份課程，內容皆為本站原創撰寫）

@@ -3,7 +3,7 @@ title: "Latency、Throughput 與 p99：別再看平均值，用 Little's Law 算
 date: 2026-11-22
 draft: false
 author: Bill.Lin
-description: "System Design 系列 Part 1：說明 latency、throughput 與百分位數的差異，平均值為何會騙人、扇出如何放大長尾、使用率為何不能拉滿，並用 Little's Law 推算 Tomcat 執行緒與 HikariCP 連線池"
+description: "System Design 系列 Part 1：說明 latency、throughput 與百分位數，平均值為何會騙人、扇出如何放大長尾、使用率為何不能拉滿，並用 Little's Law 推算執行緒與連線池"
 categories: ["SystemDesign"]
 tags: ["System Design", "Latency", "Throughput", "Percentile", "Little's Law", "Micrometer", "Spring Boot"]
 ---
