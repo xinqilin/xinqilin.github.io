@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "Distributed Lock", "Fencing Token", "Redis", "Redisson", "ShedLock", "Security"]
 ---
 
-> **System Design 系列** Part 4-7｜上一篇：[共識與 Raft](/post/systemdesign/consensus-raft/)｜下一篇：Part 5 服務通訊（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 4-7｜上一篇：[共識與 Raft](/post/systemdesign/consensus-raft/)｜下一篇：[REST、gRPC 與 GraphQL](/post/systemdesign/rest-grpc-graphql/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 
