@@ -107,7 +107,7 @@ Broker 當機時訊息不能遺失，要同時做到：
 | 先送訊息，再提交交易 | 交易回滾，訊息卻已送出：替一筆不存在的報名寄了確認信 |
 | 先提交交易，再送訊息 | 訊息沒送出：報名成功，卻永遠不會寄確認信 |
 
-上面「資料庫當佇列」的做法剛好沒有這個問題，因為「待處理的工作」和報名在同一個交易裡。把這個概念和 broker 結合，就是 transactional outbox：先在交易內寫入 outbox 表，再由另一個程序把 outbox 的內容送到 broker（[Outbox Pattern](/post/architecture/outbox-pattern/)，Part 7 詳談）。
+上面「資料庫當佇列」的做法剛好沒有這個問題，因為「待處理的工作」和報名在同一個交易裡。把這個概念和 broker 結合，就是 transactional outbox：先在交易內寫入 outbox 表，再由另一個程序把 outbox 的內容送到 broker（[Outbox Pattern](/post/architecture/outbox-pattern/)，[Part 7 詳談](/post/systemdesign/saga-outbox/)）。
 
 ### 訊息的內容
 

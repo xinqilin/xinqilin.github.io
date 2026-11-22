@@ -212,7 +212,7 @@ Linkerd、Finagle 這類 service mesh 和 RPC 框架，常用 P2C 再搭配 EWMA
 | 實作成本 | 集中在 LB，語言無關 | 每個語言、每個 client 都要實作 |
 | 代表 | ALB、Nginx、Envoy | Spring Cloud LoadBalancer、gRPC client、service mesh sidecar |
 
-Client-side 需要服務註冊與發現，留到 Part 7 的 Service Discovery 再談。
+Client-side 需要服務註冊與發現，留到 [Part 7 的 Service Discovery](/post/systemdesign/service-discovery/) 再談。
 
 ## Java 落地
 

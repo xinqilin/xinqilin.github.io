@@ -172,7 +172,7 @@ public class RegistrationEventPublisher {
 }
 ```
 
-`send` 是非同步的，要檢查回傳的 future 是否失敗。和上一篇一樣，「資料庫提交」與「送出事件」之間的雙寫問題要用 outbox 解決（Part 7）。
+`send` 是非同步的，要檢查回傳的 future 是否失敗。和上一篇一樣，「資料庫提交」與「送出事件」之間的雙寫問題要用 outbox 解決（[Saga 與 Outbox 篇](/post/systemdesign/saga-outbox/)、[Outbox Pattern](/post/architecture/outbox-pattern/)）。
 
 ### 2. 錯誤處理：有限的阻塞重試，失敗送 DLT
 

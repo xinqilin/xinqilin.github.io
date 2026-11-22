@@ -752,7 +752,7 @@ Facade 被呼叫時不在交易中；第 1 次嘗試讀到 `version=0`，在它�
 - **衝突少的編輯**：樂觀鎖加上交易外的重試
 - **跨多列、難以化成約束、量不大的規則**：SERIALIZABLE 加重試，PostgreSQL 的 SSI 比 MySQL 的鎖實作更適合
 - **別用**：在交易裡呼叫外部服務、用 `synchronized` 解決資料庫的並行問題、不限定例外就重試
-- **跨多個服務或資料庫**：單一資料庫的交易已經不夠，需要[分散式鎖](/post/systemdesign/distributed-lock/)或 Saga（Part 7）
+- **跨多個服務或資料庫**：單一資料庫的交易已經不夠，需要[分散式鎖](/post/systemdesign/distributed-lock/)或 Saga（[Part 7](/post/systemdesign/saga-outbox/)）
 
 ## 參考資料
 

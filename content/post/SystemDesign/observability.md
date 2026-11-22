@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "Observability", "OpenTelemetry", "Micrometer", "SLO", "Security"]
 ---
 
-> **System Design 系列** Part 6-5｜上一篇：[Rate Limiting](/post/systemdesign/rate-limiting/)｜下一篇：Part 7 架構演進（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 6-5｜上一篇：[Rate Limiting](/post/systemdesign/rate-limiting/)｜下一篇：[單體 vs 微服務](/post/systemdesign/monolith-vs-microservices/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 

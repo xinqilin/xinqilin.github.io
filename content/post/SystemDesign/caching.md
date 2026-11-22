@@ -168,7 +168,7 @@ sequenceDiagram
 |---|---|---|
 | 在交易內刪快取 | 刪了但還沒提交，讀取者從資料庫讀到舊值並回填 | **提交之後才刪**（Spring 的 `transactionAware()`、`@TransactionalEventListener`） |
 | 讀 replica 回填 | 刪了，讀取者從還沒同步的 replica 讀到舊值 | miss 時讀主庫；或延遲幾百毫秒再刪一次（延遲雙刪） |
-| 刪除失敗 | Redis 逾時，或程序在刪除前掛掉 | 重試；或訂閱資料庫的 binlog（CDC）來刪，不依賴應用程式（Part 7 Outbox） |
+| 刪除失敗 | Redis 逾時，或程序在刪除前掛掉 | 重試；或訂閱資料庫的 binlog（CDC）來刪，不依賴應用程式（[Outbox Pattern](/post/architecture/outbox-pattern/)） |
 | 上一節的罕見競態 | 讀取者回寫晚於刪除 | TTL 封頂；lease；寫入時帶版本號，只接受較新的版本 |
 | 多層快取 | 某台 instance 漏收失效通知 | 本機快取設較短的 TTL |
 
