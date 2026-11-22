@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sun, 01 Nov 2026 00:00:00 +0800</lastBuildDate>
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
 		
 			<atom:link href="https://xinqilin.github.io/tags/tls/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>一個 HTTP Request 的旅程：DNS、TCP、TLS、Load Balancer 到資料庫的每一段耗時</title>
+				<link>https://xinqilin.github.io/post/systemdesign/request-lifecycle/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/request-lifecycle/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 1-1｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/&#34;&gt;系統設計怎麼想&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/latency-throughput/&#34;&gt;Latency、Throughput 與 p99&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;美國的客戶回報：「訂單頁打開要一秒多。」你打開 APM，&lt;code&gt;GET /orders&lt;/code&gt; 的伺服器處理時間只有 150 ms，資料庫查詢 5 ms。差的那一秒去哪了？&lt;/p&gt;&#xA;&lt;p&gt;答案是：伺服器處理時間只是整趟旅程的其中一段。在優化任何一行程式碼之前，要先知道時間花在哪一站。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的模型與它的盲點&#34;&gt;最簡單的模型與它的盲點&lt;/h2&gt;&#xA;&lt;p&gt;最直覺的模型是「Client → Server → DB」三站。這個模型漏掉了很多會花時間的地方：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;找到伺服器&lt;/strong&gt;：網域名稱要先透過 DNS 換成 IP&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;建立連線&lt;/strong&gt;：TCP 三次握手、TLS 交換金鑰與驗證憑證&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;排隊&lt;/strong&gt;：Load Balancer、Tomcat 的 thread pool、HikariCP 的連線池，滿了都要等&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;傳輸&lt;/strong&gt;：response 很大時，受頻寬與 TCP 擁塞控制影響&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;更麻煩的是，伺服器端的 metric 是從「Tomcat 開始處理請求」算到「寫完 response」，&lt;strong&gt;連線建立和網路傳輸的時間完全不在裡面&lt;/strong&gt;。所以伺服器看起來很快，使用者卻覺得很慢。&lt;/p&gt;&#xA;&lt;h2 id=&#34;核心機制一個請求經過的每一站&#34;&gt;核心機制：一個請求經過的每一站&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;sequenceDiagram&#xA;    participant C as Client&#xA;    participant D as DNS Resolver&#xA;    participant L as Load Balancer&#xA;    participant A as Spring Boot&#xA;    participant P as HikariCP&#xA;    participant M as MySQL&#xA;    C-&gt;&gt;D: 查詢 api.example.com&#xA;    D--&gt;&gt;C: IP（附 TTL）&#xA;    C-&gt;&gt;L: TCP SYN&#xA;    L--&gt;&gt;C: SYN-ACK&#xA;    C-&gt;&gt;L: ACK + TLS ClientHello&#xA;    L--&gt;&gt;C: ServerHello + 憑證 + Finished&#xA;    C-&gt;&gt;L: TLS Finished + GET /orders&#xA;    L-&gt;&gt;A: 轉發（LB 與後端間通常是既有連線）&#xA;    A-&gt;&gt;P: 取得 DB 連線&#xA;    P--&gt;&gt;A: Connection&#xA;    A-&gt;&gt;M: SELECT ...&#xA;    M--&gt;&gt;A: rows&#xA;    A--&gt;&gt;L: 200 OK + JSON&#xA;    L--&gt;&gt;C: 200 OK + JSON&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;把每一站的成本列出來（RTT 指封包一來一回的時間）：&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>網頁憑證信任圖解：TLS 握手、憑證鏈、Trust Store 到 openssl 排錯</title>
 				<link>https://xinqilin.github.io/post/security/web-certificate-trust/</link>

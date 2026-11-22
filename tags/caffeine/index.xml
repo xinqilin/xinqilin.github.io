@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Caffeine on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/caffeine/</link>
+		<description>Recent content in Caffeine on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/caffeine/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Cache 深入：命中率的數學、寫入順序的競態、穿透擊穿雪崩與多層快取</title>
+				<link>https://xinqilin.github.io/post/systemdesign/caching/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/caching/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 2-3｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/load-balancing/&#34;&gt;Load Balancing 深入&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/cdn/&#34;&gt;CDN 與 HTTP 快取&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;商品詳情 API 在大促時有每秒 10,000 個請求，讀寫比大約 200:1。MySQL 主庫的 p99 從 20 ms 漲到 400 ms，你在前面加了一層 Redis：先查快取，查不到再查資料庫並寫回快取。資料庫的 QPS 立刻從 10,000 掉到 1,000，問題看似解決了。接下來幾週陸續發生：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;營運改了價格，部分使用者看到舊價格長達 30 分鐘&lt;/li&gt;&#xA;&lt;li&gt;最熱門的商品 key 過期的那一瞬間，3,000 個請求同時打到資料庫&lt;/li&gt;&#xA;&lt;li&gt;爬蟲用不存在的商品 ID 掃描，每個請求都查不到快取、直接打資料庫&lt;/li&gt;&#xA;&lt;li&gt;凌晨批次預熱的 20 萬個 key 在同一時間過期，資料庫被打掛；某次 Redis 重啟，情況更糟&lt;/li&gt;&#xA;&lt;li&gt;訂單查詢也比照辦理加了快取，結果使用者 A 看得到使用者 B 的訂單&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;快取讓讀取變快，代價是系統裡多了&lt;strong&gt;第二份資料&lt;/strong&gt;。兩份資料之間的一致性、什麼時候失效、裝不下時丟掉誰、快取本身掛掉時會怎樣，全部都要設計。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;最簡單的快取是放在應用程式記憶體裡的 &lt;code&gt;Map&lt;/code&gt; 或 Caffeine，存取只要幾十奈秒，沒有網路成本。極限有三個：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;每台各存一份&lt;/strong&gt;：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/scaling-stateless/&#34;&gt;無狀態服務&lt;/a&gt;有 10 台，同一筆資料就有 10 份，更新時要通知每一台&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;容量受限於 JVM heap&lt;/strong&gt;：放太多會拉長 GC 停頓&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;重啟就清空&lt;/strong&gt;：部署後每台都要重新暖機&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;集中式快取（Redis）解決了這三點，代價是每次存取多一趟網路（同機房約 0.2–1 ms）、序列化成本，以及一個新的故障點。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

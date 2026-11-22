@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Full-Text Search on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/full-text-search/</link>
+		<description>Recent content in Full-Text Search on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/full-text-search/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>全文搜尋與倒排索引：中文斷詞、BM25 排序、索引同步與搜尋的授權邊界</title>
+				<link>https://xinqilin.github.io/post/systemdesign/full-text-search/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/full-text-search/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 3-7｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/bloom-filter-hyperloglog/&#34;&gt;Bloom Filter 與 HyperLogLog&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/geohash/&#34;&gt;Geohash 與地理索引&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座平台累積了 20 萬場講座，每場有標題、講者、摘要與標籤。搜尋框的需求是：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;輸入「微服務」找出相關講座，最相關的排前面&lt;/li&gt;&#xA;&lt;li&gt;可以輸入多個詞，例如「資料庫 交易」&lt;/li&gt;&#xA;&lt;li&gt;可以再依分類、日期篩選&lt;/li&gt;&#xA;&lt;li&gt;未公開的講座（草稿、內部場次）不能出現在搜尋結果裡&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;目前的實作是 &lt;code&gt;WHERE title LIKE &#39;%微服務%&#39; OR summary LIKE &#39;%微服務%&#39;&lt;/code&gt;。&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/index-btree/&#34;&gt;Index 篇&lt;/a&gt;提過，開頭是萬用字元的 &lt;code&gt;LIKE&lt;/code&gt; 用不到索引。摘要平均 1 KB，每次搜尋就要比對 20 萬列、約 200 MB 的文字；尖峰每秒 50 次搜尋，等於每秒掃描 10 GB。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;LIKE&lt;/code&gt; 的問題不只是慢：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;沒有排序依據&lt;/strong&gt;：標題裡出現「微服務」和摘要最後順帶一提，對 &lt;code&gt;LIKE&lt;/code&gt; 來說一樣&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;詞序固定&lt;/strong&gt;：&lt;code&gt;&#39;%資料庫%交易%&#39;&lt;/code&gt; 找不到「交易與資料庫」&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;不懂語言&lt;/strong&gt;：大小寫、全形半形、同義詞都要自己處理&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;全文搜尋要先換一個方向來組織資料。&lt;/p&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;倒排索引從文件有哪些詞到詞在哪些文件&#34;&gt;倒排索引：從「文件有哪些詞」到「詞在哪些文件」&lt;/h3&gt;&#xA;&lt;p&gt;一般的資料表是「文件 → 內容」。倒排索引反過來，先把每份文件切成詞（term），再為每個詞記錄它出現在哪些文件、出現幾次、在哪些位置，這份清單叫 &lt;strong&gt;posting list&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR&#xA;    D1[&#34;#1 微服務拆分實戰…&#34;] --&gt; A[分析器：切詞、轉小寫…]&#xA;    D2[&#34;#6 Redis 快取策略…&#34;] --&gt; A&#xA;    A --&gt; T1[&#34;微服 → #1, #5, #6&#34;]&#xA;    A --&gt; T2[&#34;服務 → #1, #3, #5, #6, #7&#34;]&#xA;    A --&gt; T3[&#34;快取 → #6, #8&#34;]&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;查詢時只要查出每個詞的 posting list；多個詞都要出現時，取它們的交集。posting list 依文件編號排好序，交集可以像合併排序一樣一次走完，再加上跳躍指標（skip list）跳過不可能相交的區段。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

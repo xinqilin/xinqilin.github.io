@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Consistent Hashing on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/consistent-hashing/</link>
+		<description>Recent content in Consistent Hashing on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/consistent-hashing/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Consistent Hashing：增減節點只搬 1/N、虛擬節點與 rendezvous hashing，以及被刻意挑選的 key</title>
+				<link>https://xinqilin.github.io/post/systemdesign/consistent-hashing/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/consistent-hashing/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 4-3｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/sharding/&#34;&gt;Sharding&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/distributed-id/&#34;&gt;分散式 ID&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座詳情頁的快取放在 10 台獨立的 Redis 上（不是 Redis Cluster），應用程式用 &lt;code&gt;hash(key) % 10&lt;/code&gt; 決定每個 key 放在哪一台。尖峰每秒 5 萬次讀取，命中率 98%，資料庫只承受每秒 1,000 次查詢。&lt;/p&gt;&#xA;&lt;p&gt;某天其中一台故障，運維把它從清單移除，公式變成 &lt;code&gt;hash(key) % 9&lt;/code&gt;。接下來的幾秒內，資料庫的查詢量衝到每秒 4 萬次以上，接著整個倒下。&lt;/p&gt;&#xA;&lt;p&gt;另一個場景：平台有 1,000 個企業租戶，每個租戶每 10 分鐘要跑一次報表彙整。應用程式有 3 台 instance，要讓每個租戶只由一台負責，而且 instance 增減時，盡量不要改變已經分配好的租戶。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;hash(key) % N&lt;/code&gt; 的分布很平均，問題在 N 改變的時候。key 的雜湊值除以 10 和除以 9 的餘數，大部分都不相同，&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/sharding/&#34;&gt;Sharding 篇&lt;/a&gt;的實測中，16 台改成 17 台要搬 94% 的資料。對快取來說，「搬移」就是 cache miss：一台故障，90% 的 key 同時失效，這正是 &lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/caching/&#34;&gt;Cache 篇&lt;/a&gt;的雪崩。&lt;/p&gt;&#xA;&lt;p&gt;我們要的是：&lt;strong&gt;加入或移除一個節點時，只有 1/N 的 key 需要換節點&lt;/strong&gt;。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

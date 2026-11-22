@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Distributed Lock on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/distributed-lock/</link>
+		<description>Recent content in Distributed Lock on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/distributed-lock/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>分散式鎖與 Fencing Token：鎖會過期，持有者卻不知道</title>
+				<link>https://xinqilin.github.io/post/systemdesign/distributed-lock/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/distributed-lock/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 4-7｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/consensus-raft/&#34;&gt;共識與 Raft&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/rest-grpc-graphql/&#34;&gt;REST、gRPC 與 GraphQL&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座平台每天凌晨 3 點把前一天的報名費結算給講者：彙總金額、呼叫銀行的撥款 API、寫入結算紀錄。服務部署了 3 個實例，要求是：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;同一時間只有一台在結算&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;做到一半的那台當機或卡住，別台要能接手&lt;/strong&gt;，不能等人工處理&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;同一筆款項絕對不能撥兩次&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;第 1、2 點是一般的分散式鎖。第 3 點才是難處：這篇會說明，&lt;strong&gt;光靠鎖做不到第 3 點&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;&lt;code&gt;synchronized&lt;/code&gt;、&lt;code&gt;ReentrantLock&lt;/code&gt;&lt;/strong&gt;：只鎖得住同一個 JVM（&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/scaling-stateless/&#34;&gt;Stateless 擴展篇&lt;/a&gt;）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;資料庫 &lt;code&gt;SELECT ... FOR UPDATE&lt;/code&gt; 鎖住一列，整個結算都在這個交易裡&lt;/strong&gt;：互斥沒問題，持有者當機時連線斷開，鎖也自動釋放。但交易要開好幾分鐘，期間佔住一條連線、累積 undo log，還在交易裡呼叫外部 API。撥款成功之後交易如果回滾，資料庫就不知道錢已經撥出去了&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Redis &lt;code&gt;SET lock 1 NX&lt;/code&gt;，結束時 &lt;code&gt;DEL&lt;/code&gt;&lt;/strong&gt;：持有者當機，鎖永遠不會被釋放&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;最後一個問題的標準解法是讓鎖&lt;strong&gt;自動過期&lt;/strong&gt;（租約，lease）。但自動過期正是後面所有問題的來源。&lt;/p&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;鎖要提供什麼&#34;&gt;鎖要提供什麼&lt;/h3&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;性質&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;意義&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;怎麼做到&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;互斥&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;同一時間只有一個持有者&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;原子的「不存在才建立」&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;不會永遠卡住&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;持有者當機，鎖最終會被釋放&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;租約到期自動釋放&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;容錯&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;鎖服務本身的一台機器故障，鎖不會遺失&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;複寫或共識&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;前兩點互相衝突：既然鎖會在持有者不知情的情況下過期，「我持有鎖」這件事就可能在任何時刻變成假的。&lt;/p&gt;&#xA;&lt;h3 id=&#34;停頓持有者不知道自己已經失去鎖&#34;&gt;停頓：持有者不知道自己已經失去鎖&lt;/h3&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;sequenceDiagram&#xA;    participant A as 實例 A&#xA;    participant L as 鎖服務&#xA;    participant B as 實例 B&#xA;    participant DB as 結算資料&#xA;    A-&gt;&gt;L: 取得鎖（30 秒）&#xA;    L--&gt;&gt;A: 成功&#xA;    Note over A: Full GC 停頓 40 秒&#xA;    Note over L: 30 秒到期，鎖自動釋放&#xA;    B-&gt;&gt;L: 取得鎖（30 秒）&#xA;    L--&gt;&gt;B: 成功&#xA;    B-&gt;&gt;DB: 撥款給講者 42，標記為已付&#xA;    Note over A: 醒來，以為自己還持有鎖&#xA;    A-&gt;&gt;DB: 撥款給講者 42&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;造成停頓的原因很多：GC 的 stop-the-world、虛擬機被搬移或 CPU 被搶走、記憶體被 swap 出去、封包卡在網路的佇列裡、系統時間跳動。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

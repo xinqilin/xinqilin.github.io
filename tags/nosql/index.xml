@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>NoSQL on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/nosql/</link>
+		<description>Recent content in NoSQL on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/nosql/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>SQL vs NoSQL：從存取模式選資料庫，而不是從名詞</title>
+				<link>https://xinqilin.github.io/post/systemdesign/sql-vs-nosql/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/sql-vs-nosql/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 3-1｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/cdn/&#34;&gt;CDN 與 HTTP 快取&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/index-btree/&#34;&gt;Index 與 B+Tree&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;電商平台要同時上線三個新功能，團隊為資料庫選型吵了起來：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;訂單與付款&lt;/strong&gt;：一筆訂單要同時扣庫存、建立付款紀錄、使用優惠券，任何一步失敗都要全部回復&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;商品瀏覽紀錄&lt;/strong&gt;：每天約 1 億筆，只會新增，最常見的查詢是「某位會員最近看過的 50 個商品」，保留 90 天&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;商品屬性&lt;/strong&gt;：手機有螢幕尺寸和容量，衣服有尺碼和材質，每個品類的欄位都不一樣，而且營運會持續新增&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;有人說「NoSQL 比較快，全部換 MongoDB」，有人說「MySQL 什麼都做得到」。兩邊都只說對了一半。選資料庫要問的不是「SQL 還是 NoSQL」，而是：&lt;strong&gt;資料長什麼樣子、會怎麼被讀寫、需要什麼程度的一致性、量有多大&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;最簡單的做法是三個功能全部放進現有的 MySQL。先估算看看哪裡會撐不住：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;訂單&lt;/strong&gt;：本來就是關聯式資料庫最擅長的事，多筆資料在同一個交易裡全有或全無&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;瀏覽紀錄&lt;/strong&gt;：1 億筆 ÷ 86,400 秒 ≈ 平均每秒 1,157 筆，尖峰抓 5 倍約 5,800 筆。InnoDB 每筆資料加上列標頭與交易資訊，大約 50–70 bytes，每天約 5–7 GB，保留 90 天約 0.5 TB。單台 MySQL 用批次寫入可以處理這個量（量級估計，實際要壓測）。真正的麻煩在&lt;strong&gt;刪除&lt;/strong&gt;：每天要刪掉 1 億筆過期資料，&lt;code&gt;DELETE&lt;/code&gt; 會產生大量 undo log、鎖和碎片&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;商品屬性&lt;/strong&gt;：傳統做法是 EAV（entity–attribute–value）表，每個屬性一列。查「螢幕 6 吋以上、容量 256 GB 的手機」要自己 join 自己好幾次，又慢又難寫&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;所以極限不在「MySQL 慢」，而在&lt;strong&gt;資料的形狀和生命週期&lt;/strong&gt;。後面會看到，這三個問題在 MySQL 裡都有解，而且比引入新資料庫便宜得多。但先要理解 NoSQL 到底在解決什麼。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

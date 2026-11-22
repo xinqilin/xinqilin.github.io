@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>MVCC on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/mvcc/</link>
+		<description>Recent content in MVCC on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/mvcc/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>交易與隔離等級：MVCC、Lost Update、Write Skew 與 Spring 的交易邊界</title>
+				<link>https://xinqilin.github.io/post/systemdesign/transaction-isolation/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/transaction-isolation/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 3-4｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/btree-vs-lsm/&#34;&gt;B-Tree vs LSM-Tree&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/object-storage/&#34;&gt;檔案與物件儲存&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/&#34;&gt;導讀篇&lt;/a&gt;的年度講座報名上線前，需求又多了幾條：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;名額不能超賣&lt;/li&gt;&#xA;&lt;li&gt;講座分上午、下午場，&lt;strong&gt;同一位會員同一時段只能報名一場&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;主辦方可以臨時加開名額&lt;/li&gt;&#xA;&lt;li&gt;報名成功要寄確認信&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;QA 壓測後回報三個問題：3,000 個名額卻有 3,012 筆報名；有會員在同一時段報了兩場；主辦方把上限從 3,000 改成 3,500 之後，剩餘名額對不上。程式碼每一行看起來都沒錯，而且全都包在 &lt;code&gt;@Transactional&lt;/code&gt; 裡。&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;@Transactional&lt;/code&gt; 不代表沒有並行問題。交易保證什麼、不保證什麼，取決於隔離等級，以及程式&lt;strong&gt;怎麼讀、怎麼寫&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;最直覺的寫法是「先讀出來、在 Java 判斷、再寫回去」。兩個請求同時進來時，時間軸是這樣：&lt;/p&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;時間&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;交易 A（會員 101）&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;交易 B（會員 102）&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;t1&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;SELECT remaining&lt;/code&gt; → 1&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;t2&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;SELECT remaining&lt;/code&gt; → 1&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;t3&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;UPDATE ... SET remaining = 0&lt;/code&gt;、新增報名、&lt;code&gt;COMMIT&lt;/code&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;t4&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;UPDATE ... SET remaining = 0&lt;/code&gt;、新增報名、&lt;code&gt;COMMIT&lt;/code&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;兩個交易都讀到「還有 1 個名額」，都報名成功，&lt;code&gt;remaining&lt;/code&gt; 卻只被扣了一次：A 的扣減被 B 覆蓋掉了。這叫 &lt;strong&gt;lost update&lt;/strong&gt;。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Message Queue on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/message-queue/</link>
+		<description>Recent content in Message Queue on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/message-queue/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Message Queue：解耦、削峰與重試，以及訊息一定會重複這件事</title>
+				<link>https://xinqilin.github.io/post/systemdesign/message-queue/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/message-queue/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 5-2｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/rest-grpc-graphql/&#34;&gt;REST、gRPC 與 GraphQL&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/pubsub-delivery-semantics/&#34;&gt;Pub/Sub 與投遞語意&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;報名成功之後，系統還要做三件事：寄確認信、通知講者、把報名紀錄送去推薦系統。目前全部在報名的 API 裡同步執行，問題接連出現：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;慢&lt;/strong&gt;：報名 API 的延遲等於這四件事的總和，其中寄信最慢&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;連帶失敗&lt;/strong&gt;：郵件服務當機時，報名也跟著失敗。使用者明明已經搶到名額，卻看到錯誤&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;尖峰&lt;/strong&gt;：熱門講座開放報名的那 10 分鐘湧入 3 萬筆報名，但郵件服務商限制每秒最多送 50 封。同步呼叫時，超過的請求只能失敗&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;&lt;code&gt;@Async&lt;/code&gt; 丟到執行緒池&lt;/strong&gt;：報名 API 變快了，但工作只存在記憶體裡。服務重啟或當機，還沒執行的工作全部消失，也沒有地方看得到失敗了哪些&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;資料庫當佇列&lt;/strong&gt;：報名時在同一個交易裡寫一筆「待寄信」紀錄，背景程式用 &lt;code&gt;SELECT ... FOR UPDATE SKIP LOCKED&lt;/code&gt; 取出處理。工作和報名一起提交，不會遺失，多台背景程式也不會搶到同一筆。&lt;strong&gt;量不大時這是很好的選擇&lt;/strong&gt;，它的極限在於輪詢的負擔、大量更新造成的鎖競爭與表膨脹，以及每增加一種消費者就要再多一張表或一個狀態欄位&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;需要更大的量、更多種消費者、更完整的重試與監控時，才輪到專門的 message broker。&lt;/p&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;佇列提供的三件事&#34;&gt;佇列提供的三件事&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;時間上的解耦&lt;/strong&gt;：生產者送出訊息就可以回應使用者，消費者晚一點處理、甚至暫時停機都沒關係&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;削峰&lt;/strong&gt;：生產速度和消費速度不必相同，差額暫存在佇列裡。3 萬封信以每秒 50 封的速度寄送，需要 600 秒，也就是尖峰過後約 10 分鐘全部寄完，而不是 2 萬 9 千筆請求失敗&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;失敗隔離與重試&lt;/strong&gt;：郵件服務當機時，訊息留在佇列裡等待重試，報名本身不受影響&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;代價是&lt;strong&gt;最終一致&lt;/strong&gt;：報名成功的那一刻，確認信還沒寄出。產品要接受這段延遲，介面上也要能表達「處理中」。&lt;/p&gt;&#xA;&lt;h3 id=&#34;競爭消費者與-prefetch&#34;&gt;競爭消費者與 prefetch&lt;/h3&gt;&#xA;&lt;p&gt;多個消費者訂閱同一個佇列，每則訊息只交給其中一個。消費者跟不上時，加開實例就能提高處理速度。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Prefetch&lt;/strong&gt; 決定 broker 一次最多推給每個消費者幾則還沒確認的訊息。值越大，吞吐量越高，因為消費者不必每處理完一則就等下一則；但訊息會堆在消費者的記憶體裡，也分配得比較不平均。Spring AMQP 的預設值是 250。訊息很大、處理很慢、或需要嚴格順序時，要調低。&lt;/p&gt;&#xA;&lt;h3 id=&#34;ack-的時機決定投遞語意&#34;&gt;Ack 的時機決定投遞語意&lt;/h3&gt;&#xA;&lt;p&gt;Broker 送出訊息後，要等消費者回覆 ack 才會刪除它：&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

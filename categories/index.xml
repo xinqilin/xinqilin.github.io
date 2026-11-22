@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sun, 01 Nov 2026 00:00:00 +0800</lastBuildDate>
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
 		
 			<atom:link href="https://xinqilin.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>SystemDesign</title>
+				<link>https://xinqilin.github.io/categories/systemdesign/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/systemdesign/</guid>
+				<description></description>
+			</item>
 			<item>
 				<title>CLI</title>
 				<link>https://xinqilin.github.io/categories/cli/</link>
@@ -42,13 +49,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Backend</title>
-				<link>https://xinqilin.github.io/categories/backend/</link>
-				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/categories/backend/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Container</title>
 				<link>https://xinqilin.github.io/categories/container/</link>
 				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
@@ -56,10 +56,31 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Tools</title>
-				<link>https://xinqilin.github.io/categories/tools/</link>
-				<pubDate>Wed, 02 Nov 2022 23:05:25 +0800</pubDate>
-				<guid>https://xinqilin.github.io/categories/tools/</guid>
+				<title>Database</title>
+				<link>https://xinqilin.github.io/categories/database/</link>
+				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/database/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Spring</title>
+				<link>https://xinqilin.github.io/categories/spring/</link>
+				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/spring/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Java</title>
+				<link>https://xinqilin.github.io/categories/java/</link>
+				<pubDate>Thu, 05 Jan 2023 23:45:46 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/java/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Linux</title>
+				<link>https://xinqilin.github.io/categories/linux/</link>
+				<pubDate>Sat, 29 Oct 2022 00:10:56 +0800</pubDate>
+				<guid>https://xinqilin.github.io/categories/linux/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -67,20 +88,6 @@
 				<link>https://xinqilin.github.io/categories/git/</link>
 				<pubDate>Wed, 09 Feb 2022 19:46:19 +0800</pubDate>
 				<guid>https://xinqilin.github.io/categories/git/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>DevOps</title>
-				<link>https://xinqilin.github.io/categories/devops/</link>
-				<pubDate>Tue, 18 Jan 2022 23:56:44 +0800</pubDate>
-				<guid>https://xinqilin.github.io/categories/devops/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Linux</title>
-				<link>https://xinqilin.github.io/categories/linux/</link>
-				<pubDate>Sun, 16 Jan 2022 22:35:54 +0800</pubDate>
-				<guid>https://xinqilin.github.io/categories/linux/</guid>
 				<description></description>
 			</item>
 			<item>

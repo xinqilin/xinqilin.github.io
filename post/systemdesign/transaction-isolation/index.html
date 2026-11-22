@@ -1,0 +1,1070 @@
+<!doctype html><html lang=zh-tw><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>交易與隔離等級：MVCC、Lost Update、Write Skew 與 Spring 的交易邊界 - Bill.Lin's Notes</title><meta name=description content="System Design 系列 Part 3：以活動報名實測 lost update 與 write skew，比較條件式 UPDATE、悲觀鎖、樂觀鎖與唯一約束，並說明各資料庫隔離等級的差異與 Spring 交易邊界"><link rel=stylesheet href=https://xinqilin.github.io/css/style.min.css><link rel=stylesheet href=https://xinqilin.github.io/css/chroma.min.css><link rel=icon type=image/svg+xml href=/images/Bill-coding.svg><link rel=icon type=image/x-icon href=/images/Bill-coding.ico><meta property="og:title" content="交易與隔離等級：MVCC、Lost Update、Write Skew 與 Spring 的交易邊界"><meta property="og:description" content="System Design 系列 Part 3：以活動報名實測 lost update 與 write skew，比較條件式 UPDATE、悲觀鎖、樂觀鎖與唯一約束，並說明各資料庫隔離等級的差異與 Spring 交易邊界"><meta property="og:type" content="article"><meta property="og:url" content="https://xinqilin.github.io/post/systemdesign/transaction-isolation/"></head><body><div class=container><header class=site-header><nav class=site-nav><a href=https://xinqilin.github.io/ class=site-brand><img src=/images/Bill-coding.svg alt class=site-brand-icon aria-hidden=true>
+<span class=site-brand-name>Bill.Lin's Notes</span></a><ul class=site-nav-menu><li><a href=https://xinqilin.github.io/ class=site-nav-link>Me</a></li><li><a href=/posts/ class=site-nav-link>Posts</a></li><li><a href=/categories/ class=site-nav-link>Categories</a></li><li><a href=/tags/ class=site-nav-link>Tags</a></li><li id=search-container class=site-nav-search><a href=# id=search-trigger class=site-nav-link aria-label=Search>Search</a>
+<input type=text id=search-input placeholder=搜尋文章...><div id=search-results-container></div></li></ul></nav></header><style>.container{max-width:1100px}.site-header{background:rgba(243,246,247,.85);backdrop-filter:saturate(180%)blur(8px);-webkit-backdrop-filter:saturate(180%)blur(8px);border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:100}.site-nav{max-width:1100px;margin:0 auto;padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:1rem}.site-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#2d3748;font-weight:600;font-size:1rem;transition:color .15s ease}.site-brand:hover{color:#36b9d8;text-decoration:none}.site-brand-icon{width:28px;height:28px;border-radius:6px}.site-brand-name{letter-spacing:.01em}.site-nav-menu{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:.4rem}.site-nav-menu li{display:inline-flex;align-items:center}.site-nav-link{color:#4a5568;text-decoration:none;font-size:.92rem;padding:7px 12px;border-radius:8px;transition:color .15s ease,background-color .15s ease}.site-nav-link:hover{color:#1a8eb3;background:rgba(97,200,224,.12);text-decoration:none}#search-container{position:relative}#search-input{position:absolute;top:50%;left:0;transform:translateY(-50%);height:100%;width:0;padding:0;margin:0;opacity:0;visibility:hidden;border:none;border-radius:12px;font-family:inherit;font-size:1em;color:#4a5568;background-color:#fff;outline:none;transition:width .35s ease,opacity .3s ease,padding .35s ease;z-index:10}#search-container.search-active #search-trigger{opacity:0;visibility:hidden}#search-container.search-active #search-input{width:220px;padding:.6rem 1.2rem;opacity:1;visibility:visible;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e2e8f0}#search-results-container{display:none;position:absolute;top:calc(100% + 5px);left:0;width:320px;max-height:400px;overflow-y:auto;background-color:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,.15);z-index:1001}.search-result-link{display:block;text-decoration:none;color:inherit;padding:12px 15px;border-bottom:1px solid #eee;transition:background-color .2s ease}.search-result-link:hover{background-color:#f8f9fa}.search-result-link:last-child{border-bottom:none}.search-result-title{font-size:1em;font-weight:600;color:#333;margin:0 0 5px}.search-result-link:hover .search-result-title{color:#61c8e0}.search-result-summary{font-size:.9em;color:#666;margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.post-content table:not(.lntable){border-collapse:collapse;margin:1.2em 0;display:block;overflow-x:auto;max-width:100%;font-size:.95em}.post-content table:not(.lntable) thead{background-color:#f6f8fa}.post-content table:not(.lntable) th,.post-content table:not(.lntable) td{padding:.5em .9em;border:1px solid #d0d7de;text-align:left;vertical-align:top;line-height:1.55}.post-content table:not(.lntable) th{font-weight:600}.post-content table:not(.lntable) tbody tr:nth-child(even){background-color:#fafbfc}.post-content table:not(.lntable) code{background-color:rgba(175,184,193,.2);padding:.1em .35em;border-radius:3px;font-size:.9em}html{background-color:#f3f6f7}body{background-color:transparent}#particles-bg-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}.container{position:relative;z-index:1}.post-content{max-width:720px;margin:0 auto}.post-content p,.post-content li{line-height:1.75;color:#2d3748}.post-content li{line-height:2}.post-content h1,.post-title,.post-header h1{border-left:4px solid #61c8e0;padding-left:16px;line-height:1.4}.post-content blockquote{border:2px solid #61c8e0;border-left:2px solid #61c8e0;background-color:transparent;padding:15px 20px;margin:1.2em 0;color:#2d3748}.post-content a{color:#36b9d8;text-decoration:none}.post-content a:hover{text-decoration:underline}.post-content :not(pre)>code{background-color:#e6e6e6;color:#526367;padding:2px 6px;border-radius:4px;font-size:.92em}.post-content hr{border:0;border-top:1px solid #d0d7de;margin:2.5em 0}.cat-index-page{max-width:960px;margin:0 auto;padding:2rem 1rem}.cat-index-head{text-align:center;margin-bottom:2.5rem}.cat-index-head h1{font-size:2rem;font-weight:700;color:#2d3748;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;margin:0}.cat-index-sub{color:#718096;margin-top:.5rem;font-size:.95rem}.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}.cat-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.6rem;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;position:relative;overflow:hidden}.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#61c8e0,transparent);opacity:0;transition:opacity .2s ease}.cat-card:hover{transform:translateY(-3px);border-color:#61c8e0;box-shadow:0 6px 20px rgba(97,200,224,.15);text-decoration:none}.cat-card:hover::before{opacity:1}.cat-card-icon{font-size:2.4rem;line-height:1}.cat-card-name{font-size:1.15rem;font-weight:700;color:#2d3748;margin:0;border-left:none;padding-left:0;line-height:1.3}.cat-card-count{font-size:.85rem;color:#36b9d8;margin:0;font-weight:500}.cat-card-desc{font-size:.88rem;color:#718096;margin:0;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.tags-cloud-page{max-width:900px;margin:0 auto;padding:2rem 1rem}.tags-header{text-align:center;margin-bottom:2.5rem}.tags-header h1{font-size:2rem;font-weight:700;color:#2d3748;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;margin:0}.tags-subtitle{color:#718096;margin-top:.5rem;font-size:.95rem}.tags-cloud{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;justify-content:center}.tag-pill{display:inline-flex;align-items:baseline;gap:6px;padding:6px 14px;border-radius:999px;text-decoration:none;border:1px solid transparent;transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease;line-height:1.4}.tag-pill:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(97,200,224,.2);text-decoration:none}.tag-pill .tag-count{font-size:.7em;opacity:.65;font-weight:500}.tag-pill.tag-sm{background:#f0f4f5;color:#718096;font-size:13px}.tag-pill.tag-sm:hover{background:#e2e8f0;color:#2d3748}.tag-pill.tag-md{background:#e8f4f7;color:#2d3748;font-size:15px;font-weight:500}.tag-pill.tag-md:hover{background:#d4ebf2;border-color:#36b9d8}.tag-pill.tag-lg{background:#d4f1f8;color:#1a8eb3;font-size:17px;font-weight:600;border-color:#61c8e0}.tag-pill.tag-lg:hover{background:#b8e4f0;color:#0e6e8f}.term-page{max-width:760px;margin:0 auto;padding:2rem 1rem}.term-page-head{text-align:center;margin-bottom:2.5rem}.term-page-icon{font-size:3rem;line-height:1;margin-bottom:.6rem}.term-page-title{font-size:2rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px;line-height:1.3}.term-page-meta{color:#718096;margin-top:.6rem;font-size:.95rem}.term-page-desc{color:#4a5568;font-size:.95rem;line-height:1.7;margin:1rem auto 0;max-width:620px}.term-page-back{text-align:center;margin-top:2.5rem}.term-back-link{color:#36b9d8;text-decoration:none;font-size:.95rem;border:1px solid #e2e8f0;padding:8px 16px;border-radius:999px;transition:all .2s ease;background:#fff}.term-back-link:hover{border-color:#61c8e0;background:#d4f1f8;text-decoration:none}.post-index-page{max-width:800px;margin:0 auto;padding:2rem 1rem}.post-index-head{text-align:center;margin-bottom:2.5rem}.post-index-title{font-size:2rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;display:inline-block;padding:0 16px}.post-index-sub{color:#718096;margin-top:.5rem;font-size:.95rem}.post-list{display:flex;flex-direction:column;gap:.85rem}.post-list-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.2rem 1.4rem;text-decoration:none;color:inherit;display:block;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;position:relative}.post-list-card::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:0;background:#61c8e0;border-radius:2px;transition:height .2s ease}.post-list-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.12);text-decoration:none;transform:translateX(2px)}.post-list-card:hover::before{height:60%}.post-list-card-title{font-size:1.1rem;font-weight:600;color:#2d3748;margin:0 0 .4rem;line-height:1.45;border-left:none;padding-left:0}.post-list-card-desc{font-size:.9rem;color:#718096;margin:0 0 .6rem;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.post-list-card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.82rem;color:#a0aec0}.post-list-card-meta time{font-feature-settings:"tnum"}.post-list-card-dot{color:#cbd5e0}.post-list-card-tags{display:inline-flex;flex-wrap:wrap;gap:.3rem}.post-list-card-tag{color:#718096;font-size:.78rem}.post-list-card-cat{color:#36b9d8;font-weight:500}.post-list-empty{text-align:center;padding:3rem 1rem;color:#a0aec0}.home-page{max-width:800px;margin:0 auto;padding:2rem 1rem}.home-hero{padding:1.5rem 0 2.5rem;border-bottom:1px solid #e2e8f0;margin-bottom:2.5rem;display:flex;align-items:flex-start;gap:1.5rem}.home-hero-text{flex:1;min-width:0}.home-hero-avatar-wrap{position:relative;flex-shrink:0;width:110px;height:110px;display:flex;align-items:center;justify-content:center;cursor:pointer}.home-hero-avatar-ring{position:absolute;inset:0;border-radius:50%;background:linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#feca57,#ff9ff3,#54a0ff,#5f27cd,#ff6b6b);background-size:400% 400%;animation:heroAvatarRotate 3s ease-in-out infinite;opacity:.85;will-change:transform,background-position}.home-hero-avatar-ring::before{content:'';position:absolute;inset:4px;background:#f3f6f7;border-radius:50%;z-index:1}.home-hero-avatar{position:relative;width:96px;height:96px;border-radius:50%;z-index:2;object-fit:cover;transition:transform .3s ease,filter .3s ease}.home-hero-avatar-wrap::after{content:'✨';position:absolute;top:-8px;right:-4px;font-size:16px;animation:heroAvatarSparkle 2.5s ease-in-out infinite;pointer-events:none;z-index:3}.home-hero-avatar-wrap:hover .home-hero-avatar-ring{animation:heroAvatarRotate 1.2s ease-in-out infinite,heroAvatarPulse 2s ease-in-out infinite}.home-hero-avatar-wrap:hover .home-hero-avatar{transform:scale(1.08);filter:brightness(1.08)saturate(1.1)}.home-hero-avatar-wrap:active .home-hero-avatar{transform:scale(.96)}@keyframes heroAvatarRotate{0%{background-position:0;transform:rotate(0)}25%{background-position:100%;transform:rotate(90deg)}50%{background-position:100%;transform:rotate(180deg)}75%{background-position:0;transform:rotate(270deg)}100%{background-position:0;transform:rotate(360deg)}}@keyframes heroAvatarPulse{0%,100%{opacity:.85}50%{opacity:1;box-shadow:0 0 18px rgba(97,200,224,.45)}}@keyframes heroAvatarSparkle{0%,100%{opacity:0;transform:scale(.8)rotate(0)}50%{opacity:1;transform:scale(1.2)rotate(180deg)}}@media(max-width:600px){.home-hero{flex-direction:column;gap:1rem;align-items:flex-start}.home-hero-avatar-wrap{width:92px;height:92px}.home-hero-avatar{width:80px;height:80px}}.home-hero-eyebrow{color:#36b9d8;font-size:.95rem;font-weight:500;margin:0 0 .3rem;letter-spacing:.04em}.home-hero-name{font-size:2.6rem;font-weight:800;color:#1a202c;margin:0 0 .5rem;line-height:1.1;border-left:4px solid #61c8e0;padding-left:16px}.home-hero-role{font-size:1.05rem;color:#4a5568;margin:0 0 .25rem;font-weight:500}.home-hero-loc{font-size:.92rem;color:#718096;margin:0 0 1rem}.home-hero-bio{font-size:.98rem;color:#4a5568;line-height:1.75;margin:0 0 1.4rem;max-width:640px}.home-hero-links{display:flex;flex-wrap:wrap;gap:.6rem}.home-link-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;color:#2d3748;text-decoration:none;font-size:.88rem;font-weight:500;transition:all .18s ease}.home-link-pill:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none;transform:translateY(-1px)}.home-section{margin-bottom:2.5rem}.home-section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}.home-section-title{font-size:1.4rem;font-weight:700;color:#2d3748;margin:0;border-left:4px solid #61c8e0;padding-left:12px;line-height:1.2;display:inline-flex;align-items:center;gap:.55rem}.home-section-icon{width:22px;height:22px;color:#36b9d8;flex-shrink:0}.exp-bullets .metric{color:#1a8eb3;font-weight:600;font-feature-settings:"tnum"}.home-section-more{font-size:.88rem;color:#36b9d8;text-decoration:none;transition:color .15s ease}.home-section-more:hover{color:#1a8eb3;text-decoration:underline}.home-cat-pills{display:flex;flex-wrap:wrap;gap:.6rem}.home-cat-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;color:#2d3748;text-decoration:none;font-size:.9rem;transition:all .18s ease}.home-cat-pill:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none;transform:translateY(-1px)}.home-cat-pill-icon{font-size:1.1em;line-height:1}.home-cat-pill-count{font-size:.75em;color:#a0aec0;background:#f0f4f5;padding:1px 7px;border-radius:999px;font-weight:500}.home-cat-pill:hover .home-cat-pill-count{background:rgba(97,200,224,.15);color:#1a8eb3}.home-hero-bio-aside{color:#718096!important;font-size:.92rem!important;margin-top:-.7rem!important;font-style:italic}.home-link-pill-icon{width:16px;height:16px;flex-shrink:0;color:#4a5568;transition:color .18s ease}.home-link-pill:hover .home-link-pill-icon{color:#1a8eb3}.home-hero-footnote{font-size:.78rem;color:#a0aec0;margin:.9rem 0 0;font-feature-settings:"tnum"}.home-hero-footnote a{color:#36b9d8;text-decoration:none}.home-hero-footnote a:hover{text-decoration:underline}.skill-aside{margin:.6rem 0 0;font-size:.8rem;color:#718096;font-style:italic}.cert-subhead{font-size:.78rem;color:#36b9d8;margin:1.4rem 0 .7rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-left:none;padding-left:0}.cert-subhead:first-of-type{margin-top:0}.home-section-side{font-size:.85rem;color:#a0aec0}.exp-timeline{list-style:none;margin:0;padding:0;position:relative}.exp-timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#61c8e0 0%,#e2e8f0 100%);border-radius:1px}.exp-item{position:relative;padding-left:38px;padding-bottom:1.6rem}.exp-item:last-child{padding-bottom:0}.exp-dot{position:absolute;left:4px;top:8px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid #cbd5e0;box-shadow:0 0 0 4px #f3f6f7;z-index:1}.exp-item-current .exp-dot{border-color:#61c8e0;background:#61c8e0;box-shadow:0 0 0 4px #f3f6f7,0 0 0 7px rgba(97,200,224,.25)}.exp-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.1rem 1.3rem;transition:border-color .18s ease,box-shadow .18s ease}.exp-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.1)}.exp-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem;margin-bottom:.2rem}.exp-role{font-size:1.05rem;font-weight:700;color:#2d3748;margin:0;border-left:none;padding-left:0;line-height:1.3}.exp-period{font-size:.82rem;color:#a0aec0;font-feature-settings:"tnum"}.exp-company{font-size:.92rem;color:#36b9d8;margin:0 0 .6rem;font-weight:500}.exp-bullets{margin:.4rem 0 .7rem;padding-left:1.1rem;color:#4a5568;font-size:.9rem;line-height:1.7}.exp-bullets li{margin-bottom:.18rem}.exp-bullets li::marker{color:#61c8e0}.exp-skills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}.exp-skill{font-size:.75rem;color:#4a5568;background:#f0f4f5;padding:2px 9px;border-radius:999px;line-height:1.5}.skill-cluster{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}.skill-group{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1rem 1.2rem}.skill-group-name{font-size:.82rem;color:#36b9d8;margin:0 0 .6rem;text-transform:uppercase;letter-spacing:.06em;font-weight:600;border-left:none;padding-left:0}.skill-pills{display:flex;flex-wrap:wrap;gap:.35rem}.skill-pill{display:inline-block;font-size:.82rem;color:#2d3748;background:#f0f4f5;border:1px solid transparent;padding:3px 10px;border-radius:999px;line-height:1.55;transition:all .15s ease}.skill-pill.skill-primary{background:#d4f1f8;color:#1a8eb3;font-weight:500;border-color:rgba(97,200,224,.4)}.skill-pill.skill-interest{background:#fff;color:#718096;border-color:#e2e8f0;border-style:dashed}.cert-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.85rem}.cert-card{display:flex;align-items:center;gap:1rem;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1rem 1.2rem;transition:border-color .18s ease,box-shadow .18s ease}.cert-card:hover{border-color:#61c8e0;box-shadow:0 4px 14px rgba(97,200,224,.1)}.cert-icon{flex-shrink:0;width:44px;height:44px;border-radius:8px;background:#1a1a1a;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;font-family:helvetica neue,sans-serif;letter-spacing:0}.cert-icon-anthropic{background:#1a1a1a}.cert-icon-oracle{background:#c74634}.cert-icon-erp{background:#2b6cb0;font-size:.8rem;letter-spacing:.02em}.cert-body{flex:1;min-width:0}.cert-name{font-size:.95rem;font-weight:600;color:#2d3748;margin:0 0 .2rem;border-left:none;padding-left:0;line-height:1.4}.cert-issuer{font-size:.82rem;color:#718096;margin:0;font-feature-settings:"tnum"}.post-index-head-row{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:.8rem;text-align:left}.post-index-head-row .post-index-title{border-left:4px solid #61c8e0;padding:0 14px}.post-index-head-row .post-index-sub{margin-top:.3rem;margin-left:14px}.post-index-side-link{color:#36b9d8;text-decoration:none;font-size:.92rem;padding:6px 14px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;transition:all .18s ease;white-space:nowrap}.post-index-side-link:hover{border-color:#61c8e0;background:#d4f1f8;color:#1a8eb3;text-decoration:none}@media(max-width:600px){.cat-grid{grid-template-columns:1fr}.post-content{padding:0 1rem}.tag-pill.tag-lg{font-size:16px}.tag-pill.tag-md{font-size:14px}.home-hero-name{font-size:2.1rem}.post-list-card{padding:1rem 1.1rem}.site-nav{padding:0 1rem;gap:.5rem}.site-nav-menu{gap:.1rem}.site-nav-link{padding:7px 8px;font-size:.85rem}.site-brand-name{font-size:.92rem}}.footer{background:0 0!important;border-top:1px solid #e2e8f0;margin-top:4rem;padding:1.6rem 1rem!important}.footer-content{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem}.footer-content p{margin:0;color:#718096;font-size:.85rem}.footer .social-links{display:inline-flex;gap:.6rem}.footer .social-link{color:#718096;text-decoration:none;font-size:.85rem;transition:color .15s ease}.footer .social-link:hover{color:#36b9d8;text-decoration:underline}.main-content{min-height:calc(100vh - 60px - 100px)}</style><main class=main-content><article class=post><header class=post-header><h1 class=post-title>交易與隔離等級：MVCC、Lost Update、Write Skew 與 Spring 的交易邊界</h1><div class=post-meta><div class=post-info><time class=post-date>2026年11月22日</time>
+<span class=post-author>by Bill.Lin</span>
+<span class=reading-time>16 分鐘閱讀</span></div><div class=post-categories><a href=/categories/systemdesign class=category-link>SystemDesign</a></div></div></header><div class=post-content><blockquote><p><strong>System Design 系列</strong> Part 3-4｜上一篇：<a href=/post/systemdesign/btree-vs-lsm/>B-Tree vs LSM-Tree</a>｜下一篇：<a href=/post/systemdesign/object-storage/>檔案與物件儲存</a>｜<a href=/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96>系列地圖</a></p></blockquote><h2 id=情境與問題>情境與問題</h2><p><a href=/post/systemdesign/system-design-thinking/>導讀篇</a>的年度講座報名上線前，需求又多了幾條：</p><ol><li>名額不能超賣</li><li>講座分上午、下午場，<strong>同一位會員同一時段只能報名一場</strong></li><li>主辦方可以臨時加開名額</li><li>報名成功要寄確認信</li></ol><p>QA 壓測後回報三個問題：3,000 個名額卻有 3,012 筆報名；有會員在同一時段報了兩場；主辦方把上限從 3,000 改成 3,500 之後，剩餘名額對不上。程式碼每一行看起來都沒錯，而且全都包在 <code>@Transactional</code> 裡。</p><p><code>@Transactional</code> 不代表沒有並行問題。交易保證什麼、不保證什麼，取決於隔離等級，以及程式<strong>怎麼讀、怎麼寫</strong>。</p><h2 id=最簡單的做法與它的極限>最簡單的做法與它的極限</h2><p>最直覺的寫法是「先讀出來、在 Java 判斷、再寫回去」。兩個請求同時進來時，時間軸是這樣：</p><table><thead><tr><th>時間</th><th>交易 A（會員 101）</th><th>交易 B（會員 102）</th></tr></thead><tbody><tr><td>t1</td><td><code>SELECT remaining</code> → 1</td><td></td></tr><tr><td>t2</td><td></td><td><code>SELECT remaining</code> → 1</td></tr><tr><td>t3</td><td><code>UPDATE ... SET remaining = 0</code>、新增報名、<code>COMMIT</code></td><td></td></tr><tr><td>t4</td><td></td><td><code>UPDATE ... SET remaining = 0</code>、新增報名、<code>COMMIT</code></td></tr></tbody></table><p>兩個交易都讀到「還有 1 個名額」，都報名成功，<code>remaining</code> 卻只被扣了一次：A 的扣減被 B 覆蓋掉了。這叫 <strong>lost update</strong>。</p><p>「同一時段只能報名一場」也有一樣的問題：會員 7 同時送出上午場兩個不同講座的報名，兩個交易各自查詢「會員 7 上午場有沒有報名」都得到「沒有」，於是各自新增一筆。</p><p>實際用兩條執行緒、兩個連線同時跑看看。下面的程式除了這兩種寫法，也一併跑了後面會介紹的修正方式：</p><details><summary>實測程式（H2 記憶體資料庫，READ COMMITTED；<code>java -cp h2.jar RegistrationRaceDemo.java</code>）</summary><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span><span class=lnt>203
+</span><span class=lnt>204
+</span><span class=lnt>205
+</span><span class=lnt>206
+</span><span class=lnt>207
+</span><span class=lnt>208
+</span><span class=lnt>209
+</span><span class=lnt>210
+</span><span class=lnt>211
+</span><span class=lnt>212
+</span><span class=lnt>213
+</span><span class=lnt>214
+</span><span class=lnt>215
+</span><span class=lnt>216
+</span><span class=lnt>217
+</span><span class=lnt>218
+</span><span class=lnt>219
+</span><span class=lnt>220
+</span><span class=lnt>221
+</span><span class=lnt>222
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.Connection</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.DriverManager</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.PreparedStatement</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.ResultSet</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.SQLException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.sql.Statement</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.ArrayList</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.List</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.concurrent.CyclicBarrier</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.concurrent.ExecutorService</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.concurrent.Executors</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.concurrent.Future</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.concurrent.TimeUnit</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=cm>/** 兩個交易同時報名，比較不同寫法的結果。使用 H2 記憶體資料庫，隔離等級 READ COMMITTED。 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>RegistrationRaceDemo</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>URL</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;jdbc:h2:mem:race;DB_CLOSE_DELAY=-1&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>interface</span> <span class=nc>Attempt</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=nf>run</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>CyclicBarrier</span><span class=w> </span><span class=n>together</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=s>&#34;CREATE TABLE event (id BIGINT PRIMARY KEY, slot VARCHAR(20) NOT NULL,&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=o>+</span><span class=w> </span><span class=s>&#34; remaining INT NOT NULL, version INT NOT NULL)&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=s>&#34;CREATE TABLE registration (event_id BIGINT NOT NULL, member_id BIGINT NOT NULL, slot VARCHAR(20) NOT NULL)&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;名額只剩 1 個，會員 101 與 102 同時報名同一場：&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>seatRace</span><span class=p>(</span><span class=s>&#34;先讀再寫&#34;</span><span class=p>,</span><span class=w> </span><span class=n>RegistrationRaceDemo</span><span class=p>::</span><span class=n>readModifyWrite</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>seatRace</span><span class=p>(</span><span class=s>&#34;條件式 UPDATE&#34;</span><span class=p>,</span><span class=w> </span><span class=n>RegistrationRaceDemo</span><span class=p>::</span><span class=n>conditionalUpdate</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>seatRace</span><span class=p>(</span><span class=s>&#34;SELECT ... FOR UPDATE&#34;</span><span class=p>,</span><span class=w> </span><span class=n>RegistrationRaceDemo</span><span class=p>::</span><span class=n>selectForUpdate</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>seatRace</span><span class=p>(</span><span class=s>&#34;樂觀鎖（version）+ 重試&#34;</span><span class=p>,</span><span class=w> </span><span class=n>RegistrationRaceDemo</span><span class=p>::</span><span class=n>optimistic</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;會員 7 同時報名同一時段的兩場活動（規則：同一時段只能報名一場）：&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>slotRace</span><span class=p>(</span><span class=s>&#34;先查詢再新增&#34;</span><span class=p>,</span><span class=w> </span><span class=kc>false</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>slotRace</span><span class=p>(</span><span class=s>&#34;加上 UNIQUE (member_id, slot)&#34;</span><span class=p>,</span><span class=w> </span><span class=kc>true</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ---- 寫法一：先讀再寫 ----</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>readModifyWrite</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>CyclicBarrier</span><span class=w> </span><span class=n>together</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>int</span><span class=w> </span><span class=n>remaining</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>queryInt</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;SELECT remaining FROM event WHERE id = ?&#34;</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>together</span><span class=p>.</span><span class=na>await</span><span class=p>(</span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=n>TimeUnit</span><span class=p>.</span><span class=na>SECONDS</span><span class=p>);</span><span class=w>                  </span><span class=c1>// 兩邊都讀完才開始寫</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>remaining</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=s>&#34;額滿&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>update</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;UPDATE event SET remaining = ? WHERE id = ?&#34;</span><span class=p>,</span><span class=w> </span><span class=n>remaining</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>register</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>c</span><span class=p>.</span><span class=na>commit</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;報名成功&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ---- 寫法二：把檢查和修改合成一個 UPDATE ----</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>conditionalUpdate</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>CyclicBarrier</span><span class=w> </span><span class=n>together</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>together</span><span class=p>.</span><span class=na>await</span><span class=p>(</span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=n>TimeUnit</span><span class=p>.</span><span class=na>SECONDS</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>int</span><span class=w> </span><span class=n>updated</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>update</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;UPDATE event SET remaining = remaining - 1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=o>+</span><span class=w> </span><span class=s>&#34; WHERE id = ? AND remaining &gt; 0&#34;</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>updated</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>c</span><span class=p>.</span><span class=na>rollback</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=s>&#34;額滿&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>register</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>c</span><span class=p>.</span><span class=na>commit</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;報名成功&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ---- 寫法三：讀取時就鎖住那一列 ----</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>selectForUpdate</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>CyclicBarrier</span><span class=w> </span><span class=n>together</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>together</span><span class=p>.</span><span class=na>await</span><span class=p>(</span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=n>TimeUnit</span><span class=p>.</span><span class=na>SECONDS</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>int</span><span class=w> </span><span class=n>remaining</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>queryInt</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;SELECT remaining FROM event WHERE id = ? FOR UPDATE&#34;</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>remaining</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>c</span><span class=p>.</span><span class=na>rollback</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=s>&#34;額滿&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>update</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;UPDATE event SET remaining = ? WHERE id = ?&#34;</span><span class=p>,</span><span class=w> </span><span class=n>remaining</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>register</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>c</span><span class=p>.</span><span class=na>commit</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;報名成功&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ---- 寫法四：樂觀鎖，寫入時確認版本沒變，變了就重來 ----</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>optimistic</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>CyclicBarrier</span><span class=w> </span><span class=n>together</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>attempt</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>1</span><span class=p>;</span><span class=w> </span><span class=n>attempt</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>3</span><span class=p>;</span><span class=w> </span><span class=n>attempt</span><span class=o>++</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>int</span><span class=o>[]</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>queryInts</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;SELECT remaining, version FROM event WHERE id = ?&#34;</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>int</span><span class=w> </span><span class=n>remaining</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>row</span><span class=o>[</span><span class=n>0</span><span class=o>]</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>int</span><span class=w> </span><span class=n>version</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>row</span><span class=o>[</span><span class=n>1</span><span class=o>]</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>attempt</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>1</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>together</span><span class=p>.</span><span class=na>await</span><span class=p>(</span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=n>TimeUnit</span><span class=p>.</span><span class=na>SECONDS</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>remaining</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>c</span><span class=p>.</span><span class=na>rollback</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w> </span><span class=s>&#34;額滿（第 &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>attempt</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 次嘗試）&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>int</span><span class=w> </span><span class=n>updated</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>update</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;UPDATE event SET remaining = ?, version = version + 1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=o>+</span><span class=w> </span><span class=s>&#34; WHERE id = ? AND version = ?&#34;</span><span class=p>,</span><span class=w> </span><span class=n>remaining</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>version</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>updated</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>1</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>register</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>c</span><span class=p>.</span><span class=na>commit</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w> </span><span class=s>&#34;報名成功（第 &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>attempt</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 次嘗試）&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>c</span><span class=p>.</span><span class=na>rollback</span><span class=p>();</span><span class=w>                                     </span><span class=c1>// 版本已被別人改過：放棄這次，重新讀取</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;重試次數用完&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ---- 同一時段只能報名一場 ----</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>checkThenInsert</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>CyclicBarrier</span><span class=w> </span><span class=n>together</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>slot</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>queryString</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;SELECT slot FROM event WHERE id = ?&#34;</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>int</span><span class=w> </span><span class=n>existing</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>queryInt</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;SELECT COUNT(*) FROM registration WHERE member_id = ? AND slot = ?&#34;</span><span class=p>,</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>slot</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>together</span><span class=p>.</span><span class=na>await</span><span class=p>(</span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=n>TimeUnit</span><span class=p>.</span><span class=na>SECONDS</span><span class=p>);</span><span class=w>                  </span><span class=c1>// 兩邊都檢查完才開始寫</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>existing</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=s>&#34;時段衝突&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>register</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>c</span><span class=p>.</span><span class=na>commit</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;報名成功&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>seatRace</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>title</span><span class=p>,</span><span class=w> </span><span class=n>Attempt</span><span class=w> </span><span class=n>attempt</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=s>&#34;DELETE FROM registration&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=s>&#34;DELETE FROM event&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=s>&#34;INSERT INTO event VALUES (42, &#39;SAT-AM&#39;, 1, 0)&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>results</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>race</span><span class=p>(</span><span class=n>attempt</span><span class=p>,</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>long</span><span class=o>[][]</span><span class=w> </span><span class=p>{{</span><span class=n>101</span><span class=p>,</span><span class=w> </span><span class=n>42</span><span class=p>},</span><span class=w> </span><span class=p>{</span><span class=n>102</span><span class=p>,</span><span class=w> </span><span class=n>42</span><span class=p>}});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>printf</span><span class=p>(</span><span class=s>&#34;  %s：%s｜剩餘名額 %d｜報名 %d 筆%n&#34;</span><span class=p>,</span><span class=w> </span><span class=n>title</span><span class=p>,</span><span class=w> </span><span class=n>results</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>scalar</span><span class=p>(</span><span class=s>&#34;SELECT remaining FROM event WHERE id = 42&#34;</span><span class=p>),</span><span class=w> </span><span class=n>scalar</span><span class=p>(</span><span class=s>&#34;SELECT COUNT(*) FROM registration&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>slotRace</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>title</span><span class=p>,</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=n>uniqueConstraint</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=s>&#34;DELETE FROM registration&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=s>&#34;DELETE FROM event&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=s>&#34;INSERT INTO event VALUES (42, &#39;SAT-AM&#39;, 100, 0), (43, &#39;SAT-AM&#39;, 100, 0)&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>execute</span><span class=p>(</span><span class=n>uniqueConstraint</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=o>?</span><span class=w> </span><span class=s>&#34;CREATE UNIQUE INDEX IF NOT EXISTS uk_member_slot ON registration (member_id, slot)&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>:</span><span class=w> </span><span class=s>&#34;DROP INDEX IF EXISTS uk_member_slot&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>results</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>race</span><span class=p>(</span><span class=n>RegistrationRaceDemo</span><span class=p>::</span><span class=n>checkThenInsert</span><span class=p>,</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>long</span><span class=o>[][]</span><span class=w> </span><span class=p>{{</span><span class=n>7</span><span class=p>,</span><span class=w> </span><span class=n>42</span><span class=p>},</span><span class=w> </span><span class=p>{</span><span class=n>7</span><span class=p>,</span><span class=w> </span><span class=n>43</span><span class=p>}});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>printf</span><span class=p>(</span><span class=s>&#34;  %s：%s｜會員 7 在 SAT-AM 有 %d 筆報名%n&#34;</span><span class=p>,</span><span class=w> </span><span class=n>title</span><span class=p>,</span><span class=w> </span><span class=n>results</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>scalar</span><span class=p>(</span><span class=s>&#34;SELECT COUNT(*) FROM registration WHERE member_id = 7 AND slot = &#39;SAT-AM&#39;&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>race</span><span class=p>(</span><span class=n>Attempt</span><span class=w> </span><span class=n>attempt</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=o>[][]</span><span class=w> </span><span class=n>requests</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>CyclicBarrier</span><span class=w> </span><span class=n>together</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CyclicBarrier</span><span class=p>(</span><span class=n>requests</span><span class=p>.</span><span class=na>length</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ExecutorService</span><span class=w> </span><span class=n>pool</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Executors</span><span class=p>.</span><span class=na>newFixedThreadPool</span><span class=p>(</span><span class=n>requests</span><span class=p>.</span><span class=na>length</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Future</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>futures</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ArrayList</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>long</span><span class=o>[]</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>requests</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>futures</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>pool</span><span class=p>.</span><span class=na>submit</span><span class=p>(()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>DriverManager</span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=n>URL</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>c</span><span class=p>.</span><span class=na>setAutoCommit</span><span class=p>(</span><span class=kc>false</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>c</span><span class=p>.</span><span class=na>setTransactionIsolation</span><span class=p>(</span><span class=n>Connection</span><span class=p>.</span><span class=na>TRANSACTION_READ_COMMITTED</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=k>return</span><span class=w> </span><span class=n>attempt</span><span class=p>.</span><span class=na>run</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>request</span><span class=o>[</span><span class=n>0</span><span class=o>]</span><span class=p>,</span><span class=w> </span><span class=n>request</span><span class=o>[</span><span class=n>1</span><span class=o>]</span><span class=p>,</span><span class=w> </span><span class=n>together</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SQLException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=n>c</span><span class=p>.</span><span class=na>rollback</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=k>return</span><span class=w> </span><span class=s>&#34;失敗（SQLState &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>e</span><span class=p>.</span><span class=na>getSQLState</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;）&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>results</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ArrayList</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>Future</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>future</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>futures</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>results</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>future</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=n>10</span><span class=p>,</span><span class=w> </span><span class=n>TimeUnit</span><span class=p>.</span><span class=na>SECONDS</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>results</span><span class=p>.</span><span class=na>sort</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>results</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>finally</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>pool</span><span class=p>.</span><span class=na>shutdownNow</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>register</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>update</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=s>&#34;INSERT INTO registration (event_id, member_id, slot) SELECT id, ?, slot FROM event WHERE id = ?&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>update</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=p>...</span><span class=w> </span><span class=n>params</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=n>PreparedStatement</span><span class=w> </span><span class=n>ps</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>prepare</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>params</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>ps</span><span class=p>.</span><span class=na>executeUpdate</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>queryInt</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=p>...</span><span class=w> </span><span class=n>params</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=n>PreparedStatement</span><span class=w> </span><span class=n>ps</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>prepare</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>params</span><span class=p>);</span><span class=w> </span><span class=n>ResultSet</span><span class=w> </span><span class=n>rs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ps</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>rs</span><span class=p>.</span><span class=na>next</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>rs</span><span class=p>.</span><span class=na>getInt</span><span class=p>(</span><span class=n>1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kt>int</span><span class=o>[]</span><span class=w> </span><span class=nf>queryInts</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=p>...</span><span class=w> </span><span class=n>params</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=n>PreparedStatement</span><span class=w> </span><span class=n>ps</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>prepare</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>params</span><span class=p>);</span><span class=w> </span><span class=n>ResultSet</span><span class=w> </span><span class=n>rs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ps</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>rs</span><span class=p>.</span><span class=na>next</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>int</span><span class=o>[]</span><span class=w> </span><span class=p>{</span><span class=n>rs</span><span class=p>.</span><span class=na>getInt</span><span class=p>(</span><span class=n>1</span><span class=p>),</span><span class=w> </span><span class=n>rs</span><span class=p>.</span><span class=na>getInt</span><span class=p>(</span><span class=n>2</span><span class=p>)};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>queryString</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=p>...</span><span class=w> </span><span class=n>params</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=n>PreparedStatement</span><span class=w> </span><span class=n>ps</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>prepare</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>params</span><span class=p>);</span><span class=w> </span><span class=n>ResultSet</span><span class=w> </span><span class=n>rs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ps</span><span class=p>.</span><span class=na>executeQuery</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>rs</span><span class=p>.</span><span class=na>next</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>rs</span><span class=p>.</span><span class=na>getString</span><span class=p>(</span><span class=n>1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=n>PreparedStatement</span><span class=w> </span><span class=nf>prepare</span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=p>...</span><span class=w> </span><span class=n>params</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PreparedStatement</span><span class=w> </span><span class=n>ps</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c</span><span class=p>.</span><span class=na>prepareStatement</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>params</span><span class=p>.</span><span class=na>length</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>ps</span><span class=p>.</span><span class=na>setObject</span><span class=p>(</span><span class=n>i</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>params</span><span class=o>[</span><span class=n>i</span><span class=o>]</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>ps</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>execute</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>DriverManager</span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=n>URL</span><span class=p>);</span><span class=w> </span><span class=n>Statement</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>c</span><span class=p>.</span><span class=na>createStatement</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>s</span><span class=p>.</span><span class=na>execute</span><span class=p>(</span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>scalar</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>sql</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>SQLException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=n>Connection</span><span class=w> </span><span class=n>c</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>DriverManager</span><span class=p>.</span><span class=na>getConnection</span><span class=p>(</span><span class=n>URL</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>queryInt</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>sql</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></details><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>名額只剩 1 個，會員 101 與 102 同時報名同一場：
+</span></span><span class=line><span class=cl>  先讀再寫：[報名成功, 報名成功]｜剩餘名額 0｜報名 2 筆
+</span></span><span class=line><span class=cl>  條件式 UPDATE：[報名成功, 額滿]｜剩餘名額 0｜報名 1 筆
+</span></span><span class=line><span class=cl>  SELECT ... FOR UPDATE：[報名成功, 額滿]｜剩餘名額 0｜報名 1 筆
+</span></span><span class=line><span class=cl>  樂觀鎖（version）+ 重試：[報名成功（第 1 次嘗試）, 額滿（第 2 次嘗試）]｜剩餘名額 0｜報名 1 筆
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>會員 7 同時報名同一時段的兩場活動（規則：同一時段只能報名一場）：
+</span></span><span class=line><span class=cl>  先查詢再新增：[報名成功, 報名成功]｜會員 7 在 SAT-AM 有 2 筆報名
+</span></span><span class=line><span class=cl>  加上 UNIQUE (member_id, slot)：[報名成功, 失敗（SQLState 23505）]｜會員 7 在 SAT-AM 有 1 筆報名
+</span></span></code></pre></td></tr></table></div></div><p>連續執行五次結果都一樣。<code>CyclicBarrier</code> 讓兩邊都讀完才開始寫，等於把競態發生的時間窗撐大；正式環境裡這個時間窗只有幾毫秒，所以平常測不出來，壓測或大量使用者同時操作時才會出現。</p><h2 id=核心機制>核心機制</h2><h3 id=交易保證了什麼>交易保證了什麼</h3><table><thead><tr><th></th><th>意思</th><th>常見誤解</th></tr></thead><tbody><tr><td>Atomicity</td><td>交易內的修改全部成功，或全部撤銷</td><td>不是「不會被其他交易打斷」</td></tr><tr><td>Consistency</td><td>資料符合應用程式定義的規則（例如 <code>remaining >= 0</code>）</td><td>這是<strong>應用程式</strong>的責任，資料庫只能幫忙守住宣告出來的約束：<code>NOT NULL</code>、<code>UNIQUE</code>、<code>CHECK</code>、外鍵</td></tr><tr><td>Isolation</td><td>並行的交易彼此干擾的程度</td><td>有等級之分，主流資料庫的預設都<strong>不是</strong>完全隔離</td></tr><tr><td>Durability</td><td>commit 之後當機也不會遺失</td><td>靠 redo log／WAL 寫到磁碟</td></tr></tbody></table><h3 id=mvcc讀不擋寫寫不擋讀>MVCC：讀不擋寫，寫不擋讀</h3><p>InnoDB 和 PostgreSQL 都用 MVCC（multi-version concurrency control）：每一列保留多個版本，一般的 <code>SELECT</code> 讀某個時間點的<strong>快照</strong>，不加任何鎖；修改則要取得那一列的 row lock。</p><p>快照什麼時候建立，由隔離等級決定：</p><ul><li><strong>READ COMMITTED</strong>：每一句 <code>SELECT</code> 各自建立新的快照</li><li><strong>REPEATABLE READ</strong>：MySQL 是交易中第一次讀取時，PostgreSQL 是交易中第一個查詢或修改語句時，整個交易都讀同一份快照</li></ul><p>關鍵在於：<strong>一般 <code>SELECT</code> 和 <code>UPDATE</code> 看到的可能不是同一個世界</strong>。MySQL 文件寫得很明白：REPEATABLE READ 交易中，一般 <code>SELECT</code> 讀快照；<code>UPDATE</code>、<code>DELETE</code>、<code>SELECT ... FOR UPDATE</code> 則讀最新已提交的資料並加鎖。文件甚至不建議在同一個 REPEATABLE READ 交易裡混用這兩種讀法，因為結果很難推理。</p><p>lost update 就是這樣發生的：判斷依據來自快照（舊值），寫入卻作用在最新的資料上。</p><h3 id=並行異常>並行異常</h3><table><thead><tr><th>異常</th><th>報名系統裡的樣子</th></tr></thead><tbody><tr><td>Dirty read</td><td>讀到別人還沒 commit、後來被 rollback 的名額</td></tr><tr><td>Non-repeatable read</td><td>同一個交易讀了兩次剩餘名額，數字不一樣</td></tr><tr><td>Phantom</td><td>同一個交易查了兩次「會員 7 上午場的報名」，第二次多出一筆</td></tr><tr><td>Lost update</td><td>兩個交易都讀到剩 1 個，各自寫回 0，其中一次扣減消失</td></tr><tr><td>Write skew</td><td>兩個交易各自確認「會員 7 上午場沒有報名」，分別新增<strong>不同</strong>講座的報名，合起來違反規則</td></tr></tbody></table><p>write skew 最難察覺：兩個交易寫的是<strong>不同的列</strong>，彼此沒有 row lock 衝突，所以一般的隔離等級完全攔不住。</p><h3 id=隔離等級的實際行為>隔離等級的實際行為</h3><p>SQL 標準用「禁止哪些異常」定義隔離等級，但各資料庫的實作差很多。以「先讀再寫」的程式為準：</p><table><thead><tr><th>異常</th><th>READ COMMITTED</th><th>MySQL REPEATABLE READ</th><th>PostgreSQL REPEATABLE READ</th><th>SERIALIZABLE</th></tr></thead><tbody><tr><td>Dirty read</td><td>不會</td><td>不會</td><td>不會</td><td>不會</td></tr><tr><td>Non-repeatable read</td><td>會</td><td>不會</td><td>不會</td><td>不會</td></tr><tr><td>Phantom（一般 <code>SELECT</code>）</td><td>會</td><td>不會</td><td>不會</td><td>不會</td></tr><tr><td>Lost update</td><td>會</td><td><strong>會</strong></td><td>不會：後寫的交易收到序列化錯誤</td><td>不會</td></tr><tr><td>Write skew</td><td>會</td><td>會</td><td>會</td><td>不會</td></tr></tbody></table><ul><li><strong>預設值</strong>：InnoDB 是 REPEATABLE READ，PostgreSQL 是 READ COMMITTED</li><li><strong>MySQL 的 REPEATABLE READ 擋不住 lost update</strong>：<code>UPDATE</code> 直接作用在最新資料上，不會檢查你讀到的值是否已經過期。PostgreSQL 的 REPEATABLE READ 會：要修改的列在交易開始後被別人改過並提交，就丟出錯誤（SQLSTATE <code>40001</code>），整個交易要重來</li><li><strong>SERIALIZABLE 的實作方式不同</strong>：MySQL 是讓一般 <code>SELECT</code> 也加上共享鎖，衝突時互相等待，常以死結收場；PostgreSQL 用 Serializable Snapshot Isolation，不額外加鎖，偵測到可能違反序列化的讀寫關係時，讓其中一個交易失敗。兩者都<strong>必須準備好重試</strong></li></ul><h2 id=方案比較>方案比較</h2><table><thead><tr><th>做法</th><th>原理</th><th>優點</th><th>代價</th><th>適合</th></tr></thead><tbody><tr><td>條件式 <code>UPDATE</code></td><td>檢查與修改寫在同一句，資料庫用最新值判斷</td><td>最簡單、最快，不需要重試</td><td>只能表達單列、能寫成 SQL 條件的規則</td><td>扣名額、扣庫存、扣餘額</td></tr><tr><td><code>SELECT ... FOR UPDATE</code>（悲觀鎖）</td><td>讀的時候就鎖住，其他人排隊</td><td>可以在 Java 做複雜判斷</td><td>持鎖時間變長，熱點列吞吐量下降；可能死結</td><td>判斷複雜、衝突頻繁</td></tr><tr><td>樂觀鎖（<code>version</code> 欄位）</td><td>寫入時確認版本沒變，變了就重來</td><td>讀取期間不持鎖</td><td>衝突一多就大量重試</td><td>衝突少的編輯，例如後台修改活動</td></tr><tr><td>唯一約束</td><td>把「不能同時存在」寫成唯一索引</td><td>由資料庫保證，最可靠</td><td>規則要能化成「某組欄位不可重複」</td><td>write skew 類規則：一人一時段、一券一用</td></tr><tr><td>SERIALIZABLE</td><td>交給資料庫防止所有異常</td><td>不必逐一分析競態</td><td>MySQL 鎖多、死結多；PostgreSQL 要處理序列化失敗</td><td>規則複雜、難以化成約束，而且量不大</td></tr></tbody></table><p>幾個判斷原則：</p><ul><li><strong>能寫成條件式 <code>UPDATE</code> 就不要先讀</strong>。<a href=/post/systemdesign/system-design-thinking/>導讀篇</a>算過，熱點列的吞吐量上限約等於「1 ÷ 每筆交易的持鎖時間」。<code>SELECT ... FOR UPDATE</code> 從讀取那一刻就開始持鎖，中間的 Java 邏輯、應用程式與資料庫之間的往返時間全都算進持鎖時間</li><li><strong>write skew 的解法是把衝突變成同一列的衝突</strong>。唯一約束是最直接的方式：兩個交易都要插入 <code>(member_id = 7, slot = 'SAT-AM')</code>，第二個一定失敗。規則無法化成唯一約束時（例如「會議室時段不能重疊」），可以改成先鎖住一個共同的列（例如 <code>SELECT ... FROM member WHERE id = 7 FOR UPDATE</code>），讓同一位會員的操作排隊</li><li><strong>樂觀鎖適合「人」在編輯的資料</strong>：主辦方修改活動的頻率很低，衝突罕見，重試一次就好</li></ul><h2 id=java-落地>Java 落地</h2><h3 id=1-entity樂觀鎖與唯一約束>1. Entity：樂觀鎖與唯一約束</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>signup</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Column</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Entity</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Table</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Version</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Entity</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Table</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;event&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Event</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Id</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Column</span><span class=p>(</span><span class=n>nullable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=n>length</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>20</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>slot</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Column</span><span class=p>(</span><span class=n>nullable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>capacity</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Column</span><span class=p>(</span><span class=n>nullable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>remaining</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Version</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>version</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=nf>Event</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getSlot</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>slot</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/** 主辦方調整名額上限：已報名人數不變，剩餘名額跟著調整。 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>changeCapacity</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>newCapacity</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>int</span><span class=w> </span><span class=n>registered</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>capacity</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>remaining</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>newCapacity</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>registered</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IllegalArgumentException</span><span class=p>(</span><span class=s>&#34;名額上限不能低於已報名人數 &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>registered</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>capacity</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>newCapacity</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>remaining</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>newCapacity</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>registered</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>signup</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Column</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Entity</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.GeneratedValue</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.GenerationType</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.Table</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>jakarta.persistence.UniqueConstraint</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Entity</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Table</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;registration&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=n>uniqueConstraints</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@UniqueConstraint</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;uk_member_slot&#34;</span><span class=p>,</span><span class=w> </span><span class=n>columnNames</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>&#34;member_id&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;slot&#34;</span><span class=p>}))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Registration</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Id</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@GeneratedValue</span><span class=p>(</span><span class=n>strategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GenerationType</span><span class=p>.</span><span class=na>IDENTITY</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Column</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;event_id&#34;</span><span class=p>,</span><span class=w> </span><span class=n>nullable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Column</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;member_id&#34;</span><span class=p>,</span><span class=w> </span><span class=n>nullable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Column</span><span class=p>(</span><span class=n>nullable</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=n>length</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>20</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>slot</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=nf>Registration</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>Registration</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>slot</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>eventId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>eventId</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>memberId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>memberId</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>slot</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>slot</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>正式環境的唯一約束要寫在 migration 裡，<code>@UniqueConstraint</code> 只在讓 Hibernate 產生 schema 時才有作用（同 <a href=/post/systemdesign/index-btree/>Index 篇</a>的 <code>@Index</code>）。</p><h3 id=2-repository條件式-update>2. Repository：條件式 UPDATE</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>signup</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.data.jpa.repository.JpaRepository</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.data.jpa.repository.Modifying</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.data.jpa.repository.Query</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.data.repository.query.Param</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>EventRepository</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>JpaRepository</span><span class=o>&lt;</span><span class=n>Event</span><span class=p>,</span><span class=w> </span><span class=n>Long</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/** 檢查與扣減在同一個 UPDATE 完成。bulk update 不經過樂觀鎖，所以要自己遞增 version。 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Modifying</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Query</span><span class=p>(</span><span class=s>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s>            update Event e
+</span></span></span><span class=line><span class=cl><span class=s>               set e.remaining = e.remaining - 1, e.version = e.version + 1
+</span></span></span><span class=line><span class=cl><span class=s>             where e.id = :id and e.remaining &gt; 0
+</span></span></span><span class=line><span class=cl><span class=s>            &#34;&#34;&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>takeSeat</span><span class=p>(</span><span class=nd>@Param</span><span class=p>(</span><span class=s>&#34;id&#34;</span><span class=p>)</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>id</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>這裡藏了一個容易漏掉的問題。JPA 規格規定，bulk update 直接對應到資料庫的 <code>UPDATE</code>，<strong>不經過樂觀鎖檢查，也不會自動遞增 version</strong>。如果漏掉 <code>e.version = e.version + 1</code>：</p><ol><li>主辦方載入活動，讀到 <code>remaining = 10</code>、<code>version = 5</code></li><li>這時有人報名，<code>takeSeat</code> 把 <code>remaining</code> 扣成 9，但 <code>version</code> 仍是 5</li><li>主辦方存檔。Hibernate 預設會更新所有欄位，<code>version</code> 檢查也通過，於是 <code>remaining</code> 被寫回以 10 為基準算出的值，剛才那筆報名就「消失」了</li></ol><p>這正是情境中「剩餘名額對不上」的原因。</p><h3 id=3-交易內熱點列放在最後>3. 交易內：熱點列放在最後</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>signup</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.stereotype.Service</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.transaction.annotation.Transactional</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>RegistrationService</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>EventRepository</span><span class=w> </span><span class=n>events</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>RegistrationRepository</span><span class=w> </span><span class=n>registrations</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>RegistrationService</span><span class=p>(</span><span class=n>EventRepository</span><span class=w> </span><span class=n>events</span><span class=p>,</span><span class=w> </span><span class=n>RegistrationRepository</span><span class=w> </span><span class=n>registrations</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>events</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>events</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>registrations</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>registrations</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/** 一次報名就是一個交易：任何一步失敗，整筆報名都不成立。 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Transactional</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>register</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Event</span><span class=w> </span><span class=n>event</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>events</span><span class=p>.</span><span class=na>findById</span><span class=p>(</span><span class=n>eventId</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>orElseThrow</span><span class=p>(()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IllegalArgumentException</span><span class=p>(</span><span class=s>&#34;活動不存在：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>eventId</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 同一時段重複報名會在這裡違反 uk_member_slot</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>registrations</span><span class=p>.</span><span class=na>saveAndFlush</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Registration</span><span class=p>(</span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>event</span><span class=p>.</span><span class=na>getSlot</span><span class=p>()));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 熱點列放在最後一步：從取得 row lock 到 commit 的時間最短</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>events</span><span class=p>.</span><span class=na>takeSeat</span><span class=p>(</span><span class=n>eventId</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SoldOutException</span><span class=p>(</span><span class=n>eventId</span><span class=p>);</span><span class=w>           </span><span class=c1>// RuntimeException：連同上面的 INSERT 一起 rollback</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Transactional</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>changeCapacity</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>newCapacity</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Event</span><span class=w> </span><span class=n>event</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>events</span><span class=p>.</span><span class=na>findById</span><span class=p>(</span><span class=n>eventId</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>orElseThrow</span><span class=p>(()</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IllegalArgumentException</span><span class=p>(</span><span class=s>&#34;活動不存在：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>eventId</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>event</span><span class=p>.</span><span class=na>changeCapacity</span><span class=p>(</span><span class=n>newCapacity</span><span class=p>);</span><span class=w>                 </span><span class=c1>// commit 時 version 不符，就丟出樂觀鎖例外</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li><strong>順序很重要</strong>：<code>findById</code> 是一般讀取，不加鎖；新增報名只會鎖住新的那一列；最後才 <code>takeSeat</code> 取得 <code>event</code> 那一列的 row lock，所以持鎖時間只有「最後一句到 commit」這一小段</li><li><strong><code>saveAndFlush</code></strong>：明確要求在這一行送出 <code>INSERT</code>，讓唯一約束的違規在這裡發生。主鍵是 <code>IDENTITY</code> 時，Hibernate 其實在 <code>save</code> 就會立即 <code>INSERT</code>；但換成 <code>SEQUENCE</code> 等策略，<code>INSERT</code> 會延到 flush 甚至 commit 才送出。寫成 <code>saveAndFlush</code>，行為就不受主鍵策略影響</li><li><strong><code>SoldOutException</code> 是 <code>RuntimeException</code></strong>：Spring 預設只在 <code>RuntimeException</code> 與 <code>Error</code> 時 rollback，checked exception 不會</li></ul><h3 id=4-交易外重試與例外轉換>4. 交易外：重試與例外轉換</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>signup</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.dao.ConcurrencyFailureException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.dao.DataIntegrityViolationException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.resilience.annotation.Retryable</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.stereotype.Service</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=cm>/** 位在交易外面：每次重試都會呼叫 RegistrationService，開一個全新的交易。 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Service</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Retryable</span><span class=p>(</span><span class=n>includes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ConcurrencyFailureException</span><span class=p>.</span><span class=na>class</span><span class=p>,</span><span class=w> </span><span class=n>maxRetries</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>3</span><span class=p>,</span><span class=w> </span><span class=n>delay</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>50</span><span class=p>,</span><span class=w> </span><span class=n>jitter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>20</span><span class=p>,</span><span class=w> </span><span class=n>multiplier</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>2</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>RegistrationFacade</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>RegistrationService</span><span class=w> </span><span class=n>service</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>RegistrationFacade</span><span class=p>(</span><span class=n>RegistrationService</span><span class=w> </span><span class=n>service</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>service</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>service</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>RegistrationResult</span><span class=w> </span><span class=nf>register</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>service</span><span class=p>.</span><span class=na>register</span><span class=p>(</span><span class=n>memberId</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>RegistrationResult</span><span class=p>.</span><span class=na>REGISTERED</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>SoldOutException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>RegistrationResult</span><span class=p>.</span><span class=na>SOLD_OUT</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>DataIntegrityViolationException</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 這個交易唯一可能違反的約束是 uk_member_slot；對外不要帶出約束名稱或 SQL</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>RegistrationResult</span><span class=p>.</span><span class=na>SLOT_CONFLICT</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>changeCapacity</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>newCapacity</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>service</span><span class=p>.</span><span class=na>changeCapacity</span><span class=p>(</span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>newCapacity</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>signup</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.context.annotation.Configuration</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.resilience.annotation.EnableResilientMethods</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nd>@EnableResilientMethods</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ResilienceConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>@Retryable</code> 是 Spring Framework 7 內建的重試支援，要用 <code>@EnableResilientMethods</code> 啟用。三個設計重點：</p><p><strong>重試必須在交易外面</strong>。交易失敗後已經被標記為 rollback，在同一個交易裡重試沒有意義；必須 rollback 後開新的交易、拿新的快照，才讀得到別人剛提交的版本。用 H2 實際驗證：</p><details><summary>驗證程式（Spring 7.0.10 + H2，用 <code>JdbcClient</code> 模擬樂觀鎖衝突）</summary><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>retrycheck</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.Map</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>javax.sql.DataSource</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.h2.jdbcx.JdbcDataSource</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.context.annotation.AnnotationConfigApplicationContext</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.context.annotation.Bean</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.context.annotation.Configuration</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.dao.ConcurrencyFailureException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.dao.OptimisticLockingFailureException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.jdbc.core.simple.JdbcClient</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.jdbc.datasource.DataSourceTransactionManager</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.resilience.annotation.EnableResilientMethods</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.resilience.annotation.Retryable</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.transaction.PlatformTransactionManager</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.transaction.annotation.EnableTransactionManagement</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.transaction.annotation.Transactional</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.transaction.support.TransactionSynchronizationManager</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=cm>/** 驗證：@Retryable 在交易外時，每次重試都是新的交易，並讀到別人已提交的新版本。 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>RetryOutsideTransactionCheck</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>class</span> <span class=nc>CapacityService</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>JdbcClient</span><span class=w> </span><span class=n>jdbc</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>DataSource</span><span class=w> </span><span class=n>dataSource</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>attempt</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=nf>CapacityService</span><span class=p>(</span><span class=n>JdbcClient</span><span class=w> </span><span class=n>jdbc</span><span class=p>,</span><span class=w> </span><span class=n>DataSource</span><span class=w> </span><span class=n>dataSource</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>this</span><span class=p>.</span><span class=na>jdbc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>jdbc</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>this</span><span class=p>.</span><span class=na>dataSource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>dataSource</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Transactional</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>changeCapacity</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>newCapacity</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>attempt</span><span class=o>++</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Map</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>jdbc</span><span class=p>.</span><span class=na>sql</span><span class=p>(</span><span class=s>&#34;SELECT capacity, remaining, version FROM event WHERE id = ?&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>.</span><span class=na>param</span><span class=p>(</span><span class=n>eventId</span><span class=p>).</span><span class=na>query</span><span class=p>().</span><span class=na>singleRow</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>int</span><span class=w> </span><span class=n>capacity</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>Integer</span><span class=p>)</span><span class=w> </span><span class=n>row</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;CAPACITY&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>int</span><span class=w> </span><span class=n>remaining</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>Integer</span><span class=p>)</span><span class=w> </span><span class=n>row</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;REMAINING&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>long</span><span class=w> </span><span class=n>version</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>Long</span><span class=p>)</span><span class=w> </span><span class=n>row</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;VERSION&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>attempt</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>1</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=kd>var</span><span class=w> </span><span class=n>other</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>dataSource</span><span class=p>.</span><span class=na>getConnection</span><span class=p>();</span><span class=w> </span><span class=kd>var</span><span class=w> </span><span class=n>st</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>other</span><span class=p>.</span><span class=na>createStatement</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=c1>// 模擬另一個請求在這時完成報名並提交</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>st</span><span class=p>.</span><span class=na>executeUpdate</span><span class=p>(</span><span class=s>&#34;UPDATE event SET remaining = remaining - 1, version = version + 1 WHERE id = &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>eventId</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>int</span><span class=w> </span><span class=n>registered</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>capacity</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>remaining</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>int</span><span class=w> </span><span class=n>updated</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>jdbc</span><span class=p>.</span><span class=na>sql</span><span class=p>(</span><span class=s>&#34;UPDATE event SET capacity = ?, remaining = ?, version = version + 1 WHERE id = ? AND version = ?&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>.</span><span class=na>params</span><span class=p>(</span><span class=n>newCapacity</span><span class=p>,</span><span class=w> </span><span class=n>newCapacity</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>registered</span><span class=p>,</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>version</span><span class=p>).</span><span class=na>update</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>printf</span><span class=p>(</span><span class=s>&#34;第 %d 次：交易中=%s，讀到 remaining=%d、version=%d，更新 %d 筆%n&#34;</span><span class=p>,</span><span class=w> </span><span class=n>attempt</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>TransactionSynchronizationManager</span><span class=p>.</span><span class=na>isActualTransactionActive</span><span class=p>(),</span><span class=w> </span><span class=n>remaining</span><span class=p>,</span><span class=w> </span><span class=n>version</span><span class=p>,</span><span class=w> </span><span class=n>updated</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>updated</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>OptimisticLockingFailureException</span><span class=p>(</span><span class=s>&#34;event &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>eventId</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 已被其他交易修改&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Retryable</span><span class=p>(</span><span class=n>includes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ConcurrencyFailureException</span><span class=p>.</span><span class=na>class</span><span class=p>,</span><span class=w> </span><span class=n>maxRetries</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>3</span><span class=p>,</span><span class=w> </span><span class=n>delay</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>50</span><span class=p>,</span><span class=w> </span><span class=n>jitter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>20</span><span class=p>,</span><span class=w> </span><span class=n>multiplier</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>2</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>class</span> <span class=nc>CapacityFacade</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>CapacityService</span><span class=w> </span><span class=n>service</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=nf>CapacityFacade</span><span class=p>(</span><span class=n>CapacityService</span><span class=w> </span><span class=n>service</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>this</span><span class=p>.</span><span class=na>service</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>service</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>changeCapacity</span><span class=p>(</span><span class=kt>long</span><span class=w> </span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>newCapacity</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>printf</span><span class=p>(</span><span class=s>&#34;Facade 呼叫時：交易中=%s%n&#34;</span><span class=p>,</span><span class=w> </span><span class=n>TransactionSynchronizationManager</span><span class=p>.</span><span class=na>isActualTransactionActive</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>service</span><span class=p>.</span><span class=na>changeCapacity</span><span class=p>(</span><span class=n>eventId</span><span class=p>,</span><span class=w> </span><span class=n>newCapacity</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@EnableTransactionManagement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@EnableResilientMethods</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>class</span> <span class=nc>Config</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=n>DataSource</span><span class=w> </span><span class=nf>dataSource</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>JdbcDataSource</span><span class=w> </span><span class=n>ds</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JdbcDataSource</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>ds</span><span class=p>.</span><span class=na>setURL</span><span class=p>(</span><span class=s>&#34;jdbc:h2:mem:retry;DB_CLOSE_DELAY=-1&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>ds</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=n>PlatformTransactionManager</span><span class=w> </span><span class=nf>transactionManager</span><span class=p>(</span><span class=n>DataSource</span><span class=w> </span><span class=n>ds</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>DataSourceTransactionManager</span><span class=p>(</span><span class=n>ds</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=n>JdbcClient</span><span class=w> </span><span class=nf>jdbcClient</span><span class=p>(</span><span class=n>DataSource</span><span class=w> </span><span class=n>ds</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>JdbcClient</span><span class=p>.</span><span class=na>create</span><span class=p>(</span><span class=n>ds</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=n>CapacityService</span><span class=w> </span><span class=nf>capacityService</span><span class=p>(</span><span class=n>JdbcClient</span><span class=w> </span><span class=n>jdbc</span><span class=p>,</span><span class=w> </span><span class=n>DataSource</span><span class=w> </span><span class=n>ds</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CapacityService</span><span class=p>(</span><span class=n>jdbc</span><span class=p>,</span><span class=w> </span><span class=n>ds</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=n>CapacityFacade</span><span class=w> </span><span class=nf>capacityFacade</span><span class=p>(</span><span class=n>CapacityService</span><span class=w> </span><span class=n>service</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CapacityFacade</span><span class=p>(</span><span class=n>service</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>(</span><span class=kd>var</span><span class=w> </span><span class=n>ctx</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AnnotationConfigApplicationContext</span><span class=p>(</span><span class=n>Config</span><span class=p>.</span><span class=na>class</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>JdbcClient</span><span class=w> </span><span class=n>jdbc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ctx</span><span class=p>.</span><span class=na>getBean</span><span class=p>(</span><span class=n>JdbcClient</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>jdbc</span><span class=p>.</span><span class=na>sql</span><span class=p>(</span><span class=s>&#34;CREATE TABLE event (id BIGINT PRIMARY KEY, capacity INT, remaining INT, version BIGINT)&#34;</span><span class=p>).</span><span class=na>update</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>jdbc</span><span class=p>.</span><span class=na>sql</span><span class=p>(</span><span class=s>&#34;INSERT INTO event VALUES (42, 100, 10, 0)&#34;</span><span class=p>).</span><span class=na>update</span><span class=p>();</span><span class=w>      </span><span class=c1>// 已報名 90 人</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>ctx</span><span class=p>.</span><span class=na>getBean</span><span class=p>(</span><span class=n>CapacityFacade</span><span class=p>.</span><span class=na>class</span><span class=p>).</span><span class=na>changeCapacity</span><span class=p>(</span><span class=n>42</span><span class=p>,</span><span class=w> </span><span class=n>120</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;最終：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>jdbc</span><span class=p>.</span><span class=na>sql</span><span class=p>(</span><span class=s>&#34;SELECT capacity, remaining, version FROM event WHERE id = 42&#34;</span><span class=p>).</span><span class=na>query</span><span class=p>().</span><span class=na>singleRow</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></details><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Facade 呼叫時：交易中=false
+</span></span><span class=line><span class=cl>第 1 次：交易中=true，讀到 remaining=10、version=0，更新 0 筆
+</span></span><span class=line><span class=cl>Facade 呼叫時：交易中=false
+</span></span><span class=line><span class=cl>第 2 次：交易中=true，讀到 remaining=9、version=1，更新 1 筆
+</span></span><span class=line><span class=cl>最終：{CAPACITY=120, REMAINING=29, VERSION=2}
+</span></span></code></pre></td></tr></table></div></div><p>Facade 被呼叫時不在交易中；第 1 次嘗試讀到 <code>version=0</code>，在它更新之前另一個請求已經提交了報名，所以更新 0 筆；第 2 次是全新的交易，讀到 <code>remaining=9</code>、<code>version=1</code>，更新成功。已報名的 91 人沒有被覆蓋。</p><p><strong>一定要限定重試的例外</strong>。<code>@Retryable</code> 預設對<strong>任何</strong>例外重試 3 次、間隔 1 秒，連「名額上限不能低於已報名人數」這種業務錯誤也會被重試。<code>ConcurrencyFailureException</code> 是 Spring 對並行衝突的共同父類別，用 Spring 7.0.10 的 JDBC 例外轉換器實測：</p><table><thead><tr><th>資料庫錯誤</th><th>轉換後的例外</th><th>父類別</th></tr></thead><tbody><tr><td>MySQL 1213 死結</td><td><code>DeadlockLoserDataAccessException</code>（已 deprecated）</td><td><code>PessimisticLockingFailureException</code></td></tr><tr><td>MySQL 1205 lock wait timeout</td><td><code>CannotAcquireLockException</code></td><td><code>PessimisticLockingFailureException</code></td></tr><tr><td>PostgreSQL 40001 序列化失敗</td><td><code>CannotSerializeTransactionException</code>（已 deprecated）</td><td><code>PessimisticLockingFailureException</code></td></tr><tr><td>MySQL 1062 重複鍵</td><td><code>DuplicateKeyException</code></td><td><code>DataIntegrityViolationException</code></td></tr></tbody></table><p><code>PessimisticLockingFailureException</code> 與樂觀鎖失敗的 <code>OptimisticLockingFailureException</code> 都繼承自 <code>ConcurrencyFailureException</code>。有兩個子類別已經 deprecated 但仍會被丟出，所以 catch 或重試條件要寫父類別，不要寫子類別。重複鍵屬於 <code>DataIntegrityViolationException</code>，重試也不會成功，所以不在重試範圍內。</p><p><strong><code>DataIntegrityViolationException</code> 要在交易外 catch</strong>。如果在 <code>RegistrationService</code> 裡面 catch 再回傳結果，例外已經穿過 repository 的交易攔截器，整個交易被標記成 rollback-only；方法正常結束後 Spring 要 commit，就會丟出 <code>UnexpectedRollbackException</code>。</p><h3 id=5-副作用放到-commit-之後>5. 副作用放到 commit 之後</h3><p>確認信不能在交易裡寄。交易可能在寄信之後 rollback（使用者收到確認信，報名卻不存在），也可能被重試（收到兩封）。用 <code>@TransactionalEventListener</code> 在 commit 之後才寄，做法見 <a href=/post/systemdesign/caching/>Cache 篇</a>；要保證「commit 了就一定寄得出去」，則需要 Part 7 的 Outbox。</p><h2 id=踩坑與-gotchas>踩坑與 Gotchas</h2><ul><li><strong>以為 <code>@Transactional</code> 就沒有並行問題</strong>：交易只保證原子性，隔離程度取決於隔離等級與讀寫方式</li><li><strong>以為 MySQL 的 REPEATABLE READ 能防 lost update</strong>：不能，一般 <code>SELECT</code> 讀快照，<code>UPDATE</code> 寫最新資料</li><li><strong>把整個系統調成 SERIALIZABLE</strong>：MySQL 的鎖與死結大增；PostgreSQL 的序列化失敗變多。兩者都要配合重試，而且會降低吞吐量</li><li><strong>用 <code>synchronized</code> 包住 <code>@Transactional</code> 方法</strong>：commit 是在 proxy 裡、方法返回之後才做，<code>synchronized</code> 在 commit 前就已經釋放；而且多台機器時完全沒效果（見 <a href=/post/systemdesign/scaling-stateless/>無狀態服務篇</a>）</li><li><strong>同一個類別內呼叫自己的 <code>@Transactional</code> 或 <code>@Retryable</code> 方法</strong>：self-invocation 不經過 proxy，註解形同虛設</li><li><strong>checked exception 不會 rollback</strong>：要 rollback 就用 <code>RuntimeException</code>，或設定 <code>rollbackFor</code></li><li><strong>MySQL lock wait timeout 預設 50 秒，而且只 rollback 那一句</strong>：除非開啟 <code>innodb_rollback_on_timeout</code>，交易本身還活著，程式若吞掉例外繼續 commit，就會留下半套資料</li><li><strong>把死結當成 bug 追</strong>：死結是並行系統的正常現象，InnoDB 會立即偵測並 rollback 其中一個交易。真正要做的是重試整個交易，並讓所有交易以相同順序存取資料，降低發生機率</li><li><strong>在交易裡呼叫外部服務</strong>：呼叫付款或簡訊 API 的期間，交易一直佔著連線與鎖。連線池 10 條、外部呼叫要 2 秒，整個服務每秒最多處理 5 個這種請求（連線池調校見 <a href=/post/database/hikaricp-tuning/>HikariCP 篇</a>）</li><li><strong>長時間不結束的交易</strong>：MVCC 的舊版本必須保留到最舊的快照不再需要為止（InnoDB 的 undo log、PostgreSQL 的 dead tuple），一個忘記結束的交易會讓表越來越肥、查詢越來越慢</li></ul><h3 id=資安相關>資安相關</h3><ul><li><strong>競態條件本身就是漏洞</strong>：優惠券重複使用、禮物卡餘額重複扣款、邀請獎勵重複領取，都是同一種「先檢查、再修改」的競態（limit overrun）。PortSwigger 在 2023 年發表的研究示範了讓數十個請求幾乎同時抵達伺服器的手法，攻擊者不需要碰運氣。rate limit 擋不住，因為這些請求都在限制之內；要在資料層用條件式 <code>UPDATE</code> 或唯一約束解決</li><li><strong>鎖可以被拿來癱瘓服務</strong>：對熱點列做 <code>SELECT ... FOR UPDATE</code> 的 API，每個排隊等鎖的請求都佔著一條資料庫連線，最久等 50 秒。攻擊者只要持續送出少量請求，就能耗盡連線池，讓不相關的 API 一起掛掉。縮短等鎖時間（MySQL 可以針對連線 <code>SET SESSION innodb_lock_wait_timeout</code>，PostgreSQL 用 <code>lock_timeout</code>）、優先用條件式 <code>UPDATE</code>，並對這類 API 做 rate limit（Part 8 濫用防護）</li><li><strong>稽核紀錄跟著 rollback 一起消失</strong>：把「登入失敗」「授權被拒」的稽核紀錄寫在業務交易裡，交易 rollback 時紀錄也不見了，攻擊的痕跡正好被抹掉。安全相關的稽核要寫在獨立的交易（<code>Propagation.REQUIRES_NEW</code>）或交易之外。注意 <code>REQUIRES_NEW</code> 會再拿一條連線，尖峰時每個請求同時佔兩條，連線池要算進去</li><li><strong>錯誤訊息洩漏 schema</strong>：直接把資料庫例外的訊息回給前端，會帶出表名、約束名稱甚至 SQL。像 <code>RegistrationFacade</code> 一樣轉成業務結果，細節只寫在伺服器端的日誌</li></ul><h2 id=何時用何時別用>何時用／何時別用</h2><ul><li><strong>單列的數量檢查</strong>（名額、庫存、餘額）：條件式 <code>UPDATE</code></li><li><strong>「不能同時存在」的規則</strong>：唯一約束</li><li><strong>判斷複雜、衝突頻繁</strong>：悲觀鎖，並且讓持鎖時間越短越好</li><li><strong>衝突少的編輯</strong>：樂觀鎖加上交易外的重試</li><li><strong>跨多列、難以化成約束、量不大的規則</strong>：SERIALIZABLE 加重試，PostgreSQL 的 SSI 比 MySQL 的鎖實作更適合</li><li><strong>別用</strong>：在交易裡呼叫外部服務、用 <code>synchronized</code> 解決資料庫的並行問題、不限定例外就重試</li><li><strong>跨多個服務或資料庫</strong>：單一資料庫的交易已經不夠，需要<a href=/post/systemdesign/distributed-lock/>分散式鎖</a>或 Saga（Part 7）</li></ul><h2 id=參考資料>參考資料</h2><ul><li>Hal Berenson et al., &ldquo;A Critique of ANSI SQL Isolation Levels&rdquo;, SIGMOD 1995</li><li>Dan R. K. Ports, Kevin Grittner, &ldquo;Serializable Snapshot Isolation in PostgreSQL&rdquo;, VLDB 2012</li><li>Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&rsquo;Reilly, 2017, Chapter 7</li><li>MySQL 8.4 Reference Manual — Transaction Isolation Levels：<a href=https://dev.mysql.com/doc/refman/8.4/en/innodb-transaction-isolation-levels.html>https://dev.mysql.com/doc/refman/8.4/en/innodb-transaction-isolation-levels.html</a></li><li>MySQL 8.4 Reference Manual — Consistent Nonlocking Reads：<a href=https://dev.mysql.com/doc/refman/8.4/en/innodb-consistent-read.html>https://dev.mysql.com/doc/refman/8.4/en/innodb-consistent-read.html</a></li><li>MySQL 8.4 Reference Manual — InnoDB Error Handling：<a href=https://dev.mysql.com/doc/refman/8.4/en/innodb-error-handling.html>https://dev.mysql.com/doc/refman/8.4/en/innodb-error-handling.html</a></li><li>PostgreSQL 18 Documentation — Transaction Isolation：<a href=https://www.postgresql.org/docs/18/transaction-iso.html>https://www.postgresql.org/docs/18/transaction-iso.html</a></li><li>PostgreSQL 18 Documentation — Serialization Failure Handling：<a href=https://www.postgresql.org/docs/18/mvcc-serialization-failure-handling.html>https://www.postgresql.org/docs/18/mvcc-serialization-failure-handling.html</a></li><li>Jakarta Persistence Specification — Bulk Update and Delete Operations：<a href=https://jakarta.ee/specifications/persistence/>https://jakarta.ee/specifications/persistence/</a></li><li>Spring Framework Reference — Declarative Transaction Management：<a href=https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative.html>https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative.html</a></li><li>Spring Framework Reference — Resilience Features：<a href=https://docs.spring.io/spring-framework/reference/core/resilience.html>https://docs.spring.io/spring-framework/reference/core/resilience.html</a></li><li>James Kettle, &ldquo;Smashing the state machine: the true potential of web race conditions&rdquo;, PortSwigger Research, 2023：<a href=https://portswigger.net/research/smashing-the-state-machine>https://portswigger.net/research/smashing-the-state-machine</a></li><li>互動圖解延伸：Dilum Sanjaya，System Design — an interactive course：<a href=https://designed-to-scale.vercel.app/>https://designed-to-scale.vercel.app/</a></li></ul></div><footer class=post-footer><div class=post-tags><span class=tags-label>標籤：</span>
+<a href=/tags/system-design class=tag-link>#System Design</a>
+<a href=/tags/transaction class=tag-link>#Transaction</a>
+<a href=/tags/isolation-level class=tag-link>#Isolation Level</a>
+<a href=/tags/mvcc class=tag-link>#MVCC</a>
+<a href=/tags/mysql class=tag-link>#MySQL</a>
+<a href=/tags/postgresql class=tag-link>#PostgreSQL</a>
+<a href=/tags/spring class=tag-link>#Spring</a></div></footer></article><nav class=post-nav><div class=post-nav-links><div class=post-nav-prev><span class=post-nav-label>上一篇</span>
+<a href=https://xinqilin.github.io/post/systemdesign/full-text-search/ class=post-nav-link>全文搜尋與倒排索引：中文斷詞、BM25 排序、索引同步與搜尋的授權邊界</a></div><div class=post-nav-next><span class=post-nav-label>下一篇</span>
+<a href=https://xinqilin.github.io/post/systemdesign/distributed-lock/ class=post-nav-link>分散式鎖與 Fencing Token：鎖會過期，持有者卻不知道</a></div></div></nav><section class=comments-section><h2 class=comments-title>留言討論</h2><div class=giscus></div><script src=https://giscus.app/client.js data-repo=xinqilin/xinqilin.github.io data-repo-id="MDEwOlJlcG9zaXRvcnkzODA3NTYzNzk=" data-category=Announcements data-category-id=DIC_kwDOFrHhm84CtLOY data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=light data-lang=zh-TW data-loading=lazy crossorigin=anonymous async></script></section><style>.comments-section{margin-top:4rem;padding-top:2rem;border-top:1px solid #e0e0e0}.comments-title{font-size:1.5rem;margin-bottom:1.5rem;color:#333}.giscus{margin-top:2rem}.giscus-frame{border:none!important}@media(prefers-color-scheme:dark){.comments-section{border-top-color:#333}.comments-title{color:#f0f0f0}}</style></main><footer class=footer><div class=footer-content><p>&copy; 2026 Bill Lin. All rights reserved.</p><div class=social-links><a href=https://github.com/xinqilin class=social-link target=_blank rel=noopener>github</a>
+<a href=https://www.linkedin.com/in/bill-lin-developer/ class=social-link target=_blank rel=noopener>linkedin</a>
+<a href=mailto:zzx123bill@gmail.com class=social-link target=_blank rel=noopener>email</a></div></div></footer><script src=/js/search.js></script><script src=/js/particles-bg.js defer></script></div><script src=/js/code-enhance.js></script></body></html>

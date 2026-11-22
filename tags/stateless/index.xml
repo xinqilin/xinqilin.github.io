@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Stateless on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/stateless/</link>
+		<description>Recent content in Stateless on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/stateless/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>垂直擴展、水平擴展與無狀態服務：Session、檔案、排程與本機狀態該搬去哪裡</title>
+				<link>https://xinqilin.github.io/post/systemdesign/scaling-stateless/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/scaling-stateless/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 2-1｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/napkin-math/&#34;&gt;Napkin Math 容量估算&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/load-balancing/&#34;&gt;Load Balancing 深入&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;雙 11 前壓測，一台 8 核的 Spring Boot 在尖峰時 CPU 已經 85%。你加了第二台，前面放一個 Load Balancer，心想這樣容量就翻倍了。上線當晚陸續出現：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;使用者登入後重新整理，有時就被登出&lt;/li&gt;&#xA;&lt;li&gt;剛上傳的商品圖片，有時看得到、有時 404&lt;/li&gt;&#xA;&lt;li&gt;每天凌晨的對帳排程跑了兩次，客戶收到兩封通知信&lt;/li&gt;&#xA;&lt;li&gt;「每人限搶一次」用 &lt;code&gt;synchronized&lt;/code&gt; 做的檢查失效，有人搶到兩次&lt;/li&gt;&#xA;&lt;li&gt;同一個商品，兩台機器顯示的價格不一樣&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;五個問題的根因都一樣：&lt;strong&gt;應用程式把狀態存在自己身上&lt;/strong&gt;。只有一台機器時，這些狀態剛好都在同一個地方，所以沒事；加了第二台，狀態就裂成兩份。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限垂直擴展&#34;&gt;最簡單的做法與它的極限：垂直擴展&lt;/h2&gt;&#xA;&lt;p&gt;在加機器之前，先想想能不能&lt;strong&gt;換一台更大的機器&lt;/strong&gt;。垂直擴展（scale up）的好處常被低估：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;程式完全不用改，沒有任何分散式問題&lt;/li&gt;&#xA;&lt;li&gt;所有資料都在同一個記憶體空間，延遲最低&lt;/li&gt;&#xA;&lt;li&gt;維運最簡單：一台機器、一份 log、一個要監控的對象&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;它的極限有三個：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;有天花板&lt;/strong&gt;：雲端規格選到最大就沒有下一步，而且升級規格通常要重啟&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;單點故障&lt;/strong&gt;：再大的機器壞了就是全部停擺。就算一台撐得住流量，為了可用性也至少要兩台&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;程式本身不一定吃得到更多核心&lt;/strong&gt;：Amdahl 定律告訴我們，程式中無法平行化的部分決定了加速的上限&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;Amdahl 定律：加速倍數 = 1 ÷（序列部分比例 +（可平行比例 ÷ 核心數））。假設程式有 95% 可以平行化，5% 必須序列執行（例如搶同一把鎖、寫同一個檔案）：&lt;/p&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;核心數&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;理論加速&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;8&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;5.9 倍&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;16&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;9.1 倍&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;64&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;15.4 倍&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;無限多&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;20 倍&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;核心從 16 加到 64 是 4 倍成本，換來的加速卻不到 2 倍。到這個時候，與其繼續買更大的機器，不如把工作拆到多台機器上，也就是&lt;strong&gt;水平擴展（scale out）&lt;/strong&gt;。但水平擴展的前提，是應用程式必須是&lt;strong&gt;無狀態&lt;/strong&gt;的。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

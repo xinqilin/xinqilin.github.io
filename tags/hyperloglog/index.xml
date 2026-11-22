@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>HyperLogLog on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/hyperloglog/</link>
+		<description>Recent content in HyperLogLog on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/hyperloglog/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Bloom Filter 與 HyperLogLog：用一點誤差換大量記憶體，以及估計值被刻意操縱時怎麼辦</title>
+				<link>https://xinqilin.github.io/post/systemdesign/bloom-filter-hyperloglog/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/bloom-filter-hyperloglog/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 3-6｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/object-storage/&#34;&gt;檔案與物件儲存&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/full-text-search/&#34;&gt;全文搜尋與倒排索引&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;平台上有兩個看似無關的需求：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;快取穿透&lt;/strong&gt;：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/caching/&#34;&gt;Cache 篇&lt;/a&gt;提過，有人用大量不存在的商品 ID 打 &lt;code&gt;/products/{id}&lt;/code&gt;，快取永遠 miss，每次都打到資料庫。快取空結果能擋住重複的 ID，但攻擊者可以產生無限多種 ID，空結果反而把快取塞滿&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;不重複訪客數（UV）&lt;/strong&gt;：行銷要每場講座每天的不重複訪客，以及任意區間（例如整週）的不重複訪客。未登入的訪客用 cookie 裡的 visitor ID 識別&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;精確的做法是把元素存起來：一個 &lt;code&gt;Set&lt;/code&gt; 記錄所有商品 ID，一個 Redis &lt;code&gt;SET&lt;/code&gt; 記錄每場講座每天的訪客。以每個成員約 60 bytes 粗估，一場熱門講座一天 50 萬名訪客就是 30 MB，一年 365 個 key 約 11 GB，而且這只是一場講座。要算整週的不重複訪客，還得把 7 個集合做聯集。&lt;/p&gt;&#xA;&lt;p&gt;兩個需求有個共同點：&lt;strong&gt;要的只是「在不在」或「有幾個」，不需要元素本身&lt;/strong&gt;。只要能接受一點誤差，記憶體可以省下好幾個數量級。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;做法&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;問題&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;HashSet&lt;/code&gt; 或 Redis &lt;code&gt;SET&lt;/code&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;記憶體和元素數量成正比&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;資料庫 &lt;code&gt;COUNT(DISTINCT visitor_id)&lt;/code&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;每次都要掃描所有事件；&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/btree-vs-lsm/&#34;&gt;B-Tree vs LSM 篇&lt;/a&gt;的瀏覽紀錄一天就有 10 億筆&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;快取空結果&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;能擋住重複的不存在 ID，擋不住每次都不一樣的 ID&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;bloom-filter一定不在或可能在&#34;&gt;Bloom filter：「一定不在」或「可能在」&lt;/h3&gt;&#xA;&lt;p&gt;Bloom filter 是一個 m 個 bit 的陣列，加上 k 個雜湊函式：&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Multipart Upload on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/multipart-upload/</link>
+		<description>Recent content in Multipart Upload on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/multipart-upload/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>檔案與物件儲存：Block、File、Object 的取捨，multipart 直傳、metadata 一致性與上傳安全</title>
+				<link>https://xinqilin.github.io/post/systemdesign/object-storage/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/object-storage/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 3-5｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/transaction-isolation/&#34;&gt;交易與隔離等級&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/bloom-filter-hyperloglog/&#34;&gt;Bloom Filter 與 HyperLogLog&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座辦完後，平台要開放三種上傳：講者上傳錄影（每支 1–5 GB）、講義 PDF，以及會員的大頭貼。第一版的做法是 Spring Boot 用 &lt;code&gt;MultipartFile&lt;/code&gt; 收下檔案，存到應用伺服器的 &lt;code&gt;/data/uploads&lt;/code&gt;，路徑寫進資料庫。很快就出現問題：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;服務擴展成三台後，A 機器收到的檔案，B 機器讀不到&lt;/li&gt;&#xA;&lt;li&gt;講者用 50 Mbps 的上行網路傳 5 GB 錄影：5 × 10⁹ × 8 ÷ (50 × 10⁶) ≈ 800 秒，&lt;strong&gt;一個 Tomcat 執行緒被佔住 13 分鐘&lt;/strong&gt;。Tomcat 預設最多 200 條執行緒，幾十位講者同時上傳，一般 API 就開始排隊&lt;/li&gt;&#xA;&lt;li&gt;傳到 90% 時 Wi-Fi 斷線，只能從頭再傳一次&lt;/li&gt;&#xA;&lt;li&gt;有人把資料庫當檔案櫃，改存成 BLOB：buffer pool 被大檔擠滿，備份從 20 分鐘變成 3 小時，replica 延遲飆高&lt;/li&gt;&#xA;&lt;li&gt;資安掃描發現，有人上傳了副檔名是 &lt;code&gt;.png&lt;/code&gt;、內容其實是 HTML 的「大頭貼」&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/scaling-stateless/&#34;&gt;無狀態服務篇&lt;/a&gt;已經給過第一步：檔案放物件儲存（S3），伺服器只發一個 presigned URL，讓瀏覽器直接 &lt;code&gt;PUT&lt;/code&gt; 上去，檔案的位元組完全不經過應用伺服器。問題 1、2、4 都解決了。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

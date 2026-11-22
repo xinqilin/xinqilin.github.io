@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>ETag on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/etag/</link>
+		<description>Recent content in ETag on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/etag/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>CDN 與 HTTP 快取：Cache-Control、版本化資源、邊緣快取與快取攻擊</title>
+				<link>https://xinqilin.github.io/post/systemdesign/cdn/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/cdn/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 2-4｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/caching/&#34;&gt;Cache 深入&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/sql-vs-nosql/&#34;&gt;SQL vs NoSQL&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;電商網站的 origin 在台灣，開始做海外市場後，陸續收到這些回報：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;美西使用者打開首頁要 3 秒以上，台灣只要 0.8 秒&lt;/li&gt;&#xA;&lt;li&gt;大促期間，&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/napkin-math/&#34;&gt;Napkin Math&lt;/a&gt; 估出的尖峰圖片頻寬 2.4 Gbps 真的出現了，origin 的網路卡和雲端流量費一起爆表&lt;/li&gt;&#xA;&lt;li&gt;每次部署後，總有一小群使用者看到白畫面，主控台顯示 JavaScript 載入失敗&lt;/li&gt;&#xA;&lt;li&gt;最嚴重的一次：為了降低 origin 負載，把 &lt;code&gt;/api/**&lt;/code&gt; 都設成可快取，結果使用者 A 打開「我的訂單」，看到的是使用者 B 的訂單&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;前兩個是&lt;strong&gt;距離和頻寬&lt;/strong&gt;的問題，CDN 正是為此而生。後兩個是&lt;strong&gt;快取語意&lt;/strong&gt;的問題：哪些東西可以被誰快取、快取多久、怎麼更新。這篇兩者都談。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;最簡單的做法是讓 origin 直接提供所有檔案，再用 &lt;code&gt;Cache-Control&lt;/code&gt; 讓瀏覽器快取。極限在於：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;距離無法被優化掉&lt;/strong&gt;：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/request-lifecycle/&#34;&gt;Part 1&lt;/a&gt; 算過，台北到美西的 RTT 約 130–160 ms。TCP、TLS 握手和第一個請求至少要 3 個 RTT，第一個 byte 就要將近 0.5 秒&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;每個使用者第一次造訪都要從 origin 拿&lt;/strong&gt;：瀏覽器快取只對「同一個使用者的第二次造訪」有效，大促湧入的新使用者全部打到 origin&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;頻寬集中在一個點&lt;/strong&gt;：2.4 Gbps 全部從 origin 送出，再加上 DDoS 時的攻擊流量，單一機房很難扛&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;cdn-怎麼運作&#34;&gt;CDN 怎麼運作&lt;/h3&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR&#xA;    U1[美西使用者] --&gt; E1[&#34;邊緣節點（洛杉磯）&#34;]&#xA;    U2[東京使用者] --&gt; E2[&#34;邊緣節點（東京）&#34;]&#xA;    U3[台灣使用者] --&gt; E3[&#34;邊緣節點（台北）&#34;]&#xA;    E1 -- miss --&gt; S[&#34;Origin Shield&lt;br/&gt;（區域快取層）&#34;]&#xA;    E2 -- miss --&gt; S&#xA;    E3 -- miss --&gt; S&#xA;    S -- miss --&gt; O[(Origin&lt;br/&gt;台灣)]&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;導向最近的節點&lt;/strong&gt;：透過 DNS 或 Anycast，讓使用者連到地理上最近的邊緣節點（PoP）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;邊緣快取&lt;/strong&gt;：命中就直接回應，完全不經過 origin&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Origin Shield&lt;/strong&gt;：所有邊緣節點 miss 時，先問同一個區域快取層，而不是各自打 origin。沒有這一層時，一個新檔案上線，全球幾百個節點各自 miss，origin 會收到幾百個請求&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;請求合併（request collapsing）&lt;/strong&gt;：同一個檔案同時有很多請求 miss 時，節點只送一個請求給上游，其他請求等它的結果。這就是 &lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/caching/&#34;&gt;Cache 篇&lt;/a&gt;的 single-flight，只是發生在 CDN&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;&lt;strong&gt;頻寬的帳&lt;/strong&gt;：假設以 byte 計算的命中率是 95%，2.4 Gbps 的圖片流量只剩 2.4 × 5% = 120 Mbps 會打到 origin。和 Cache 篇一樣，要看的是&lt;strong&gt;未命中率&lt;/strong&gt;：命中率從 95% 提升到 99%，origin 頻寬再降 5 倍。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

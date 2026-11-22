@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>InnoDB on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/innodb/</link>
+		<description>Recent content in InnoDB on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/innodb/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Index 與 B&#43;Tree：從磁碟頁面到複合索引、索引失效與 keyset 分頁</title>
+				<link>https://xinqilin.github.io/post/systemdesign/index-btree/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/index-btree/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 3-2｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/sql-vs-nosql/&#34;&gt;SQL vs NoSQL&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/btree-vs-lsm/&#34;&gt;B-Tree vs LSM-Tree&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;會員中心的「我的訂單」API 背後是一張 5,000 萬筆的 &lt;code&gt;purchase_order&lt;/code&gt; 表，每列約 200 bytes，資料本身約 10 GB。上線後陸續出現：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;查某位會員最近 20 筆訂單要 8 秒&lt;/li&gt;&#xA;&lt;li&gt;加了 &lt;code&gt;member_id&lt;/code&gt; 的索引後變快了，但「某位會員已付款的訂單，依時間排序」還是慢&lt;/li&gt;&#xA;&lt;li&gt;後台的 &lt;code&gt;WHERE DATE(created_at) = &#39;2026-11-11&#39;&lt;/code&gt; 不管怎麼加索引都沒用&lt;/li&gt;&#xA;&lt;li&gt;客服用手機號碼查會員，&lt;code&gt;WHERE phone = 0912345678&lt;/code&gt; 每次都掃整張表&lt;/li&gt;&#xA;&lt;li&gt;為了加速，有人一口氣加了 12 個索引，結果大促時寫入變慢、replica 延遲飆高&lt;/li&gt;&#xA;&lt;li&gt;第 5,000 頁的分頁要 3 秒&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;六個問題都和索引有關，但原因各不相同。要能判斷，得先知道索引在磁碟上長什麼樣子。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;沒有索引時，資料庫只能&lt;strong&gt;全表掃描&lt;/strong&gt;：讀完 5,000 萬列，逐一檢查條件。成本和資料量成正比，資料多 10 倍就慢 10 倍；同時有 10 個這種查詢，就是 10 倍的 I/O。&lt;/p&gt;&#xA;&lt;p&gt;資料若依某個欄位排好序，就能用二分搜尋：log₂(5,000 萬) ≈ 26 次比較。但排序好的陣列插入很貴，而且只能依一種順序排。改用二元搜尋樹可以兼顧插入，但樹高約 26 層，如果每一層都在磁碟上的不同位置，一次查詢就是 26 次隨機讀取。磁碟（就算是 SSD）的隨機讀取比記憶體慢上百倍以上，26 次太多了。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

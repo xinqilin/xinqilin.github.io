@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>PACELC on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/pacelc/</link>
+		<description>Recent content in PACELC on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/pacelc/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>CAP 與 PACELC：斷線時選一致還是可用，沒斷線時選延遲還是一致</title>
+				<link>https://xinqilin.github.io/post/systemdesign/cap-pacelc/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/cap-pacelc/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 4-5｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/distributed-id/&#34;&gt;分散式 ID&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/consensus-raft/&#34;&gt;共識與 Raft&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座平台拓展到日本，在東京開了第二個機房，資料在台北與東京之間複製。日本的使用者讀取變快了，台北機房整個故障時也還有東京可以接手。但團隊馬上遇到兩個問題：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;台北與東京之間的網路斷了&lt;/strong&gt;（光纖被挖斷、跨國線路壅塞），兩邊都還活著，只是彼此聯絡不上。這時東京的使用者報名同一個座位、修改個人簡介、回報觀看進度，系統要怎麼反應？&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;網路正常的時候&lt;/strong&gt;，每次寫入要不要等另一個機房確認？等的話，每次寫入多 30 毫秒；不等的話，另一個機房可能讀到舊資料&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;最常聽到的說法是「CAP 三選二：一致性、可用性、分割容忍，只能選兩個」，然後把資料庫分成 CA、CP、AP 三類。這個說法有兩個問題：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;分割不是可以選擇不要的東西&lt;/strong&gt;：只要資料放在兩台以上透過網路連接的機器上，網路就可能斷。真正的選擇只在&lt;strong&gt;發生分割的時候&lt;/strong&gt;才出現：要一致，還是要可用&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;沒有分割的時候也有取捨&lt;/strong&gt;：而且這個取捨每一個請求都要面對，就是上面的第 2 個問題。CAP 完全沒有談到它&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;cap-實際上說的是什麼&#34;&gt;CAP 實際上說的是什麼&lt;/h3&gt;&#xA;&lt;p&gt;CAP 定理（Gilbert 與 Lynch 在 2002 年證明）裡的三個詞有很精確的定義：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;C（一致性）&lt;strong&gt;指的是&lt;/strong&gt;線性一致&lt;/strong&gt;（linearizability）：所有操作看起來像是在某個時間點瞬間完成，而且一旦某次寫入完成，之後開始的任何讀取都會看到它或更新的值&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;A（可用性）&lt;/strong&gt;：每一個沒有故障的節點收到請求，最終都要回覆一個非錯誤的結果&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;P（分割容忍）&lt;/strong&gt;：節點之間的訊息可能遺失任意多個&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;證明很直觀：&lt;/p&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;sequenceDiagram&#xA;    participant U1 as 台北的使用者&#xA;    participant T as 台北節點&#xA;    participant J as 東京節點&#xA;    participant U2 as 東京的使用者&#xA;    Note over T,J: 網路斷線&#xA;    U1-&gt;&gt;T: 座位 12 給會員 A&#xA;    T--&gt;&gt;U1: 成功&#xA;    U2-&gt;&gt;J: 座位 12 還空著嗎？&#xA;    Note over J: 聯絡不上台北，只有兩個選擇&#xA;    J--&gt;&gt;U2: 回覆「空著」（舊資料，放棄 C）&#xA;    J--xU2: 拒絕或一直等（放棄 A）&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;東京節點不知道台北發生了什麼，它只能回覆可能過時的資料，或者不回覆。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

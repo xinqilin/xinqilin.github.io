@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Distributed ID on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/distributed-id/</link>
+		<description>Recent content in Distributed ID on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/distributed-id/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>分散式 ID：UUIDv7、Snowflake 與號段模式，主鍵的排序、大小與洩漏的資訊</title>
+				<link>https://xinqilin.github.io/post/systemdesign/distributed-id/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/distributed-id/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 4-4｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/consistent-hashing/&#34;&gt;Consistent Hashing&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/cap-pacelc/&#34;&gt;CAP 與 PACELC&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/sharding/&#34;&gt;Sharding 篇&lt;/a&gt;把報名資料分到 16 個分片之後，每個分片各自的 &lt;code&gt;AUTO_INCREMENT&lt;/code&gt; 都從 1 開始，不同分片出現了相同的報名編號。新的 ID 方案要滿足：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;全域唯一&lt;/strong&gt;：任何分片、任何機器產生的 ID 都不能重複&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;大致遞增&lt;/strong&gt;：新資料插在 B+Tree 的右邊，維持寫入效能（&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/index-btree/&#34;&gt;Index 篇&lt;/a&gt;）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;不依賴單點&lt;/strong&gt;：產生 ID 不能讓某一台機器成為瓶頸或單點故障，尖峰每秒 2 萬筆&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;夠小&lt;/strong&gt;：主鍵會複製到每一個二級索引裡，越小越好；如果要給前端使用，最好不要超過 JavaScript 能精確表示的整數範圍&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;不洩漏資訊&lt;/strong&gt;：對外公開的 ID 不能讓人推算出業務量&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;這五點沒有一個方案能全部滿足，這篇的重點是取捨。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;單一資料庫發號&lt;/strong&gt;：所有分片都向同一個資料庫的 &lt;code&gt;AUTO_INCREMENT&lt;/code&gt; 要 ID，等於把單點又加了回來，每次寫入還要多一次網路往返&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;每個分片不同的起點與步長&lt;/strong&gt;：MySQL 的 &lt;code&gt;auto_increment_increment = 16&lt;/code&gt;、&lt;code&gt;auto_increment_offset = 1..16&lt;/code&gt;，第一個分片產生 1、17、33…，第二個產生 2、18、34…。簡單有效，但分片數量寫死在設定裡，重新分片時步長也要跟著改&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;UUIDv4&lt;/strong&gt;：每台機器自己產生，不需要任何協調，但完全隨機。下面的實測說明它對索引的影響&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;隨機與時間有序實測主鍵的插入&#34;&gt;隨機與時間有序：實測主鍵的插入&lt;/h3&gt;&#xA;&lt;p&gt;用簡化的 InnoDB 葉節點層模擬插入 200 萬筆：頁面 16 KB、填到 15/16 就分裂、每列除了主鍵還有 150 bytes 的資料、buffer pool 只放得下 3,000 頁（約 47 MB）。分裂規則仿照 InnoDB：新的一筆緊接在上次插入的那一筆之後時，從插入點分裂（舊頁保持全滿），否則對半分裂。UUIDv7 用 Hibernate 7.4 的實作產生：&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

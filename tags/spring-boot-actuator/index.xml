@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Spring Boot Actuator on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/spring-boot-actuator/</link>
+		<description>Recent content in Spring Boot Actuator on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/spring-boot-actuator/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Load Balancing 深入：L4 與 L7、演算法、健康檢查與連線排空</title>
+				<link>https://xinqilin.github.io/post/systemdesign/load-balancing/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/load-balancing/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 2-2｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/scaling-stateless/&#34;&gt;垂直擴展、水平擴展與無狀態服務&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/caching/&#34;&gt;Cache 深入&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;服務已經做到無狀態，前面放了 Load Balancer，後面十台 instance。某天發生了三件事：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;其中一台因為鄰居搶 CPU，處理時間從 10 ms 變成 100 ms。它沒有掛，health check 照樣回 200，Load Balancer 繼續把十分之一的流量送給它，&lt;strong&gt;那十分之一的使用者一直逾時&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;每次部署，監控上都固定出現一小段 502&lt;/li&gt;&#xA;&lt;li&gt;資料庫抖了 3 秒。因為 health check 有檢查資料庫，十台 instance 同時被判定為不健康，&lt;strong&gt;全站停擺的時間遠比資料庫抖動的 3 秒還長&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;這三件事分別對應 Load Balancer 的三個核心問題：&lt;strong&gt;怎麼分配、怎麼判斷健康、怎麼上下線&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限dns-round-robin&#34;&gt;最簡單的做法與它的極限：DNS Round Robin&lt;/h2&gt;&#xA;&lt;p&gt;最簡單的負載平衡是在 DNS 放多筆 A record，讓 client 自己挑一個 IP。它的問題是：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;沒有健康檢查&lt;/strong&gt;：一台掛了，DNS 還是會把它的 IP 發出去&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;移除不即時&lt;/strong&gt;：client、resolver、JVM 都會快取 DNS 結果，改了 DNS 要等 TTL 過期才會生效&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;分配粒度太粗&lt;/strong&gt;：client 拿到 IP 後，後續所有請求都打同一台&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;DNS 適合做「把使用者導到最近的機房」這種粗粒度的分配（GeoDNS），機房內部的分配還是要交給真正的 Load Balancer。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>
