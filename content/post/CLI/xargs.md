@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2022-11-02T23:05:25+08:00
 draft: false
 tags: ["Linux", "Xargs", "Command Line", "Parallel Processing", "Pipe", "Shell", "Unix"]
-Description: "深入解析 xargs 命令的完整用法，包含參數處理、並行執行、管道組合與實戰應用場景"
-Categories: ["Tools"]
-DisableComments: false
+description: "深入解析 xargs 命令的完整用法，包含參數處理、並行執行、管道組合與實戰應用場景"
+categories: ["CLI"]
+disableComments: false
 aliases:
   - /post/Tools/Xargs/
 

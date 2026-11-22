@@ -4,9 +4,9 @@ author: "Bill.Lin"
 date: 2021-06-29T13:45:56+08:00
 draft: false
 tags: ["YAML", "Configuration", "Kubernetes", "Spring Boot", "DevOps"]
-Description: "本文詳細介紹了 YAML 的核心語法，包括鍵值對、陣列、物件等資料結構，並透過與 JSON 的比較，幫助您快速上手，應用於 Kubernetes、Spring Boot 等現代開發場景。"
-Categories: ["Tools"]
-DisableComments: false
+description: "本文詳細介紹了 YAML 的核心語法，包括鍵值對、陣列、物件等資料結構，並透過與 JSON 的比較，幫助您快速上手，應用於 Kubernetes、Spring Boot 等現代開發場景。"
+categories: ["CLI"]
+disableComments: false
 aliases:
   - /post/Tools/Yaml/
 

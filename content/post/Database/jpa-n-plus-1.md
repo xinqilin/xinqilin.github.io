@@ -4,8 +4,10 @@ author: Bill.Lin
 date: 2024-01-15
 draft: false
 description: "深入解析 JPA N+1 問題的成因、偵測方式，以及 JOIN FETCH、EntityGraph、BatchSize 三種解法的適用時機"
-categories: ["Backend"]
+categories: ["Database"]
 tags: ["JPA", "Hibernate", "N+1", "Performance", "Spring Data"]
+aliases:
+  - /post/backend/jpa-n-plus-1/
 ---
 
 ## 什麼是 N+1 問題

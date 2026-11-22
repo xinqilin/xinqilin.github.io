@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T01:07:16+08:00
 draft: false
 tags: ["DesignPattern", "Creational", "FactoryMethod"]
-Description: "GoF Factory Method 模式：定義建立物件的介面，將具體類別的決策交給子類，並釐清與 Simple Factory、Abstract Factory、靜態工廠的差異"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "GoF Factory Method 模式：定義建立物件的介面，將具體類別的決策交給子類，並釐清與 Simple Factory、Abstract Factory、靜態工廠的差異"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/architecture/factory/
 ---

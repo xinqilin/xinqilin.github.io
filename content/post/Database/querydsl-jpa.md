@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2021-08-08T13:07:45+08:00
 draft: false
 tags: ["QueryDSL", "JPA", "Spring Data", "Database", "Query Builder", "Type Safety", "Criteria API", "Dynamic Query", "Performance"]
-Description: "深入解析 QueryDSL 動態查詢框架的完整使用方法，包含配置、查詢建構、效能優化與企業級應用實戰"
-Categories: ["Backend"]
-DisableComments: false
+description: "深入解析 QueryDSL 動態查詢框架的完整使用方法，包含配置、查詢建構、效能優化與企業級應用實戰"
+categories: ["Database"]
+disableComments: false
 aliases:
   - /post/Backend/QueryDSL/
+  - /post/backend/querydsl-jpa/
 
 ---
 

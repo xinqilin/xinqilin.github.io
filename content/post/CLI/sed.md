@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2019-01-18T10:23:31+08:00
 draft: false
 tags: ["Linux", "Sed", "Stream Editor", "Text Processing", "Regular Expression", "Shell", "Unix"]
-Description: "深入解析 sed 流編輯器的完整用法，包含文本替換、行操作、正規表達式與實戰應用場景"
-Categories: ["Tools"]
-DisableComments: false
+description: "深入解析 sed 流編輯器的完整用法，包含文本替換、行操作、正規表達式與實戰應用場景"
+categories: ["CLI"]
+disableComments: false
 aliases:
   - /post/Tools/Sed/
 

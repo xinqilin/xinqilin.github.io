@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-06T23:05:44+08:00
 draft: false
 tags: ["DesignPattern", "Creational", "Singleton"]
-Description: "GoF Singleton 模式四種實作比較：Enum、Holder、DCL、Eager，說明 Spring Bean Singleton 與 GoF 的本質差異"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "GoF Singleton 模式四種實作比較：Enum、Holder、DCL、Eager，說明 Spring Bean Singleton 與 GoF 的本質差異"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/architecture/singleton/
 ---

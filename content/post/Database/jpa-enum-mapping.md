@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2023-01-05T23:18:48+08:00
 draft: false
 tags: ["Java", "JPA", "Hibernate", "Enum", "ORM", "Database", "Spring", "MySQL"]
-Description: "深入探討 JPA 中 Enum 型別的各種映射策略、自訂轉換器、效能優化與最佳實踐"
-Categories: ["Backend"]
-DisableComments: false
+description: "深入探討 JPA 中 Enum 型別的各種映射策略、自訂轉換器、效能優化與最佳實踐"
+categories: ["Database"]
+disableComments: false
 aliases:
   - /post/Backend/ORMEnumType/
+  - /post/backend/jpa-enum-mapping/
 
 ---
 

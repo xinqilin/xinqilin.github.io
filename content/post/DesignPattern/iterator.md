@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T22:38:21+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "Iterator"]
-Description: "迭代器模式：提供統一介面循序存取集合元素，不暴露底層資料結構，Java Iterable/Iterator 即此模式的內建實作。"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "迭代器模式：提供統一介面循序存取集合元素，不暴露底層資料結構，Java Iterable/Iterator 即此模式的內建實作。"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/DesignPattern/Iterator/
   - /post/architecture/iterator/

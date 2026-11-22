@@ -4,8 +4,10 @@ author: Bill.Lin
 date: 2024-01-15
 draft: false
 description: "HikariCP 核心參數公式推導、max-lifetime 與 MySQL wait_timeout 的關係，以及洩漏偵測與 Actuator 監控設定"
-categories: ["Backend"]
+categories: ["Database"]
 tags: ["HikariCP", "Connection Pool", "Performance", "Spring Boot", "MySQL"]
+aliases:
+  - /post/backend/hikaricp-tuning/
 ---
 
 ## 為什麼需要連線池

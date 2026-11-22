@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2021-07-10T20:27:20+08:00
 draft: false
 tags: ["Java", "Spring", "DI", "IoC", "Autowired", "Constructor", "Best-Practices"]
-Description: "深入探討 Spring 依賴注入的各種方式、最佳實踐與常見陷阱，重點說明為何不建議使用 Field Injection"
-Categories: ["Backend"]
-DisableComments: false
+description: "深入探討 Spring 依賴注入的各種方式、最佳實踐與常見陷阱，重點說明為何不建議使用 Field Injection"
+categories: ["Spring"]
+disableComments: false
 aliases:
   - /post/Backend/@Autowired/
+  - /post/backend/spring-dependency-injection/
 
 ---
 

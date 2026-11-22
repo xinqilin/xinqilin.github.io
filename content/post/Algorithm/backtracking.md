@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2022-05-10T23:34:53+08:00
 draft: false
 tags: ["Algorithm", "Backtracking", "Recursion"]
-Description: "深入探討回溯演算法的原理、實作技巧與經典題型解析"
-Categories: ["Algorithm"]
-DisableComments: false
+description: "深入探討回溯演算法的原理、實作技巧與經典題型解析"
+categories: ["Algorithm"]
+disableComments: false
 aliases:
   - /post/Algorithm/Backtracking/
 

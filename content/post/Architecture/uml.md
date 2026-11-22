@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2021-07-12T23:33:14+08:00
 draft: false
 tags: ["UML", "Unified Modeling Language", "Software Design", "Architecture", "Class Diagram", "Sequence Diagram", "Use Case Diagram", "Design Patterns", "Object-Oriented Design", "Software Modeling", "Enterprise Architecture", "System Design"]
-Description: "深入探討 UML 統一建模語言的完整指南，包含類別圖、序列圖、使用案例圖、設計模式建模與企業級軟體架構建模最佳實踐"
-Categories: ["Architecture"]
-DisableComments: false
+description: "深入探討 UML 統一建模語言的完整指南，包含類別圖、序列圖、使用案例圖、設計模式建模與企業級軟體架構建模最佳實踐"
+categories: ["Architecture"]
+disableComments: false
 aliases:
   - /post/Architecture/UML/
 

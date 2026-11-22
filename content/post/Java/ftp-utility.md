@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2023-01-05T23:45:46+08:00
 draft: false
 tags: ["Java", "FTP", "FileTransfer", "Spring", "Commons-Net", "Security"]
-Description: "完整的 FTP 工具類實作指南，包含連線池管理、安全配置、錯誤處理與最佳實踐"
-Categories: ["Backend"]
-DisableComments: false
+description: "完整的 FTP 工具類實作指南，包含連線池管理、安全配置、錯誤處理與最佳實踐"
+categories: ["Java"]
+disableComments: false
 aliases:
   - /post/Backend/FtpUtil/
+  - /post/backend/ftp-utility/
 
 ---
 

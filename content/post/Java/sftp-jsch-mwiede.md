@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2021-01-05T19:18:59+08:00
 draft: false
 tags: ["SFTP", "Spring Boot", "File Transfer", "JSch", "Security", "Java", "Connection Pool", "Enterprise", "File Management", "SSH", "Secure Transfer", "Best Practices", "Error Handling", "Performance", "Monitoring", "Configuration"]
-Description: "深入介紹在 Spring Boot 中實作企業級 SFTP 文件傳輸工具類，包含連線池管理、檔案操作、安全性配置、錯誤處理、效能優化與監控機制"
-Categories: ["Backend"]
-DisableComments: false
+description: "深入介紹在 Spring Boot 中實作企業級 SFTP 文件傳輸工具類，包含連線池管理、檔案操作、安全性配置、錯誤處理、效能優化與監控機制"
+categories: ["Java"]
+disableComments: false
 aliases:
   - /post/Backend/SftpUtil/
+  - /post/backend/sftp-jsch-mwiede/
 
 ---
 

@@ -429,7 +429,7 @@ ggrep --group-separator='=====' -A1 WARN app.log      # GNU grep
 # 2026-11-01 09:01:40.000  WARN [exec-5] c.e.o.web.OrderController : traceId=j1k2l3 [ERROR] upstream returned 502
 ```
 
-stack trace 長度不固定時，`-A` 很難抓得剛好。這種「從某行開始，到下一個時間戳記為止」的需求交給 [awk](/post/CLI/awk/) 比較適合。
+stack trace 長度不固定時，`-A` 很難抓得剛好。這種「從某行開始，到下一個時間戳記為止」的需求交給 [awk](/post/cli/awk/) 比較適合。
 
 ---
 
@@ -715,7 +715,7 @@ grep -lZ ERROR app.log access.log | od -c | head -1
 # 0000000    a   p   p   .   l   o   g  \n           <- 還是換行，-Z 根本不是 --null
 ```
 
-可攜寫法：**一律寫 `--null`**。`xargs` 與 `sed` 的細節見 [xargs](/post/CLI/xargs/) 和 [sed](/post/CLI/sed/)。
+可攜寫法：**一律寫 `--null`**。`xargs` 與 `sed` 的細節見 [xargs](/post/cli/xargs/) 和 [sed](/post/cli/sed/)。
 
 ### `git grep`：在 Git repo 裡更好用
 
@@ -726,7 +726,7 @@ git grep -n baseURL -- '*.yaml'
 # hugo.yaml:1:baseURL: https://xinqilin.github.io/
 ```
 
-需要依修改時間、檔案大小篩選時，改用 [find](/post/CLI/find/) 搭配 grep：
+需要依修改時間、檔案大小篩選時，改用 [find](/post/cli/find/) 搭配 grep：
 
 ```bash
 find . -name '*.log' -mtime -1 -exec grep -l ERROR {} +
@@ -845,7 +845,7 @@ grep -oE '"[A-Z]+ [^ ]+' access.log | sort | uniq -c | sort -nr
 #    1 "GET /api/orders/1002
 ```
 
-需要依欄位做更複雜的統計時，交給 [awk](/post/CLI/awk/)。
+需要依欄位做更複雜的統計時，交給 [awk](/post/cli/awk/)。
 
 ### 即時追蹤：`--line-buffered`
 
@@ -966,10 +966,10 @@ env | grep -i proxy                                # 確認 proxy 環境變數
 |---|---|
 | 在大型 repo 裡找程式碼 | `rg`（ripgrep）：預設遞迴、尊重 `.gitignore`、跳過二進位檔、速度快，`brew install ripgrep` |
 | 只搜 Git 追蹤的檔案 | `git grep` |
-| 需要依欄位判斷、加總、格式化 | [awk](/post/CLI/awk/) |
-| 找到之後要取代 | [sed](/post/CLI/sed/) |
-| 資料是 JSON | [jq](/post/CLI/jq/)，不要用 grep 硬抓 JSON |
-| 依檔案屬性（時間、大小）篩選 | [find](/post/CLI/find/) |
+| 需要依欄位判斷、加總、格式化 | [awk](/post/cli/awk/) |
+| 找到之後要取代 | [sed](/post/cli/sed/) |
+| 資料是 JSON | [jq](/post/cli/jq/)，不要用 grep 硬抓 JSON |
+| 依檔案屬性（時間、大小）篩選 | [find](/post/cli/find/) |
 
 ---
 

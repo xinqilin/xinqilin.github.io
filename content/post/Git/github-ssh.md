@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2022-02-09T19:46:19+08:00
 draft: false
 tags: ["Git", "GitHub", "SSH", "PAT", "Authentication"]
-Description: "GitHub SSH 金鑰設定、Classic vs Fine-grained PAT 比較，以及 SSH vs HTTPS 選型指南"
-Categories: ["Git"]
-DisableComments: false
+description: "GitHub SSH 金鑰設定、Classic vs Fine-grained PAT 比較，以及 SSH vs HTTPS 選型指南"
+categories: ["Git"]
+disableComments: false
 aliases:
   - /post/Others/Github-ssh/
   - /post/tools/github-ssh/

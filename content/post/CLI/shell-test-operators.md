@@ -4,9 +4,9 @@ author: "Bill.Lin"
 date: 2022-10-01T21:25:56+08:00
 draft: false
 tags: ["Shell", "Bash", "File System", "Scripting"]
-Description: "本文提供 Shell Script 中常用的檔案、目錄及字串測試表達式，包含語法說明與實用範例，幫助您更有效地撰寫腳本。"
-Categories: ["Tools"]
-DisableComments: false
+description: "本文提供 Shell Script 中常用的檔案、目錄及字串測試表達式，包含語法說明與實用範例，幫助您更有效地撰寫腳本。"
+categories: ["CLI"]
+disableComments: false
 aliases:
   - /post/Tools/FileExpress/
 

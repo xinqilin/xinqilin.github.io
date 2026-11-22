@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2021-03-01T21:16:29+08:00
 draft: false
 tags: ["Git", "Tag", "CI/CD"]
-Description: "Git tag 的完整操作指南，包含 annotated tag、CI/CD 部署 tag 與 semver 工作流"
-Categories: ["Tools"]
-DisableComments: false
+description: "Git tag 的完整操作指南，包含 annotated tag、CI/CD 部署 tag 與 semver 工作流"
+categories: ["Git"]
+disableComments: false
 aliases:
   - /post/Others/Git/
   - /post/tools/git/

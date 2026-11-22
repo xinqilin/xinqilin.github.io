@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T22:37:58+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "State"]
-Description: "State 模式將狀態相關行為封裝成獨立類別，消除大型 if-else/switch，物件轉換狀態時行為自動切換。"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "State 模式將狀態相關行為封裝成獨立類別，消除大型 if-else/switch，物件轉換狀態時行為自動切換。"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/DesignPattern/State/
   - /post/architecture/state/

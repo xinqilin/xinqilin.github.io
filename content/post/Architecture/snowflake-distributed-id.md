@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2022-09-13T23:05:38+08:00
 draft: false
 tags: ["Snowflake", "分散式系統", "ID生成", "Spring Boot", "微服務", "高併發", "架構設計"]
-Description: "深入探討 Twitter Snowflake 分散式 ID 生成算法，包含多種實現方式、Spring Boot 整合、企業級應用場景與最佳實踐"
-Categories: ["Architecture"]
-DisableComments: false
+description: "深入探討 Twitter Snowflake 分散式 ID 生成算法，包含多種實現方式、Spring Boot 整合、企業級應用場景與最佳實踐"
+categories: ["Architecture"]
+disableComments: false
 aliases:
   - /post/Architecture/SnowFlake-DistributionKey/
 

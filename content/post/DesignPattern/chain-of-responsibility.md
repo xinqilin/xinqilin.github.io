@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T22:37:08+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "ChainOfResponsibility"]
-Description: "責任鏈模式：將請求沿處理者鏈傳遞，讓多個物件都有機會處理請求，避免發送者與接收者的強耦合。"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "責任鏈模式：將請求沿處理者鏈傳遞，讓多個物件都有機會處理請求，避免發送者與接收者的強耦合。"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/DesignPattern/ChainOfResponsibility/
   - /post/architecture/chainofresponsibility/

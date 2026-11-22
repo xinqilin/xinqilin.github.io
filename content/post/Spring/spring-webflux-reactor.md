@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2021-12-01T22:13:40+08:00
 draft: false
 tags: ["Java", "Spring", "WebFlux", "Reactor", "Reactive", "Async", "Mono", "Flux"]
-Description: "深入探討 Reactive Programming 概念，包含 Mono、Flux 操作符詳解與 Spring WebFlux 實戰應用"
-Categories: ["Backend"]
-DisableComments: false
+description: "深入探討 Reactive Programming 概念，包含 Mono、Flux 操作符詳解與 Spring WebFlux 實戰應用"
+categories: ["Spring"]
+disableComments: false
 aliases:
   - /post/Backend/ReactiveJava/
+  - /post/backend/spring-webflux-reactor/
 
 ---
 

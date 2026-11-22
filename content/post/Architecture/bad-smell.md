@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2022-03-17T22:50:11+08:00
 draft: false
 tags: ["Code Smells", "Code Quality", "Refactoring", "Clean Code", "Software Architecture", "Best Practices", "Technical Debt", "Software Maintenance", "Code Review", "Design Patterns", "SOLID Principles", "Java", "Enterprise Development"]
-Description: "深入探討代碼壞味道的完整識別與重構指南，包含常見壞味道類型、識別方法、重構技巧、預防策略與企業級代碼品質改善最佳實踐"
-Categories: ["Architecture"]
-DisableComments: false
+description: "深入探討代碼壞味道的完整識別與重構指南，包含常見壞味道類型、識別方法、重構技巧、預防策略與企業級代碼品質改善最佳實踐"
+categories: ["Architecture"]
+disableComments: false
 aliases:
   - /post/Architecture/BadSmell/
 

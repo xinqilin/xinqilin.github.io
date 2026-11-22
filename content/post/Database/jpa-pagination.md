@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2020-01-07T13:26:41+08:00
 draft: false
 tags: ["Spring Data JPA", "Pageable", "Pagination", "Spring Boot", "Database", "Performance", "Specification", "Criteria API"]
-Description: "詳細介紹 Spring Data JPA 中 Pageable 分頁查詢的使用方法，包含自訂查詢、排序與效能優化技巧"
-Categories: ["Backend"]
-DisableComments: false
+description: "詳細介紹 Spring Data JPA 中 Pageable 分頁查詢的使用方法，包含自訂查詢、排序與效能優化技巧"
+categories: ["Database"]
+disableComments: false
 aliases:
   - /post/Backend/JpaPageable/
+  - /post/backend/jpa-pagination/
 
 ---
 

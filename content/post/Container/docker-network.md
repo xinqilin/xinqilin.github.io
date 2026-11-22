@@ -4,9 +4,9 @@ author: "Bill.Lin"
 date: 2021-07-26T02:21:13+08:00
 draft: false
 tags: ["Docker", "Network", "DevOps", "Containerization", "Bridge", "Host"]
-Description: "深入解析 Docker 提供的各種網路模式，包括 Bridge、Host、None 和 Container 模式，並詳細說明如何建立自訂網路以實現容器間的順暢通訊與外部連接。"
-Categories: ["DevOps"]
-DisableComments: false
+description: "深入解析 Docker 提供的各種網路模式，包括 Bridge、Host、None 和 Container 模式，並詳細說明如何建立自訂網路以實現容器間的順暢通訊與外部連接。"
+categories: ["Container"]
+disableComments: false
 aliases:
   - /post/DevOps/Docker-Network/
   - /post/devops/network/

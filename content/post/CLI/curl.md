@@ -24,7 +24,7 @@ curl --version
 # Features: alt-svc AsynchDNS GSS-API HSTS HTTP2 HTTPS-proxy IPv6 Kerberos Largefile libz MultiSSL NTLM SPNEGO SSL threadsafe UnixSockets
 ```
 
-- 第一行的 `SecureTransport`、`LibreSSL` 是 TLS 實作。macOS 的 LibreSSL 跟正牌 OpenSSL 的差異見 [openssl](/post/CLI/openssl/)。
+- 第一行的 `SecureTransport`、`LibreSSL` 是 TLS 實作。macOS 的 LibreSSL 跟正牌 OpenSSL 的差異見 [openssl](/post/cli/openssl/)。
 - `Features` 決定能用哪些功能。這裡有 `HTTP2`，但**沒有 `HTTP3`**，所以 `--http3` 在 macOS 內建 curl 上不能用。
 
 想用最新版就裝 Homebrew 的 curl。它是 keg-only，也就是**不會**蓋掉系統的 `/usr/bin/curl`，要用完整路徑或自己加進 PATH：
@@ -1186,7 +1186,7 @@ curl -sS -w '%{certs}' -o /dev/null https://example.com | head -12
 
 依 man page，這個變數只支援 OpenSSL、GnuTLS、Schannel 和 Secure Transport 這幾種 TLS 實作。
 
-更完整的憑證檢查（憑證鏈、到期日、SAN）用 `openssl s_client`，見 [openssl](/post/CLI/openssl/)。
+更完整的憑證檢查（憑證鏈、到期日、SAN）用 `openssl s_client`，見 [openssl](/post/cli/openssl/)。
 
 ### HSTS
 
@@ -1213,7 +1213,7 @@ echo '{"status":"DOWN"}' | jq -e '.status == "UP"' > /dev/null; echo "exit=$?"
 # exit=1
 ```
 
-這樣就能直接放進 CI、Kubernetes 的 exec probe 或部署腳本。jq 的用法見 [jq](/post/CLI/jq/)。
+這樣就能直接放進 CI、Kubernetes 的 exec probe 或部署腳本。jq 的用法見 [jq](/post/cli/jq/)。
 
 ### CI / docker compose 裡等服務啟動
 

@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T02:27:13+08:00
 draft: false
 tags: ["DesignPattern", "Creational", "Prototype"]
-Description: "GoF Prototype 模式：比較淺拷貝與深拷貝的陷阱，說明為何應避免 Cloneable，以及拷貝建構子與 Jackson 序列化的現代替代方案"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "GoF Prototype 模式：比較淺拷貝與深拷貝的陷阱，說明為何應避免 Cloneable，以及拷貝建構子與 Jackson 序列化的現代替代方案"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/architecture/prototype/
 ---

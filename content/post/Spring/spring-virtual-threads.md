@@ -4,8 +4,10 @@ author: Bill.Lin
 date: 2024-01-15
 draft: false
 description: "深入解析 Project Loom Virtual Threads 原理，Spring Boot 3.2 啟用方式、Pinning 問題與 ThreadLocal 陷阱的實戰指南"
-categories: ["Backend"]
+categories: ["Spring"]
 tags: ["Java", "Virtual Threads", "Project Loom", "Spring Boot", "Concurrency"]
+aliases:
+  - /post/backend/spring-virtual-threads/
 ---
 
 ## 什麼是 Virtual Threads

@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2022-09-26T22:15:44+08:00
 draft: false
 tags: ["Algorithm", "UnionFind", "DisjointSet", "Graph", "Java"]
-Description: "深入探討並查集數據結構的原理、優化技巧與實際應用，包含路徑壓縮和按秩合併等優化策略"
-Categories: ["Algorithm"]
-DisableComments: false
+description: "深入探討並查集數據結構的原理、優化技巧與實際應用，包含路徑壓縮和按秩合併等優化策略"
+categories: ["Algorithm"]
+disableComments: false
 aliases:
   - /post/Algorithm/UnionFind/
 

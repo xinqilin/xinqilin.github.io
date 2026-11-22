@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T12:16:14+08:00
 draft: false
 tags: ["DesignPattern", "Structural", "Bridge"]
-Description: "Bridge 模式將抽象層與實作層分離，讓兩者可以獨立演進，解決多維度繼承導致的類別爆炸問題。"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "Bridge 模式將抽象層與實作層分離，讓兩者可以獨立演進，解決多維度繼承導致的類別爆炸問題。"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/DesignPattern/Bridge/
   - /post/architecture/bridge/

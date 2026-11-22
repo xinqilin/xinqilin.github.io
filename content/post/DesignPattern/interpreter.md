@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T22:38:42+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "Interpreter"]
-Description: "Interpreter 模式為簡單語法定義 AST 與解釋邏輯，適合小型 DSL；複雜語法請改用 ANTLR 等解析器工具。"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "Interpreter 模式為簡單語法定義 AST 與解釋邏輯，適合小型 DSL；複雜語法請改用 ANTLR 等解析器工具。"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/DesignPattern/Interpreter/
   - /post/architecture/interpreter/

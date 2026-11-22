@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2021-01-08T21:39:14+08:00
 draft: false
 tags: ["Linux", "Dig", "DNS", "Network", "Debugging", "System Administration", "Command Line"]
-Description: "深入解析 dig 命令的完整用法，包含 DNS 記錄查詢、網路診斷、效能分析與故障排除技巧"
-Categories: ["Tools"]
-DisableComments: false
+description: "深入解析 dig 命令的完整用法，包含 DNS 記錄查詢、網路診斷、效能分析與故障排除技巧"
+categories: ["CLI"]
+disableComments: false
 aliases:
   - /post/Tools/Dig/
 

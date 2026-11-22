@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2019-03-20T20:58:17+08:00
 draft: false
 tags: ["Java", "Map", "HashMap", "ConcurrentHashMap", "Collections", "Performance", "Lambda", "Atomic Operations", "Thread Safety"]
-Description: "深入解析 Java Map 介面的所有計算方法，包含 putIfAbsent、compute、computeIfAbsent、computeIfPresent、merge 等，並提供效能優化與執行緒安全實踐"
-Categories: ["Backend"]
-DisableComments: false
+description: "深入解析 Java Map 介面的所有計算方法，包含 putIfAbsent、compute、computeIfAbsent、computeIfPresent、merge 等，並提供效能優化與執行緒安全實踐"
+categories: ["Java"]
+disableComments: false
 aliases:
   - /post/Backend/MapCompute/
+  - /post/backend/map-compute/
 
 ---
 

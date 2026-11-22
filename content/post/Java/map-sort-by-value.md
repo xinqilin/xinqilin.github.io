@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2021-03-28T15:10:59+08:00
 draft: false
 tags: ["Java", "Map", "Sorting", "Collections", "Stream API", "Performance", "Lambda", "TreeMap", "LinkedHashMap", "Comparator"]
-Description: "深入解析 Java Map 按 Value 排序的多種實作方法，包含 Stream API、Collections.sort、TreeMap 等方式，並提供效能分析與最佳實踐"
-Categories: ["Backend"]
-DisableComments: false
+description: "深入解析 Java Map 按 Value 排序的多種實作方法，包含 Stream API、Collections.sort、TreeMap 等方式，並提供效能分析與最佳實踐"
+categories: ["Java"]
+disableComments: false
 aliases:
   - /post/Backend/Map-sort-by-value/
+  - /post/backend/map-sort-by-value/
 
 ---
 

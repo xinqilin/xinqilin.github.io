@@ -6,17 +6,17 @@
         {{ if eq .Type "categories" }}
             {{ if eq $title "Algorithm" }}{{ $iconClass = "📊" }}
             {{ else if eq $title "Architecture" }}{{ $iconClass = "🏗️" }}
-            {{ else if eq $title "Backend" }}{{ $iconClass = "⚙️" }}
             {{ else if eq $title "CLI" }}{{ $iconClass = "💻" }}
             {{ else if eq $title "Container" }}{{ $iconClass = "🐳" }}
             {{ else if eq $title "Database" }}{{ $iconClass = "🗄️" }}
             {{ else if eq $title "DesignPattern" }}{{ $iconClass = "🎯" }}
-            {{ else if eq $title "DevOps" }}{{ $iconClass = "🚀" }}
             {{ else if eq $title "Git" }}{{ $iconClass = "🔀" }}
+            {{ else if eq $title "Java" }}{{ $iconClass = "☕" }}
             {{ else if eq $title "Linux" }}{{ $iconClass = "🐧" }}
             {{ else if eq $title "Security" }}{{ $iconClass = "🔐" }}
+            {{ else if eq $title "Spring" }}{{ $iconClass = "🌱" }}
+            {{ else if eq $title "SystemDesign" }}{{ $iconClass = "📐" }}
             {{ else if eq $title "Testing" }}{{ $iconClass = "🧪" }}
-            {{ else if eq $title "Tools" }}{{ $iconClass = "🛠️" }}
             {{ else if eq $title "Frontend" }}{{ $iconClass = "🎨" }}
             {{ else if eq $title "Python" }}{{ $iconClass = "🐍" }}
             {{ end }}

@@ -4,9 +4,9 @@ author: "Bill.Lin"
 date: 2021-07-26T02:21:13+08:00
 draft: false
 tags: ["Docker", "Docker Compose", "DevOps", "Containerization", "Microservices", "YAML"]
-Description: "深入解析 Docker Compose 的核心概念、常用指令與 `docker-compose.yml` 設定檔的撰寫方式，幫助您輕鬆定義與管理多容器應用程式的生命週期。"
-Categories: ["DevOps"]
-DisableComments: false
+description: "深入解析 Docker Compose 的核心概念、常用指令與 `docker-compose.yml` 設定檔的撰寫方式，幫助您輕鬆定義與管理多容器應用程式的生命週期。"
+categories: ["Container"]
+disableComments: false
 aliases:
   - /post/DevOps/Docker-compose/
 

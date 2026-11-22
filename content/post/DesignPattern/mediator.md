@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T22:36:43+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "Mediator"]
-Description: "Mediator 模式透過中介者集中管理物件間通訊，將網狀耦合降為星狀結構，Spring ApplicationEventPublisher 是其典型實踐。"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "Mediator 模式透過中介者集中管理物件間通訊，將網狀耦合降為星狀結構，Spring ApplicationEventPublisher 是其典型實踐。"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/DesignPattern/Mediator/
   - /post/architecture/mediator/

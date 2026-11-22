@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T12:12:36+08:00
 draft: false
 tags: ["DesignPattern", "Structural", "Adapter"]
-Description: "Adapter 模式將不相容的介面轉換為客戶端期望的介面，常用於整合第三方 SDK 與遺留系統。"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "Adapter 模式將不相容的介面轉換為客戶端期望的介面，常用於整合第三方 SDK 與遺留系統。"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/DesignPattern/Adapter/
   - /post/architecture/adapter/

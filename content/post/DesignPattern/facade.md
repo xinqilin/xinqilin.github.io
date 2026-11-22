@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T12:16:02+08:00
 draft: false
 tags: ["DesignPattern", "Structural", "Facade"]
-Description: "Facade 模式為複雜子系統提供簡化的統一介面，降低客戶端與子系統的耦合，Spring Service 層即其典型應用。"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "Facade 模式為複雜子系統提供簡化的統一介面，降低客戶端與子系統的耦合，Spring Service 層即其典型應用。"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/DesignPattern/Facade/
   - /post/architecture/facade/

@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2022-01-16T22:35:54+08:00
 draft: false
 tags: ["macos", "homebrew", "zsh", "shell", "environment"]
-Description: "macOS 開發環境設定：Homebrew 安裝、zsh 設定、PATH 管理、常用工具安裝清單"
-Categories: ["Linux"]
-DisableComments: false
+description: "macOS 開發環境設定：Homebrew 安裝、zsh 設定、PATH 管理、常用工具安裝清單"
+categories: ["Linux"]
+disableComments: false
 aliases:
   - /post/Others/Env/
   - /post/tools/env/

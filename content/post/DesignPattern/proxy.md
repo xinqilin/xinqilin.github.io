@@ -4,9 +4,9 @@ author: Bill.Lin
 date: 2018-08-07T12:15:41+08:00
 draft: false
 tags: ["DesignPattern", "Structural", "Proxy"]
-Description: "代理模式在不改變介面的情況下攔截對物件的存取，是 Spring AOP、JDK 動態代理、CGLIB 的底層機制"
-Categories: ["DesignPattern"]
-DisableComments: false
+description: "代理模式在不改變介面的情況下攔截對物件的存取，是 Spring AOP、JDK 動態代理、CGLIB 的底層機制"
+categories: ["DesignPattern"]
+disableComments: false
 aliases:
   - /post/architecture/proxy/
 ---

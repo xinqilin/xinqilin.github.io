@@ -4,11 +4,12 @@ author: Bill.Lin
 date: 2021-07-01T23:39:52+08:00
 draft: false
 tags: ["JWT", "Spring Security", "Authentication", "Java", "Spring Boot", "Security", "REST API", "Token"]
-Description: "深入解析 JWT 認證機制在 Spring Boot 中的完整實作，包含 Token 生成、驗證、Filter 配置與安全性最佳實踐"
-Categories: ["Backend"]
-DisableComments: false
+description: "深入解析 JWT 認證機制在 Spring Boot 中的完整實作，包含 Token 生成、驗證、Filter 配置與安全性最佳實踐"
+categories: ["Security"]
+disableComments: false
 aliases:
   - /post/Backend/JWT/
+  - /post/backend/jwt-spring-security/
 
 ---
 
@@ -35,6 +36,78 @@ Header.Payload.Signature
 1. **Header**：包含 Token 類型和簽名演算法
 2. **Payload**：包含聲明（Claims），即使用者資訊和其他資料
 3. **Signature**：用於驗證 Token 是否被篡改
+
+### Payload 的標準 Claims（RFC 7519 Registered Claims）
+
+RFC 7519 第 4.1 節預先註冊了 7 個 claim 名稱，名稱刻意只用 3 個字母，讓 token 盡量短。這 7 個在規格裡**全部是選填（OPTIONAL）**，哪些必填由使用 JWT 的應用或上層協定決定。例如 OpenID Connect 的 ID Token 就規定 `iss`、`sub`、`aud`、`exp`、`iat` 必填。
+
+| Claim | 全名 | 型別 | 意思 | 驗證方該做什麼 |
+|---|---|---|---|---|
+| `iss` | Issuer | StringOrURI | 誰簽發這個 token，例如 `https://auth.example.com` | 確認是信任的簽發者；有多個簽發者時，也用它決定拿哪把金鑰驗簽 |
+| `sub` | Subject | StringOrURI | 這個 token 描述的主體，通常是使用者 ID | 在同一個 `iss` 底下必須唯一（或全域唯一）。用穩定、不會被重新分配的 ID，不要用 email 這種會變的值 |
+| `aud` | Audience | StringOrURI，或其陣列 | 這個 token 要給誰用，例如 `order-service` | **有帶 `aud` 時，接收方必須確認自己在名單內，不在就拒絕**，避免給 A 服務的 token 被拿去打 B 服務 |
+| `exp` | Expiration Time | NumericDate | 過期時間，到這個時間點（含）之後不可再接受 | 現在時間 ≥ `exp` 就拒絕；可容許幾分鐘的時鐘誤差（leeway） |
+| `nbf` | Not Before | NumericDate | 生效時間，在這之前不可接受 | 現在時間 < `nbf` 就拒絕；同樣可容許時鐘誤差 |
+| `iat` | Issued At | NumericDate | 簽發時間 | 用來判斷 token 的年齡，例如「簽發超過 24 小時就要求重新登入」。規格本身沒有規定要據此拒絕什麼 |
+| `jti` | JWT ID | 字串（大小寫敏感） | 這個 token 的唯一識別碼 | 用於防重放或撤銷黑名單（見本文後段「JWT Blacklist（JTI 黑名單）」）；產生方式要讓碰撞機率可忽略，例如 UUID |
+
+兩個型別要特別注意：
+
+- **NumericDate**：從 1970-01-01T00:00:00Z（UTC）起算的**秒數**，不是毫秒，可以帶小數。直接把 `System.currentTimeMillis()` 塞進 `exp`，token 會變成五萬多年後才過期。用 jjwt 的 `expiration(Date)` 這類方法設定，函式庫會自動換算成秒
+- **StringOrURI**：任意字串都可以，但**只要含有冒號 `:`，就必須是合法的 URI**
+
+一個實際的 payload 長這樣：
+
+```json
+{
+  "iss": "https://auth.example.com",
+  "sub": "10086",
+  "aud": ["order-service", "payment-service"],
+  "exp": 1795334400,
+  "nbf": 1795333500,
+  "iat": 1795333500,
+  "jti": "5f0c3a8e-2d4b-4c1e-9a7f-6b2e8d1c4a90",
+  "roles": ["USER"]
+}
+```
+
+`exp - iat` = 900 秒，也就是有效期 15 分鐘。最後的 `roles` 不是標準 claim，屬於下面說的 private claim。
+
+除了這 7 個 registered claims，RFC 7519 還定義了兩類 claim：
+
+- **Public claims**：想讓大家共用的名稱。要到 IANA 的「JSON Web Token Claims」registry 註冊，或使用不會撞名的名稱（例如 URI 形式的 `https://example.com/claims/tenant`）。OpenID Connect 的 `email`、`name` 等都已經註冊在裡面
+- **Private claims**：簽發方和接收方私下約定的名稱，例如上面的 `roles`。因為沒有註冊、可能撞名，只適合在自己的系統內使用
+
+Payload 只有 Base64URL 編碼、**沒有加密**，拿到 token 的人都能解開來看，所以不要放密碼、身分證字號這類敏感資料。
+
+用 jjwt 0.12 設定與驗證這些 claims：
+
+```java
+Instant now = Instant.now();
+
+String token = Jwts.builder()
+        .issuer("https://auth.example.com")
+        .subject(String.valueOf(userId))
+        .audience().add("order-service").and()
+        .issuedAt(Date.from(now))
+        .notBefore(Date.from(now))
+        .expiration(Date.from(now.plus(Duration.ofMinutes(15))))
+        .id(UUID.randomUUID().toString())
+        .claim("roles", List.of("USER"))          // private claim
+        .signWith(key)
+        .compact();
+
+Claims claims = Jwts.parser()
+        .verifyWith(key)
+        .requireIssuer("https://auth.example.com")  // iss 不符或缺少 → InvalidClaimException
+        .requireAudience("order-service")           // aud 不含 order-service → InvalidClaimException
+        .clockSkewSeconds(60)                       // exp、nbf 容許 60 秒時鐘誤差
+        .build()
+        .parseSignedClaims(token)                   // exp、nbf 由 jjwt 自動檢查
+        .getPayload();
+```
+
+jjwt 解析時會**自動檢查** `exp` 與 `nbf`（分別拋出 `ExpiredJwtException`、`PrematureJwtException`），但 `iss` 與 `aud` **不會自動檢查**，要自己用 `requireIssuer`、`requireAudience` 指定。後面的 `JwtUtil` 在標準 claims 中只設定了 `sub`、`iat`、`exp`（另外加了 private claim `roles`）；如果 token 會給多個服務使用，建議補上 `iss` 與 `aud`，並在解析時檢查。
 
 ## Spring Boot 整合實作
 

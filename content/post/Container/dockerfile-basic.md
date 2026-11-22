@@ -4,9 +4,9 @@ author: "Bill.Lin"
 date: 2021-07-24T02:21:13+08:00
 draft: false
 tags: ["Docker", "Dockerfile", "DevOps", "Containerization", "Image Build"]
-Description: "本指南深入介紹 Dockerfile 的基本指令與最佳實踐，從基礎映像檔選擇到多階段建構，助您高效、安全地建構 Docker 映像檔。"
-Categories: ["DevOps"]
-DisableComments: false
+description: "本指南深入介紹 Dockerfile 的基本指令與最佳實踐，從基礎映像檔選擇到多階段建構，助您高效、安全地建構 Docker 映像檔。"
+categories: ["Container"]
+disableComments: false
 aliases:
   - /post/DevOps/Dockerfile-basic/
 

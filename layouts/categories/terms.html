@@ -18,18 +18,18 @@
         {{ $icon := "📁" }}
         {{ $desc := "" }}
         {{ if eq $title "Algorithm" }}{{ $icon = "📊" }}{{ $desc = "資料結構與演算法：排序、圖論、回溯、動態規劃、樹與 Union-Find" }}
-        {{ else if eq $title "Architecture" }}{{ $icon = "🏗️" }}{{ $desc = "系統設計、SOLID、DDD、Hexagonal、Outbox、分散式架構" }}
-        {{ else if eq $title "Backend" }}{{ $icon = "⚙️" }}{{ $desc = "Spring Boot、JPA、虛擬執行緒、HTTP Client、依賴注入" }}
+        {{ else if eq $title "Architecture" }}{{ $icon = "🏗️" }}{{ $desc = "軟體架構：SOLID、DDD、Hexagonal、CQRS、Outbox、程式碼壞味道與 UML" }}
         {{ else if eq $title "CLI" }}{{ $icon = "💻" }}{{ $desc = "awk、sed、find、curl、jq、yaml 處理、shell 工具" }}
         {{ else if eq $title "Container" }}{{ $icon = "🐳" }}{{ $desc = "Docker、Dockerfile 最佳實踐、docker compose" }}
-        {{ else if eq $title "Database" }}{{ $icon = "🗄️" }}{{ $desc = "MySQL、Redis、PostgreSQL 索引設計與效能調校" }}
+        {{ else if eq $title "Database" }}{{ $icon = "🗄️" }}{{ $desc = "JPA、QueryDSL、HikariCP，以及 MySQL、Redis、PostgreSQL 效能調校" }}
         {{ else if eq $title "DesignPattern" }}{{ $icon = "🎯" }}{{ $desc = "GoF 23 種設計模式：意圖、UML、Java 範例、JDK 與 Spring 案例" }}
-        {{ else if eq $title "DevOps" }}{{ $icon = "🚀" }}{{ $desc = "CI/CD、部署流程、監控、自動化、雲端與基礎設施" }}
         {{ else if eq $title "Git" }}{{ $icon = "🔀" }}{{ $desc = "git tag、GitHub SSH、PAT、版本控制工作流" }}
+        {{ else if eq $title "Java" }}{{ $icon = "☕" }}{{ $desc = "Java 語言與標準函式庫：TreeMap、TreeSet、Map 操作、Kotlin 對照、FTP/SFTP" }}
         {{ else if eq $title "Linux" }}{{ $icon = "🐧" }}{{ $desc = "Ubuntu server、shell 環境、權限與服務管理" }}
         {{ else if eq $title "Security" }}{{ $icon = "🔐" }}{{ $desc = "JWT、OAuth2、CAPTCHA、OWASP、Web 應用安全" }}
+        {{ else if eq $title "Spring" }}{{ $icon = "🌱" }}{{ $desc = "Spring Boot、依賴注入、HTTP Client、WebFlux、虛擬執行緒、OpenAPI" }}
+        {{ else if eq $title "SystemDesign" }}{{ $icon = "📐" }}{{ $desc = "System Design 系列：容量估算、快取、分片、複製、共識、訊息佇列與實戰設計題" }}
         {{ else if eq $title "Testing" }}{{ $icon = "🧪" }}{{ $desc = "JUnit 5、Testcontainers、整合測試與 TDD 實踐" }}
-        {{ else if eq $title "Tools" }}{{ $icon = "🛠️" }}{{ $desc = "開發工具、IDE 設定、效能分析、實用腳本" }}
         {{ else if eq $title "Frontend" }}{{ $icon = "🎨" }}{{ $desc = "前端開發、CSS、JavaScript、UI/UX" }}
         {{ else if eq $title "Python" }}{{ $icon = "🐍" }}{{ $desc = "Python 程式語言與資料處理應用" }}
         {{ end }}
