@@ -28,7 +28,7 @@ tags: ["System Design", "Architecture", "Trade-off", "HLD", "LLD", "ADR"]
 | 0 導讀 | 系統設計怎麼想 | 本篇 |
 | 1 量測基礎 | 先學會量、會估，才知道瓶頸在哪 | [一個 HTTP Request 的旅程](/post/systemdesign/request-lifecycle/)、[Latency、Throughput 與 p99](/post/systemdesign/latency-throughput/)、[Napkin Math 容量估算](/post/systemdesign/napkin-math/) |
 | 2 單機到多機 | 一台不夠時的第一步 | [垂直擴展、水平擴展與無狀態服務](/post/systemdesign/scaling-stateless/)、[Load Balancing 深入](/post/systemdesign/load-balancing/)、[Cache 深入](/post/systemdesign/caching/)、[CDN 與 HTTP 快取](/post/systemdesign/cdn/) |
-| 3 儲存基礎 | 資料怎麼存、怎麼找 | SQL vs NoSQL、Index 與 B+Tree、B-Tree vs LSM-Tree、交易與隔離等級、檔案與物件儲存、Bloom Filter 與 HyperLogLog、全文搜尋與倒排索引、Geohash 地理索引（撰寫中） |
+| 3 儲存基礎 | 資料怎麼存、怎麼找 | [SQL vs NoSQL](/post/systemdesign/sql-vs-nosql/)、[Index 與 B+Tree](/post/systemdesign/index-btree/)、[B-Tree vs LSM-Tree](/post/systemdesign/btree-vs-lsm/)、[交易與隔離等級](/post/systemdesign/transaction-isolation/)、[檔案與物件儲存](/post/systemdesign/object-storage/)、[Bloom Filter 與 HyperLogLog](/post/systemdesign/bloom-filter-hyperloglog/)、[全文搜尋與倒排索引](/post/systemdesign/full-text-search/)、[Geohash 與地理索引](/post/systemdesign/geohash/) |
 | 4 分散式資料 | 一台資料庫裝不下、扛不住之後 | Replication 與 Replication Lag、Sharding、Consistent Hashing、分散式 ID、CAP 與 PACELC、共識與 Raft、分散式鎖與 Fencing Token（撰寫中） |
 | 5 服務通訊 | 服務之間怎麼說話 | REST/gRPC/GraphQL、Message Queue、Pub/Sub 與投遞語意、冪等性與 Idempotency Key、即時更新（撰寫中） |
 | 6 可靠性 | 壞掉時怎麼辦 | 備援、故障轉移與 DR、Timeout/Retry/Backoff 與 Jitter、Circuit Breaker 與 Bulkhead、Rate Limiting、Observability（撰寫中） |

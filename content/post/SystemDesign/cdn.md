@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "CDN", "HTTP Caching", "Cache-Control", "ETag", "Web Security", "Spring Boot"]
 ---
 
-> **System Design 系列** Part 2-4｜上一篇：[Cache 深入](/post/systemdesign/caching/)｜下一篇：SQL vs NoSQL（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 2-4｜上一篇：[Cache 深入](/post/systemdesign/caching/)｜下一篇：[SQL vs NoSQL](/post/systemdesign/sql-vs-nosql/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 
