@@ -56,6 +56,13 @@
 				<description></description>
 			</item>
 			<item>
+				<title>Backoff</title>
+				<link>https://xinqilin.github.io/tags/backoff/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/backoff/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Bloom Filter</title>
 				<link>https://xinqilin.github.io/tags/bloom-filter/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -67,6 +74,13 @@
 				<link>https://xinqilin.github.io/tags/bm25/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/bm25/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Bulkhead</title>
+				<link>https://xinqilin.github.io/tags/bulkhead/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/bulkhead/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -126,6 +140,13 @@
 				<description></description>
 			</item>
 			<item>
+				<title>Circuit Breaker</title>
+				<link>https://xinqilin.github.io/tags/circuit-breaker/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/circuit-breaker/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Compaction</title>
 				<link>https://xinqilin.github.io/tags/compaction/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -165,6 +186,13 @@
 				<link>https://xinqilin.github.io/tags/dead-letter-queue/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/dead-letter-queue/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Disaster Recovery</title>
+				<link>https://xinqilin.github.io/tags/disaster-recovery/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/disaster-recovery/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -221,6 +249,13 @@
 				<link>https://xinqilin.github.io/tags/exactly-once/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/exactly-once/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Failover</title>
+				<link>https://xinqilin.github.io/tags/failover/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/failover/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -298,6 +333,13 @@
 				<link>https://xinqilin.github.io/tags/hibernate/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/hibernate/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>High Availability</title>
+				<link>https://xinqilin.github.io/tags/high-availability/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/high-availability/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -504,6 +546,20 @@
 				<description></description>
 			</item>
 			<item>
+				<title>Observability</title>
+				<link>https://xinqilin.github.io/tags/observability/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/observability/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>OpenTelemetry</title>
+				<link>https://xinqilin.github.io/tags/opentelemetry/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/opentelemetry/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Outbox</title>
 				<link>https://xinqilin.github.io/tags/outbox/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -595,6 +651,13 @@
 				<description></description>
 			</item>
 			<item>
+				<title>Rate Limiting</title>
+				<link>https://xinqilin.github.io/tags/rate-limiting/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/rate-limiting/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Redis</title>
 				<link>https://xinqilin.github.io/tags/redis/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -623,10 +686,24 @@
 				<description></description>
 			</item>
 			<item>
+				<title>Resilience4j</title>
+				<link>https://xinqilin.github.io/tags/resilience4j/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/resilience4j/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>REST</title>
 				<link>https://xinqilin.github.io/tags/rest/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/rest/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Retry</title>
+				<link>https://xinqilin.github.io/tags/retry/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/retry/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -669,6 +746,13 @@
 				<link>https://xinqilin.github.io/tags/shedlock/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/shedlock/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>SLO</title>
+				<link>https://xinqilin.github.io/tags/slo/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/slo/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -791,10 +875,24 @@
 				<description></description>
 			</item>
 			<item>
+				<title>Timeout</title>
+				<link>https://xinqilin.github.io/tags/timeout/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/timeout/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>TLS</title>
 				<link>https://xinqilin.github.io/tags/tls/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/tls/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Token Bucket</title>
+				<link>https://xinqilin.github.io/tags/token-bucket/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/token-bucket/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -868,7 +966,7 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Macos</title>
+				<title>MacOS</title>
 				<link>https://xinqilin.github.io/tags/macos/</link>
 				<pubDate>Sun, 01 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/macos/</guid>

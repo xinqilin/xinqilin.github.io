@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>SLO on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/slo/</link>
+		<description>Recent content in SLO on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/slo/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Observability：metrics、log、trace 與 SLO，從「好像變慢了」到找出原因</title>
+				<link>https://xinqilin.github.io/post/systemdesign/observability/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/observability/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 6-5｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/rate-limiting/&#34;&gt;Rate Limiting&lt;/a&gt;｜下一篇：Part 7 架構演進（撰寫中）｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;週五晚上，客服轉來幾則抱怨：「報名按下去要等很久」「有時候會出現錯誤」。&lt;/p&gt;&#xA;&lt;p&gt;值班工程師打開監控：平均回應時間 120 毫秒，和平常差不多；CPU 40%；錯誤率 0.3%。一切看起來都正常。&lt;/p&gt;&#xA;&lt;p&gt;但抱怨是真的。實際的情況是：使用某一家銀行信用卡付款的使用者，金流服務呼叫那家銀行時每次都要 8 秒。這些使用者只佔 2%，平均值完全看不出來。要找到它，工程師需要回答一連串的問題：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;是所有使用者都變慢，還是某一群人？（metrics，依維度切分）&lt;/li&gt;&#xA;&lt;li&gt;一個慢的請求，時間花在哪一段？（trace）&lt;/li&gt;&#xA;&lt;li&gt;那一段發生了什麼事？（log）&lt;/li&gt;&#xA;&lt;li&gt;這件事嚴重到需要半夜叫人起來嗎？（SLO 與告警）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; 回答「已知的問題有沒有發生」：CPU 有沒有超過 80%、磁碟有沒有滿。&lt;strong&gt;Observability&lt;/strong&gt; 回答「事先沒想到的問題」：在不修改程式、不重新部署的情況下，從系統輸出的資料推斷出內部發生了什麼事。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;每台伺服器寫 log 檔，出事時 SSH 上去 &lt;code&gt;grep&lt;/code&gt;&lt;/strong&gt;：12 台伺服器就要登入 12 台，一個請求經過 4 個服務，要在 48 個檔案裡拼湊出來（&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/scaling-stateless/&#34;&gt;無狀態服務篇&lt;/a&gt;）；自動擴充縮減掉的機器，log 跟著消失&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;只看平均值&lt;/strong&gt;：平均值會掩蓋長尾，2% 的使用者等 8 秒，平均只增加 0.16 秒（&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/latency-throughput/&#34;&gt;Latency 與 p99 篇&lt;/a&gt;）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;什麼都告警&lt;/strong&gt;：CPU 超過 70%、每個 5xx 都發通知，一天幾百則，值班的人學會忽略所有告警，真正的事故就被淹沒了&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;三種訊號&#34;&gt;三種訊號&lt;/h3&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;訊號&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;回答什麼&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;成本特性&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;例子&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;Metrics&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;整體的趨勢與比例：多少、多快、多常出錯&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;和流量無關，和&lt;strong&gt;維度的組合數&lt;/strong&gt;有關&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;報名 API 的 p99 延遲、每秒請求數、錯誤率&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;Logs&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;某個時間點發生了什麼事，細節最多&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;和流量成正比&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&lt;code&gt;付款失敗 bank=XYZ status=504 duration=8012ms&lt;/code&gt;&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;Traces&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;一個請求經過了哪些服務、每一段花了多久&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;和流量成正比，通常要取樣&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;報名 → 金流 → 銀行 API 花了 8 秒&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;三者要能&lt;strong&gt;互相跳轉&lt;/strong&gt;才有用：從 metrics 看到 p99 變高，點進去看到那段時間的慢 trace，從 trace 的某一段找到同一個 trace ID 的 log。串起三者的就是 &lt;strong&gt;trace ID&lt;/strong&gt;。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

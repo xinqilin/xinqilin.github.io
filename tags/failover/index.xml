@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Failover on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/failover/</link>
+		<description>Recent content in Failover on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/failover/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>備援、故障轉移與災難復原：從可用性數字到還原演練</title>
+				<link>https://xinqilin.github.io/post/systemdesign/redundancy-failover-dr/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/redundancy-failover-dr/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 6-1｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/realtime-updates/&#34;&gt;即時更新&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/timeout-retry-backoff/&#34;&gt;Timeout、Retry、Backoff 與 Jitter&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座平台目前的部署：一個機房（一個可用區，AZ）裡有 4 台應用伺服器、1 台 MySQL primary 加 1 台 replica、1 台 Redis。以下四件事，哪些會讓平台停擺？&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;一台應用伺服器的硬碟壞了&lt;/li&gt;&#xA;&lt;li&gt;整個可用區停電&lt;/li&gt;&#xA;&lt;li&gt;工程師在正式環境執行了少了 &lt;code&gt;WHERE&lt;/code&gt; 的 &lt;code&gt;DELETE FROM registration&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;攻擊者取得管理員帳號，加密了資料庫，並刪除了備份&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;第 1 件事，負載平衡器把流量轉到其他 3 台就解決了（&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/load-balancing/&#34;&gt;Load Balancing 篇&lt;/a&gt;）。第 2 件事讓所有東西同時消失。第 3、4 件事更麻煩：機器都好好的，但&lt;strong&gt;資料錯了&lt;/strong&gt;，而 replica 在幾毫秒內就忠實地複製了同一個錯誤。&lt;/p&gt;&#xA;&lt;p&gt;前兩件事是&lt;strong&gt;可用性&lt;/strong&gt;的問題，靠備援與故障轉移解決；後兩件事是&lt;strong&gt;資料正確性&lt;/strong&gt;的問題，只有備份能救。這篇把兩者分開談。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;每天半夜備份一次資料庫，存在同一台機器的另一顆硬碟&lt;/strong&gt;：最多遺失 24 小時的報名資料；機器或機房一壞，備份跟著一起消失；而且從來沒有人試過還原要花多久&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;多開幾台機器&lt;/strong&gt;：如果它們都在同一個可用區、用同一份設定、同一次部署，就會因為同一個原因一起壞掉&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;備援要有效，前提是故障&lt;strong&gt;互相獨立&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;可用性的數字&#34;&gt;可用性的數字&lt;/h3&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;可用性&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;每年停機&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;每月停機&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;99%&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;3.65 天&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;7.3 小時&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;99.9%&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;8.76 小時&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;43.8 分鐘&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;99.95%&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;4.38 小時&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;21.9 分鐘&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;99.99%&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;52.6 分鐘&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;4.38 分鐘&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;99.999%&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;5.26 分鐘&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;26.3 秒&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;&lt;strong&gt;串聯的元件，可用性相乘&lt;/strong&gt;。一個報名請求依序經過負載平衡器（99.99%）、應用伺服器（99.9%）、MySQL（99.95%）、Redis（99.9%）：&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

@@ -23,6 +23,9 @@
     <loc>https://xinqilin.github.io/tags/back-of-the-envelope/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/backoff/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -33,6 +36,9 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/bm25/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/bulkhead/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/cache/</loc>
@@ -71,6 +77,12 @@
     <loc>https://xinqilin.github.io/post/systemdesign/cdn/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/circuit-breaker/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/circuit-breaker-bulkhead/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/compaction/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -90,6 +102,9 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/dead-letter-queue/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/disaster-recovery/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/distributed-id/</loc>
@@ -114,6 +129,9 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/exactly-once/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/failover/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/fencing-token/</loc>
@@ -150,6 +168,9 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/hibernate/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/high-availability/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/hld/</loc>
@@ -254,6 +275,15 @@
     <loc>https://xinqilin.github.io/tags/object-storage/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/observability/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/observability/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/opentelemetry/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/outbox/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -299,6 +329,12 @@
     <loc>https://xinqilin.github.io/tags/raft/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/rate-limiting/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/rate-limiting/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/redis/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -314,10 +350,16 @@
     <loc>https://xinqilin.github.io/post/systemdesign/replication-lag/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/resilience4j/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/rest/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/rest-grpc-graphql/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/retry/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/rocksdb/</loc>
@@ -339,6 +381,9 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/shedlock/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/slo/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/snowflake/</loc>
@@ -404,7 +449,16 @@
     <loc>https://xinqilin.github.io/tags/throughput/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/timeout/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/timeout-retry-backoff/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/tls/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/token-bucket/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/trade-off/</loc>
@@ -447,6 +501,9 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/scaling-stateless/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/redundancy-failover-dr/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/idempotency-key/</loc>

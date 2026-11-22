@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Timeout on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/timeout/</link>
+		<description>Recent content in Timeout on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/timeout/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Timeout、Retry、Backoff 與 Jitter：重試怎麼救系統，又怎麼壓垮系統</title>
+				<link>https://xinqilin.github.io/post/systemdesign/timeout-retry-backoff/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/timeout-retry-backoff/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 6-2｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/redundancy-failover-dr/&#34;&gt;備援、故障轉移與災難復原&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/circuit-breaker-bulkhead/&#34;&gt;Circuit Breaker 與 Bulkhead&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;報名服務在完成報名前，要呼叫金流服務確認付款狀態。某天金流服務的資料庫變慢，回應時間從 50 毫秒變成 30 秒。&lt;/p&gt;&#xA;&lt;p&gt;報名服務的 HTTP 用戶端沒有設定逾時。每個報名請求都卡在等待金流回應，Tomcat 的執行緒一個一個被佔住，連線池也被借光。幾分鐘後，&lt;strong&gt;連完全不需要金流的查詢講座 API 也沒有回應了&lt;/strong&gt;，因為已經沒有可用的執行緒。&lt;/p&gt;&#xA;&lt;p&gt;工程師加上了逾時與重試：逾時 5 秒，失敗重試 3 次。下一次金流服務變慢時，報名服務送給金流的請求數變成平常的 4 倍。金流服務本來只是變慢，現在被重試的流量徹底壓垮。&lt;/p&gt;&#xA;&lt;p&gt;逾時和重試都是必要的，但設定錯了，它們會讓故障擴大，而不是縮小。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;不設逾時&lt;/strong&gt;：很多 HTTP 用戶端預設不會逾時，或逾時長達數分鐘。一個慢的下游就能佔住所有資源&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;失敗就立刻重試&lt;/strong&gt;：下游正因為負載太高而失敗，立刻重試只會讓負載更高&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;每一層都重試 3 次&lt;/strong&gt;：使用者的 App、API gateway、報名服務各自重試 3 次，一個請求到最下游最多變成 4 × 4 × 4 = 64 次嘗試（每層 1 次原始請求加 3 次重試）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;逾時等待的成本&#34;&gt;逾時：等待的成本&lt;/h3&gt;&#xA;&lt;p&gt;等待不是免費的。報名服務每在等待中的一個請求，都佔用了：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;一個執行緒（或一個虛擬執行緒與它的記憶體）&lt;/li&gt;&#xA;&lt;li&gt;一條連到下游的連線&lt;/li&gt;&#xA;&lt;li&gt;可能還有一條資料庫連線，如果呼叫發生在交易裡&lt;/li&gt;&#xA;&lt;li&gt;使用者那一端的耐心&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;逾時要分開設定：&lt;/p&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;逾時&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;意義&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;參考值&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;連線逾時&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;建立 TCP（與 TLS）連線的時間&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;同一個機房內通常幾毫秒就完成，設幾百毫秒；連不上代表對方不在了，不需要等很久&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;讀取逾時&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;送出請求後，等待回應資料的時間&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;依下游的延遲分布決定&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;整體期限（deadline）&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;這次操作（包含所有重試）最多能花多久&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;依呼叫端的期限決定&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;&lt;strong&gt;讀取逾時依下游的延遲分布決定&lt;/strong&gt;。金流服務的 p99 是 300 毫秒、p99.9 是 800 毫秒，讀取逾時設 1 秒：正常情況下幾乎不會誤判，下游真的出問題時，最多等 1 秒。設得比 p99 還短，正常的慢請求也會被當成失敗，接著觸發重試，反而增加負載。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>
