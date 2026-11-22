@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "Geohash", "Geospatial", "Redis", "MySQL", "Security", "Privacy"]
 ---
 
-> **System Design 系列** Part 3-8｜上一篇：[全文搜尋與倒排索引](/post/systemdesign/full-text-search/)｜下一篇：Replication 與 Replication Lag（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 3-8｜上一篇：[全文搜尋與倒排索引](/post/systemdesign/full-text-search/)｜下一篇：[Replication 與 Replication Lag](/post/systemdesign/replication-lag/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 

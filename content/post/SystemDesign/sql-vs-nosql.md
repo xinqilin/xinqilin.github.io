@@ -97,7 +97,7 @@ flowchart LR
 | DynamoDB | 單一 item | `TransactWriteItems`，一次最多 100 個操作 | 預設最終一致，可指定強一致讀取（成本加倍） |
 | Cassandra | 單一 partition 內 | 沒有通用交易；輕量交易（Paxos）只做單一 partition 的比較後設定 | 依每次請求指定的一致性等級 |
 
-注意 NoSQL 的交易能力這幾年進步很多，「NoSQL 沒有交易」已經不正確。但跨分片的交易永遠比單機貴，這是物理限制，不是產品問題。分散式 SQL（Spanner、CockroachDB、TiDB）提供跨分片交易，代價是每次寫入要多一輪跨節點的協調延遲。一致性的取捨在 Part 4 的 CAP 與 PACELC 詳談。
+注意 NoSQL 的交易能力這幾年進步很多，「NoSQL 沒有交易」已經不正確。但跨分片的交易永遠比單機貴，這是物理限制，不是產品問題。分散式 SQL（Spanner、CockroachDB、TiDB）提供跨分片交易，代價是每次寫入要多一輪跨節點的協調延遲。一致性的取捨見 [CAP 與 PACELC 篇](/post/systemdesign/cap-pacelc/)。
 
 ### 決策流程
 
@@ -123,7 +123,7 @@ flowchart TD
 
 | 功能 | 選擇 | 理由 | 重新評估的時機 |
 |---|---|---|---|
-| 訂單與付款 | MySQL | 需要多表交易與限制條件，查詢方式多（客服、報表、對帳） | 單一主庫的寫入撐不住時，先考慮依會員分片（Part 4） |
+| 訂單與付款 | MySQL | 需要多表交易與限制條件，查詢方式多（客服、報表、對帳） | 單一主庫的寫入撐不住時，先考慮依會員分片（見 [Sharding 篇](/post/systemdesign/sharding/)） |
 | 瀏覽紀錄 | MySQL 分區表 | 每秒數千筆在單機能力內；依日期分區後，過期資料用 `DROP PARTITION` 瞬間刪除 | 量成長 10 倍（尖峰每秒約 6 萬筆），或需要跨機房寫入時，改用寬欄資料庫 |
 | 商品屬性 | MySQL JSON 欄位 | 結構差異大，但查詢模式固定；常查的屬性用 functional index | 需要全文搜尋或多條件的模糊篩選時，同步一份到搜尋引擎 |
 

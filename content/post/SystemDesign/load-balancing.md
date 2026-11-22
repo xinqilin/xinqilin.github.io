@@ -198,7 +198,7 @@ LB 閒置逾時（例如 ALB 60 秒）＜ backend 的 keep-alive 逾時（例如
 | Random | 隨機 | 多台 LB 之間不共享狀態 | 同 Round Robin |
 | Least Connections / Outstanding | 選處理中最少的 | 請求成本差異大、可能有慢節點 | 需要全域即時狀態；多台 LB 會一窩蜂 |
 | P2C | 隨機挑兩台，選較閒的 | 大規模、多台 LB 的環境 | 需要追蹤每台處理中的請求數 |
-| Hash／一致性雜湊 | 依 key 決定送到哪台 | 需要快取親和性，同一個 key 固定到同一台 | 熱門 key 造成負載不均（Part 4 詳談） |
+| Hash／一致性雜湊 | 依 key 決定送到哪台 | 需要快取親和性，同一個 key 固定到同一台 | 熱門 key 造成負載不均（見 [Consistent Hashing 篇](/post/systemdesign/consistent-hashing/)） |
 
 Linkerd、Finagle 這類 service mesh 和 RPC 框架，常用 P2C 再搭配 EWMA（指數加權移動平均）延遲，同時考慮處理中請求數和最近的回應速度。
 

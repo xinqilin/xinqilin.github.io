@@ -384,7 +384,7 @@ public final class ProductExistenceFilter {
 
 - **容量抓兩倍**：`BloomFilter.create` 的 expectedInsertions 設成目前數量的兩倍，商品持續增加也不會像前面的實測一樣急速惡化。實際放入 100 萬個時誤判率只有 0.025%
 - **重建取代刪除**：下架的商品等下一次重建才會從 filter 消失，這段期間它只是「可能存在」，會多查一次資料庫，不影響正確性
-- **`maxId` 處理重建之後的新商品**：這是 Bloom filter 唯一可能出錯的方向。如果 filter 少了某個存在的元素（例如重建後才上架的商品），它會回答「一定不存在」，真正的商品就變成 404。商品 ID 是遞增的（IDENTITY，或 Part 4 依時間遞增的分散式 ID），所以比 `maxId` 大的一律放行，多台機器各自重建也不需要互相同步。ID 若是隨機的 UUID 就不能用這招，要改成新增商品時發事件通知每台機器加入 filter
+- **`maxId` 處理重建之後的新商品**：這是 Bloom filter 唯一可能出錯的方向。如果 filter 少了某個存在的元素（例如重建後才上架的商品），它會回答「一定不存在」，真正的商品就變成 404。商品 ID 是遞增的（IDENTITY，或 依時間遞增的[分散式 ID](/post/systemdesign/distributed-id/)），所以比 `maxId` 大的一律放行，多台機器各自重建也不需要互相同步。ID 若是隨機的 UUID 就不能用這招，要改成新增商品時發事件通知每台機器加入 filter
 
 ### 2. 講座頁面的不重複訪客
 

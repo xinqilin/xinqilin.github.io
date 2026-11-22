@@ -229,7 +229,7 @@ public final class SingleFlight<K, V> {
 100 個併發請求，實際查詢資料庫 1 次
 ```
 
-single-flight 只在單一 JVM 內有效，所以 20 台 instance 最多還是會有 20 個查詢打到資料庫。多數情況下這已經夠了，從幾千降到 20。要壓到只剩 1 個，就要用 Redis 的 `SET key value NX PX` 做跨機器的互斥，但這會多一趟網路，而且持有鎖的那台如果掛掉，其他人要等鎖過期（分散式鎖的細節在 Part 4）。
+single-flight 只在單一 JVM 內有效，所以 20 台 instance 最多還是會有 20 個查詢打到資料庫。多數情況下這已經夠了，從幾千降到 20。要壓到只剩 1 個，就要用 Redis 的 `SET key value NX PX` 做跨機器的互斥，但這會多一趟網路，而且持有鎖的那台如果掛掉，其他人要等鎖過期（細節見[分散式鎖篇](/post/systemdesign/distributed-lock/)）。
 
 另一個方向是**根本不讓熱門 key 在請求路徑上過期**：
 

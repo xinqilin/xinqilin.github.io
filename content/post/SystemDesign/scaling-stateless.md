@@ -74,7 +74,7 @@ flowchart LR
 | `HttpSession` | Tomcat 記憶體 | 請求換一台就像沒登入 | Redis（Spring Session）或 token（JWT） |
 | 上傳檔案 | 本機硬碟 | 其他台讀不到；instance 重建後檔案消失 | 物件儲存（S3 等） |
 | `@Scheduled` 排程 | 每台各自觸發 | 同一個工作被執行 N 次 | 排程鎖（ShedLock）、獨立 worker、外部排程器 |
-| `synchronized`、`ReentrantLock` | JVM 內 | 只鎖得住自己那一台 | 資料庫條件式更新、唯一鍵、分散式鎖（Part 4） |
+| `synchronized`、`ReentrantLock` | JVM 內 | 只鎖得住自己那一台 | 資料庫條件式更新、唯一鍵、[分散式鎖](/post/systemdesign/distributed-lock/) |
 | 本機快取（`HashMap`、Caffeine） | JVM 記憶體 | 各台資料不一致 | 接受短暫不一致加 TTL，或集中快取加失效通知（[Cache 篇](/post/systemdesign/caching/)） |
 | 記憶體計數器（限流、統計） | JVM 記憶體 | 總限額變成 N 倍 | Redis 原子計數（Part 6 Rate Limiting） |
 | WebSocket 連線 | 綁在某一台 | 推播時要找到連線所在的那台 | 用 pub/sub 廣播給所有 instance（Part 5） |
