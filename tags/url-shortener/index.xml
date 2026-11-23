@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>URL Shortener on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/url-shortener/</link>
+		<description>Recent content in URL Shortener on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Mon, 23 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/url-shortener/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>實戰題：設計一個短網址服務，從估算、產生代碼到被拿來釣魚</title>
+				<link>https://xinqilin.github.io/post/systemdesign/url-shortener/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/url-shortener/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 9-1｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/abuse-prevention/&#34;&gt;濫用防護&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/news-feed/&#34;&gt;News Feed&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;Part 9 是實戰題：每一題都從需求與估算開始，把前面八個 Part 的元件組起來，並在最後用&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/&#34;&gt;系列導讀&lt;/a&gt;的 STRIDE 做一次威脅模型。&lt;/p&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座平台要開放短網址功能給講者與企業客戶：分享講座頁面、追蹤不同行銷管道的點擊數。例如 &lt;code&gt;https://lec.tw/a8Kd2xQ&lt;/code&gt; 導向 &lt;code&gt;https://lectures.example.com/lectures/42?utm_source=line&lt;/code&gt;。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;功能需求&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;建立短網址：輸入原始網址，取得短代碼；企業客戶可以自訂代碼（&lt;code&gt;lec.tw/acme2026&lt;/code&gt;）&lt;/li&gt;&#xA;&lt;li&gt;轉址：開啟短網址，導向原始網址&lt;/li&gt;&#xA;&lt;li&gt;有效期限與停用：活動結束後失效；被檢舉為惡意的連結要能立即停用&lt;/li&gt;&#xA;&lt;li&gt;點擊統計：每條連結每天的點擊數、不重複訪客數、來源&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;非功能需求&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;轉址要快而且穩：短網址印在海報與簡報上，轉址失敗就是整場活動的入口壞了&lt;/li&gt;&#xA;&lt;li&gt;代碼不能重複，一條短網址永遠只對應一個原始網址&lt;/li&gt;&#xA;&lt;li&gt;統計可以延遲幾分鐘，也可以有少量誤差&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;規模估算&lt;/strong&gt;（&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/napkin-math/&#34;&gt;Napkin Math 篇&lt;/a&gt;的方法）&lt;/p&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;項目&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;估算&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;每月新增&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;3,000 萬條 → 平均每秒約 12 次寫入，尖峰估 5 倍約 60 次&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;讀寫比&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;100 : 1 → 每月 30 億次轉址，平均每秒約 1,200 次&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;轉址尖峰&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;熱門講座在直播中貼出連結，估平均的 10 倍，每秒約 1.2 萬次&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;保存 5 年的連結數&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;3,000 萬 × 12 × 5 = 18 億條&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;連結的儲存量&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;每條約 500 位元組（網址、擁有者、時間、狀態）→ 約 900 GB&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;點擊事件&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;每月 30 億筆 × 約 100 位元組 = 每月約 300 GB 的原始事件&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;這是一個&lt;strong&gt;讀遠多於寫、讀取幾乎都是單一鍵查詢&lt;/strong&gt;的系統。點擊統計則是另一條寫入量很大的路徑，不能和轉址綁在一起。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

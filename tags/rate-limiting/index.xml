@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+			<lastBuildDate>Mon, 23 Nov 2026 00:00:00 +0800</lastBuildDate>
 		
 			<atom:link href="https://xinqilin.github.io/tags/rate-limiting/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>濫用防護：對付會調整策略的對手，讓黃牛、撞庫與假帳號無利可圖</title>
+				<link>https://xinqilin.github.io/post/systemdesign/abuse-prevention/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/abuse-prevention/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 8-5｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/encryption-secrets/&#34;&gt;傳輸與資料加密及 Secrets 管理&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/url-shortener/&#34;&gt;URL Shortener&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/&#34;&gt;系列導讀&lt;/a&gt;的年度講座：3,000 個名額、5 萬人在線上等、開放後 30 秒內湧進約 2.4 萬次報名請求。去年辦完之後，營運團隊整理出這些問題：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;名額在 4 秒內全部報滿，社群上隨即出現加價轉售的票券。報名紀錄顯示，大量帳號在開放前一週才註冊，用同一組信用卡付款&lt;/li&gt;&#xA;&lt;li&gt;開放前一小時，登入 API 的失敗率從平常的 3% 升到 60%，有 200 個帳號被盜用&lt;/li&gt;&#xA;&lt;li&gt;新會員的首購折扣碼被大量領取，領取的帳號大多沒有任何後續活動&lt;/li&gt;&#xA;&lt;li&gt;手機驗證碼的簡訊費用在一個晚上暴增，收件號碼集中在幾個國外的號碼區段&lt;/li&gt;&#xA;&lt;li&gt;講者名單與講座內容被另一個網站完整複製&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;每個請求本身都是「合法」的：有帳號、有登入、格式正確、在限流範圍內。這些問題對應到 OWASP API Security Top 10 的 &lt;strong&gt;API6 Unrestricted Access to Sensitive Business Flows&lt;/strong&gt;，以及 OWASP「Automated Threats to Web Applications」整理的自動化威脅：黃牛（Scalping）、囤積庫存（Denial of Inventory）、撞庫（Credential Stuffing）、大量建立帳號（Account Creation）、爬取內容（Scraping）。&lt;/p&gt;&#xA;&lt;p&gt;和 &lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/rate-limiting/&#34;&gt;Rate Limiting 篇&lt;/a&gt;的差別是：限流是為了保護&lt;strong&gt;容量&lt;/strong&gt;，對象是流量；濫用防護面對的是&lt;strong&gt;會調整策略的對手&lt;/strong&gt;，對象是利益。你擋下一種做法，對方會換另一種。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;依 IP 限流，所有表單都加上驗證碼&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;IP 不再代表一個人&lt;/strong&gt;：住宅代理網路可以提供數百萬個真實家用 IP，每個 IP 只送幾個請求；反過來，企業與行動網路的 NAT 讓上千個正常使用者共用一個 IP，依 IP 限流先擋到的是他們&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;驗證碼的成本對攻擊者很低&lt;/strong&gt;：公開的人工解題服務，報價大約是每一千次數美元以內（粗估，依服務而定）。一張講座票轉售能賺上千元，解一次驗證碼的成本可以忽略&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;所有人都付出代價&lt;/strong&gt;：每個操作都要驗證碼，正常使用者的轉換率下降，使用輔助工具的使用者可能完全無法使用&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;從經濟學思考讓濫用無利可圖&#34;&gt;從經濟學思考：讓濫用無利可圖&lt;/h3&gt;&#xA;&lt;p&gt;攻擊者也在算成本。濫用防護的目標不是「完全擋住」，而是讓&lt;strong&gt;攻擊的成本高於收益&lt;/strong&gt;：&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>Rate Limiting：限流演算法、分散式限流，以及限流和降載的差別</title>
 				<link>https://xinqilin.github.io/post/systemdesign/rate-limiting/</link>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Messaging on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/messaging/</link>
+		<description>Recent content in Messaging on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Mon, 23 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/messaging/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>實戰題：設計聊天系統，私訊與五萬人直播聊天室是兩個不同的問題</title>
+				<link>https://xinqilin.github.io/post/systemdesign/chat-system/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/chat-system/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 9-3｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/news-feed/&#34;&gt;News Feed&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/flash-sale-ticketing/&#34;&gt;秒殺搶票&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座平台要加入兩種聊天：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;私訊與小群組&lt;/strong&gt;：學員和講者一對一，或講者和助教的小群組。訊息不能遺失、順序要正確，換一台裝置也要看得到完整的歷史，離線時收到推播&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;直播聊天室&lt;/strong&gt;：熱門講座直播時，5 萬名觀眾在同一個聊天室裡留言。觀眾想看到的是「大家正在說什麼」，而不是每一則訊息&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/realtime-updates/&#34;&gt;即時更新篇&lt;/a&gt;處理了「把伺服器的變化推給瀏覽器」：WebSocket、跨伺服器的扇出、合併更新、慢的用戶端。這一題要再往下處理&lt;strong&gt;訊息本身&lt;/strong&gt;：怎麼排序、怎麼不重複、怎麼在離線後補齊。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;規模估算&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;項目&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;估算&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;私訊&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;日活躍 200 萬，其中 10% 使用私訊、每人每天 20 則 → 每天 400 萬則，平均每秒約 46 則，尖峰約 500 則&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;私訊的儲存&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;每則約 300 位元組（內容、對話 ID、序號、時間）→ 每天約 1.2 GB，每年約 440 GB&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;直播聊天室&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;5 萬名觀眾，尖峰每秒 200 則留言&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;直播聊天室若逐則推送&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;200 則 × 5 萬人 = 每秒 1,000 萬次投遞&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;私訊的量不大，難的是&lt;strong&gt;正確性&lt;/strong&gt;；直播聊天室的量極大，難的是&lt;strong&gt;扇出&lt;/strong&gt;。兩者應該用不同的設計。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;訊息寫入一張表，用 &lt;code&gt;created_at&lt;/code&gt; 排序；WebSocket 收到訊息就廣播給對話裡所有在線的人。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;時間戳不能決定順序&lt;/strong&gt;：兩台伺服器的時鐘差了幾十毫秒，後送出的訊息可能排在前面；同一毫秒的兩則訊息沒有確定的順序&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;重送造成重複&lt;/strong&gt;：手機在捷運上送出訊息，網路斷了沒收到確認，重新連線後再送一次，對方看到兩則一樣的訊息&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;離線的訊息不見了&lt;/strong&gt;：只推給在線的連線，離線的裝置重新連線時，不知道自己漏了哪些&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;直播聊天室&lt;/strong&gt;：每秒 1,000 萬次投遞，沒有任何一組伺服器的網路頻寬撐得住，而且沒有人能在一秒內讀完 200 則留言&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;每個對話一個遞增序號&#34;&gt;每個對話一個遞增序號&lt;/h3&gt;&#xA;&lt;p&gt;順序的唯一依據是&lt;strong&gt;伺服器在每個對話內指派的遞增序號&lt;/strong&gt;（&lt;code&gt;seq&lt;/code&gt;）：&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

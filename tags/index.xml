@@ -10,9 +10,464 @@
 		
 		
 		
-			<lastBuildDate>Sun, 22 Nov 2026 00:00:00 +0800</lastBuildDate>
+			<lastBuildDate>Mon, 23 Nov 2026 00:00:00 +0800</lastBuildDate>
 		
 			<atom:link href="https://xinqilin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Authentication</title>
+				<link>https://xinqilin.github.io/tags/authentication/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/authentication/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Authorization</title>
+				<link>https://xinqilin.github.io/tags/authorization/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/authorization/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Batch Processing</title>
+				<link>https://xinqilin.github.io/tags/batch-processing/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/batch-processing/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>BOLA</title>
+				<link>https://xinqilin.github.io/tags/bola/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/bola/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Bot Protection</title>
+				<link>https://xinqilin.github.io/tags/bot-protection/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/bot-protection/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Caching</title>
+				<link>https://xinqilin.github.io/tags/caching/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/caching/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Canary</title>
+				<link>https://xinqilin.github.io/tags/canary/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/canary/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Chat</title>
+				<link>https://xinqilin.github.io/tags/chat/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/chat/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>CI/CD</title>
+				<link>https://xinqilin.github.io/tags/ci/cd/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/ci/cd/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Contract Testing</title>
+				<link>https://xinqilin.github.io/tags/contract-testing/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/contract-testing/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Delayed Task</title>
+				<link>https://xinqilin.github.io/tags/delayed-task/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/delayed-task/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Distributed Transaction</title>
+				<link>https://xinqilin.github.io/tags/distributed-transaction/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/distributed-transaction/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Email</title>
+				<link>https://xinqilin.github.io/tags/email/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/email/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Encryption</title>
+				<link>https://xinqilin.github.io/tags/encryption/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/encryption/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Fan-Out</title>
+				<link>https://xinqilin.github.io/tags/fan-out/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/fan-out/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Feature Flag</title>
+				<link>https://xinqilin.github.io/tags/feature-flag/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/feature-flag/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Flash Sale</title>
+				<link>https://xinqilin.github.io/tags/flash-sale/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/flash-sale/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Fraud Prevention</title>
+				<link>https://xinqilin.github.io/tags/fraud-prevention/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/fraud-prevention/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Inventory</title>
+				<link>https://xinqilin.github.io/tags/inventory/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/inventory/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Kafka</title>
+				<link>https://xinqilin.github.io/tags/kafka/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/kafka/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Kafka Streams</title>
+				<link>https://xinqilin.github.io/tags/kafka-streams/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/kafka-streams/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>KMS</title>
+				<link>https://xinqilin.github.io/tags/kms/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/kms/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Kubernetes</title>
+				<link>https://xinqilin.github.io/tags/kubernetes/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/kubernetes/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Leaderboard</title>
+				<link>https://xinqilin.github.io/tags/leaderboard/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/leaderboard/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Load Testing</title>
+				<link>https://xinqilin.github.io/tags/load-testing/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/load-testing/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Messaging</title>
+				<link>https://xinqilin.github.io/tags/messaging/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/messaging/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Microservices</title>
+				<link>https://xinqilin.github.io/tags/microservices/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/microservices/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>MTLS</title>
+				<link>https://xinqilin.github.io/tags/mtls/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/mtls/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>MySQL</title>
+				<link>https://xinqilin.github.io/tags/mysql/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/mysql/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>News Feed</title>
+				<link>https://xinqilin.github.io/tags/news-feed/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/news-feed/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Notification</title>
+				<link>https://xinqilin.github.io/tags/notification/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/notification/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>OAuth 2.0</title>
+				<link>https://xinqilin.github.io/tags/oauth-2.0/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/oauth-2.0/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>OIDC</title>
+				<link>https://xinqilin.github.io/tags/oidc/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/oidc/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Outbox</title>
+				<link>https://xinqilin.github.io/tags/outbox/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/outbox/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>OWASP</title>
+				<link>https://xinqilin.github.io/tags/owasp/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/owasp/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Push</title>
+				<link>https://xinqilin.github.io/tags/push/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/push/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Ranking</title>
+				<link>https://xinqilin.github.io/tags/ranking/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/ranking/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Rate Limiting</title>
+				<link>https://xinqilin.github.io/tags/rate-limiting/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/rate-limiting/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Redis</title>
+				<link>https://xinqilin.github.io/tags/redis/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/redis/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Saga</title>
+				<link>https://xinqilin.github.io/tags/saga/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/saga/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Scheduler</title>
+				<link>https://xinqilin.github.io/tags/scheduler/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/scheduler/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Secrets Management</title>
+				<link>https://xinqilin.github.io/tags/secrets-management/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/secrets-management/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Security</title>
+				<link>https://xinqilin.github.io/tags/security/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/security/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Service Discovery</title>
+				<link>https://xinqilin.github.io/tags/service-discovery/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/service-discovery/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Service Mesh</title>
+				<link>https://xinqilin.github.io/tags/service-mesh/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/service-mesh/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>SKIP LOCKED</title>
+				<link>https://xinqilin.github.io/tags/skip-locked/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/skip-locked/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Sorted Set</title>
+				<link>https://xinqilin.github.io/tags/sorted-set/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/sorted-set/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Spring</title>
+				<link>https://xinqilin.github.io/tags/spring/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/spring/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Spring Batch</title>
+				<link>https://xinqilin.github.io/tags/spring-batch/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/spring-batch/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Spring Cloud</title>
+				<link>https://xinqilin.github.io/tags/spring-cloud/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/spring-cloud/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Spring Security</title>
+				<link>https://xinqilin.github.io/tags/spring-security/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/spring-security/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>SSRF</title>
+				<link>https://xinqilin.github.io/tags/ssrf/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/ssrf/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>STOMP</title>
+				<link>https://xinqilin.github.io/tags/stomp/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/stomp/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Stream Processing</title>
+				<link>https://xinqilin.github.io/tags/stream-processing/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/stream-processing/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Supply Chain</title>
+				<link>https://xinqilin.github.io/tags/supply-chain/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/supply-chain/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>System Design</title>
+				<link>https://xinqilin.github.io/tags/system-design/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/system-design/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Testcontainers</title>
+				<link>https://xinqilin.github.io/tags/testcontainers/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/testcontainers/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Testing</title>
+				<link>https://xinqilin.github.io/tags/testing/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/testing/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Threat Modeling</title>
+				<link>https://xinqilin.github.io/tags/threat-modeling/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/threat-modeling/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>TLS</title>
+				<link>https://xinqilin.github.io/tags/tls/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/tls/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Token Exchange</title>
+				<link>https://xinqilin.github.io/tags/token-exchange/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/token-exchange/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>URL Shortener</title>
+				<link>https://xinqilin.github.io/tags/url-shortener/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/url-shortener/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Waiting Room</title>
+				<link>https://xinqilin.github.io/tags/waiting-room/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/waiting-room/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>WebSocket</title>
+				<link>https://xinqilin.github.io/tags/websocket/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/websocket/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Zero Trust</title>
+				<link>https://xinqilin.github.io/tags/zero-trust/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/zero-trust/</guid>
+				<description></description>
+			</item>
 			<item>
 				<title>ADR</title>
 				<link>https://xinqilin.github.io/tags/adr/</link>
@@ -179,6 +634,13 @@
 				<link>https://xinqilin.github.io/tags/data-modeling/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/data-modeling/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>DDD</title>
+				<link>https://xinqilin.github.io/tags/ddd/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/ddd/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -434,20 +896,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Kafka</title>
-				<link>https://xinqilin.github.io/tags/kafka/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/kafka/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Kubernetes</title>
-				<link>https://xinqilin.github.io/tags/kubernetes/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/kubernetes/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Latency</title>
 				<link>https://xinqilin.github.io/tags/latency/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -504,6 +952,13 @@
 				<description></description>
 			</item>
 			<item>
+				<title>Modular Monolith</title>
+				<link>https://xinqilin.github.io/tags/modular-monolith/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/modular-monolith/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Multipart Upload</title>
 				<link>https://xinqilin.github.io/tags/multipart-upload/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -515,13 +970,6 @@
 				<link>https://xinqilin.github.io/tags/mvcc/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/mvcc/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>MySQL</title>
-				<link>https://xinqilin.github.io/tags/mysql/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/mysql/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -557,13 +1005,6 @@
 				<link>https://xinqilin.github.io/tags/opentelemetry/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/opentelemetry/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Outbox</title>
-				<link>https://xinqilin.github.io/tags/outbox/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/outbox/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -651,20 +1092,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Rate Limiting</title>
-				<link>https://xinqilin.github.io/tags/rate-limiting/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/rate-limiting/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Redis</title>
-				<link>https://xinqilin.github.io/tags/redis/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/redis/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Redisson</title>
 				<link>https://xinqilin.github.io/tags/redisson/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -728,13 +1155,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Security</title>
-				<link>https://xinqilin.github.io/tags/security/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/security/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Sharding</title>
 				<link>https://xinqilin.github.io/tags/sharding/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -760,13 +1180,6 @@
 				<link>https://xinqilin.github.io/tags/snowflake/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/snowflake/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Spring</title>
-				<link>https://xinqilin.github.io/tags/spring/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/spring/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -812,6 +1225,13 @@
 				<description></description>
 			</item>
 			<item>
+				<title>Spring Modulith</title>
+				<link>https://xinqilin.github.io/tags/spring-modulith/</link>
+				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/tags/spring-modulith/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Spring Session</title>
 				<link>https://xinqilin.github.io/tags/spring-session/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
@@ -840,24 +1260,10 @@
 				<description></description>
 			</item>
 			<item>
-				<title>STOMP</title>
-				<link>https://xinqilin.github.io/tags/stomp/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/stomp/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Storage Engine</title>
 				<link>https://xinqilin.github.io/tags/storage-engine/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/storage-engine/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>System Design</title>
-				<link>https://xinqilin.github.io/tags/system-design/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/system-design/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -879,13 +1285,6 @@
 				<link>https://xinqilin.github.io/tags/timeout/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/timeout/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>TLS</title>
-				<link>https://xinqilin.github.io/tags/tls/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/tls/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -921,13 +1320,6 @@
 				<link>https://xinqilin.github.io/tags/web-security/</link>
 				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/web-security/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>WebSocket</title>
-				<link>https://xinqilin.github.io/tags/websocket/</link>
-				<pubDate>Sun, 22 Nov 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/websocket/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -1008,13 +1400,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Bot Protection</title>
-				<link>https://xinqilin.github.io/tags/bot-protection/</link>
-				<pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/bot-protection/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>CAPTCHA</title>
 				<link>https://xinqilin.github.io/tags/captcha/</link>
 				<pubDate>Tue, 28 Apr 2026 00:00:00 +0800</pubDate>
@@ -1082,13 +1467,6 @@
 				<link>https://xinqilin.github.io/tags/container/</link>
 				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/container/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>DDD</title>
-				<link>https://xinqilin.github.io/tags/ddd/</link>
-				<pubDate>Mon, 15 Jan 2024 00:00:00 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/ddd/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -1386,7 +1764,7 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Best-Practices</title>
+				<title>Best Practices</title>
 				<link>https://xinqilin.github.io/tags/best-practices/</link>
 				<pubDate>Sun, 02 Oct 2022 00:48:01 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/best-practices/</guid>
@@ -1635,13 +2013,6 @@
 				<link>https://xinqilin.github.io/tags/technical-debt/</link>
 				<pubDate>Thu, 17 Mar 2022 22:50:11 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/technical-debt/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Authentication</title>
-				<link>https://xinqilin.github.io/tags/authentication/</link>
-				<pubDate>Wed, 09 Feb 2022 19:46:19 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/authentication/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -1904,13 +2275,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Testing</title>
-				<link>https://xinqilin.github.io/tags/testing/</link>
-				<pubDate>Thu, 05 Aug 2021 21:07:54 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/testing/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>API</title>
 				<link>https://xinqilin.github.io/tags/api/</link>
 				<pubDate>Tue, 03 Aug 2021 10:23:31 +0800</pubDate>
@@ -1950,13 +2314,6 @@
 				<link>https://xinqilin.github.io/tags/host/</link>
 				<pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/host/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Microservices</title>
-				<link>https://xinqilin.github.io/tags/microservices/</link>
-				<pubDate>Mon, 26 Jul 2021 02:21:13 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/microservices/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -2121,13 +2478,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Spring Security</title>
-				<link>https://xinqilin.github.io/tags/spring-security/</link>
-				<pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/spring-security/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Token</title>
 				<link>https://xinqilin.github.io/tags/token/</link>
 				<pubDate>Thu, 01 Jul 2021 23:39:52 +0800</pubDate>
@@ -2286,13 +2636,6 @@
 				<link>https://xinqilin.github.io/tags/stream-api/</link>
 				<pubDate>Sun, 28 Mar 2021 15:10:59 +0800</pubDate>
 				<guid>https://xinqilin.github.io/tags/stream-api/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>CI/CD</title>
-				<link>https://xinqilin.github.io/tags/ci/cd/</link>
-				<pubDate>Mon, 01 Mar 2021 21:16:29 +0800</pubDate>
-				<guid>https://xinqilin.github.io/tags/ci/cd/</guid>
 				<description></description>
 			</item>
 			<item>

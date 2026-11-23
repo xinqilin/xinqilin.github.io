@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Fan-Out on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/fan-out/</link>
+		<description>Recent content in Fan-Out on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Mon, 23 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/fan-out/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>實戰題：設計動態牆，推、拉與名人問題</title>
+				<link>https://xinqilin.github.io/post/systemdesign/news-feed/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/news-feed/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 9-2｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/url-shortener/&#34;&gt;URL Shortener&lt;/a&gt;｜下一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/chat-system/&#34;&gt;聊天系統&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;會員可以追蹤講者與主辦單位。首頁的動態牆依時間顯示追蹤對象的新動態：新開的講座、講者的短文、講座錄影上架。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;功能需求&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;講者發布動態；追蹤者在動態牆看到，最新的在前面&lt;/li&gt;&#xA;&lt;li&gt;往下捲動可以持續載入更舊的動態&lt;/li&gt;&#xA;&lt;li&gt;講者刪除動態或改成「僅付費會員可見」後，不該再被看不到的人看到&lt;/li&gt;&#xA;&lt;li&gt;會員取消追蹤後，不再看到那位講者的新動態&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;非功能需求&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;開啟動態牆的 p99 在 200 毫秒以內&lt;/li&gt;&#xA;&lt;li&gt;新動態幾秒到一分鐘內出現在追蹤者的動態牆，不要求即時&lt;/li&gt;&#xA;&lt;li&gt;少數講者有上百萬追蹤者&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;規模估算&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;table&gt;&#xA;&#x9;&lt;thead&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;項目&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;th&gt;估算&lt;/th&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/thead&gt;&#xA;&#x9;&lt;tbody&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;會員&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;月活躍 1,000 萬，日活躍 200 萬&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;追蹤關係&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;每人平均追蹤 50 位講者 → 5 億條追蹤關係&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;講者&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;10 萬位活躍講者，平均每人追蹤者約 5,000，分布極度不均，最多的約 300 萬&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;發布量&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;每天 20 萬則 → 平均每秒 2.3 則，尖峰約 20 則&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&#x9;&#x9;&lt;tr&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;讀取量&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;每位日活躍會員每天開 10 次 → 每天 2,000 萬次，平均每秒約 230 次，尖峰約 1,200 次&lt;/td&gt;&#xA;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xA;&#x9;&lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;讀取次數比發布次數多了 100 倍，但&lt;strong&gt;每次發布要通知的人數&lt;/strong&gt;才是重點。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;讀取時直接查詢：&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

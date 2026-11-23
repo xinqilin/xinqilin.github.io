@@ -1930,7 +1930,7 @@
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Getters and Setters</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ...</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><h2 id=使用範例>使用範例</h2><h3 id=1-前端整合>1. 前端整合</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=使用範例>使用範例</h2><h3 id=1-前端整合>1. 前端整合</h3><blockquote><p><strong>安全提醒</strong>：以下範例為了示範流程，把 access token 與 refresh token 存在 <code>localStorage</code>。頁面上任何一段被注入的 JavaScript（XSS）都能讀取並帶走它們。處理個資或金流的網頁應用，建議改用 Backend for Frontend（BFF）：token 只留在後端，瀏覽器只持有 HttpOnly 的 session cookie。詳見 <a href=/post/systemdesign/authentication-session-token-oidc/>System Design 系列 8-1 身分驗證</a>的「瀏覽器應用：token 不要進瀏覽器」。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4

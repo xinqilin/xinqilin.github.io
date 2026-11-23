@@ -2,6 +2,270 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://xinqilin.github.io/tags/authentication/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/authorization/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/batch-processing/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/batch-vs-stream/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/bola/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/identity-propagation/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/bot-protection/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/caching/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/canary/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/categories/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/chat/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/ci/cd/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/cicd-deployment/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/contract-testing/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/delayed-task/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/distributed-transaction/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/email/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/encryption/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/fan-out/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/feature-flag/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/flash-sale/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/fraud-prevention/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/inventory/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/kafka/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/kafka-streams/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/kms/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/kubernetes/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/leaderboard/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/load-testing/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/messaging/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/microservices/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/mtls/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/mysql/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/news-feed/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/notification/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/oauth-2.0/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/oidc/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/outbox/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/owasp/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/push/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/ranking/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/rate-limiting/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/redis/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/saga/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/saga-outbox/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/scheduler/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/secrets-management/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/security/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/service-discovery/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/service-discovery/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/service-mesh/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/skip-locked/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/sorted-set/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/spring/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/spring-batch/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/spring-cloud/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/spring-security/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/ssrf/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/stomp/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/stream-processing/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/supply-chain/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/system-design/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/categories/systemdesign/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/testcontainers/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/testing/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/threat-modeling/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/tls/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/token-exchange/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/url-shortener/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/waiting-room/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/websocket/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/zero-trust/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/testing-at-scale/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/authentication-session-token-oidc/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/authorization-owasp-api-top10/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/encryption-secrets/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/flash-sale-ticketing/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/url-shortener/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/distributed-scheduler/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/news-feed/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/leaderboard/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/chat-system/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/notification-system/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/abuse-prevention/</loc>
+    <lastmod>2026-11-23T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/adr/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -24,9 +288,6 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/backoff/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/bloom-filter/</loc>
@@ -68,9 +329,6 @@
     <loc>https://xinqilin.github.io/tags/cassandra/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/categories/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/cdn/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -99,6 +357,9 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/data-modeling/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/tags/ddd/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/dead-letter-queue/</loc>
@@ -215,12 +476,6 @@
     <loc>https://xinqilin.github.io/tags/jpa/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/kafka/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/kubernetes/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/latency/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -254,13 +509,13 @@
     <loc>https://xinqilin.github.io/tags/micrometer/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/modular-monolith/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/multipart-upload/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/mvcc/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/mysql/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/napkin-math/</loc>
@@ -284,9 +539,6 @@
     <loc>https://xinqilin.github.io/tags/opentelemetry/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/outbox/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/p2c/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -303,9 +555,6 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/postgresql/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/post/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/privacy/</loc>
@@ -329,13 +578,7 @@
     <loc>https://xinqilin.github.io/tags/raft/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/rate-limiting/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/rate-limiting/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/redis/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/redisson/</loc>
@@ -371,9 +614,6 @@
     <loc>https://xinqilin.github.io/tags/scalability/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/security/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/sharding/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -387,9 +627,6 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/snowflake/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/spring/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/spring-amqp/</loc>
@@ -410,6 +647,9 @@
     <loc>https://xinqilin.github.io/tags/spring-kafka/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://xinqilin.github.io/tags/spring-modulith/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://xinqilin.github.io/tags/spring-session/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -425,22 +665,7 @@
     <loc>https://xinqilin.github.io/tags/stateless/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/stomp/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/storage-engine/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/system-design/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/categories/systemdesign/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/post/systemdesign/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/tcp/</loc>
@@ -453,9 +678,6 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/timeout-retry-backoff/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/tls/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/token-bucket/</loc>
@@ -471,9 +693,6 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/web-security/</loc>
-    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/websocket/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/request-lifecycle/</loc>
@@ -504,6 +723,9 @@
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/redundancy-failover-dr/</loc>
+    <lastmod>2026-11-22T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://xinqilin.github.io/post/systemdesign/monolith-vs-microservices/</loc>
     <lastmod>2026-11-22T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/systemdesign/idempotency-key/</loc>
@@ -566,9 +788,6 @@
     <loc>https://xinqilin.github.io/post/cli/openssl/</loc>
     <lastmod>2026-08-23T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/bot-protection/</loc>
-    <lastmod>2026-04-28T00:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/captcha/</loc>
     <lastmod>2026-04-28T00:00:00+08:00</lastmod>
   </url><url>
@@ -627,9 +846,6 @@
     <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/database/</loc>
-    <lastmod>2024-01-15T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/ddd/</loc>
     <lastmod>2024-01-15T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/devops/</loc>
@@ -950,9 +1166,6 @@
     <loc>https://xinqilin.github.io/post/architecture/bad-smell/</loc>
     <lastmod>2022-03-17T22:50:11+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/authentication/</loc>
-    <lastmod>2022-02-09T19:46:19+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/categories/git/</loc>
     <lastmod>2022-02-09T19:46:19+08:00</lastmod>
   </url><url>
@@ -1100,9 +1313,6 @@
     <loc>https://xinqilin.github.io/tags/reflection/</loc>
     <lastmod>2021-08-05T21:07:54+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/testing/</loc>
-    <lastmod>2021-08-05T21:07:54+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/api/</loc>
     <lastmod>2021-08-03T10:23:31+08:00</lastmod>
   </url><url>
@@ -1128,9 +1338,6 @@
     <lastmod>2021-07-26T02:21:13+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/host/</loc>
-    <lastmod>2021-07-26T02:21:13+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/microservices/</loc>
     <lastmod>2021-07-26T02:21:13+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/tags/yaml/</loc>
@@ -1220,9 +1427,6 @@
     <loc>https://xinqilin.github.io/tags/rest-api/</loc>
     <lastmod>2021-07-01T23:39:52+08:00</lastmod>
   </url><url>
-    <loc>https://xinqilin.github.io/tags/spring-security/</loc>
-    <lastmod>2021-07-01T23:39:52+08:00</lastmod>
-  </url><url>
     <loc>https://xinqilin.github.io/tags/token/</loc>
     <lastmod>2021-07-01T23:39:52+08:00</lastmod>
   </url><url>
@@ -1309,9 +1513,6 @@
   </url><url>
     <loc>https://xinqilin.github.io/tags/stream-api/</loc>
     <lastmod>2021-03-28T15:10:59+08:00</lastmod>
-  </url><url>
-    <loc>https://xinqilin.github.io/tags/ci/cd/</loc>
-    <lastmod>2021-03-01T21:16:29+08:00</lastmod>
   </url><url>
     <loc>https://xinqilin.github.io/post/git/git-tag/</loc>
     <lastmod>2021-03-01T21:16:29+08:00</lastmod>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Supply Chain on Bill.Lin&#39;s Notes</title>
+		<link>https://xinqilin.github.io/tags/supply-chain/</link>
+		<description>Recent content in Supply Chain on Bill.Lin&#39;s Notes</description>
+		<generator>Hugo</generator>
+		<language>zh-tw</language>
+		
+		
+		
+		
+			<lastBuildDate>Mon, 23 Nov 2026 00:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="https://xinqilin.github.io/tags/supply-chain/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>CI/CD 與部署策略：新舊版本會同時在線上，變更要為此而設計</title>
+				<link>https://xinqilin.github.io/post/systemdesign/cicd-deployment/</link>
+				<pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+				<guid>https://xinqilin.github.io/post/systemdesign/cicd-deployment/</guid>
+				<description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;System Design 系列&lt;/strong&gt; Part 10-2｜上一篇：&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/testing-at-scale/&#34;&gt;大規模系統的測試&lt;/a&gt;｜&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/system-design-thinking/#%E7%B3%BB%E5%88%97%E5%9C%B0%E5%9C%96&#34;&gt;系列地圖&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;情境與問題&#34;&gt;情境與問題&lt;/h2&gt;&#xA;&lt;p&gt;講座平台的 30 個服務每天部署十幾次。上一季和部署有關的事故：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;部署時刪了欄位&lt;/strong&gt;：新版本不再使用 &lt;code&gt;registration.member_id&lt;/code&gt;，同一次部署的 migration 把欄位刪掉。滾動更新的過程中，還在執行的舊版本開始大量報錯&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;無法回滾&lt;/strong&gt;：發現問題要回到上一版，但 migration 已經把資料轉換成新格式，舊版本讀不懂&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;秒殺期間部署&lt;/strong&gt;：一次例行部署剛好在開賣前 5 分鐘，重新啟動的實例還在暖機，開賣的流量就進來了&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;CI 的金鑰外洩&lt;/strong&gt;：CI 平台上存著一把長期有效的雲端存取金鑰，一個被入侵的第三方 CI 套件把它印到建置日誌裡&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;前三起的共同原因是：&lt;strong&gt;部署不是一瞬間的事&lt;/strong&gt;。在滾動更新、金絲雀、回滾的過程中，新舊版本會同時在線上，同時讀寫同一個資料庫、同一個快取、同一個 topic。第四起則提醒我們：pipeline 本身就是能夠修改正式環境的系統，要以同等級的安全性看待。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最簡單的做法與它的極限&#34;&gt;最簡單的做法與它的極限&lt;/h2&gt;&#xA;&lt;p&gt;CI 測試通過之後，直接對正式環境的所有實例滾動更新，有問題再手動回滾：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;影響範圍是 100%&lt;/strong&gt;：一個只在真實流量下出現的錯誤，同時影響所有使用者&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;靠人發現&lt;/strong&gt;：要等告警或客訴才知道有問題，這段時間持續造成損害&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;回滾比損害慢&lt;/strong&gt;：手動判斷、手動回滾，十幾分鐘就過去了；如果資料表已經變更，回滾甚至不可能&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;沒有考慮共存&lt;/strong&gt;：每次部署都假設「舊版本瞬間消失」，但實際上它們會共存幾分鐘到幾小時&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;核心機制&#34;&gt;核心機制&lt;/h2&gt;&#xA;&lt;h3 id=&#34;pipeline建置一次逐環境推進&#34;&gt;Pipeline：建置一次，逐環境推進&lt;/h3&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR&#xA;    C[提交] --&gt; B[建置與單元測試&lt;br/&gt;整合測試、契約測試]&#xA;    B --&gt; S[安全檢查&lt;br/&gt;依賴弱點、secrets、靜態分析]&#xA;    S --&gt; I[建置映像檔&lt;br/&gt;以 digest 識別、簽章、SBOM]&#xA;    I --&gt; ST[部署到 staging&lt;br/&gt;冒煙測試]&#xA;    ST --&gt; CA[正式環境金絲雀&lt;br/&gt;自動分析]&#xA;    CA --&gt; P[逐步擴大到 100%]&#xA;    CA -.-&gt;|指標異常| RB[自動中止並回退]&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;建置一次&lt;/strong&gt;：同一個映像檔（以內容的 digest 識別，不是以可以被移動的 tag）從 staging 一路推進到正式環境。每個環境重新建置一次，就無法保證測試過的和上線的是同一個東西&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;設定在部署時注入&lt;/strong&gt;：環境之間的差異只有設定與 secrets，不在映像檔裡（&lt;a href=&#34;https://xinqilin.github.io/post/systemdesign/encryption-secrets/&#34;&gt;加密與 Secrets 篇&lt;/a&gt;）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;快速回饋&lt;/strong&gt;：提交到「測試結果」最好在 10 分鐘以內。慢的測試（負載測試、完整的安全掃描）放在每日或發布前，不擋每一次提交&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;每個階段都是一道關卡&lt;/strong&gt;：失敗就停，不靠人記得去看&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;部署與發布分開&#34;&gt;部署與發布分開&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;部署&lt;/strong&gt;：新的程式碼在伺服器上執行&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;發布&lt;/strong&gt;：使用者看到新的功能&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;用&lt;strong&gt;功能開關&lt;/strong&gt;把兩者分開：新功能的程式碼可以隨時部署，但預設關閉；之後再對內部員工、1% 的會員、全部會員逐步開啟。出問題時，關閉開關比回滾部署快得多，而且不影響同一次部署裡的其他修改。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

@@ -58,7 +58,7 @@
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>kafkaTemplate</span><span class=p>.</span><span class=na>send</span><span class=p>(</span><span class=n>TOPIC</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=p>.</span><span class=na>valueOf</span><span class=p>(</span><span class=n>event</span><span class=p>.</span><span class=na>registrationId</span><span class=p>()),</span><span class=w> </span><span class=n>event</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><p><code>send</code> 是非同步的，要檢查回傳的 future 是否失敗。和上一篇一樣，「資料庫提交」與「送出事件」之間的雙寫問題要用 outbox 解決（Part 7）。</p><h3 id=2-錯誤處理有限的阻塞重試失敗送-dlt>2. 錯誤處理：有限的阻塞重試，失敗送 DLT</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span></code></pre></td></tr></table></div></div><p><code>send</code> 是非同步的，要檢查回傳的 future 是否失敗。和上一篇一樣，「資料庫提交」與「送出事件」之間的雙寫問題要用 outbox 解決（<a href=/post/systemdesign/saga-outbox/>Saga 與 Outbox 篇</a>、<a href=/post/architecture/outbox-pattern/>Outbox Pattern</a>）。</p><h3 id=2-錯誤處理有限的阻塞重試失敗送-dlt>2. 錯誤處理：有限的阻塞重試，失敗送 DLT</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
