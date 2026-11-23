@@ -34,7 +34,7 @@ tags: ["System Design", "Architecture", "Trade-off", "HLD", "LLD", "ADR"]
 | 6 可靠性 | 壞掉時怎麼辦 | [備援、故障轉移與 DR](/post/systemdesign/redundancy-failover-dr/)、[Timeout/Retry/Backoff 與 Jitter](/post/systemdesign/timeout-retry-backoff/)、[Circuit Breaker 與 Bulkhead](/post/systemdesign/circuit-breaker-bulkhead/)、[Rate Limiting](/post/systemdesign/rate-limiting/)、[Observability](/post/systemdesign/observability/) |
 | 7 架構演進 | 系統和團隊一起長大 | [單體 vs 微服務](/post/systemdesign/monolith-vs-microservices/)、[Service Discovery](/post/systemdesign/service-discovery/)、[Saga 與 Outbox](/post/systemdesign/saga-outbox/)、[Batch 與 Stream](/post/systemdesign/batch-vs-stream/) |
 | 8 安全 | 從系統設計角度看安全 | [身分驗證：Session、Token 與 OAuth 2.0／OIDC](/post/systemdesign/authentication-session-token-oidc/)、[授權模型與 OWASP API Top 10](/post/systemdesign/authorization-owasp-api-top10/)、[BOLA 穿過 BFF 之後：微服務的身分傳遞](/post/systemdesign/identity-propagation/)、[傳輸與資料加密及 Secrets 管理](/post/systemdesign/encryption-secrets/)、[濫用防護](/post/systemdesign/abuse-prevention/) |
-| 9 實戰題 | 把前面的元件組起來 | URL Shortener、News Feed、聊天系統、秒殺搶票、通知系統、排行榜、分散式排程（撰寫中） |
+| 9 實戰題 | 把前面的元件組起來 | [URL Shortener](/post/systemdesign/url-shortener/)、[News Feed](/post/systemdesign/news-feed/)、[聊天系統](/post/systemdesign/chat-system/)、[秒殺搶票](/post/systemdesign/flash-sale-ticketing/)、[通知系統](/post/systemdesign/notification-system/)、[排行榜](/post/systemdesign/leaderboard/)、[分散式排程](/post/systemdesign/distributed-scheduler/) |
 | 10 交付 | 安全地把變更送上線 | 大規模系統的測試、CI/CD 與部署策略（撰寫中） |
 
 ## 情境與問題

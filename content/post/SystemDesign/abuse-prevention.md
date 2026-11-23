@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "Bot Protection", "Fraud Prevention", "Rate Limiting", "OWASP", "Security"]
 ---
 
-> **System Design 系列** Part 8-5｜上一篇：[傳輸與資料加密及 Secrets 管理](/post/systemdesign/encryption-secrets/)｜下一篇：Part 9 實戰題（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 8-5｜上一篇：[傳輸與資料加密及 Secrets 管理](/post/systemdesign/encryption-secrets/)｜下一篇：[URL Shortener](/post/systemdesign/url-shortener/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 
