@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "Scheduler", "Delayed Task", "MySQL", "SKIP LOCKED", "Security"]
 ---
 
-> **System Design 系列** Part 9-7｜上一篇：[排行榜](/post/systemdesign/leaderboard/)｜下一篇：大規模系統的測試（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 9-7｜上一篇：[排行榜](/post/systemdesign/leaderboard/)｜下一篇：[大規模系統的測試](/post/systemdesign/testing-at-scale/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 
