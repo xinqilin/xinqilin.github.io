@@ -98,11 +98,13 @@ flowchart TD
 
 這和導讀的額滿旗標是同一個原則：**快取層只做最佳化，正確性在資料庫**。
 
+故障轉移也會造成反方向的遺失：同一段 script 裡的扣減、買家紀錄與 Stream 訊息會一起消失。使用者的畫面已經顯示「處理中」，卻永遠等不到結果。所以「處理中」要有逾時（例如 60 秒沒有結果，就顯示「這次沒有搶到，請到訂單頁確認」），活動結束後再以資料庫的訂單為準對帳一次。
+
 ### 非同步落庫：資料庫只處理約 1 萬筆
 
 Redis Stream 的消費者以每秒約 1,000 筆的速度建立訂單：1 萬筆約 10 秒處理完。這正好落在導讀估算的熱點列上限之內，所以**不需要名額分桶**，也不需要更換資料庫。這就是漏斗的效果：上游擋得夠多，下游的簡單做法就夠用。
 
-訂單建立是冪等的：`(event_id, member_id)` 是唯一鍵，同一則 Stream 訊息被處理兩次，第二次撞上唯一鍵而略過（[冪等性篇](/post/systemdesign/idempotency-key/)）。處理完成才確認（ACK），消費者當機時，未確認的訊息會留在 pending 清單裡，由其他消費者接手。
+訂單建立是冪等的：`(event_id, member_id)` 是唯一鍵，同一則 Stream 訊息被處理兩次，第二次撞上唯一鍵而略過（[冪等性篇](/post/systemdesign/idempotency-key/)）。處理完成才確認（ACK）。消費者當機或處理失敗時，未確認的訊息留在 pending 清單裡，由定期的工作以 `XAUTOCLAIM` 認領閒置過久的訊息後重新處理。
 
 用戶端送出購票請求後，立刻收到「處理中」，再透過輪詢或 SSE 取得結果（[即時更新篇](/post/systemdesign/realtime-updates/)）。
 
@@ -237,7 +239,9 @@ public class SeatReservation {
 
 ```java
 @Component
-public class ReservationConsumer {
+public class ReservationConsumer implements StreamListener<String, MapRecord<String, String, String>> {
+
+    private static final Logger log = LoggerFactory.getLogger(ReservationConsumer.class);
 
     private final StringRedisTemplate redis;
     private final OrderCreator orders;
@@ -252,23 +256,39 @@ public class ReservationConsumer {
         this.eventId = eventId;
     }
 
-    @Scheduled(fixedDelay = 10)
-    public void poll() {
-        String stream = "{flashsale:" + eventId + "}:reservations";
-        List<MapRecord<String, Object, Object>> records = redis.opsForStream().read(
-                Consumer.from("order-writers", ConsumerName.current()),
-                StreamReadOptions.empty().count(100).block(Duration.ofSeconds(1)),
-                StreamOffset.create(stream, ReadOffset.lastConsumed()));
-        for (MapRecord<String, Object, Object> record : records) {
-            long memberId = Long.parseLong((String) record.getValue().get("member"));
-            try {
-                orders.createOrReject(eventId, memberId);     // 冪等
-            } catch (SoldOutAtDatabaseException e) {
-                rejections.notifyNotSecured(eventId, memberId);   // 通知未搶到、移除 Redis 的買家紀錄，不加回庫存
-            }
-            // 其他例外（例如資料庫暫時無法連線）會跳出迴圈、不 ACK，訊息留在 pending 清單裡稍後重試
-            redis.opsForStream().acknowledge("order-writers", record);
+    @Override
+    public void onMessage(MapRecord<String, String, String> record) {
+        long memberId = Long.parseLong(record.getValue().get("member"));
+        try {
+            orders.createOrReject(eventId, memberId);                    // 冪等
+        } catch (SoldOutAtDatabaseException e) {
+            rejections.notifyNotSecured(eventId, memberId);              // 通知未搶到、移除 Redis 的買家紀錄，不加回庫存
+        } catch (RuntimeException e) {
+            log.warn("建立訂單失敗，訊息 {} 留在 pending 清單稍後重新處理", record.getId(), e);
+            return;                                                      // 不 ACK
         }
+        redis.opsForStream().acknowledge("order-writers", record);
+    }
+}
+
+@Configuration
+public class ReservationStreamConfig {
+
+    @Bean(destroyMethod = "stop")
+    StreamMessageListenerContainer<String, MapRecord<String, String, String>> reservationListener(
+            RedisConnectionFactory connectionFactory, ReservationConsumer consumer,
+            @Value("${flashsale.event-id}") long eventId) {
+        StreamMessageListenerContainerOptions<String, MapRecord<String, String, String>> options =
+                StreamMessageListenerContainerOptions.builder()
+                        .pollTimeout(Duration.ofSeconds(1))
+                        .build();
+        StreamMessageListenerContainer<String, MapRecord<String, String, String>> container =
+                StreamMessageListenerContainer.create(connectionFactory, options);
+        container.receive(Consumer.from("order-writers", ConsumerName.current()),
+                StreamOffset.create("{flashsale:" + eventId + "}:reservations", ReadOffset.lastConsumed()),
+                consumer);
+        container.start();
+        return container;
     }
 }
 
@@ -276,21 +296,26 @@ public class ReservationConsumer {
 public class OrderCreator {
 
     private final JdbcClient jdbc;
+    private final IdGenerator ids;
+    private final DelayedTasks tasks;
 
-    public OrderCreator(JdbcClient jdbc) {
+    public OrderCreator(JdbcClient jdbc, IdGenerator ids, DelayedTasks tasks) {
         this.jdbc = jdbc;
+        this.ids = ids;
+        this.tasks = tasks;
     }
 
     @Transactional
     public void createOrReject(long eventId, long memberId) {
+        long orderId = ids.next();
         try {
             jdbc.sql("""
-                            INSERT INTO ticket_order (event_id, member_id, status, pay_deadline)
-                            VALUES (:e, :m, 'PENDING_PAYMENT', NOW(3) + INTERVAL 10 MINUTE)
+                            INSERT INTO ticket_order (id, event_id, member_id, status, pay_deadline)
+                            VALUES (:id, :e, :m, 'PENDING_PAYMENT', NOW(3) + INTERVAL 10 MINUTE)
                             """)
-                    .param("e", eventId).param("m", memberId).update();
+                    .param("id", orderId).param("e", eventId).param("m", memberId).update();
         } catch (DuplicateKeyException e) {
-            return;                                             // 重複處理同一則訊息
+            return;                                                      // 重複處理同一則訊息
         }
         int updated = jdbc.sql("UPDATE event SET remaining = remaining - 1 WHERE id = :e AND remaining > 0")
                 .param("e", eventId).update();
@@ -298,20 +323,26 @@ public class OrderCreator {
             // Redis 多放進來的請求（例如故障轉移遺失了扣減），在這裡被擋下
             throw new SoldOutAtDatabaseException(eventId, memberId);
         }
+        // 付款期限的檢查任務和訂單在同一個交易裡建立，訂單回滾時任務也不存在
+        tasks.schedule("PAYMENT_DEADLINE", "PAYMENT_DEADLINE:order:" + orderId, "{\"orderId\":" + orderId + "}",
+                Instant.now().plus(Duration.ofMinutes(10)), "ticketing-service");
     }
 }
 ```
 
 - `INSERT` 在前、熱點列的 `UPDATE` 在後，持鎖時間最短（導讀的 LLD 決策）
 - `SoldOutAtDatabaseException` 讓交易回滾，消費者接住它、通知使用者未搶到，並把 Redis 的買家紀錄移除；**不要**把 Redis 的庫存加回去，因為資料庫已經確認沒有名額了
-- consumer group 要在開賣前建立（`XGROUP CREATE`），消費者的名稱要固定，重新啟動後才能接手自己 pending 清單裡的訊息
-- 消費者的數量與批次大小決定了寫入資料庫的速度，這是保護資料庫的最後一個閥門
+- 付款期限交給[分散式排程](/post/systemdesign/distributed-scheduler/)：任務和訂單在同一個交易裡建立，10 分鐘後由處理器以條件式更新檢查是否已經付款
+- 用 listener container 消費，而不是 `@Scheduled` 加上阻塞的讀取：Spring Boot 的排程器在沒有啟用 virtual threads 時只有一條執行緒，每次阻塞 1 秒的讀取會讓同一個應用程式的其他排程工作全部延後
+- consumer group 要在開賣前建立（`XGROUP CREATE`）。以 `lastConsumed()`（也就是 `>`）讀取只會拿到新的訊息，失敗而沒有 ACK 的訊息留在 pending 清單裡，**不會自動重送**；要有定期的工作以 `XAUTOCLAIM` 認領閒置超過一段時間的訊息再處理。消費者名稱要固定，重新啟動後才找得回自己的 pending 訊息
+- 消費者的數量決定了寫入資料庫的速度，這是保護資料庫的最後一個閥門
 
-> 以上程式碼依 Spring Boot 4.1、Spring Security 7.1 與 Spring Data Redis 4.1 官方文件撰寫，沒有實際編譯與執行。`ConsumerName`、`Rejections`、`SoldOutAtDatabaseException` 是示意的元件。
+> 以上程式碼依 Spring Boot 4.1、Spring Security 7.1 與 Spring Data Redis 4.1 官方文件撰寫，沒有實際編譯與執行。`ConsumerName`、`Rejections`、`SoldOutAtDatabaseException`、`IdGenerator` 是示意的元件，`DelayedTasks` 的實作見分散式排程。
 
 ## 踩坑與 Gotchas
 
 - **把 Redis 當作權威**：故障轉移遺失的扣減會造成超賣。資料庫要有最終檢查，活動結束後再對帳一次
+- **「處理中」沒有逾時**：故障轉移連同預約訊息一起遺失，使用者永遠等不到結果
 - **Lua script 的 key 不在同一個 slot**：在 Redis Cluster 上直接失敗。用 hash tag
 - **CDN 的快取鍵包含查詢參數**：攻擊者加上隨機參數，所有請求穿透到 origin
 - **依賴使用者的本機時間**：改了電腦時間就能提早看到「開賣」按鈕。按鈕只是介面，真正的開賣由伺服器判斷

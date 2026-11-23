@@ -267,6 +267,12 @@ public class MessageDispatcher {
 public List<MessageView> after(@PathVariable long id, @RequestParam long afterSeq,
                                @AuthenticationPrincipal Jwt jwt) {
     long me = CurrentMember.from(jwt).memberId();
+    boolean member = jdbc.sql("SELECT COUNT(*) FROM conversation_member WHERE conversation_id = :id AND member_id = :me")
+            .param("id", id).param("me", me)
+            .query(Long.class).single() > 0;
+    if (!member) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);       // 不是 403：不透露這個對話是否存在
+    }
     return jdbc.sql("""
                     SELECT m.seq, m.sender_id, m.body, m.created_at
                       FROM message m
@@ -281,7 +287,7 @@ public List<MessageView> after(@PathVariable long id, @RequestParam long afterSe
 }
 ```
 
-成員條件放在查詢裡（[授權篇](/post/systemdesign/authorization-owasp-api-top10/)），不是成員就查不到任何東西；一次最多 200 則，用戶端依最後一則的序號繼續。
+不是成員就回 404，和[授權篇](/post/systemdesign/authorization-owasp-api-top10/)「404 而不是 403」的原則一致；查詢裡仍然保留成員條件，作為第二道防線。一次最多 200 則，用戶端依最後一則的序號繼續。
 
 > 以上程式碼依 Spring Boot 4.1、Spring Framework 7（WebSocket／STOMP）與 MySQL 8.4 官方文件撰寫，沒有實際編譯與執行。`ConversationMembers`、`OfflinePush` 是示意的元件。
 

@@ -314,6 +314,7 @@ public class TaskPoller {
 ```
 
 - 每一台機器都執行 `poll()`，靠 `SKIP LOCKED` 分配任務，不需要選出 leader
+- Spring Boot 的排程器在沒有啟用 virtual threads 時只有一條執行緒。`poll()` 在積壓時會持續迴圈，同一個應用程式裡的其他 `@Scheduled`（包括下面的 `reclaimExpiredLeases`）都排不到。設定 `spring.task.scheduling.pool.size`，或啟用 `spring.threads.virtual.enabled`
 - 時間的比較一律用資料庫的 `NOW(3)`，不用各台機器的時鐘
 - 取得任務的交易只包含 `SELECT` 與 `UPDATE`，在執行任務之前就提交，鎖只持有幾毫秒
 - 處理器拋出例外就以指數退避重試；租約過期而被重新取得的次數也算進 `attempts`，讓每次都讓機器當掉的任務最後進入 `DEAD`，不會無限循環

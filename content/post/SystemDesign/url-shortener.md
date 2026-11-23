@@ -81,7 +81,7 @@ CREATE TABLE short_link (
 | 301 Moved Permanently | 可以快取轉址結果，之後直接前往原始網址，不再經過你的服務 | 永久不變、不需要統計的連結 |
 | 302 Found（或 307） | 每次都回來詢問 | 需要統計、可能修改目的地、可能被停用的連結 |
 
-301 能大幅減少流量，但連結一旦被瀏覽器快取，**停用就無法生效**，惡意連結被檢舉後，曾經點過的人仍然會被直接帶到惡意網站。講座平台的連結需要統計與停用，所以使用 302，並加上 `Cache-Control: private, max-age=0`，不讓瀏覽器與中間的快取保存轉址結果。
+301 能大幅減少流量，但連結一旦被瀏覽器快取，**停用就無法生效**，惡意連結被檢舉後，曾經點過的人仍然會被直接帶到惡意網站。講座平台的連結需要統計與停用，所以使用 302，並加上 `Cache-Control: no-store`，不讓瀏覽器與中間的快取保存轉址結果。
 
 ### 讀取路徑：快取與不存在的代碼
 
@@ -116,6 +116,8 @@ flowchart LR
 講座平台在台灣與日本各有一個區域，連結資料庫的 primary 在台灣，日本讀取 replica。講者在台灣建立連結，立刻貼到群組裡，日本的使用者點開時，replica 可能還沒收到這筆資料，回應 404（[Replication 篇](/post/systemdesign/replication-lag/)）。
 
 處理方式：replica 查不到時，**回頭查 primary 一次**再決定是否回應 404。真正不存在的代碼很少（除非是攻擊），而攻擊流量已經被負面快取與 Bloom filter 擋掉，所以回頭查 primary 的成本不高。
+
+但被 Bloom filter 判定「一定不存在」的代碼，根本不會走到 replica 與 primary。如果日本區域的 Bloom filter 是非同步更新的，剛建立的代碼會先被它擋下，回到同樣的 404。所以建立連結時，要**同步**把代碼加進每個區域的 Bloom filter，之後才回應建立成功；建立的流量只有每秒數十次，多幾十毫秒的跨區域延遲可以接受。某個區域加入失敗時，那個區域暫停使用 Bloom filter、改為回頭查 primary，直到 filter 重建完成。
 
 ### 有效期限與停用
 
@@ -232,7 +234,7 @@ public class RedirectController {
                     clicks.publish(code, request);              // 非同步，失敗也不影響轉址
                     return ResponseEntity.status(HttpStatus.FOUND)
                             .location(link.target())
-                            .header(HttpHeaders.CACHE_CONTROL, "private, max-age=0")
+                            .header(HttpHeaders.CACHE_CONTROL, "no-store")
                             .header("Referrer-Policy", "no-referrer")
                             .<Void>build();
                 })

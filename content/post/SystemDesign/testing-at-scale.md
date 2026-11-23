@@ -152,6 +152,11 @@ class TaskPollerConcurrencyTest {
     @Autowired JdbcClient jdbc;
     @Autowired RecordingHandler recorder;
 
+    @BeforeEach
+    void cleanTasks() {
+        jdbc.sql("DELETE FROM scheduled_task").update();              // 共用的容器裡可能有其他測試留下的任務
+    }
+
     @Test
     void eachDueTaskRunsExactlyOnceAcrossConcurrentPollers() throws Exception {
         for (int i = 1; i <= 1_000; i++) {
@@ -220,6 +225,10 @@ class OwnershipRegressionTest {
             "/v1/conversations/{id}/messages",
             "/v1/notifications/{id}");
 
+    static final List<String> PUBLIC_RESOURCES = List.of(             // 明確公開、不屬於任何會員
+            "/v1/lectures/{id}",
+            "/v1/speakers/{id}");
+
     @Autowired MockMvcTester mvc;
     @Autowired TestFixtures fixtures;
 
@@ -248,13 +257,15 @@ class OwnershipRegressionTest {
                 .filter(pattern -> pattern.contains("{id}"))
                 .collect(Collectors.toSet());
 
-        assertThat(OWNED_RESOURCES).containsAll(withId);                         // 新端點沒有加進清單就失敗
+        Set<String> classified = new HashSet<>(OWNED_RESOURCES);
+        classified.addAll(PUBLIC_RESOURCES);
+        assertThat(classified).containsAll(withId);                              // 新端點兩張清單都沒有列就失敗
     }
 }
 ```
 
 - 401 與 403 由 Spring Security 的設定處理，這個測試專注在**物件層**的授權：登入了，但不是擁有者
-- 公開的資源（例如講座頁面）不屬於任何會員，要用另一張「明確公開」的清單排除，讓「忘記分類」本身就是失敗
+- 公開的資源（講座、講者頁面）不屬於任何會員，列在 `PUBLIC_RESOURCES`。新端點兩張清單都沒有列，測試就失敗：「忘記分類」本身就是錯誤
 
 ### 4. 秒殺的負載測試：開放模型
 
@@ -263,12 +274,16 @@ public class FlashSaleSimulation extends Simulation {
 
     HttpProtocolBuilder httpProtocol = http.baseUrl("https://perf.lectures.example.com");
 
-    // 壓測專用的合成帳號；入場憑證只能使用一次，所以每一列只用一次（預設的佇列策略）
+    // 壓測專用的合成帳號；每一列只用一次（預設的佇列策略），列數要多於注入的總人數（約 68 萬）
     FeederBuilder<String> members = csv("perf-members.csv");
 
     ScenarioBuilder buyer = scenario("秒殺購票")
             .feed(members)
             .exec(http("開賣狀態").get("/v1/flashsale/42/status").check(status().is(200)))
+            // 入場憑證 2 分鐘到期、只能使用一次，不能預先產生在 CSV 裡，要在情境中換發
+            .exec(http("換發入場憑證").post("/v1/flashsale/42/admission")
+                    .header("Authorization", "Bearer #{accessToken}")
+                    .check(status().is(200), jsonPath("$.token").saveAs("admissionToken")))
             .exec(http("預扣").post("/v1/flashsale/42/reservations")
                     .header("Authorization", "Bearer #{accessToken}")
                     .header("X-Admission", "#{admissionToken}")
@@ -289,6 +304,7 @@ public class FlashSaleSimulation extends Simulation {
 
 - `injectOpen` 依到達速率注入虛擬使用者，不管前面的請求是否已經回應，這就是開放模型
 - 409 與 410 列為成功的檢查結果：壓測的「失敗率」應該只計算系統的錯誤，而不是「沒搶到」
+- 正式流程中，換發入場憑證要等排隊序號被放行；壓測環境把等候室設定成立即放行，專門測預扣與落庫的路徑，等候室本身另外測。如果把憑證預先產生在 CSV 裡，幾分鐘後就全部過期，壓測量到的只是「憑證無效」這條錯誤路徑
 - 最後一段刻意注入超過設計的尖峰，觀察系統是**優雅地拒絕**（快速回傳 429 或 503），還是整個卡住
 
 > 以上程式碼依 Spring Boot 4.1（Testcontainers 整合、`@ServiceConnection`）、Spring Framework 7（`MockMvcTester`）、Spring Security Test、Testcontainers 2.0 與 Gatling Java DSL 官方文件撰寫，沒有實際編譯與執行。`TestFixtures` 是示意的元件。

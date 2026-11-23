@@ -213,12 +213,12 @@ public class NotificationDispatcher {
         }
         Instant now = Instant.now();
         if (n.deliverBy() != null && now.isAfter(n.deliverBy())) {
-            store.mark(id, Status.SUPPRESSED);                       // 太晚了，不送
+            store.markIfPending(id, Status.SUPPRESSED);              // 太晚了，不送
             return;
         }
         Preferences p = preferences.of(n.memberId());
         if (!p.allows(n.channel(), n.category()) || p.suppressed(n.channel())) {
-            store.mark(id, Status.SUPPRESSED);
+            store.markIfPending(id, Status.SUPPRESSED);
             return;
         }
         boolean marketing = n.priority() == Priority.MARKETING;
@@ -253,6 +253,8 @@ public class NotificationDispatcher {
 
 - 偏好與勿擾時段在取得之前檢查，延後的通知維持 `PENDING`，之後重新排入時還能被取得；頻率上限在取得之後才計數
 - 重試用盡、進入 dead-letter topic 的通知維持 `PENDING`，由人工或清理程式決定重送或放棄
+- 取得之前的狀態更新用 `markIfPending`（條件包含 `status = 'PENDING'`），重新平衡時不會覆寫另一個消費者已經取得、正在寄送的通知
+- Spring Kafka 預設的錯誤處理器在原本的分區上重試，重試期間同一個分區後面的通知都在等待。交易型通知可以改用非阻塞的重試（retry topic，`@RetryableTopic`）：失敗的訊息轉到延遲重試的 topic，原分區繼續處理
 - `ChannelSender` 依管道實作；推播的實作在收到 `Unregistered`／`UNREGISTERED` 時刪除裝置 token，再回傳 `InvalidRecipient`
 - 頻率上限可以用 Redis 的計數器加上到當地午夜的期限（[Rate Limiting 篇](/post/systemdesign/rate-limiting/)）
 

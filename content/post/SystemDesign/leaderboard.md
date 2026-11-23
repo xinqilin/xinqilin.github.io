@@ -167,7 +167,12 @@ public class WeeklyLeaderboard {
               return -1
             end
             local points = redis.call('HINCRBY', KEYS[2], ARGV[1], ARGV[2])
-            redis.call('ZADD', KEYS[3], points * 2097152 + tonumber(ARGV[3]), ARGV[1])
+            local remaining = tonumber(ARGV[3])
+            local old = redis.call('ZSCORE', KEYS[3], ARGV[1])
+            if old then
+              remaining = math.min(remaining, tonumber(old) % 2097152)   -- 事件亂序時，保留較晚的時間
+            end
+            redis.call('ZADD', KEYS[3], points * 2097152 + remaining, ARGV[1])
             return points
             """, Long.class);
 
@@ -185,7 +190,7 @@ public class WeeklyLeaderboard {
         redis.execute(AWARD,
                 List.of(tag + ":applied:" + event.ledgerId(), tag + ":points", tag + ":rank"),
                 Long.toString(event.memberId()), Integer.toString(event.points()),
-                Long.toString(remaining), Long.toString(Duration.ofDays(14).toSeconds()));
+                Long.toString(remaining), Long.toString(Duration.ofHours(1).toSeconds()));
     }
 
     public List<RankedMember> top(Week week, int n) {
@@ -217,7 +222,8 @@ public class WeeklyLeaderboard {
 ```
 
 - 週的 ID 用 ISO 週（`IsoFields.WEEK_BASED_YEAR`），不是日曆年：2026 年 12 月 28 日屬於 2026-W53，2027 年 1 月 1 日也是。用日曆年組出的週 ID 會在跨年那週分裂成兩個
-- 去重紀錄保存 14 天，足以涵蓋 Kafka 的重新投遞與重新處理
+- 去重紀錄只保存 1 小時：Kafka 的重新投遞（消費者當機、重新平衡）通常在幾分鐘內發生。每天 1,000 萬筆積分，保存 14 天會累積上億個 key、超過 10 GB，而且因為 hash tag 全部落在同一個節點，比排行榜本身還大。要重新處理更早的事件（例如重設 offset）時，不要重播事件，改為從帳本重建這一週
+- 事件亂序時（例如某一筆重試成功得比較晚），低位保留較晚的時間，和從帳本以 `MAX(occurred_at)` 重建的結果一致
 - 週榜在結算之後設定過期，並把前 100 名寫回資料庫保存
 
 ### 3. 好友排行

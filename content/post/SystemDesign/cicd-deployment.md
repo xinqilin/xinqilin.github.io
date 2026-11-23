@@ -222,14 +222,22 @@ public class FeatureFlags {
             return true;                         // 內部員工、測試帳號
         }
         // 同一位會員對同一個開關永遠落在同一個桶，不會在新舊行為之間來回切換
-        int bucket = Math.floorMod((flag + ":" + memberId).hashCode(), 100);
-        return bucket < config.rolloutPercent();
+        return bucketOf(flag + ":" + memberId) < config.rolloutPercent();
+    }
+
+    private static int bucketOf(String key) {
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(key.getBytes(StandardCharsets.UTF_8));
+            return Math.floorMod(ByteBuffer.wrap(digest).getInt(), 100);     // 取前 4 個位元組
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);                              // Java 平台規定一定要支援 SHA-256
+        }
     }
 }
 ```
 
 - 雜湊值包含開關名稱，不同開關的 5% 不會總是同一批會員
-- `String.hashCode()` 的演算法由 Java 規格定義，不同的 JVM 與版本算出來的值相同，分桶是穩定的
+- 用 SHA-256 而不是 `String.hashCode()`：兩者都穩定，但 `hashCode()` 的混合效果差，ID 連續的會員會落在相鄰的桶，不同開關選到的會員也只是互相平移。SHA-256 的輸出均勻，而且 Java 平台規定每個實作都必須支援
 - 開關的變更要有稽核紀錄：誰在什麼時間把哪個開關改成多少
 
 ### 3. 金絲雀與自動分析（Argo Rollouts）

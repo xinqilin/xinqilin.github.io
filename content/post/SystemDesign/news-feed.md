@@ -71,7 +71,7 @@ SELECT p.* FROM post p
 
 每個會員追蹤的名人通常只有幾位，讀取時多查幾次是可以接受的；而最昂貴的那幾次擴散完全消失了。
 
-再加上一個簡單的優化：**只擴散給活躍的會員**。1,000 萬會員裡，最近 30 天有登入的若只有 20%，擴散的寫入量就少了 80%。不活躍的會員回來時，用讀取時合併的方式重建時間軸。
+再加上一個簡單的優化：**只擴散給活躍的會員**。1,000 萬名月活躍會員裡，最近 7 天有登入的若只有一半，擴散的寫入量就少了一半。不活躍的會員回來時，用讀取時合併的方式重建時間軸。
 
 ### 時間軸存什麼、存多少
 
@@ -81,7 +81,7 @@ SELECT p.* FROM post p
 - 可見性要在讀取時重新檢查（後面說明）
 - 時間軸的記憶體用量小很多
 
-每個時間軸只保留最新的 300 則：會員很少往下捲超過幾十則，更舊的部分用讀取時合併取得。用 Redis 的 sorted set 存放時，200 萬個活躍會員、每人 300 則，記憶體大約在數十 GB 的量級（依 Redis 的內部編碼而定，粗估），需要一個 Redis Cluster。時間軸是**可以重建的快取**，遺失時從動態表與追蹤關係重新產生。
+每個時間軸只保留最新的 120 則：會員很少往下捲超過幾十則，更舊的部分用讀取時合併取得。上限刻意低於 Redis 的 `zset-max-listpack-entries`（預設 128）：在這個數量以內，sorted set 使用精簡的 listpack 編碼；超過就改用 skiplist，每個成員的記憶體多出好幾倍。200 萬個活躍會員、每人 120 則，粗估約 10 GB（依 Redis 的版本與成員長度而定），一個小型的 Redis Cluster 就夠了。時間軸是**可以重建的快取**，遺失時從動態表與追蹤關係重新產生。
 
 ### 分頁用游標，不用頁碼
 
@@ -122,7 +122,7 @@ flowchart LR
 | 決策 | 選擇 | 放棄的替代方案與原因 |
 |---|---|---|
 | 擴散策略 | 一般講者推、名人拉、只推給活躍會員 | 全部推：名人造成寫入尖峰；全部拉：讀取成本與延遲太高 |
-| 時間軸 | Redis sorted set，只存 ID 與時間，上限 300 則 | 存完整內容：記憶體大、編輯與刪除難以同步 |
+| 時間軸 | Redis sorted set，只存 ID 與時間，上限 120 則 | 存完整內容：記憶體大、編輯與刪除難以同步 |
 | 分頁 | 時間戳加 ID 的游標 | 頁碼：新動態插入造成重複與遺漏 |
 | 可見性 | 讀取時重新檢查 | 擴散時決定：之後的刪除、封鎖、權限變更都無法反映 |
 | 排序 | 依時間 | 依互動預測排序：需要候選產生與評分模型，第一版不需要 |
@@ -139,7 +139,7 @@ public class FanOutWorker {
 
     private static final int CELEBRITY_THRESHOLD = 10_000;
     private static final int BATCH = 1_000;
-    private static final int TIMELINE_CAP = 300;
+    private static final int TIMELINE_CAP = 120;
 
     private final JdbcClient jdbc;
     private final StringRedisTemplate redis;
@@ -160,7 +160,7 @@ public class FanOutWorker {
                             SELECT f.follower_id FROM follow f
                               JOIN member_activity a ON a.member_id = f.follower_id
                              WHERE f.followee_id = :author AND f.follower_id > :last
-                               AND a.last_seen_at > NOW() - INTERVAL 30 DAY
+                               AND a.last_seen_at > NOW() - INTERVAL 7 DAY
                              ORDER BY f.follower_id
                              LIMIT :batch
                             """)
@@ -186,7 +186,7 @@ public class FanOutWorker {
                 for (Long follower : followers) {
                     String key = "timeline:" + follower;
                     operations.opsForZSet().add(key, member, createdAtMillis);   // 重複加入結果相同
-                    operations.opsForZSet().removeRange(key, 0, -(TIMELINE_CAP + 1));   // 只保留最新的 300 則
+                    operations.opsForZSet().removeRange(key, 0, -(TIMELINE_CAP + 1));   // 只保留最新的 120 則
                 }
                 return null;
             }
