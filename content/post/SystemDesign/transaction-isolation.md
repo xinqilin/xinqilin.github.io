@@ -740,7 +740,7 @@ Facade 被呼叫時不在交易中；第 1 次嘗試讀到 `version=0`，在它�
 ### 資安相關
 
 - **競態條件本身就是漏洞**：優惠券重複使用、禮物卡餘額重複扣款、邀請獎勵重複領取，都是同一種「先檢查、再修改」的競態（limit overrun）。PortSwigger 在 2023 年發表的研究示範了讓數十個請求幾乎同時抵達伺服器的手法，攻擊者不需要碰運氣。rate limit 擋不住，因為這些請求都在限制之內；要在資料層用條件式 `UPDATE` 或唯一約束解決
-- **鎖可以被拿來癱瘓服務**：對熱點列做 `SELECT ... FOR UPDATE` 的 API，每個排隊等鎖的請求都佔著一條資料庫連線，最久等 50 秒。攻擊者只要持續送出少量請求，就能耗盡連線池，讓不相關的 API 一起掛掉。縮短等鎖時間（MySQL 可以針對連線 `SET SESSION innodb_lock_wait_timeout`，PostgreSQL 用 `lock_timeout`）、優先用條件式 `UPDATE`，並對這類 API 做 rate limit（Part 8 濫用防護）
+- **鎖可以被拿來癱瘓服務**：對熱點列做 `SELECT ... FOR UPDATE` 的 API，每個排隊等鎖的請求都佔著一條資料庫連線，最久等 50 秒。攻擊者只要持續送出少量請求，就能耗盡連線池，讓不相關的 API 一起掛掉。縮短等鎖時間（MySQL 可以針對連線 `SET SESSION innodb_lock_wait_timeout`，PostgreSQL 用 `lock_timeout`）、優先用條件式 `UPDATE`，並對這類 API 做 rate limit（[Part 8 濫用防護](/post/systemdesign/abuse-prevention/)）
 - **稽核紀錄跟著 rollback 一起消失**：把「登入失敗」「授權被拒」的稽核紀錄寫在業務交易裡，交易 rollback 時紀錄也不見了，攻擊的痕跡正好被抹掉。安全相關的稽核要寫在獨立的交易（`Propagation.REQUIRES_NEW`）或交易之外。注意 `REQUIRES_NEW` 會再拿一條連線，尖峰時每個請求同時佔兩條，連線池要算進去
 - **錯誤訊息洩漏 schema**：直接把資料庫例外的訊息回給前端，會帶出表名、約束名稱甚至 SQL。像 `RegistrationFacade` 一樣轉成業務結果，細節只寫在伺服器端的日誌
 

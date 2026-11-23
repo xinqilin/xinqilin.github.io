@@ -405,7 +405,7 @@ public class QnaWebSocketSecurityConfig {
 - **Cross-Site WebSocket Hijacking**：瀏覽器建立 WebSocket 時會自動帶上 cookie，而且不受 CORS 的預檢保護。惡意網站可以用使用者的登入身分連上你的 WebSocket，讀取即時提問、以使用者的名義送出訊息。伺服器必須檢查 `Origin`：Spring 預設只接受同源的請求，`setAllowedOrigins` 只列出自己的網域，不要用 `*`；再加上 Spring Security 對 CONNECT 的 CSRF 檢查
 - **Token 放在 URL 裡**：瀏覽器的 WebSocket 與 `EventSource` API 都無法設定自訂的 header，所以常見的做法是把 token 放在查詢字串。但 URL 會被寫進存取紀錄、代理的 log 與瀏覽器歷史紀錄。優先使用 cookie 加上來源檢查；必須用 token 時，可以在 STOMP 的 CONNECT 訊框帶上，或用一次性、幾十秒內有效的短效 token 換取連線
 - **只在連線時檢查一次權限**：長連線可能維持數小時。使用者登出、被移出講座、token 過期之後，已經訂閱的連線仍然持續收到訊息。權限被撤銷時要主動中斷相關的連線，或者定期重新驗證
-- **逐則訊息的授權**：每個 SUBSCRIBE 都要檢查訂閱者能不能看這個目的地，例如講者後台的 `/topic/speakers/7/registrations` 只有講者 7 能訂閱（和 REST API 的物件層級授權是同一個問題，Part 8 詳談）。最後用 `denyAll` 收尾，避免遺漏
+- **逐則訊息的授權**：每個 SUBSCRIBE 都要檢查訂閱者能不能看這個目的地，例如講者後台的 `/topic/speakers/7/registrations` 只有講者 7 能訂閱（和 REST API 的物件層級授權是同一個問題，[Part 8](/post/systemdesign/authorization-owasp-api-top10/) 詳談）。最後用 `denyAll` 收尾，避免遺漏
 - **儲存型 XSS 的放大**：一則惡意的提問會即時推送到兩萬個瀏覽器。前端顯示提問時一律當成純文字（`textContent`，而不是 `innerHTML`），伺服器端也要限制長度與內容
 - **連線耗盡攻擊**：攻擊者開大量連線但不讀取資料，佔住伺服器的連線與緩衝區。限制每個使用者與每個 IP 的連線數、訊息大小與送出頻率，並設定送出逾時與緩衝上限
 - **公開與私有的資料分開**：剩餘名額是公開資訊，可以不需要登入；講者的報名名單是個資，不要和公開的串流共用同一個端點或同一個 topic 命名空間

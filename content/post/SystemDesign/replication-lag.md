@@ -452,7 +452,7 @@ public class ConsistentReads {
 
 ### 資安相關
 
-- **權限與撤銷的檢查要讀 primary**：管理員停用帳號、撤銷講者權限、使用者改密碼後登出所有裝置，這些變更在 replica 上可能晚好幾秒才出現。權限檢查讀 replica，被撤銷的人在延遲期間仍然能通過檢查，這正是 Part 8 BOLA 篇要處理的授權問題。授權相關的讀取一律走 primary，或者要求 replica 已套用撤銷那筆交易
+- **權限與撤銷的檢查要讀 primary**：管理員停用帳號、撤銷講者權限、使用者改密碼後登出所有裝置，這些變更在 replica 上可能晚好幾秒才出現。權限檢查讀 replica，被撤銷的人在延遲期間仍然能通過檢查，這正是 [Part 8 BOLA 篇](/post/systemdesign/authorization-owasp-api-top10/)要處理的授權問題。授權相關的讀取一律走 primary，或者要求 replica 已套用撤銷那筆交易
 - **延遲會放大競態攻擊**：優惠券「是否已使用」從 replica 讀，攻擊者在延遲尖峰時連續送出兌換請求，每個請求都看到「未使用」。守住寫入的檢查必須在 primary 的寫入交易裡，用條件式 `UPDATE` 或唯一約束完成
 - **複寫通道也是資料外洩的路徑**：binlog 包含每一列的變更，個資也在裡面。複寫帳號只給 `REPLICATION SLAVE` 權限、複寫連線開啟 TLS、binlog 檔案加密並設定保存期限。給分析用的 replica 等於一份完整的正式資料，帳號與遮罩要另外管理
 - **用戶端帶來的 token 要驗證**：`ConsistentReads` 會檢查 token 的格式與長度，因為它會被放進 SQL 參數，交給 `GTID_SUBSET` 解析。存在伺服器端 session 更好，還能避免使用者偽造 token，讓所有讀取都打到 primary

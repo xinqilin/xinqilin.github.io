@@ -458,7 +458,7 @@ huge.png（91 bytes）：拒絕，宣稱 50,000 × 50,000 像素，完整解碼�
 
 - **使用者上傳的內容放在獨立網域**：瀏覽器在你的網域下開啟使用者上傳的 HTML 或 SVG，裡面的 JavaScript 就能讀到你網站的 cookie 與 DOM（stored XSS）。使用者內容用另一個網域提供（不能是共用 cookie 的子網域），回應加上 `Content-Disposition: attachment` 與 `X-Content-Type-Options: nosniff`
 - **檢查通過才開放**：上傳完成只代表檔案到了，要經過掃毒（例如 GuardDuty Malware Protection for S3 或 ClamAV）與格式檢查才轉成 `AVAILABLE`，這也是狀態機要有 `UPLOADED` 這一格的原因
-- **bucket 不公開，網址要短命**：2023 年 4 月起，新建的 bucket 預設開啟 Block Public Access，不要為了方便關掉它；公開內容走 CDN 並限制只有 CDN 能讀 bucket。presigned URL 會出現在瀏覽器歷史、日誌與 `Referer` 裡，有效期限越短越好。`complete`、`abort`、下載這些 API 也都要確認上傳紀錄屬於目前的使用者，否則就是 BOLA（Part 8）
+- **bucket 不公開，網址要短命**：2023 年 4 月起，新建的 bucket 預設開啟 Block Public Access，不要為了方便關掉它；公開內容走 CDN 並限制只有 CDN 能讀 bucket。presigned URL 會出現在瀏覽器歷史、日誌與 `Referer` 裡，有效期限越短越好。`complete`、`abort`、下載這些 API 也都要確認上傳紀錄屬於目前的使用者，否則就是 BOLA（[Part 8](/post/systemdesign/authorization-owasp-api-top10/)）
 
 ## 何時用／何時別用
 

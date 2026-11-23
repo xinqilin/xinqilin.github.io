@@ -522,8 +522,8 @@ Cassandra 的 `INSERT` 不會先檢查資料是否存在：主鍵不存在就新
 
 ### 資安相關
 
-- **刪除不等於抹除**：LSM 的 `DELETE` 只是寫一筆 tombstone，舊值仍在 SSTable 裡，要等 compaction、而且超過 `gc_grace_seconds` 才會真正丟掉；B+Tree 的刪除也是先標記、再由背景 purge 回收空間，原本的位元組不保證被覆寫。再加上 WAL、binlog、snapshot 與備份，使用者要求刪除個資時，資料其實還散落在很多地方。常見的做法是 crypto-shredding：每位使用者的個資用各自的金鑰加密，刪除時銷毀金鑰，所有副本就一起變成無法解讀的密文（金鑰管理在 Part 8）
-- **tombstone 可以被當成攻擊手段**：如果 API 允許使用者對一份清單無限次新增、移除，攻擊者重複操作就能在對應的 partition 堆出大量 tombstone。partition 是共享的（例如某個商品的留言列表），所有人都會讀不到；就算只是自己的 partition，大量 tombstone 也會讓處理查詢的節點承受 heap 壓力。對寫入做 rate limit（Part 8 濫用防護），並避免讓使用者操作直接對應到大量刪除
+- **刪除不等於抹除**：LSM 的 `DELETE` 只是寫一筆 tombstone，舊值仍在 SSTable 裡，要等 compaction、而且超過 `gc_grace_seconds` 才會真正丟掉；B+Tree 的刪除也是先標記、再由背景 purge 回收空間，原本的位元組不保證被覆寫。再加上 WAL、binlog、snapshot 與備份，使用者要求刪除個資時，資料其實還散落在很多地方。常見的做法是 crypto-shredding：每位使用者的個資用各自的金鑰加密，刪除時銷毀金鑰，所有副本就一起變成無法解讀的密文（金鑰管理在 [Part 8](/post/systemdesign/encryption-secrets/)）
+- **tombstone 可以被當成攻擊手段**：如果 API 允許使用者對一份清單無限次新增、移除，攻擊者重複操作就能在對應的 partition 堆出大量 tombstone。partition 是共享的（例如某個商品的留言列表），所有人都會讀不到；就算只是自己的 partition，大量 tombstone 也會讓處理查詢的節點承受 heap 壓力。對寫入做 rate limit（[Part 8 濫用防護](/post/systemdesign/abuse-prevention/)），並避免讓使用者操作直接對應到大量刪除
 - **資料檔就是一般檔案**：SSTable、snapshot 和備份都直接存在磁碟上，拿到檔案就能用工具讀出內容。磁碟要加密，備份與 snapshot 的存取權限要和資料庫本身一樣嚴格
 
 ## 何時用／何時別用

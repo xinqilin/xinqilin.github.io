@@ -362,13 +362,13 @@ Spring Boot 會自動把 `Instrumentation` bean 註冊到 GraphQL 引擎。
 
 ### 資安相關
 
-- **物件層授權（BOLA）**：`GET /v1/lectures/{id}/registrations` 只驗證了「有登入」，沒有驗證「這個講座是你的」，換個 ID 就能看到別人的報名名單。三種風格都一樣，每次存取物件都要檢查擁有權（Part 8 詳談）
+- **物件層授權（BOLA）**：`GET /v1/lectures/{id}/registrations` 只驗證了「有登入」，沒有驗證「這個講座是你的」，換個 ID 就能看到別人的報名名單。三種風格都一樣，每次存取物件都要檢查擁有權（[Part 8](/post/systemdesign/authorization-owasp-api-top10/) 詳談）
 - **Mass assignment**：直接把請求內容綁定到 entity，攻擊者多送一個 `"status": "APPROVED"` 或 `"role": "ADMIN"` 就被寫進資料庫。請求與回應一律使用專用的 DTO
 - **GraphQL 的查詢成本攻擊**：利用互相參照的型別（講座 → 講者 → 講者的講座 → …）組出很深的查詢，一個請求就能耗盡伺服器資源。要限制深度與複雜度，正式環境的公開 API 最好只接受 persisted queries
 - **GraphQL 的別名與批次繞過速率限制**：一個請求裡用別名呼叫同一個 mutation 一百次（例如嘗試一百組優惠碼），以「請求數」計算的速率限制只算一次。速率限制要以操作或欄位為單位計算
 - **GraphQL 的欄位授權**：授權要放在每個 resolver 或其呼叫的服務方法上（例如 `@PreAuthorize`），而不是只檢查進入點。用戶端可以從任何一個入口查詢走到敏感的欄位
 - **Introspection 與 gRPC reflection**：兩者都會公開完整的 API 結構，方便攻擊者找出隱藏的操作。對外的正式環境關閉；內部環境依需要開啟
-- **內部 gRPC 也要加密與驗證身分**：「在內網」不是信任的理由。服務之間使用 mTLS，伺服器端依呼叫方的身分授權（Part 8 的服務身分）
+- **內部 gRPC 也要加密與驗證身分**：「在內網」不是信任的理由。服務之間使用 mTLS，伺服器端依呼叫方的身分授權（[Part 8 的服務身分](/post/systemdesign/identity-propagation/)）
 - **錯誤訊息洩漏內部資訊**：stack trace、SQL 錯誤、內部主機名稱不要出現在回應裡，包括 GraphQL 的 `errors` 與 gRPC 的 status description
 
 ## 何時用／何時別用

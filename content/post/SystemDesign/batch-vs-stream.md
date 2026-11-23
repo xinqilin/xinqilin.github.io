@@ -8,7 +8,7 @@ categories: ["SystemDesign"]
 tags: ["System Design", "Batch Processing", "Stream Processing", "Spring Batch", "Kafka Streams", "Security"]
 ---
 
-> **System Design 系列** Part 7-4｜上一篇：[Saga 與 Outbox](/post/systemdesign/saga-outbox/)｜下一篇：Part 8 安全（撰寫中）｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
+> **System Design 系列** Part 7-4｜上一篇：[Saga 與 Outbox](/post/systemdesign/saga-outbox/)｜下一篇：[身分驗證](/post/systemdesign/authentication-session-token-oidc/)｜[系列地圖](/post/systemdesign/system-design-thinking/#系列地圖)
 
 ## 情境與問題
 

@@ -361,7 +361,7 @@ Tomcat 只信任 `server.tomcat.remoteip.internal-proxies` 範圍內（預設是
 
 ### 資安相關
 
-- **只有 client 到 LB 這段有加密**：TLS 在 LB 終止後，LB 到 backend 是明文。在同一個私有網路內通常可以接受，但有合規要求或採零信任架構時，要重新加密到 backend（Part 8）
+- **只有 client 到 LB 這段有加密**：TLS 在 LB 終止後，LB 到 backend 是明文。在同一個私有網路內通常可以接受，但有合規要求或採零信任架構時，要重新加密到 backend（[Part 8](/post/systemdesign/encryption-secrets/)）
 - **WAF 只能放在 L7**：L4 看不到 HTTP 內容，SQL injection、路徑探測這類規則只能在 L7 的 LB 或 CDN 上執行
 - **管理端點跟著對外開放**：LB 把所有路徑轉給 backend，`/actuator` 也就一起對外了。把 Actuator 放到獨立的 `management.server.port`，LB 只轉送應用程式的 port，health check 另外指定管理 port，走內部網路
 - **自己解析 `X-Forwarded-For`**：取最左邊的值當 client IP，等於讓 client 自己決定 IP，依 IP 的限流與稽核全部可以被繞過（見上面 Java 落地第 5 點）

@@ -540,7 +540,7 @@ public class ProductCacheInvalidator {
 
 ### 資安相關
 
-- **快取命中就跳過授權，等於 BOLA**：訂單查詢原本靠 `WHERE id = ? AND member_id = ?` 確保只能查自己的訂單；加上 `@Cacheable(key = "#orderId")` 之後，A 查過的訂單被快取，B 用同一個 orderId 就直接從快取拿到 A 的資料，SQL 裡的擁有權條件根本沒有執行。原則是**快取資料，不快取授權結果**：授權檢查放在讀快取之後，或者把使用者身分放進 cache key。BOLA（Broken Object Level Authorization）是 OWASP API Security Top 10 2023 的第一名，Part 8 會專文討論
+- **快取命中就跳過授權，等於 BOLA**：訂單查詢原本靠 `WHERE id = ? AND member_id = ?` 確保只能查自己的訂單；加上 `@Cacheable(key = "#orderId")` 之後，A 查過的訂單被快取，B 用同一個 orderId 就直接從快取拿到 A 的資料，SQL 裡的擁有權條件根本沒有執行。原則是**快取資料，不快取授權結果**：授權檢查放在讀快取之後，或者把使用者身分放進 cache key。BOLA（Broken Object Level Authorization）是 OWASP API Security Top 10 2023 的第一名，[Part 8 會專文討論](/post/systemdesign/authorization-owasp-api-top10/)
 - **多租戶的 key 沒有帶 tenant**：`report:2026-11` 被兩個租戶共用，資料直接跨租戶外洩。key 一律以 tenant 開頭
 - **Redis 沒有防護**：Redis 預設不啟用 TLS，而且常為了方便關掉 protected mode 或不設密碼。要放在內網、開 ACL 與 TLS。此外，快取如果用 Java Serialization，能寫入 Redis 的人就能塞進惡意的序列化資料，在應用程式反序列化時觸發 gadget chain；改用指定型別的 JSON，就沒有這個攻擊面
 - **快取敏感資料**：token、個資放進快取，就多了一份要保護的副本。不得不放時，縮短 TTL，並在登出、權限變更時主動刪除

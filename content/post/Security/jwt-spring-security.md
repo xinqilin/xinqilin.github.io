@@ -1124,6 +1124,8 @@ class ErrorResponse {
 
 ### 1. 前端整合
 
+> **安全提醒**：以下範例為了示範流程，把 access token 與 refresh token 存在 `localStorage`。頁面上任何一段被注入的 JavaScript（XSS）都能讀取並帶走它們。處理個資或金流的網頁應用，建議改用 Backend for Frontend（BFF）：token 只留在後端，瀏覽器只持有 HttpOnly 的 session cookie。詳見 [System Design 系列 8-1 身分驗證](/post/systemdesign/authentication-session-token-oidc/)的「瀏覽器應用：token 不要進瀏覽器」。
+
 ```javascript
 // JavaScript 前端範例
 class AuthService {

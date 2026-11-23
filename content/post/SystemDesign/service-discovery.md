@@ -123,7 +123,7 @@ sequenceDiagram
 | 虛擬機或混合環境 | Consul 這類註冊中心，或雲端負載平衡器的目標群組 |
 | 既有的 Spring Cloud Netflix 系統 | Eureka 加 Spring Cloud LoadBalancer 仍然可用；遷移到 Kubernetes 時，通常改用平台內建的機制 |
 
-講座平台的選擇：部署在 Kubernetes，報名服務用 Service 的 DNS 名稱呼叫付款服務；即時互動服務之間的 gRPC 呼叫使用 headless Service 與 round robin。暫時不導入 service mesh，服務間的 mTLS 留到 Part 8 再評估。
+講座平台的選擇：部署在 Kubernetes，報名服務用 Service 的 DNS 名稱呼叫付款服務；即時互動服務之間的 gRPC 呼叫使用 headless Service 與 round robin。暫時不導入 service mesh，服務間的 mTLS 留到 [Part 8](/post/systemdesign/identity-propagation/) 再評估。
 
 ## Java 落地
 
@@ -264,7 +264,7 @@ public class PaymentClient {
 ### 資安相關
 
 - **註冊表被冒用**：如果任何程式都能向註冊中心登記實例，攻擊者只要在內部網路取得一台機器，就能把自己登記成 `payment-service`，接收報名服務送出的付款請求與其中的資料。註冊中心要求驗證身分與授權（例如 Consul 的 ACL），Kubernetes 上要限制誰能建立或修改 Service 與 EndpointSlice。Kubernetes 的 CVE-2020-8554 就是一個例子：能建立 Service 並設定 external IP 的使用者，可以攔截叢集內送往該 IP 的流量
-- **名稱不等於身分**：服務發現回傳的是位址，不是身分證明。即使註冊表或 DNS 被竄改，只要呼叫端用 mTLS 驗證對方的憑證（例如 SPIFFE 格式的服務身分），連到錯誤的實例也會在 TLS 交握時失敗。服務間的身分驗證在 Part 8 詳談
+- **名稱不等於身分**：服務發現回傳的是位址，不是身分證明。即使註冊表或 DNS 被竄改，只要呼叫端用 mTLS 驗證對方的憑證（例如 SPIFFE 格式的服務身分），連到錯誤的實例也會在 TLS 交握時失敗。服務間的身分驗證在 [Part 8](/post/systemdesign/identity-propagation/) 詳談
 - **用網路政策限制誰能呼叫誰**：預設情況下，Kubernetes 叢集內任何 Pod 都能連到任何 Pod。用 NetworkPolicy 限定只有報名服務能連到付款服務，被入侵的推薦服務就無法直接呼叫付款 API：
 
 ```yaml
@@ -290,7 +290,7 @@ spec:
 NetworkPolicy 需要叢集的網路外掛支援才會生效，套用後要實際驗證。
 
 - **註冊表洩漏內部拓撲**：Eureka 的管理頁面、Consul 的 UI 列出了所有服務的名稱、位址與中繼資料，對外開放等於給攻擊者一張地圖。這些介面只允許內部存取並要求驗證；也不要把憑證放進實例的中繼資料
-- **SSRF 會利用內部名稱**：如果應用程式會依使用者提供的 URL 發出請求，攻擊者可以填入 `http://payment.lectures.svc.cluster.local/...`，讓你的伺服器替他呼叫內部服務。對外的請求要限制目的地，不能解析到內部的名稱與位址（Part 8）
+- **SSRF 會利用內部名稱**：如果應用程式會依使用者提供的 URL 發出請求，攻擊者可以填入 `http://payment.lectures.svc.cluster.local/...`，讓你的伺服器替他呼叫內部服務。對外的請求要限制目的地，不能解析到內部的名稱與位址（[Part 8 的 SSRF](/post/systemdesign/authorization-owasp-api-top10/)）
 
 ## 何時用／何時別用
 

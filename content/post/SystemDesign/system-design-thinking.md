@@ -33,7 +33,7 @@ tags: ["System Design", "Architecture", "Trade-off", "HLD", "LLD", "ADR"]
 | 5 服務通訊 | 服務之間怎麼說話 | [REST、gRPC 與 GraphQL](/post/systemdesign/rest-grpc-graphql/)、[Message Queue](/post/systemdesign/message-queue/)、[Pub/Sub 與投遞語意](/post/systemdesign/pubsub-delivery-semantics/)、[冪等性與 Idempotency Key](/post/systemdesign/idempotency-key/)、[即時更新](/post/systemdesign/realtime-updates/) |
 | 6 可靠性 | 壞掉時怎麼辦 | [備援、故障轉移與 DR](/post/systemdesign/redundancy-failover-dr/)、[Timeout/Retry/Backoff 與 Jitter](/post/systemdesign/timeout-retry-backoff/)、[Circuit Breaker 與 Bulkhead](/post/systemdesign/circuit-breaker-bulkhead/)、[Rate Limiting](/post/systemdesign/rate-limiting/)、[Observability](/post/systemdesign/observability/) |
 | 7 架構演進 | 系統和團隊一起長大 | [單體 vs 微服務](/post/systemdesign/monolith-vs-microservices/)、[Service Discovery](/post/systemdesign/service-discovery/)、[Saga 與 Outbox](/post/systemdesign/saga-outbox/)、[Batch 與 Stream](/post/systemdesign/batch-vs-stream/) |
-| 8 安全 | 從系統設計角度看安全 | 身分驗證：Session、Token 與 OAuth 2.0／OIDC、授權模型與 OWASP API Top 10、BOLA 穿過 BFF 之後：微服務的身分傳遞、傳輸與資料加密及 Secrets 管理、濫用防護（撰寫中） |
+| 8 安全 | 從系統設計角度看安全 | [身分驗證：Session、Token 與 OAuth 2.0／OIDC](/post/systemdesign/authentication-session-token-oidc/)、[授權模型與 OWASP API Top 10](/post/systemdesign/authorization-owasp-api-top10/)、[BOLA 穿過 BFF 之後：微服務的身分傳遞](/post/systemdesign/identity-propagation/)、[傳輸與資料加密及 Secrets 管理](/post/systemdesign/encryption-secrets/)、[濫用防護](/post/systemdesign/abuse-prevention/) |
 | 9 實戰題 | 把前面的元件組起來 | URL Shortener、News Feed、聊天系統、秒殺搶票、通知系統、排行榜、分散式排程（撰寫中） |
 | 10 交付 | 安全地把變更送上線 | 大規模系統的測試、CI/CD 與部署策略（撰寫中） |
 
@@ -106,12 +106,12 @@ HLD 畫出資料流之後，順著每一條資料流跨過的**信任邊界**（
 
 | 威脅 | 要問的問題 | 報名系統的例子 | 對策（系列中的位置） |
 |---|---|---|---|
-| Spoofing 冒充 | 誰能假裝成別人？ | 盜用帳號替別人報名 | 身分驗證（Part 8） |
-| Tampering 竄改 | 誰能改掉傳輸中或儲存的資料？ | 把請求裡的 memberId 改成別人的，幫他取消報名 | 身分只從驗證過的 token 取，不信任請求參數（Part 8） |
+| Spoofing 冒充 | 誰能假裝成別人？ | 盜用帳號替別人報名 | 身分驗證（[Part 8](/post/systemdesign/authentication-session-token-oidc/)） |
+| Tampering 竄改 | 誰能改掉傳輸中或儲存的資料？ | 把請求裡的 memberId 改成別人的，幫他取消報名 | 身分只從驗證過的 token 取，不信任請求參數（[Part 8](/post/systemdesign/authorization-owasp-api-top10/)） |
 | Repudiation 否認 | 事後能證明誰做了什麼嗎？ | 使用者堅稱自己沒有取消 | 稽核紀錄（[Part 6](/post/systemdesign/observability/)） |
-| Information disclosure 洩漏 | 誰能看到不該看的資料？ | 用遞增的報名編號，逐一查出別人的報名資料 | 物件層授權（Part 8） |
-| Denial of service 阻斷 | 誰能讓服務對別人不可用？ | 機器人在開放瞬間搶光名額 | 限流、驗證碼（[Part 6](/post/systemdesign/rate-limiting/)、Part 8） |
-| Elevation of privilege 提權 | 誰能做超出權限的事？ | 一般會員呼叫管理員的「匯出名單」API | 功能層授權（Part 8） |
+| Information disclosure 洩漏 | 誰能看到不該看的資料？ | 用遞增的報名編號，逐一查出別人的報名資料 | 物件層授權（[Part 8](/post/systemdesign/authorization-owasp-api-top10/)） |
+| Denial of service 阻斷 | 誰能讓服務對別人不可用？ | 機器人在開放瞬間搶光名額 | 限流、驗證碼（[Part 6](/post/systemdesign/rate-limiting/)、[Part 8](/post/systemdesign/abuse-prevention/)） |
+| Elevation of privilege 提權 | 誰能做超出權限的事？ | 一般會員呼叫管理員的「匯出名單」API | 功能層授權（[Part 8](/post/systemdesign/authorization-owasp-api-top10/)） |
 
 不需要一開始就寫成完整報告。目的是在架構還容易改的時候，把「誰可以碰什麼資料」列成需求，而不是上線後才補。
 
