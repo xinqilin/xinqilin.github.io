@@ -1,0 +1,114 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Comments from '../../../components/Comments.astro';
+import {
+  categoryOf, formatDate, getPosts, postPath, readingMinutes, sectionPath, sidebarFor, tagPath, type Post,
+} from '../../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => {
+    const [category, slug] = post.id.split('/');
+    return { params: { category, slug }, props: { post } };
+  });
+}
+
+const { post } = Astro.props as { post: Post };
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2);
+const side = await sidebarFor(post);
+const flat = side.groups.length === 1;
+const current = side.groups.find((g) => g.open);
+const at = side.order.indexOf(post);
+const prev = at > 0 ? side.order[at - 1] : undefined;
+const next = at >= 0 && at < side.order.length - 1 ? side.order[at + 1] : undefined;
+const hasMermaid = (post.body ?? '').includes('```mermaid');
+---
+<Base title={post.data.title} description={post.data.description} type="article" nav="posts" mermaid={hasMermaid}>
+  <main class="doc">
+    <nav class="doc-side" aria-label={side.title}>
+      <p class="side-title">{side.title}</p>
+      {
+        flat ? (
+          <ol class="side-list side-flat">
+            {side.order.map((p) => <li><a href={postPath(p)} aria-current={p === post ? 'page' : undefined}>{p.data.title}</a></li>)}
+          </ol>
+        ) : (
+          <ol>
+            {side.groups.map((g) => (
+              <li>
+                <details class="side-part" open={g.open}>
+                  <summary><span>{g.label}</span><b>{g.posts.length}</b></summary>
+                  <ol class="side-list">
+                    {g.posts.map((p) => <li><a href={postPath(p)} aria-current={p === post ? 'page' : undefined}>{p.data.title}</a></li>)}
+                  </ol>
+                </details>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </nav>
+
+    <article class="article">
+      <header class="article-head">
+        <div class="kicker">
+          <a class="pill" href={sectionPath(categoryOf(post))}>{categoryOf(post)}</a>
+          {!flat && current && <span>{current.label}</span>}
+        </div>
+        <h1>{post.data.title}</h1>
+        <div class="meta">
+          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          {post.data.author && <span>{post.data.author}</span>}
+          <span>約 {readingMinutes(post.body)} 分鐘閱讀</span>
+        </div>
+        <div class="tags">{post.data.tags.map((t) => <a href={tagPath(t)}>{t}</a>)}</div>
+      </header>
+
+      <div class="doc-inline">
+        {
+          current && (
+            <details class="inline-side">
+              <summary>{flat ? side.title : `${side.title} · ${current.label}`}（第 {current.posts.indexOf(post) + 1} 篇，共 {current.posts.length} 篇）</summary>
+              <ol>
+                {current.posts.map((p) => <li><a href={postPath(p)} aria-current={p === post ? 'page' : undefined}>{p.data.title}</a></li>)}
+              </ol>
+            </details>
+          )
+        }
+        {
+          toc.length > 0 && (
+            <details class="inline-toc">
+              <summary>本篇目錄</summary>
+              <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+            </details>
+          )
+        }
+      </div>
+
+      <div class="prose"><Content /></div>
+
+      {
+        (prev || next) && (
+          <nav class="post-nav" aria-label="上一篇與下一篇">
+            {prev && <a class="prev" href={postPath(prev)}><small>上一篇</small><span>{prev.data.title}</span></a>}
+            {next && <a class="next" href={postPath(next)}><small>下一篇</small><span>{next.data.title}</span></a>}
+          </nav>
+        )
+      }
+      {post.data.comments && <Comments />}
+    </article>
+
+    <aside class="doc-toc" aria-label="本篇目錄">
+      {
+        toc.length > 0 && (
+          <>
+            <p class="side-title">本篇目錄</p>
+            <ol>{toc.map((h) => <li><a href={`#${h.slug}`} data-id={h.slug}>{h.text}</a></li>)}</ol>
+          </>
+        )
+      }
+    </aside>
+  </main>
+</Base>

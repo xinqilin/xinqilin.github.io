@@ -1,0 +1,16 @@
+---
+import { categoryOf, formatDate, postPath, type Post } from '../lib/site';
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+---
+<a class="card" href={postPath(post)}>
+  <h3>{post.data.title}</h3>
+  <p>{post.data.description}</p>
+  <div class="card-meta">
+    <span>{categoryOf(post)}</span>
+    <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+    <span>{post.data.tags.slice(0, 3).join(' · ')}</span>
+  </div>
+</a>

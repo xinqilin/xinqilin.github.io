@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import ProfileCard from '../components/ProfileCard.astro';
+import { getPosts, getSeries, groupByCategory, postPath, sectionPath } from '../lib/site';
+
+const posts = await getPosts();
+const recent = posts.slice(0, 6);
+const series = await getSeries();
+const seriesTotal = series.reduce((n, part) => n + part.posts.length, 0);
+const sections = new Map((await getCollection('section')).map((s) => [s.id, s.data.description ?? '']));
+const categories = [...groupByCategory(posts)].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
+---
+<Base nav="home">
+  <main class="split">
+    <ProfileCard aboutLink />
+    <div class="split-main">
+      <section class="block">
+        <h2>Recent Writing <a href="/posts/">All posts &rarr;</a></h2>
+        <div class="cards cols">{recent.map((post) => <PostCard post={post} />)}</div>
+      </section>
+
+      <section class="block">
+        <h2>System Design 系列 <small>{series.length} 個部分 · {seriesTotal} 篇</small></h2>
+        <div class="tiles">
+          {
+            series.map((part) => (
+              <a class="tile" href={part.posts[0] ? postPath(part.posts[0]) : sectionPath('SystemDesign')}>
+                <small>{part.label.split(' ').slice(0, 2).join(' ').toUpperCase()}</small>
+                <b>{part.label.split(' ').slice(2).join(' ')}</b>
+                <p>{part.posts.length} 篇</p>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>分類 <a href="/categories/">All categories &rarr;</a></h2>
+        <div class="tiles">
+          {
+            categories.map(([name, list]) => (
+              <a class="tile" href={sectionPath(name)}>
+                <div class="tile-top"><b>{name}</b><span>{list.length}</span></div>
+                <p class="clamp">{sections.get(name.toLowerCase())}</p>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+</Base>

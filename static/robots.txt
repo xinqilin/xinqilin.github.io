@@ -48,4 +48,4 @@ Disallow: /
 Crawl-delay: 1
 
 # Sitemap 位置
-Sitemap: https://xinqilin.github.io/sitemap.xml
+Sitemap: https://bill-lin.dev/sitemap.xml

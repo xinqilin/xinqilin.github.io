@@ -1,0 +1,13 @@
+---
+import ListPage from '../../../components/ListPage.astro';
+import { getPosts, groupByCategory, type Post } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  return [...groupByCategory(await getPosts())].map(([name, posts]) => ({
+    params: { category: name.toLowerCase() },
+    props: { name, posts },
+  }));
+}
+const { name, posts } = Astro.props as { name: string; posts: Post[] };
+---
+<ListPage title={name} kicker="Category" description={`${posts.length} 篇文章`} posts={posts} nav="categories" />

@@ -1,0 +1,36 @@
+---
+// Redirect pages for old URLs listed in front-matter `aliases`.
+// Lower-cased (GitHub Pages is case-sensitive and the old upper-case URLs were already 404),
+// and skipped when the alias equals a real page.
+import { getPosts, postPath } from '../lib/site';
+import { pagePaths } from '../lib/routes';
+
+export async function getStaticPaths() {
+  const taken = new Set(await pagePaths());
+  const seen = new Map<string, string>();
+  for (const post of await getPosts()) {
+    for (const raw of post.data.aliases) {
+      const path = `/${raw.toLowerCase().replace(/^\/+|\/+$/g, '')}/`;
+      if (taken.has(path)) continue;
+      const target = postPath(post);
+      const prior = seen.get(path);
+      if (prior && prior !== target) throw new Error(`alias ${path} points to both ${prior} and ${target}`);
+      seen.set(path, target);
+    }
+  }
+  return [...seen].map(([path, target]) => ({ params: { alias: path.slice(1, -1) }, props: { target } }));
+}
+
+const target = new URL(Astro.props.target as string, Astro.site).href;
+---
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="utf-8" />
+    <title>{target}</title>
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+  </head>
+  <body><a href={target}>{target}</a></body>
+</html>

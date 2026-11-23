@@ -1,0 +1,62 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProfileCard from '../../components/ProfileCard.astro';
+import { formatSpan, JOBS, monthsOf, period, totalYears } from '../../lib/career';
+
+const about = await getEntry('page', 'about');
+if (!about) throw new Error('content/about.md not found');
+const { Content } = await render(about);
+---
+<Base title="About Bill Lin" description="Bill Lin，台北的資深後端工程師，專注 Java / Spring 與帳務金流系統；這裡整理工作經歷、技能、證照，以及這個技術筆記網站的寫作目標。" nav="me">
+  <main class="split">
+    <ProfileCard />
+    <div class="split-main">
+      <section class="block">
+        <h2>Experience <small>{totalYears()}+ years · Java backend</small></h2>
+        <ol class="exp">
+          {
+            JOBS.map((job) => (
+              <li class:list={{ 'is-now': !job.end }}>
+                <div class="exp-top"><b>{job.role}</b><span>{period(job)} · {formatSpan(monthsOf(job))}</span></div>
+                <div class="exp-co">{job.company} · {job.place}</div>
+                <ul>{job.bullets.map((b) => <li set:html={b} />)}</ul>
+                <div class="chips">{job.chips.map((c) => <span>{c}</span>)}</div>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="note">Last updated 2026-04-28 · <a href="https://www.linkedin.com/in/bill-lin-developer/" rel="noopener">Full CV on LinkedIn</a></p>
+      </section>
+
+      <section class="block">
+        <h2>Skills</h2>
+        <div class="skills">
+          <div><h3>Languages</h3><div class="chips"><span>Java</span><span>Kotlin</span><span>TypeScript</span></div><p class="aside">Exploring: Python · Go</p></div>
+          <div><h3>Backend</h3><div class="chips"><span>Spring Boot</span><span>JPA / Hibernate</span><span>MySQL</span><span>Redis</span></div></div>
+          <div><h3>Frontend (light)</h3><div class="chips"><span>Vue.js</span><span>React</span></div></div>
+          <div><h3>Cloud / Tools</h3><div class="chips"><span>AWS</span><span>Docker</span><span>GraalVM</span><span>Git</span></div></div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Certifications</h2>
+        <h3 class="sub">Industry Certifications</h3>
+        <div class="certs">
+          <div class="cert"><i aria-hidden="true">O</i><div><b>Oracle Certified Professional, Java SE 6 Programmer</b><span>Oracle · 2016/06</span></div></div>
+          <div class="cert"><i aria-hidden="true">ERP</i><div><b>Planner of Enterprise Resource Planning</b><span>ERP Certification</span></div></div>
+        </div>
+        <h3 class="sub">Online Courses</h3>
+        <div class="certs">
+          <div class="cert"><i aria-hidden="true">A</i><div><b>Certificate of Completion: Claude 101</b><span>Anthropic · 2026/03</span></div></div>
+          <div class="cert"><i aria-hidden="true">A</i><div><b>Claude Code in Action</b><span>Anthropic · 2026/01</span></div></div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>{about.data.title}</h2>
+        <div class="prose"><Content /></div>
+      </section>
+    </div>
+  </main>
+</Base>

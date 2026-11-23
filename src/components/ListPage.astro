@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from './PostCard.astro';
+import type { Nav, Post } from '../lib/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  kicker?: string;
+  posts?: Post[];
+  nav?: Nav;
+}
+const { title, description, kicker, posts = [], nav } = Astro.props;
+---
+<Base title={title} description={description} nav={nav}>
+  <main class="page">
+    <header class="page-head">
+      {kicker && <div class="kicker">{kicker}</div>}
+      <h1>{title}</h1>
+      {description && <p>{description}</p>}
+    </header>
+    <slot />
+    {posts.length > 0 && <div class="cards">{posts.map((post) => <PostCard post={post} />)}</div>}
+  </main>
+</Base>

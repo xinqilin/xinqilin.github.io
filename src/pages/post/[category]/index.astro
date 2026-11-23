@@ -1,0 +1,27 @@
+---
+import { render } from 'astro:content';
+import ListPage from '../../../components/ListPage.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { getSections, getSeries, SERIES_CATEGORY } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  return (await getSections()).map((s) => ({ params: { category: s.id }, props: s }));
+}
+
+const { name, posts, section } = Astro.props as Awaited<ReturnType<typeof getSections>>[number];
+const Body = section ? (await render(section)).Content : undefined;
+const parts = name === SERIES_CATEGORY ? await getSeries() : [];
+const inSeries = new Set(parts.flatMap((p) => p.posts));
+const rest = parts.length ? posts.filter((p) => !inSeries.has(p)) : posts;
+---
+<ListPage title={section?.data.title ?? name} description={section?.data.description} kicker={`${posts.length} 篇`} posts={rest} nav="posts">
+  {Body && <div class="prose"><Body /></div>}
+  {
+    parts.map((part) => (
+      <section class="block">
+        <h2>{part.label} <small>{part.posts.length} 篇</small></h2>
+        <div class="cards">{part.posts.map((post) => <PostCard post={post} />)}</div>
+      </section>
+    ))
+  }
+</ListPage>

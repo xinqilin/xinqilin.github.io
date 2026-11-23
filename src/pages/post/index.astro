@@ -1,0 +1,7 @@
+---
+import ListPage from '../../components/ListPage.astro';
+import { getPosts } from '../../lib/site';
+
+const posts = await getPosts();
+---
+<ListPage title="Post" description={`${posts.length} 篇文章，依日期由新到舊`} posts={posts} nav="posts" />

@@ -1,5 +1,5 @@
 ---
-title: "關於 Bill.Lin's Notes"
+title: "About This Site"
 author: Bill.Lin
 date: 2025-07-13T10:00:00+08:00
 draft: false
@@ -7,65 +7,15 @@ type: "page"
 showToc: false
 ---
 
-## 👋 歡迎來到 Bill.Lin's Notes
+Bill.Lin's Notes is where I keep my engineering notes and share what I learn: problems I run into while building software, how I solved them, and how I understand and apply the technologies involved.
 
-這裡是我的技術學習筆記和心得分享空間。主要記錄程式開發過程中遇到的問題、解決方案，以及對各種技術的理解和實踐經驗。
+What I write for:
 
-## 📚 主要內容
+1. **Learning in the open**: turning what I learn into notes, so it sticks
+2. **Sharing real-world experience**: problems from actual projects, and the fixes that worked
+3. **Building a body of knowledge**: connecting topics over time into a coherent whole
+4. **Helping others learn**: hoping these notes save another developer some time
 
-### 🧮 演算法與資料結構
-- 經典演算法實作與分析
-- LeetCode 解題思路與技巧
-- 資料結構的應用場景
+Thanks to the colleagues, friends and open-source communities who helped me along the way, and especially to the bloggers and course authors who share their knowledge so generously.
 
-### 💻 後端開發
-- **Java**: 語言特性、集合框架、並發程式設計
-- **Kotlin**: 語法糖、協程、與 Java 互操作
-- **Spring**: IoC/DI、AOP、MVC、Security、Boot
-
-### 🏗️ 架構設計
-- **設計模式**: GoF 23 種設計模式的理論與實踐
-- **SOLID 原則**: 物件導向設計的五大原則
-- **分散式系統**: 微服務、訊息佇列、分散式鎖
-
-### 🐳 DevOps
-- **Docker**: 容器化部署與最佳實踐
-- **CI/CD**: 自動化建構與部署流程
-- **監控**: 應用效能監控與日誌管理
-
-### 🛠️ 開發工具
-- **Linux**: 常用指令與腳本編寫
-- **Git**: 版本控制與協作工作流
-- **Hugo**: 靜態網站生成器的使用心得
-
-## 🎯 寫作目標
-
-1. **記錄學習過程**: 將學習到的知識點整理成筆記，加深理解
-2. **分享實踐經驗**: 分享在實際專案中遇到的問題和解決方案
-3. **建立知識體系**: 透過持續寫作，建立完整的技術知識架構
-4. **幫助他人學習**: 希望這些筆記能對其他開發者有所幫助
-
-## 📖 文章特色
-
-- **理論與實踐並重**: 不僅說明原理，更著重實際應用
-- **程式碼範例豐富**: 提供完整可執行的程式碼示例
-- **循序漸進**: 從基礎概念到進階應用，逐步深入
-- **持續更新**: 根據新的學習心得和技術發展持續更新內容
-
-## 🤝 聯絡方式
-
-如果您對文章內容有任何問題或建議，歡迎透過以下方式聯絡：
-
-- **GitHub**: [xinqilin](https://github.com/xinqilin)
-- **LinkedIn**: [Bill Lin](https://www.linkedin.com/in/bill-lin-developer/)
-- **Email**: [zzx123bill@gmail.com](mailto:zzx123bill@gmail.com)
-
-## 🙏 致謝
-
-感謝所有在技術學習路上給予幫助的同事、朋友和開源社群。特別感謝那些無私分享技術知識的部落格作者和教程創作者，您們的分享讓我受益良多。
-
----
-
-*「學而時習之，不亦說乎」- 論語*
-
-希望這個小小的技術筆記空間，能成為知識分享和交流的平台。讓我們一起在技術的海洋中探索和成長！
+*"To learn, and to practice what you have learned as time goes on: is that not a joy?" — Confucius, The Analects*

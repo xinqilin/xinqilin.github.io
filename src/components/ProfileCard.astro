@@ -1,0 +1,41 @@
+---
+// Left-hand profile card shared by the home page and /about/.
+import Avatar from './Avatar.astro';
+import { totalYears } from '../lib/career';
+
+interface Props {
+  aboutLink?: boolean;
+}
+const { aboutLink = false } = Astro.props;
+---
+<section class="profile" aria-label="個人資料">
+  <div class="profile-head">
+    <Avatar size={104} />
+    <div>
+      <h1>Bill Lin</h1>
+      <p>Senior Backend Engineer</p>
+    </div>
+  </div>
+  <ul class="facts">
+    <li>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+      Taipei, Taiwan
+    </li>
+    <li>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+      {totalYears()}+ years · Java backend
+    </li>
+  </ul>
+  <ul class="highlights">
+    <li>Backend engineer on Java&nbsp;/&nbsp;Spring, mostly billing &amp; payment systems</li>
+    <li>Cross-trained on Vue&nbsp;/&nbsp;React and Kotlin for Android</li>
+    <li>The frontend background helps me ship full-stack, but I focus on the server side</li>
+    <li>This site is where I keep my engineering notes</li>
+  </ul>
+  <div class="links">
+    <a href="https://github.com/xinqilin" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/bill-lin-developer/" rel="noopener">LinkedIn</a>
+    <a href="mailto:zzx123bill@gmail.com">Email</a>
+    {aboutLink && <a class="more" href="/about/">About me &rarr;</a>}
+  </div>
+</section>

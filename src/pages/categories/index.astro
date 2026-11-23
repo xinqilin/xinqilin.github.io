@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import ListPage from '../../components/ListPage.astro';
+import { categoryPath, getPosts, groupByCategory } from '../../lib/site';
+
+const sections = new Map((await getCollection('section')).map((s) => [s.id, s.data.description ?? '']));
+const categories = [...groupByCategory(await getPosts())].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
+---
+<ListPage title="Categories" description={`${categories.length} 個分類`} nav="categories">
+  <div class="tiles">
+    {
+      categories.map(([name, list]) => (
+        <a class="tile" href={categoryPath(name)}>
+          <div class="tile-top"><b>{name}</b><span>{list.length}</span></div>
+          <p class="clamp">{sections.get(name.toLowerCase())}</p>
+        </a>
+      ))
+    }
+  </div>
+</ListPage>

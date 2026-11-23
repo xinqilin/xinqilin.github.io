@@ -1,0 +1,17 @@
+---
+import ListPage from '../../components/ListPage.astro';
+import { encodePath, getPosts, groupByTag } from '../../lib/site';
+
+const tags = [...groupByTag(await getPosts())].sort((a, b) => b[1].posts.length - a[1].posts.length || a[1].name.localeCompare(b[1].name));
+---
+<ListPage title="Tags" description={`${tags.length} 個標籤`}>
+  <div class="tag-cloud">
+    {
+      tags.map(([slug, t]) => (
+        <a href={encodePath(`/tags/${slug}/`)} class={t.posts.length >= 5 ? 't-hot' : undefined}>
+          {t.name}<span>{t.posts.length}</span>
+        </a>
+      ))
+    }
+  </div>
+</ListPage>

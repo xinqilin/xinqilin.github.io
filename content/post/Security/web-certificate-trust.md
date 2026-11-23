@@ -304,7 +304,7 @@ Certificate:
 | PKCS#12 | 憑證 + 私鑰 + 鏈打包成一個檔案，可加密碼 | `.p12`、`.pfx` |
 | JKS | Java 舊的專有格式 | `.jks`（JDK 9 之後預設改用 PKCS#12） |
 
-副檔名**不可靠**：`.crt` 和 `.cer` 可能是 PEM 也可能是 DER，用 `head -1` 看一眼就知道。格式轉換的指令請看 [openssl 指令筆記]({{< ref "post/CLI/openssl.md" >}})。
+副檔名**不可靠**：`.crt` 和 `.cer` 可能是 PEM 也可能是 DER，用 `head -1` 看一眼就知道。格式轉換的指令請看 [openssl 指令筆記](/post/cli/openssl/)。
 
 ### 常見誤解與踩坑
 
@@ -1072,7 +1072,7 @@ done
 > **白話版**
 > 前面 8 節講的都是「瀏覽器在背後偷偷做的事」。openssl 就像一台透視機，讓你把握手、憑證、鏈、名單一步一步攤開來看。看得到之後，排錯就從「猜」變成「查」。
 
-金鑰產生、格式轉換、`enc` / `dgst` 這些基礎指令請看 [openssl 指令筆記]({{< ref "post/CLI/openssl.md" >}})，這一節只講跟「信任」有關的排錯。
+金鑰產生、格式轉換、`enc` / `dgst` 這些基礎指令請看 [openssl 指令筆記](/post/cli/openssl/)，這一節只講跟「信任」有關的排錯。
 
 先確認自己用的是哪個 openssl。macOS 內建的 `/usr/bin/openssl` 其實是 LibreSSL，選項和輸出格式跟 OpenSSL 有差異；本文的指令都是用 Homebrew 的 OpenSSL 4.1 跑的：
 
@@ -1798,4 +1798,4 @@ class InternalApiClientConfig {
 - [Eclipse Temurin Docker image - README](https://github.com/docker-library/docs/blob/master/eclipse-temurin/README.md)
 - [mkcert](https://github.com/FiloSottile/mkcert)
 - [badssl.com](https://badssl.com/)
-- [openssl 指令筆記]({{< ref "post/CLI/openssl.md" >}})
+- [openssl 指令筆記](/post/cli/openssl/)
