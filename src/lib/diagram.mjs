@@ -206,8 +206,9 @@ function renderSequence({ title, actors, steps }, id) {
   const masks = [];
   const noteAt = (cx, cy, text) => {
     const w = Math.min(Math.max(textWidth(text, FONT) + 24, 110), GAP * 2 - 20);
-    masks.push(`<rect class="dg-mask" x="${r1(cx - w / 2)}" y="${cy - 14}" width="${r1(w)}" height="${NOTE_H}" rx="6"/>`);
-    return note(cx - w / 2, cy - 14, w, text);
+    const left = Math.min(Math.max(cx - w / 2, 4), width - 4 - w); // keep notes on the first/last actor inside the canvas
+    masks.push(`<rect class="dg-mask" x="${r1(left)}" y="${cy - 14}" width="${r1(w)}" height="${NOTE_H}" rx="6"/>`);
+    return note(left, cy - 14, w, text);
   };
 
   const body = steps.map((s, i) => {

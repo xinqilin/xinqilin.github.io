@@ -18,6 +18,33 @@ tags: ["System Design", "Message Queue", "RabbitMQ", "Spring AMQP", "Dead Letter
 2. **連帶失敗**：郵件服務當機時，報名也跟著失敗。使用者明明已經搶到名額，卻看到錯誤
 3. **尖峰**：熱門講座開放報名的那 10 分鐘湧入 3 萬筆報名，但郵件服務商限制每秒最多送 50 封。同步呼叫時，超過的請求只能失敗
 
+```diagram
+title: 報名 API 裡同步做完所有事
+row: U 使用者 | REG 報名 API | MAIL 郵件服務
+row: . | SPK 講者通知 | REC 推薦系統
+step: 報名之後的三件事
+  報名成功後還要寄確認信、通知講者、把報名紀錄送去推薦系統，目前全部在報名的 API 裡同步執行。
+U -> REG: 報名
+REG -> MAIL: 寄確認信
+REG -> SPK: 通知講者
+REG -> REC: 送報名紀錄
+step: 慢
+  報名 API 的延遲等於這四件事的總和，其中寄信最慢。
+U -> REG: 報名
+REG -> MAIL: 寄信最慢 [danger]
+note U: 延遲是四件事的總和 [danger]
+step: 連帶失敗
+  郵件服務當機時，報名也跟著失敗。使用者明明已經搶到名額，卻看到錯誤。
+REG -> MAIL: 呼叫失敗 [danger]
+note MAIL: 當機 [danger]
+note U: 搶到名額卻看到錯誤 [danger]
+step: 尖峰
+  熱門講座開放報名的 10 分鐘湧入 3 萬筆報名，郵件服務商卻限制每秒最多 50 封。同步呼叫時，超過的請求只能失敗。
+U => REG: 10 分鐘 3 萬筆
+REG => MAIL: 超過每秒 50 封 [danger]
+note MAIL: 每秒最多 50 封 [danger]
+```
+
 ## 最簡單的做法與它的極限
 
 - **`@Async` 丟到執行緒池**：報名 API 變快了，但工作只存在記憶體裡。服務重啟或當機，還沒執行的工作全部消失，也沒有地方看得到失敗了哪些
