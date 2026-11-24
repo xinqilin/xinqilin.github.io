@@ -42,21 +42,27 @@ tags: ["System Design", "Distributed Lock", "Fencing Token", "Redis", "Redisson"
 
 ### 停頓：持有者不知道自己已經失去鎖
 
-```mermaid
-sequenceDiagram
-    participant A as 實例 A
-    participant L as 鎖服務
-    participant B as 實例 B
-    participant DB as 結算資料
-    A->>L: 取得鎖（30 秒）
-    L-->>A: 成功
-    Note over A: Full GC 停頓 40 秒
-    Note over L: 30 秒到期，鎖自動釋放
-    B->>L: 取得鎖（30 秒）
-    L-->>B: 成功
-    B->>DB: 撥款給講者 42，標記為已付
-    Note over A: 醒來，以為自己還持有鎖
-    A->>DB: 撥款給講者 42
+```diagram
+title: 持有者在 GC 停頓時失去鎖
+actors: A 實例 A | L 鎖服務 | B 實例 B | DB 結算資料
+A -> L: 取得鎖（租約 30 秒）
+  實例 A 向鎖服務取得一把 30 秒的租約，準備開始結算。
+L --> A: 成功
+  鎖服務回應成功。從這一刻起，A 認為自己持有鎖。
+pause A: Full GC 停頓 40 秒
+  A 遇到 Full GC，整個 JVM 停住 40 秒，負責延長租約的 watchdog 執行緒也一起停住。
+note L: 30 秒到期，鎖自動釋放
+  租約到期，鎖服務把鎖釋放。A 還停在 GC 裡，完全不知道這件事。
+B -> L: 取得鎖（租約 30 秒）
+  實例 B 來取得同一把鎖。
+L --> B: 成功
+  鎖已經沒有人持有，鎖服務回應成功，B 開始結算。
+B -> DB: 撥款給講者 42，標記為已付 [ok]
+  B 撥款給講者 42，並標記為已付。到這裡都還正常。
+note A: 醒來，以為自己還持有鎖
+  GC 結束，A 從停住的地方繼續執行。它不知道鎖早就過期了。
+A -> DB: 撥款給講者 42 [danger]
+  A 又撥了一次款，同一筆錢撥了兩次。只靠會過期的鎖，擋不住停頓後醒來的持有者。
 ```
 
 造成停頓的原因很多：GC 的 stop-the-world、虛擬機被搬移或 CPU 被搶走、記憶體被 swap 出去、封包卡在網路的佇列裡、系統時間跳動。

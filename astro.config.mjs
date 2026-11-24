@@ -1,7 +1,9 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
 import blueprint from './src/lib/shiki-blueprint.mjs';
 import { codeFrame } from './src/lib/code-frame.mjs';
+import { diagramPlugin } from './src/lib/diagram.mjs';
 
 // Chinese characters fall through to the OS font; only Latin Plex files are self-hosted.
 const CJK = ['PingFang TC', 'Microsoft JhengHei', 'Noto Sans CJK TC'];
@@ -34,7 +36,8 @@ export default defineConfig({
     },
   ],
   markdown: {
-    syntaxHighlight: { type: 'shiki', excludeLangs: ['mermaid'] },
+    processor: satteri({ hastPlugins: [diagramPlugin()] }),
+    syntaxHighlight: { type: 'shiki', excludeLangs: ['mermaid', 'diagram'] },
     shikiConfig: { theme: blueprint, transformers: [codeFrame()] },
   },
 });

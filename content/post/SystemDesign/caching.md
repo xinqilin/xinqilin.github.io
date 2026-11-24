@@ -20,6 +20,44 @@ tags: ["System Design", "Cache", "Redis", "Caffeine", "Spring Cache", "Cache Sta
 4. 凌晨批次預熱的 20 萬個 key 在同一時間過期，資料庫被打掛；某次 Redis 重啟，情況更糟
 5. 訂單查詢也比照辦理加了快取，結果使用者 A 看得到使用者 B 的訂單
 
+```diagram
+title: 加上 Redis 之後的五次事故
+row: U 使用者 | API 商品 API | R Redis
+row: BOT 爬蟲 | DB MySQL | OPS 營運後台
+step: 加上快取，資料庫鬆了一口氣
+  每秒 10,000 個請求先查 Redis，九成直接命中；只有查不到的一成才去 MySQL，查完再寫回快取。資料庫的 QPS 從 10,000 降到 1,000。
+U => API: 10,000 QPS
+API -> R: 九成命中 [ok]
+API -> DB: 1,000 QPS
+step: 改了價格，使用者看到舊的
+  營運在後台改了價格，資料庫已經是新的，可是沒有人去刪快取。舊值要等 30 分鐘後過期，這段時間使用者看到的都是舊價格。
+OPS -> DB: 更新價格
+U -> API: 查商品
+API -> R: 命中舊價格 [danger]
+note R: 30 分鐘後才過期 [danger]
+step: 熱門 key 過期的瞬間
+  最熱門商品的 key 一過期，同一瞬間的 3,000 個請求全部查不到快取，全部去查資料庫、全部回填同一個 key。這叫擊穿。
+note R: 熱門 key 過期 [danger]
+U => API: 搶同一個商品
+API => DB: 3,000 個同時查 [danger]
+step: 爬蟲查不存在的商品
+  爬蟲用不存在的商品 ID 掃描。資料庫裡沒有，快取也就永遠沒有，每個請求都直接打到資料庫。這叫穿透。
+BOT => API: 亂數商品 ID
+API -> R: 查不到
+API => DB: 每次都查 [danger]
+step: 20 萬個 key 一起過期
+  凌晨批次預熱的 20 萬個 key 設了同樣的 TTL，在同一時間過期，請求全部湧向資料庫，資料庫被打掛。某次 Redis 重啟、整份快取清空，情況更糟。這叫雪崩。
+note R: 20 萬個 key 同時過期 [danger]
+U => API: 正常流量
+API => DB: 全部查資料庫 [danger]
+note DB: 被打掛 [danger]
+step: A 看到 B 的訂單
+  訂單查詢也加了快取，key 只有訂單編號。B 查過的訂單 1024 被快取起來，A 拿同一個編號來查，直接命中快取，SQL 裡「只能查自己的訂單」的條件根本沒有執行。
+U -> API: A 查訂單 1024
+API -> R: 命中 order:1024 [danger]
+note U: 拿到 B 的訂單 [danger]
+```
+
 快取讓讀取變快，代價是系統裡多了**第二份資料**。兩份資料之間的一致性、什麼時候失效、裝不下時丟掉誰、快取本身掛掉時會怎樣，全部都要設計。
 
 ## 最簡單的做法與它的極限

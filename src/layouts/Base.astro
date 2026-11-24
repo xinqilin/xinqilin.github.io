@@ -54,6 +54,10 @@ await mermaid.run({ querySelector: 'pre.mermaid' });
     <Footer />
     <script is:inline src="/js/search.js" defer></script>
     <script>
+      import { initDiagrams } from '../lib/diagram-client';
+
+      initDiagrams();
+
       const menuBtn = document.querySelector<HTMLButtonElement>('.menu-btn');
       const siteNav = document.getElementById('site-nav');
       menuBtn?.addEventListener('click', () => {
