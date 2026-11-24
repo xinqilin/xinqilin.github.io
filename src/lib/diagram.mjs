@@ -149,6 +149,12 @@ const PAD = 20;
 const FONT = 13;
 const NOTE_H = 28;
 
+/** Names must fit inside their boxes (about 8 CJK characters). */
+function fits(list, boxW) {
+  const long = list.find((a) => textWidth(a.name, FONT) > boxW - 12);
+  if (long) throw new Error(`diagram: name too long for its box: ${long.name}`);
+}
+
 /** Arrowhead with its point at (x, y), pointing along the unit vector (ux, uy). */
 function tip(x, y, ux, uy) {
   const bx = x - ux * 11;
@@ -171,7 +177,8 @@ function figure(id, kind, title, width, height, svgBody, says, start) {
     `<figcaption class="dg-bar"><span class="dg-title">${esc(title)}</span>` +
     `<span class="dg-controls"><button type="button" data-act="prev">上一步</button><span class="dg-count">${start + 1} / ${says.length}</span>` +
     `<button type="button" data-act="next">下一步</button><button type="button" data-act="play">播放</button></span></figcaption>` +
-    `<div class="dg-canvas"><svg viewBox="0 0 ${width} ${height}" width="${width}" role="img" aria-labelledby="${id}-t">` +
+    // Fills the column but never scales past 1.2x, so small diagrams do not get oversized text.
+    `<div class="dg-canvas"><svg viewBox="0 0 ${width} ${height}" width="${width}" style="max-width:${Math.round(width * 1.2)}px" role="img" aria-labelledby="${id}-t">` +
     `<title id="${id}-t">${esc(title)}</title>${svgBody}</svg></div>` +
     `<ol class="dg-says">${says.map((s, i) => `<li data-n="${String(i + 1).padStart(2, '0')}">${s}</li>`).join('')}</ol></figure>`
   );
@@ -183,6 +190,7 @@ const GAP = 180;
 const ROW = { msg: 40, reply: 40, note: 46, pause: 46 };
 
 function renderSequence({ title, actors, steps }, id) {
+  fits(actors, ACTOR_W);
   const x = Object.fromEntries(actors.map((a, i) => [a.id, PAD + ACTOR_W / 2 + i * GAP]));
   const width = PAD * 2 + ACTOR_W + GAP * (actors.length - 1);
 
@@ -245,6 +253,7 @@ const NOTE_GAP = 8;
 const NOTE_ROOM = NOTE_GAP + NOTE_H + 8; // kept above the first row and below the last row
 
 function renderScene({ title, nodes, rows, cols, steps }, id) {
+  fits(nodes, NODE_W);
   const width = PAD * 2 + cols * CELL_W;
   const height = PAD * 2 + NOTE_ROOM * 2 + NODE_H + (rows - 1) * CELL_H;
   const at = Object.fromEntries(
@@ -278,6 +287,9 @@ function renderScene({ title, nodes, rows, cols, steps }, id) {
     const len = Math.hypot(x2 - x1, y2 - y1);
     const ux = (x2 - x1) / len;
     const uy = (y2 - y1) / len;
+    if (Math.abs(uy) < 0.01 && textWidth(f.text, FONT) > Math.abs(x2 - x1) + 12) {
+      throw new Error(`diagram: label too long for the gap between ${f.from} and ${f.to}: ${f.text}`);
+    }
     const heavy = f.op === '=>';
     const cls = ['sc-flow', heavy && 'is-heavy', f.op === '-->' && 'is-reply', f.tone && `is-${f.tone}`].filter(Boolean).join(' ');
     const mx = (x1 + x2) / 2;

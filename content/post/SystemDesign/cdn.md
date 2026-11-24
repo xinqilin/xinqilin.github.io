@@ -19,6 +19,34 @@ tags: ["System Design", "CDN", "HTTP Caching", "Cache-Control", "ETag", "Web Sec
 3. 每次部署後，總有一小群使用者看到白畫面，主控台顯示 JavaScript 載入失敗
 4. 最嚴重的一次：為了降低 origin 負載，把 `/api/**` 都設成可快取，結果使用者 A 打開「我的訂單」，看到的是使用者 B 的訂單
 
+```diagram
+title: 開始做海外市場之後
+row: US 美西使用者 | . | O Origin（台灣）
+row: . | CDN CDN 節點 | TW 台灣使用者
+step: 美西打開首頁要 3 秒
+  origin 在台灣。美西使用者每次往返都要跨過太平洋，首頁要 3 秒以上；台灣使用者只要 0.8 秒。
+US -> O: 跨太平洋往返 [danger]
+TW -> O: 0.8 秒 [ok]
+note US: 首頁 3 秒以上 [danger]
+step: 大促的圖片頻寬
+  大促時圖片尖峰頻寬真的到了 2.4 Gbps，全部由 origin 直接送出，網路卡和雲端流量費一起爆表。
+US => O: 圖片
+TW => O: 圖片
+note O: 尖峰 2.4 Gbps [danger]
+step: 部署後的白畫面
+  部署時先切換了 HTML、再上傳新的 JS。這段空檔拿到新 HTML 的使用者，要載入的檔案還不存在，畫面一片白。
+US -> CDN: 新 HTML 要 app.3f9c.js
+CDN -> O: 回源拿檔案
+note O: 檔案還沒上傳 [danger]
+note US: 白畫面 [danger]
+step: 看到別人的訂單
+  為了降低 origin 負載，把 /api/** 都設成可快取。B 打開「我的訂單」，回應被 CDN 存了起來；A 打開同一個網址，拿到的是 B 的訂單。
+TW -> CDN: B：我的訂單
+CDN -> O: 回源，回應被快取
+US -> CDN: A：我的訂單 [danger]
+note US: 看到 B 的訂單 [danger]
+```
+
 前兩個是**距離和頻寬**的問題，CDN 正是為此而生。後兩個是**快取語意**的問題：哪些東西可以被誰快取、快取多久、怎麼更新。這篇兩者都談。
 
 ## 最簡單的做法與它的極限

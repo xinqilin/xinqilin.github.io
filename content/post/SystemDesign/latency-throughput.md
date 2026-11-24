@@ -14,6 +14,30 @@ tags: ["System Design", "Latency", "Throughput", "Percentile", "Little's Law", "
 
 壓測報告寫著「平均回應 60 ms，可撐 400 RPS」，大家都很放心。上線後卻陸續有人回報「偶爾會卡好幾秒」。同一週，資料庫因為一個慢查詢變慢，整個服務接著全部逾時，有人提議：「把 Tomcat thread 從 200 調到 1,000，再把連線池加大，就能撐住了。」
 
+```diagram
+title: 平均 60 ms 的服務，為什麼會卡住
+row: U 使用者 | APP API 服務 | DB 資料庫
+step: 壓測報告很漂亮
+  壓測報告寫著平均回應 60 ms、可撐 400 RPS，服務開了 200 個 Tomcat thread，大家都很放心。
+U => APP: 400 RPS
+APP -> DB: 查詢
+note APP: 平均 60 ms [ok]
+step: 偶爾卡好幾秒
+  平均值會騙人：1,000 個請求裡 980 個花 20 ms、20 個卡了 2 秒，平均約 60 ms，卻沒有任何一個請求真的花了 60 ms。一頁要發幾十個請求，幾乎每個使用者都會碰到最慢的那 1%。
+U -> APP: 打開一頁
+note APP: 2% 的請求卡 2 秒 [danger]
+step: 資料庫變慢，全部逾時
+  一個慢查詢讓資料庫的回應變成 2 秒。流量還是每秒 400 個，系統裡同時待著的請求變成 400 × 2 = 800 個，200 個 thread 全部卡在等資料庫，後面的請求只能排隊，接著逾時。
+U => APP: 還是 400 RPS
+APP => DB: 每個查詢等 2 秒 [danger]
+note APP: 200 個 thread 全部卡住 [danger]
+step: 把 thread 加到 1,000？
+  有人提議把 thread 加到 1,000、連線池加大。可是瓶頸在資料庫，更多 thread 只是讓更多查詢同時壓在已經飽和的資料庫上，它只會更慢。
+note APP: thread 200 → 1,000
+APP => DB: 更多查詢同時湧入 [danger]
+note DB: 更慢 [danger]
+```
+
 這兩件事背後是同一組觀念：**latency 要看分佈而不是平均、throughput 和 latency 透過排隊互相影響**。搞懂這些，才知道為什麼加大 thread 數通常沒有用。
 
 ## 最簡單的指標與它的盲點

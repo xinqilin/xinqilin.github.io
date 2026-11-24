@@ -18,6 +18,33 @@ tags: ["System Design", "Load Balancing", "Nginx", "Health Check", "P2C", "Sprin
 2. 每次部署，監控上都固定出現一小段 502
 3. 資料庫抖了 3 秒。因為 health check 有檢查資料庫，十台 instance 同時被判定為不健康，**全站停擺的時間遠比資料庫抖動的 3 秒還長**
 
+```diagram
+title: 十台 instance 前面的 Load Balancer
+row: U 使用者 | LB Load Balancer | S1 變慢的那台
+row: . | DB 資料庫 | S2 其他 9 台
+step: 正常的時候
+  服務已經無狀態，Load Balancer 把流量平均分給十台 instance。
+U => LB: 全部流量
+LB -> S1: 1/10
+LB => S2: 9/10
+step: 變慢但沒掛的那台
+  其中一台被鄰居搶走 CPU，處理時間從 10 ms 變成 100 ms。它沒有掛，health check 照樣回 200，Load Balancer 繼續送十分之一的流量過去，那十分之一的使用者一直逾時。
+LB -> S1: 照樣分 1/10 [danger]
+note S1: 慢 10 倍，health check 仍是 200 [danger]
+note U: 十分之一一直逾時 [danger]
+step: 每次部署都有一段 502
+  部署時 instance 直接關掉，Load Balancer 還沒把它移出名單，新送過去的請求和還沒處理完的請求都變成 502。
+note S2: 部署中，直接關閉
+LB -> S2: 還在送請求 [danger]
+note U: 502 [danger]
+step: 資料庫抖 3 秒，全站停擺
+  health check 裡包含資料庫檢查。資料庫抖了 3 秒，十台同時被判定為不健康、移出名單，全站沒有可用的 instance；資料庫恢復後，每台還要連續通過好幾次檢查才會被加回，停擺遠比 3 秒長。
+note DB: 抖動 3 秒 [danger]
+S1 -> DB: 檢查資料庫 [danger]
+S2 -> DB: 檢查資料庫 [danger]
+note LB: 十台全部不健康 [danger]
+```
+
 這三件事分別對應 Load Balancer 的三個核心問題：**怎麼分配、怎麼判斷健康、怎麼上下線**。
 
 ## 最簡單的做法與它的極限：DNS Round Robin

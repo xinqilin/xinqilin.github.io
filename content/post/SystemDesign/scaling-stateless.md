@@ -20,6 +20,46 @@ tags: ["System Design", "Scalability", "Stateless", "Spring Session", "ShedLock"
 4. 「每人限搶一次」用 `synchronized` 做的檢查失效，有人搶到兩次
 5. 同一個商品，兩台機器顯示的價格不一樣
 
+```diagram
+title: 加了第二台之後的五個怪事
+row: U 使用者 | LB Load Balancer | A1 機器 1
+row: . | . | A2 機器 2
+step: 加一台，容量翻倍？
+  一台 8 核的機器尖峰時 CPU 已經 85%。加了第二台、前面放 Load Balancer，請求平均分給兩台，看起來容量翻倍了。
+U => LB: 尖峰流量
+LB -> A1: 一半
+LB -> A2: 一半
+step: 重新整理就被登出
+  登入時請求落在機器 1，session 存在它的記憶體裡。重新整理時被分到機器 2，它沒有這個 session，就當成沒登入。
+LB -> A1: 登入
+LB -> A2: 重新整理 [danger]
+note A1: session 在這台的記憶體
+note A2: 找不到 session [danger]
+step: 圖片時有時無
+  上傳的圖片存在機器 1 的本機硬碟。讀圖的請求如果被分到機器 2，就是 404。
+LB -> A1: 上傳圖片
+LB -> A2: 讀圖片 [danger]
+note A1: 存在本機硬碟
+note A2: 404 [danger]
+step: 排程跑了兩次
+  每天凌晨的對帳排程寫在應用程式裡，兩台各自觸發一次，客戶收到兩封通知信。
+note A1: 02:00 對帳
+note A2: 02:00 也對帳 [danger]
+note U: 收到兩封通知信 [danger]
+step: 限搶一次失效
+  「每人限搶一次」用 synchronized 檢查，但它只鎖得住自己那個 JVM。同一個人的兩個請求分到兩台，兩邊都通過檢查。
+U => LB: 同一人連按兩次
+LB -> A1: 請求 1
+LB -> A2: 請求 2 [danger]
+note A1: synchronized 只鎖這台
+note A2: 也通過檢查 [danger]
+step: 兩台價格不一樣
+  每台都有自己的本機快取。價格改了之後，兩台的快取在不同時間更新，同一個商品在兩台顯示不同的價格。
+U -> LB: 看同一個商品
+note A1: 本機快取：990 元
+note A2: 本機快取：1,290 元 [danger]
+```
+
 五個問題的根因都一樣：**應用程式把狀態存在自己身上**。只有一台機器時，這些狀態剛好都在同一個地方，所以沒事；加了第二台，狀態就裂成兩份。
 
 ## 最簡單的做法與它的極限：垂直擴展

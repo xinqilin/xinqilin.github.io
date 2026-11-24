@@ -19,6 +19,29 @@ tags: ["System Design", "Capacity Planning", "Back-of-the-envelope", "Estimation
 - 商品圖片放哪裡？
 
 沒有壓測、沒有真實資料，但你要在會議中給出**數量級正確**的答案。
+```diagram
+title: 200 萬日活躍使用者，要準備什麼
+row: U 200 萬使用者 | APP 應用伺服器 | DB MySQL
+row: . | IMG 商品圖片 | .
+step: 會議上的三個問題
+  PM 說上線一年後日活躍使用者 200 萬。主管問你：應用伺服器要幾台？資料庫三年後多大、要不要 sharding？商品圖片放哪裡？沒有壓測，也沒有真實資料。
+note APP: 要幾台？
+note DB: 三年多大？要 sharding 嗎？
+note IMG: 放哪裡？
+step: 流量：13 台
+  每人每天 50 次請求，200 萬人平均每秒 1,157 次；乘上尖峰係數 5，約 5,800 QPS。單台壓測上限 800 QPS、目標使用率 60%，需要 13 台，跨可用區的冗餘另外再加。
+U => APP: 尖峰 5,787 QPS
+note APP: 13 台 [ok]
+step: 資料庫：不用 sharding
+  尖峰寫入只有 276 QPS，單一 MySQL 主庫很輕鬆。訂單資料三年約 1.2 TB（含三份複本），單機扛得住，要開始規劃的是歷史訂單歸檔。
+APP -> DB: 寫入 276 QPS
+note DB: 3 年 1.2 TB，不用 sharding [ok]
+step: 圖片：物件儲存加 CDN
+  圖片每年新增 4.4 TB，尖峰頻寬 2.4 Gbps，單台機器的網卡扛不住，也不該放進資料庫或應用伺服器的硬碟，要放物件儲存、前面加 CDN。
+U => IMG: 尖峰 2.4 Gbps
+note IMG: 每年 4.4 TB → 物件儲存＋CDN [ok]
+```
+
 
 ## 最簡單的做法與它的極限
 
