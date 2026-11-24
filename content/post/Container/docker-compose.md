@@ -68,7 +68,7 @@ services:
             - "8081:8080" # 將主機的 8081 埠映射到容器的 8080 埠
         # 儲存卷映射：將主機路徑映射到容器路徑 (HOST_PATH:CONTAINER_PATH)
         volumes:
-            - /Users/bill/microService:/app # 將主機的 /Users/bill/microService 目錄映射到容器的 /app 目錄
+            - ./microService:/app # 將主機的 ./microService 目錄映射到容器的 /app 目錄
         # 指定服務所連接的網路
         networks:
             - my_network # 連接到名為 'my_network' 的網路
@@ -78,7 +78,7 @@ services:
         depends_on:
             - redis # microService 服務會在 redis 服務啟動後才啟動
             - mysql # microService 服務會在 mysql 服務啟動後才啟動
-        # 範例：等同於 `docker run -d -p 8081:8080 -v /Users/bill/microService:/app --network my_network`
+        # 範例：等同於 `docker run -d -p 8081:8080 -v ./microService:/app --network my_network`
 
     redis:
         image: redis:6.0.8 # 使用 Redis 6.0.8 映像檔

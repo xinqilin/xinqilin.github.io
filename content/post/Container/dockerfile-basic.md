@@ -27,8 +27,8 @@ Dockerfile 是一個包含一系列指令的文字檔案，Docker 引擎會讀�
 
 *   `MAINTAINER`：指定映像檔的維護者資訊。
     *   **語法**：`MAINTAINER <name> [email]`
-    *   **範例**：`MAINTAINER Bill.Lin <zzx123bill@gmail.com>`
-    *   **注意**：此指令已過時，建議使用 `LABEL` 指令來替代，例如 `LABEL maintainer="Bill.Lin <zzx123bill@gmail.com>"`。
+    *   **範例**：`MAINTAINER Your Name <you@example.com>`
+    *   **注意**：此指令已過時，建議使用 `LABEL` 指令來替代，例如 `LABEL maintainer="Your Name <you@example.com>"`。
 
 ### 2. 執行指令
 

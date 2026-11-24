@@ -1,12 +1,4 @@
-CLAUDE.md
-public/
-.claude/worktrees/
-
-# Astro
 node_modules/
 dist/
 .astro/
 .pnpm-store/
-
-# 本機交接文件，不進版控（原始碼會公開）
-HANDOFF.md

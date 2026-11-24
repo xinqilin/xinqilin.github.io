@@ -3,8 +3,6 @@ title: "About This Site"
 author: Bill.Lin
 date: 2025-07-13T10:00:00+08:00
 draft: false
-type: "page"
-showToc: false
 ---
 
 Bill.Lin's Notes is where I keep my engineering notes and share what I learn: problems I run into while building software, how I solved them, and how I understand and apply the technologies involved.
