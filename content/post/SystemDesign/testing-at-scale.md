@@ -19,6 +19,32 @@ tags: ["System Design", "Testing", "Testcontainers", "Contract Testing", "Load T
 3. **故障轉移從來沒有演練過**：Redis 的 primary 故障，應用程式的連線逾時設定是預設值，整個服務停擺 20 分鐘才恢復
 4. **授權漏洞回來了**：一次重構把查詢裡的擁有者條件拿掉，BOLA 在正式環境存在了兩週（[授權篇](/post/systemdesign/authorization-owasp-api-top10/)）
 
+```diagram
+title: 上一季的四起事故
+row: REG 報名服務 | K 報名事件 | N 通知服務
+row: LT 壓測 | R Redis | U 使用者
+step: 事件欄位改名
+  報名服務把事件裡的 memberId 改成 attendeeId，自己的測試全部通過。部署後，通知服務開始在每一則事件上拋出例外。
+REG -> K: 欄位改名
+K -> N: 新格式的事件 [danger]
+note REG: 自己的測試全過 [ok]
+note N: 每則事件都拋例外 [danger]
+step: 壓測通過，開賣崩潰
+  壓測報告的 p99 是 300 毫秒，實際開賣時使用者等了 30 秒。
+LT -> REG: 壓測
+note LT: p99 300 ms [ok]
+note U: 開賣時等了 30 秒 [danger]
+step: 沒演練過的故障轉移
+  Redis 的 primary 故障，應用程式的連線逾時是預設值，整個服務停擺 20 分鐘才恢復。
+REG -> R: 預設逾時，一直等 [danger]
+note R: primary 故障 [danger]
+note REG: 停擺 20 分鐘 [danger]
+step: 授權漏洞回來了
+  一次重構把查詢裡的擁有者條件拿掉，BOLA 在正式環境存在了兩週。
+U -> REG: 查別人的報名 [danger]
+note REG: 擁有者條件被拿掉 [danger]
+```
+
 這四起事故，每一起在各自服務的單元測試裡都看不出來。
 
 ## 最簡單的做法與它的極限

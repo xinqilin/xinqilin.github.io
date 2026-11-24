@@ -19,6 +19,29 @@ tags: ["System Design", "Authorization", "OWASP", "BOLA", "SSRF", "Spring Securi
 3. 會員更新個人資料時，在 JSON 裡多送了 `"role": "ADMIN"`；報名時多送了 `"status": "CONFIRMED"`，跳過了付款
 4. 講者後台的學員名單 API 回傳了學員的完整 email 與電話，前端只顯示姓名，但回應裡全部都有
 
+```diagram
+title: 身分是對的，但沒檢查能不能做
+row: M 已登入的會員 | API 講座平台 API | DB 報名資料
+row: . | ADM 管理 API | SPK 講者後台
+step: 改一個數字
+  會員把網址裡的 /v1/registrations/1001 改成 1002，看到了別人的報名資料、電話與付款狀態。
+M -> API: 改成 1002 [danger]
+API -> DB: 查 1002
+note M: 看到別人的報名 [danger]
+step: 前端藏起來的管理功能
+  會員直接呼叫 /admin/lectures/42/registrations/export，下載了整場講座的學員名單。前端沒有顯示這個按鈕，但 API 沒有檢查。
+M -> ADM: 匯出學員名單 [danger]
+note ADM: 前端沒按鈕，API 沒檢查 [danger]
+step: 多送一個欄位
+  會員更新個人資料時，在 JSON 裡多送了 "role": "ADMIN"；報名時多送了 "status": "CONFIRMED"，跳過了付款。
+M -> API: 多送 role: ADMIN [danger]
+note API: 照單全收 [danger]
+step: 回傳太多
+  講者後台的學員名單 API 回傳了學員的完整 email 與電話。前端只顯示姓名，但回應裡全部都有。
+SPK -> API: 學員名單
+note SPK: 回應裡有完整 email 與電話 [danger]
+```
+
 這四個問題分別是 OWASP API Security Top 10（2023）的第 1、5、3 名，而且都不是驗證的問題：身分是對的，只是**沒有檢查這個身分能不能做這件事**。
 
 ## 最簡單的做法與它的極限

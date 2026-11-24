@@ -27,6 +27,30 @@ tags: ["System Design", "Encryption", "KMS", "Secrets Management", "TLS", "Secur
 - 一份資料庫備份被複製到了測試環境，誰能讀？
 - 前員工的筆電裡有一份 `application-prod.yml`，裡面有什麼？
 
+```diagram
+title: 「我們有加密」之後的三個問題
+row: ATK 攻擊者 | APP 應用程式 | DB 資料庫
+row: EX 前員工的筆電 | TEST 測試環境 | BK 資料庫備份
+step: 你們有加密嗎？
+  大部分團隊的回答是：有，HTTPS 和資料庫的磁碟加密都開了。
+note APP: HTTPS 有開 [ok]
+note DB: 磁碟加密有開 [ok]
+step: SQL injection
+  攻擊者透過 SQL injection 把講者銀行帳號整張表倒出來。磁碟加密只防硬碟或快照被拿走，資料庫運作時會透明地解密，查詢看到的是明文。
+ATK -> APP: SQL injection [danger]
+APP => DB: 倒出銀行帳號表 [danger]
+note ATK: 拿到的是明文 [danger]
+step: 備份到了測試環境
+  一份資料庫備份被複製到了測試環境。測試環境的權限通常寬鬆得多，誰能讀？
+DB -> BK: 備份
+BK -> TEST: 複製到測試環境 [danger]
+note TEST: 誰能讀？ [danger]
+step: 前員工的設定檔
+  前員工的筆電裡有一份 application-prod.yml，裡面有資料庫密碼、金流 API key 嗎？
+EX -> APP: 拿設定檔裡的密碼 [danger]
+note EX: application-prod.yml [danger]
+```
+
 ## 最簡單的做法與它的極限
 
 - **HTTPS 到負載平衡器**：瀏覽器到負載平衡器之間加密了，負載平衡器到應用程式、應用程式到資料庫與 Redis 之間仍然是明文（[Load Balancing 篇](/post/systemdesign/load-balancing/)）

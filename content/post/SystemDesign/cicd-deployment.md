@@ -19,6 +19,29 @@ tags: ["System Design", "CI/CD", "Canary", "Feature Flag", "Supply Chain", "Secu
 3. **秒殺期間部署**：一次例行部署剛好在開賣前 5 分鐘，重新啟動的實例還在暖機，開賣的流量就進來了
 4. **CI 的金鑰外洩**：CI 平台上存著一把長期有效的雲端存取金鑰，一個被入侵的第三方 CI 套件把它印到建置日誌裡
 
+```diagram
+title: 部署不是一瞬間的事
+row: OLD 舊版本 | DB 資料庫 | NEW 新版本
+row: CI CI 平台 | . | U 開賣流量
+step: 部署時刪了欄位
+  新版本不再使用 registration.member_id，同一次部署的 migration 把欄位刪掉。滾動更新的過程中，還在執行的舊版本開始大量報錯。
+NEW -> DB: 刪掉 member_id
+OLD -> DB: 讀 member_id [danger]
+note OLD: 大量報錯 [danger]
+step: 無法回滾
+  發現問題要回到上一版，但 migration 已經把資料轉換成新格式，舊版本讀不懂。
+OLD -> DB: 回滾後讀不懂 [danger]
+note DB: 已轉成新格式 [danger]
+step: 開賣前 5 分鐘部署
+  一次例行部署剛好在開賣前 5 分鐘，重新啟動的實例還在暖機，開賣的流量就進來了。
+U => NEW: 開賣流量 [danger]
+note NEW: 重啟中，還在暖機 [danger]
+step: CI 的金鑰外洩
+  CI 平台上存著一把長期有效的雲端存取金鑰，一個被入侵的第三方 CI 套件把它印到建置日誌裡。
+CI -> NEW: 部署
+note CI: 長期金鑰印進日誌 [danger]
+```
+
 前三起的共同原因是：**部署不是一瞬間的事**。在滾動更新、金絲雀、回滾的過程中，新舊版本會同時在線上，同時讀寫同一個資料庫、同一個快取、同一個 topic。第四起則提醒我們：pipeline 本身就是能夠修改正式環境的系統，要以同等級的安全性看待。
 
 ## 最簡單的做法與它的極限

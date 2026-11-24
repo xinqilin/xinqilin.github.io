@@ -23,6 +23,39 @@ tags: ["System Design", "Microservices", "Modular Monolith", "Spring Modulith", 
 
 會議上有人說：「拆微服務吧。」
 
+```diagram
+title: 30 個人共用一個應用程式
+row: T1 報名與付款 | T2 講者後台 | T3 直播互動
+row: T4 推薦與數據 | APP 單體應用程式 | DB 單一 MySQL
+step: 四個小組，一個應用程式
+  工程團隊從 4 個人變成 30 個人，分成四個小組，但整個平台仍然是一個 Spring Boot 應用程式、一個 MySQL 資料庫。
+T1 -> APP: 改程式
+T2 -> APP: 改程式
+T3 -> APP: 改程式
+T4 -> APP: 改程式
+APP -> DB: 同一個資料庫
+step: 一個測試卡住所有人
+  每週四統一發版。推薦小組的一個測試沒過，其他三組已經完成的功能也全部延後一週。
+note T4: 一個測試沒過 [danger]
+note T1: 延後一週 [danger]
+note T2: 延後一週 [danger]
+note T3: 延後一週 [danger]
+step: 一個洩漏拖垮全部
+  直播互動的 SSE 連線有記憶體洩漏，整個應用程式 OOM 重啟，報名與付款跟著中斷。
+note T3: SSE 記憶體洩漏 [danger]
+note APP: OOM 重啟 [danger]
+note T1: 報名與付款中斷 [danger]
+step: 一個報表拖慢交易
+  講者後台的月報表查詢跑了 3 分鐘，拖慢了同一個資料庫上的報名交易。
+T2 -> APP: 月報表
+APP => DB: 查詢跑 3 分鐘 [danger]
+note DB: 報名交易變慢 [danger]
+step: 改一個欄位要問三組
+  改一個報名的欄位，要先搞清楚另外三組有沒有在 SQL 裡直接讀這張表。會議上有人說：「拆微服務吧。」
+note T1: 改一個報名欄位
+note DB: 誰在直接讀這張表？ [danger]
+```
+
 這篇要回答的是：哪些問題是微服務能解決的、哪些是它會帶來的，以及在拆之前應該先做什麼。
 
 ## 最簡單的做法與它的極限

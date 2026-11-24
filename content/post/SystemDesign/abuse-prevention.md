@@ -20,6 +20,36 @@ tags: ["System Design", "Bot Protection", "Fraud Prevention", "Rate Limiting", "
 - 手機驗證碼的簡訊費用在一個晚上暴增，收件號碼集中在幾個國外的號碼區段
 - 講者名單與講座內容被另一個網站完整複製
 
+```diagram
+title: 每個請求都合法，問題卻接連發生
+row: BOT 黃牛帳號 | API 講座平台 | SEAT 3,000 個名額
+row: ATK 撞庫程式 | SCR 爬蟲 | SMS 簡訊供應商
+step: 4 秒報滿
+  名額在 4 秒內全部報滿，社群上隨即出現加價轉售的票券。大量帳號在開放前一週才註冊，用同一組信用卡付款。
+BOT => API: 大量新帳號 [danger]
+API => SEAT: 4 秒內報滿 [danger]
+note SEAT: 社群上加價轉售 [danger]
+step: 撞庫
+  開放前一小時，登入 API 的失敗率從平常的 3% 升到 60%，有 200 個帳號被盜用。
+ATK => API: 失敗率 3% → 60% [danger]
+note ATK: 200 個帳號被盜用 [danger]
+step: 折扣碼被領光
+  新會員的首購折扣碼被大量領取，領取的帳號大多沒有任何後續活動。
+BOT => API: 領首購折扣 [danger]
+note BOT: 領完就沒有活動 [danger]
+step: 簡訊費暴增
+  手機驗證碼的簡訊費在一個晚上暴增，收件號碼集中在幾個國外的號碼區段。
+API => SMS: 發到國外號碼段 [danger]
+note SMS: 一晚費用暴增 [danger]
+step: 內容被複製
+  講者名單與講座內容被另一個網站完整複製。
+SCR => API: 講者與講座內容 [danger]
+note SCR: 被完整複製 [danger]
+step: 每個請求都合法
+  每個請求都有帳號、有登入、格式正確、在限流範圍內。對手會調整策略：你擋下一種做法，對方就換另一種。
+note API: 有帳號、有登入、在限流內
+```
+
 每個請求本身都是「合法」的：有帳號、有登入、格式正確、在限流範圍內。這些問題對應到 OWASP API Security Top 10 的 **API6 Unrestricted Access to Sensitive Business Flows**，以及 OWASP「Automated Threats to Web Applications」整理的自動化威脅：黃牛（Scalping）、囤積庫存（Denial of Inventory）、撞庫（Credential Stuffing）、大量建立帳號（Account Creation）、爬取內容（Scraping）。
 
 和 [Rate Limiting 篇](/post/systemdesign/rate-limiting/)的差別是：限流是為了保護**容量**，對象是流量；濫用防護面對的是**會調整策略的對手**，對象是利益。你擋下一種做法，對方會換另一種。

@@ -26,6 +26,36 @@ tags: ["System Design", "Authentication", "OAuth 2.0", "OIDC", "Spring Security"
 - 應用程式有多台（[無狀態服務篇](/post/systemdesign/scaling-stateless/)），登入狀態放在哪裡？
 - 網頁上的任何一段 JavaScript 被注入，會不會連登入狀態一起被偷走？
 
+```diagram
+title: 這個請求是誰送來的？
+row: M 會員 | API 講座平台 | SPK 講者
+row: EMP 企業員工 | IDP 公司帳號（IdP） | ATK 攻擊者
+step: 會員
+  會員用網頁（SPA）與手機 App 報名、付款、看自己的票券。
+M -> API: 報名、付款、票券
+note M: 網頁與手機 App
+step: 講者
+  講者在後台管理講座、看報名名單與分潤。
+SPK -> API: 管理講座、看分潤
+step: 企業的 SSO
+  企業客戶希望員工用公司的帳號登入，離職時公司停用帳號，就不能再登入。
+EMP -> IDP: 用公司帳號登入
+IDP -> API: 證明是誰
+note IDP: 離職就停用
+step: 每個請求都要知道是誰
+  每個 API 請求都要知道是誰，但不能每次都查密碼。應用程式有多台，登入狀態要放在哪裡？
+M => API: 每一個請求
+note API: 不能每次都查密碼
+step: 多快生效？
+  使用者按下登出、管理員停用帳號、員工離職，要多快生效？已經發出去的登入狀態，還能用多久？
+EMP -> API: 離職後還能用嗎？ [danger]
+note EMP: 已經離職 [danger]
+step: 被注入的 JavaScript
+  網頁上的任何一段 JavaScript 被注入，會不會連登入狀態一起被偷走？
+M -> ATK: 登入狀態被偷走 [danger]
+note M: 頁面被注入 JS [danger]
+```
+
 驗證只回答「你是誰」；「你能做什麼」是授權，是[下一篇](/post/systemdesign/authorization-owasp-api-top10/)的主題。
 
 ## 最簡單的做法與它的極限
