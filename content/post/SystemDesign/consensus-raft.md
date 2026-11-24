@@ -18,6 +18,37 @@ tags: ["System Design", "Consensus", "Raft", "etcd", "Leader Election", "jetcd",
 2. **主資料庫切換**：MySQL primary 當機，要把某一台 replica 升為新的 primary。誰來決定？如果網路分割，兩邊各自選出一台 primary，就會 split brain
 3. **設定要一致**：「暫停報名」的開關改了之後，所有實例都要看到同一個值，不能有的實例還在接受報名
 
+```diagram
+title: 三個看起來不相關的問題
+row: A1 實例 1 | A2 實例 2 | A3 實例 3
+row: R1 Replica 1 | P Primary | R2 Replica 2
+step: 排程只能跑一份
+  每分鐘寄出「講座即將開始」通知的排程部署了 3 個實例，三個都跑，同一位學員就收到三封。
+note A1: 寄通知
+note A2: 也寄通知 [danger]
+note A3: 也寄通知 [danger]
+step: 主資料庫當機
+  MySQL primary 當機了，要把某一台 replica 升為新的 primary。誰來決定？
+note P: 當機 [danger]
+note R1: 我升級？
+note R2: 還是我升級？
+step: 網路分割，兩個 primary
+  如果網路剛好分割，兩邊各自選出一台 primary，兩邊都接受寫入，資料就分岔了。這叫 split brain。
+R1 -> R2: 網路分割 [danger]
+note R1: 我是 primary [danger]
+note R2: 我也是 primary [danger]
+step: 設定要一致
+  「暫停報名」的開關改了之後，所有實例都要看到同一個值，不能有的實例還在接受報名。
+note A1: 暫停報名：是
+note A2: 暫停報名：是
+note A3: 暫停報名：否 [danger]
+step: 同一個問題
+  三個問題的本質相同：一群機器，在部分機器當機、網路會延遲或中斷時，對同一個值達成一致。
+note A1: 誰來跑？
+note A2: 現在的值是什麼？
+note P: 誰是 primary？
+```
+
 三個問題的本質相同：**一群機器，在部分機器當機、網路會延遲或中斷的情況下，對同一個值達成一致**。這就是共識（consensus）。
 
 ## 最簡單的做法與它的極限

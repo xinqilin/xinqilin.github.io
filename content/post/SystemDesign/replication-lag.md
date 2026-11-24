@@ -18,6 +18,33 @@ tags: ["System Design", "Replication", "MySQL", "PostgreSQL", "Spring", "Consist
 2. 「報名成功後，『我的報名』清單裡有這場；再整理一次就不見了，再整理又出現。」
 3. primary 當機、切換到 replica 之後，最後幾秒的報名紀錄不見了。
 
+```diagram
+title: 讀取導到 replica 之後
+actors: U 使用者 | P Primary | R1 Replica 1 | R2 Replica 2
+U -> P: 修改個人簡介
+  寫入一律送到 primary；讀寫比 50 : 1，讀取導到兩台 replica。
+P --> U: 成功
+  primary 寫入成功就回覆，不等 replica（MySQL 預設的非同步複寫）。
+U -> R1: 重新整理
+  重新整理時，讀取被導到 replica 1。
+R1 --> U: 還是舊的簡介 [danger]
+  replica 還沒套用剛才那筆修改，使用者看到的是舊資料。延遲通常只有幾十毫秒，但遇到大交易可能累積到好幾秒。
+U -> P: 報名講座
+  使用者接著報名一場講座。
+U -> R1: 我的報名
+  這次 replica 1 已經追上了。
+R1 --> U: 有這場 [ok]
+  清單裡看得到剛報名的講座。
+U -> R2: 再整理一次
+  再整理一次，被分到進度比較慢的 replica 2。
+R2 --> U: 這場不見了 [danger]
+  清單裡的報名不見了；再整理落回 replica 1，又出現了。兩台 replica 的進度不同，資料就像在時光倒流。
+note P: 當機 [danger]
+  primary 當機的瞬間，最後一小段寫入還沒送到任何 replica。延遲 200 毫秒、每秒 200 次寫入，就是約 40 筆已經回覆成功的交易。
+note R1: 升為新的 primary [danger]
+  切換到 replica 1 之後，那些已經告訴使用者「報名成功」的紀錄就消失了。
+```
+
 這三個問題都來自同一件事：**replica 的資料比 primary 晚**。
 
 ## 最簡單的做法與它的極限

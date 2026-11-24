@@ -18,6 +18,30 @@ tags: ["System Design", "Consistent Hashing", "Rendezvous Hashing", "Guava", "Ca
 
 另一個場景：平台有 1,000 個企業租戶，每個租戶每 10 分鐘要跑一次報表彙整。應用程式有 3 台 instance，要讓每個租戶只由一台負責，而且 instance 增減時，盡量不要改變已經分配好的租戶。
 
+```diagram
+title: 少了一台 Redis，資料庫就倒了
+row: APP 應用程式 | R 10 台 Redis | DB 資料庫
+row: T 1,000 個租戶 | I 3 台 instance | .
+step: 平常：命中率 98%
+  講座詳情頁的快取分散在 10 台獨立的 Redis，用 hash(key) % 10 決定每個 key 放在哪一台。尖峰每秒 5 萬次讀取，命中率 98%，資料庫只承受每秒 1,000 次查詢。
+APP => R: 每秒 5 萬次讀取
+APP -> DB: 每秒 1,000 次
+note R: hash(key) % 10 [ok]
+step: 一台故障，改成 % 9
+  其中一台故障，從清單移除後公式變成 hash(key) % 9。除以 10 和除以 9 的餘數大多不同，約 90% 的 key 換到了別台，等於同時失效。
+note R: 改成 % 9，九成 key 換位置 [danger]
+APP => R: 幾乎都查不到 [danger]
+step: 資料庫倒下
+  查不到的請求全部湧向資料庫，幾秒內衝到每秒 4 萬次以上，接著整個倒下。
+APP => DB: 每秒 4 萬次以上 [danger]
+note DB: 倒下 [danger]
+step: 另一個場景：分配租戶
+  1,000 個企業租戶，每個每 10 分鐘要彙整一次報表。3 台 instance 要分工，每個租戶只由一台負責；instance 增減時，已經分配好的租戶最好不要動。
+T -> I: 每 10 分鐘彙整
+note I: 每個租戶只由一台負責
+note T: 增減 instance 時盡量不搬
+```
+
 ## 最簡單的做法與它的極限
 
 `hash(key) % N` 的分布很平均，問題在 N 改變的時候。key 的雜湊值除以 10 和除以 9 的餘數，大部分都不相同，[Sharding 篇](/post/systemdesign/sharding/)的實測中，16 台改成 17 台要搬 94% 的資料。對快取來說，「搬移」就是 cache miss：一台故障，90% 的 key 同時失效，這正是 [Cache 篇](/post/systemdesign/caching/)的雪崩。

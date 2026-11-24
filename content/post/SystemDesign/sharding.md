@@ -20,6 +20,32 @@ tags: ["System Design", "Sharding", "Partitioning", "MySQL", "Spring", "Outbox",
 - **資料量**：12 TB 的備份以每秒 500 MB 還原，要將近 7 小時
 - **記憶體**：常用的索引已經放不進 buffer pool，查詢開始大量讀磁碟
 
+```diagram
+title: 一台 primary 撐不住的三個地方
+row: U 熱門講座報名 | P Primary | R Read replica
+row: . | DISK 磁碟與備份 | .
+step: 三年累積 12 TB
+  報名資料累積到 30 億筆、12 TB。熱門講座開放報名的瞬間，寫入尖峰每秒 2 萬次。
+U => P: 每秒 2 萬次寫入
+note P: 30 億筆、12 TB
+step: read replica 幫不上忙
+  replica 能分擔讀取，卻分擔不了寫入：每台 replica 都要套用全部的寫入，寫入量和 primary 一樣多。
+P => R: 全部寫入照樣套用 [danger]
+note R: 寫入量和 primary 一樣 [danger]
+step: 寫入在同一台排隊
+  所有寫入都在同一台機器上排隊，加 replica 也不會變快。
+U => P: 每秒 2 萬次寫入 [danger]
+note P: 所有寫入都在這裡排隊 [danger]
+step: 還原要將近 7 小時
+  12 TB 的備份以每秒 500 MB 還原，要將近 7 小時。這段時間服務只能等。
+DISK => P: 以 500 MB/s 還原 [danger]
+note P: 將近 7 小時 [danger]
+step: 索引放不進記憶體
+  常用的索引已經放不進 buffer pool，查詢開始大量讀磁碟，連讀取也跟著變慢。
+P => DISK: 大量讀磁碟 [danger]
+note P: 常用索引放不進記憶體 [danger]
+```
+
 ## 最簡單的做法與它的極限
 
 分片之前，先確認這些更簡單的做法都試過了：
