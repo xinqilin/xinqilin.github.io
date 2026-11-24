@@ -22,6 +22,33 @@ aliases:
 
 另一個角度：**MySQL Server 端的連線數有上限**（`max_connections`，預設 151）。連線池讓多個應用執行緒共享少量資料庫連線。
 
+```diagram
+title: 連線池解決的事，與它出事的方式
+row: T 請求執行緒 | DB MySQL
+row: P 連線池 | X 慢的外部 API
+step: 每個請求都新建連線
+  沒有連線池時，每個請求都要重新建立 MySQL 連線：TCP 三向交握、MySQL 認證，啟用 SSL 還要再協商一次，單次約 5 到 30 毫秒。MySQL 的連線數也有上限，預設 151。
+T => DB: 每次都新建連線 [danger]
+note DB: max_connections 151
+step: 建好一批，重複使用
+  連線池預先建立固定數量的連線（例如 maximum-pool-size 10），執行緒借用、用完歸還，省掉建立連線的開銷，也讓多個執行緒共用少量的資料庫連線。
+T -> P: 借用、歸還
+P -> DB: 10 條連線 [ok]
+step: 交易裡呼叫慢的 API
+  在 @Transactional 方法裡呼叫一個可能要 30 秒的外部 API。這段期間沒有任何資料庫工作，連線卻一直被交易佔著；readOnly = true 也一樣。
+T -> X: 等 30 秒 [danger]
+note P: 1 條連線被佔住 [danger]
+step: 連線池耗盡
+  這樣的請求一多，10 條連線全被佔住，新的請求只能排隊。等超過 connection-timeout 的 30,000 毫秒，就拋出 Connection is not available。
+T => P: 排隊等連線 [danger]
+note P: 10 條全部借出 [danger]
+note T: 30 秒後逾時 [danger]
+step: MySQL 切斷閒置連線
+  雲端 MySQL 的 wait_timeout 常設為 5 到 10 分鐘，閒置過久的連線會被 MySQL 主動切斷。max-lifetime 沒有比它短，池子就還以為連線有效，借到的人會拿到 Communications link failure。
+DB --> P: 切斷閒置連線 [danger]
+note P: 還以為連線有效 [danger]
+```
+
 ---
 
 ## HikariCP 核心參數

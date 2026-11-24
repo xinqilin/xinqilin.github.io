@@ -40,6 +40,27 @@ List<Order> orders = orderRepository.findByUserId(userId);
 orders.forEach(o -> process(o.getItems())); // 每次 getItems() 觸發一條 SQL
 ```
 
+```diagram
+title: 3 筆訂單，4 條 SQL
+actors: S OrderService | H Hibernate | DB MySQL
+S -> H: findByUserId(1)
+  Service 查出使用者 1 的所有訂單。
+H -> DB: SELECT orders
+  Hibernate 發出第 1 條 SQL，取回 3 筆 Order。items 是 LAZY，這時還沒有載入。
+H --> S: 3 筆 Order
+  Service 拿到訂單清單，開始用 forEach 逐筆處理。
+S -> H: getItems()
+  存取第一筆訂單的 items，集合在這一刻才觸發查詢。
+H -> DB: order_id = 10
+  第 2 條 SQL：撈出訂單 10 的 OrderItem。
+H -> DB: order_id = 11
+  迴圈走到下一筆，第 3 條。每多一筆訂單，就多一次資料庫往返。
+H -> DB: order_id = 12 [danger]
+  3 筆訂單共發出 1 + 3 條 SQL。訂單有 N 筆，就是 N + 1 條，而且這段程式碼看起來只查了一次。
+H -> DB: JOIN FETCH，1 條 [ok]
+  解法都在減少往返：JOIN FETCH 與 @EntityGraph 用一條 SQL 一起載入 Order 和 OrderItem；@BatchSize 則把 N 條合併成幾條 IN 查詢。
+```
+
 ---
 
 ## 如何偵測

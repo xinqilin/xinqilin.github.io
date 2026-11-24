@@ -58,6 +58,29 @@ tags: ["TLS", "X.509", "PKI", "HTTPS", "OpenSSL", "HSTS", "Java", "Security"]
 | 8 | 確認每張憑證都在效期內 | [8. 過期與續約](#renewal) |
 | 9 | 全部通過，網址列出現鎖頭；任何一步失敗，你就會看到錯誤頁 | [9. openssl](#openssl) 教你把每一步拆開來看 |
 
+```diagram
+title: 打開 https://github.com 的九個步驟
+actors: TS 信任名單 | B 瀏覽器 | FW 公司防火牆 | S github.com
+note B: 查 HSTS：只能走 HTTPS
+  輸入 github.com，瀏覽器先查 HSTS 清單，發現這個網站只能走 HTTPS，內部直接改成 https://。
+note FW: 公司網路：可能先被接走
+  如果你在公司網路，這條連線可能先被防火牆接走，由它代替你和伺服器連線。
+B -> S: ClientHello
+  瀏覽器送出 ClientHello，雙方協商出這次連線要用的加密金鑰。
+S --> B: 憑證：leaf + 中繼
+  伺服器送來憑證：一張 leaf，加上一張中繼憑證。
+note B: SAN 有 github.com 嗎？
+  瀏覽器檢查憑證的 SAN 有沒有包含 github.com。
+note B: leaf → 中繼 → root 驗簽章
+  從 leaf 往上一張一張驗簽章，直到某一張 root。
+B -> TS: 這張 root 在名單裡嗎？
+  確認這張 root 在自己的信任名單（trust store）裡。名單在 client 手上，不是伺服器說了算。
+TS --> B: 在名單裡 [ok]
+  root 在名單裡，整條鏈就被信任。換成另一個 client，例如 Java，拿的是另一份名單，答案可能不同。
+note B: 都在效期內，出現鎖頭 [ok]
+  確認每張憑證都在效期內。全部通過，網址列出現鎖頭；任何一步失敗，你就會看到錯誤頁。
+```
+
 記住一件事就好：**「信任」不是伺服器說了算，是 client 拿自己手上的名單判斷的**。同一張憑證，Chrome 說 OK、Java 說不行，兩邊都沒有錯，因為它們拿的是不同的名單。後面幾乎所有的踩坑都是從這句話延伸出來的。
 
 ---

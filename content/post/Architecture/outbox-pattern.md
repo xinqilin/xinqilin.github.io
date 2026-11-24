@@ -40,6 +40,37 @@ public void createOrder(CreateOrderCommand cmd) {
   → 同情境 A 或 B
 ```
 
+```diagram
+title: 寫資料庫，也要發事件
+row: S 訂單服務 | DB 資料庫
+row: K Kafka | D 下游服務
+step: 一個操作，兩個系統
+  建立訂單要寫入資料庫，也要發布 order.created 事件通知下游。資料庫和 Kafka 是兩個不同的資源管理器，沒辦法包在同一個 ACID transaction 裡。
+S -> DB: 寫入訂單
+S -> K: order.created
+K -> D: 通知下游
+step: 情境 A：資料庫成功，Kafka 失敗
+  訂單已經 commit，事件卻沒有送出。下游永遠不知道有這筆訂單，兩邊的資料從此不一致。
+S -> DB: 已 commit [ok]
+S -> K: 送出失敗 [danger]
+note D: 沒收到這筆訂單 [danger]
+step: 情境 B：Kafka 成功，資料庫回滾
+  事件已經送出，資料庫的交易卻回滾了。下游處理了一筆不存在的訂單。
+S -> K: 已送出
+K -> D: 處理訂單
+S -> DB: 回滾 [danger]
+note D: 訂單根本不存在 [danger]
+step: 情境 C：兩步之間當機
+  應用程式在兩個動作中間當機，結果就是情境 A 或 B，看它停在哪一步。
+note S: 兩步之間 crash [danger]
+step: Outbox：寫進同一個交易
+  把事件和訂單寫進同一個資料庫交易，由資料庫的 ACID 保證兩者一起成功或一起失敗；再由獨立的 Publisher 非同步地把事件送到 Kafka。
+S -> DB: 訂單 + 事件 [ok]
+note DB: 同一個交易 [ok]
+DB -> K: Publisher 轉發
+K -> D: 通知下游
+```
+
 ---
 
 ## Outbox Pattern 解法
