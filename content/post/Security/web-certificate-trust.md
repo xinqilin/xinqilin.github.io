@@ -42,7 +42,7 @@ tags: ["TLS", "X.509", "PKI", "HTTPS", "OpenSSL", "HSTS", "Java", "Security"]
 
 ---
 
-## 打開 https://github.com 時，依序發生了什麼 {#overview}
+## 打開 https://github.com 時，依序發生了什麼<a id="overview"></a>
 
 先看全貌。9 個主題其實是同一件事的不同步驟：
 
@@ -62,7 +62,7 @@ tags: ["TLS", "X.509", "PKI", "HTTPS", "OpenSSL", "HSTS", "Java", "Security"]
 
 ---
 
-## 1. TLS Handshake：先握手，再講話 {#tls-handshake}
+## 1. TLS Handshake：先握手，再講話<a id="tls-handshake"></a>
 
 > **白話版**
 > 你要和一個沒見過面的人講悄悄話，周圍都是偷聽的人。你們先當著大家的面各出一半密碼（偷聽的人就算聽到兩半，也拼不出完整的密碼），然後對方亮出一張由公家機關發的身分證，並當場簽名，證明證件真的是他的。確認身分之後，接下來的對話全部用剛剛拼出來的密碼加密。
@@ -168,7 +168,7 @@ openssl s_client -connect github.com:443 -servername github.com -tls1_2 -brief <
 
 ---
 
-## 2. X.509 憑證：網站的身分證 {#x509}
+## 2. X.509 憑證：網站的身分證<a id="x509"></a>
 
 > **白話版**
 > 憑證就像身分證：上面有姓名（Subject、SAN）、發證機關（Issuer）、有效期限（Validity）、照片（公鑰），最後蓋上發證機關的防偽鋼印（Signature）。
@@ -315,7 +315,7 @@ Certificate:
 
 ---
 
-## 3. Chain of Trust：根憑證 → 中繼憑證 → 網站憑證 {#chain-of-trust}
+## 3. Chain of Trust：根憑證 → 中繼憑證 → 網站憑證<a id="chain-of-trust"></a>
 
 > **白話版**
 > 你不認識這家餐廳的廚師，但你信任衛生局。衛生局授權給縣市衛生所（中繼），衛生所發合格證給這家餐廳（網站）。你看到合格證時，會一層一層往上確認：合格證上的章是衛生所的、衛生所的授權是衛生局給的，而衛生局本來就在你「信得過」的名單裡。
@@ -451,7 +451,7 @@ Let's Encrypt 早期就是靠 IdenTrust 的 **DST Root CA X3** 交叉簽署 ISRG
 
 ---
 
-## 4. Root CA 與 Trust Store：信任名單在誰手上 {#trust-store}
+## 4. Root CA 與 Trust Store：信任名單在誰手上<a id="trust-store"></a>
 
 > **白話版**
 > 每間公司的警衛手上都有一份「認可的發證機關」名單。同一張識別證，A 公司的警衛認得、B 公司的警衛不認得，不是證件有問題，是**兩位警衛拿的名單不一樣**。
@@ -560,7 +560,7 @@ JVM 加上 `-Djavax.net.debug=ssl:trustmanager` 就能在 log 看到這個過程
 
 ---
 
-## 5. Wildcard 與 SAN：這張證件能代表哪些名字 {#wildcard-san}
+## 5. Wildcard 與 SAN：這張證件能代表哪些名字<a id="wildcard-san"></a>
 
 > **白話版**
 > 憑證的 SAN 欄位是一張「名字清單」，上面寫的每個名字這張憑證都可以代表。`*.example.com` 是一張「萬用名牌」，可以代表 `api.example.com`、`www.example.com`，但**只能往下代表一層**：它不能代表 `a.b.example.com`，也不能代表沒有前綴的 `example.com` 本身。
@@ -672,7 +672,7 @@ Java 的訊息很直白，有出現 `subject alternative` 就是這一類。注�
 
 ---
 
-## 6. 防火牆：中間人合法化之後 {#firewall}
+## 6. 防火牆：中間人合法化之後<a id="firewall"></a>
 
 > **白話版**
 > 公司收發室規定所有包裹都要拆開檢查。收發室把你寄出去的包裹拆開、檢查完，重新封好，寄給收件人；收件人回寄的包裹也一樣先被拆開、檢查，再用**收發室自己的封條**重新封好交給你。
@@ -737,7 +737,7 @@ openssl s_client -connect github.com:443 -servername github.com </dev/null 2>/de
 
 ---
 
-## 7. HSTS：讓瀏覽器記住只走 HTTPS {#hsts}
+## 7. HSTS：讓瀏覽器記住只走 HTTPS<a id="hsts"></a>
 
 > **白話版**
 > 你第一次去朋友家時走錯門，朋友在後門告訴你：「以後都走前門，一年內都不要再走後門了。」從那天起，你每次去都直接走前門，連後門都不會靠近。
@@ -878,7 +878,7 @@ add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" alway
 
 ---
 
-## 8. 憑證過期、續約與「自動信任」 {#renewal}
+## 8. 憑證過期、續約與「自動信任」<a id="renewal"></a>
 
 > **白話版**
 > 憑證跟護照一樣有期限，過期就不能用，就算你本人一點都沒變也一樣。聰明的做法是設個提醒，在**還剩三分之一效期時**就去換新的，不要等到要出國的前一天。
@@ -1067,7 +1067,7 @@ done
 
 ---
 
-## 9. openssl 排錯工具箱：自己當一次 CA {#openssl}
+## 9. openssl 排錯工具箱：自己當一次 CA<a id="openssl"></a>
 
 > **白話版**
 > 前面 8 節講的都是「瀏覽器在背後偷偷做的事」。openssl 就像一台透視機，讓你把握手、憑證、鏈、名單一步一步攤開來看。看得到之後，排錯就從「猜」變成「查」。
@@ -1355,7 +1355,7 @@ openssl s_client -connect localhost:8443 -CAfile root.pem -verify_hostname local
 
 ---
 
-## 實戰案例 A：公司防火牆 SSL inspection {#case-firewall}
+## 實戰案例 A：公司防火牆 SSL inspection<a id="case-firewall"></a>
 
 情境：到新公司報到，瀏覽器一切正常，但 `mvn package` 下載不了依賴、`git clone` 失敗、`docker build` 裡的 `apt-get update` 也掛了。第 6 節已經解釋原因，這裡講怎麼一步一步修。
 
@@ -1584,7 +1584,7 @@ ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 
 ---
 
-## 實戰案例 B：自簽憑證與內部 CA {#case-internal-ca}
+## 實戰案例 B：自簽憑證與內部 CA<a id="case-internal-ca"></a>
 
 情境：內部服務之間要走 HTTPS（例如 Spring Boot 服務互相呼叫、內部管理後台），但這些主機名不對外，公開 CA 簽不了（或你不想讓主機名出現在公開的 CT log 上）。
 
@@ -1732,7 +1732,7 @@ class InternalApiClientConfig {
 
 ---
 
-## 速查表：錯誤訊息 → 原因 → 第一個指令 {#cheatsheet}
+## 速查表：錯誤訊息 → 原因 → 第一個指令<a id="cheatsheet"></a>
 
 | 你看到的錯誤 | 最可能的原因 | 第一個要跑的指令 |
 |---|---|---|
@@ -1757,7 +1757,7 @@ class InternalApiClientConfig {
 
 ---
 
-## 參考資料 {#references}
+## 參考資料<a id="references"></a>
 
 **RFC 與標準**
 
