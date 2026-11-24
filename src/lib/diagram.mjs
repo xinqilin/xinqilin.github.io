@@ -155,6 +155,21 @@ function fits(list, boxW) {
   if (long) throw new Error(`diagram: name too long for its box: ${long.name}`);
 }
 
+/** Box around one line of text, vertically centered on cy; centered on x unless `start`. */
+const span = (text, x, cy, start = false) => {
+  const w = textWidth(text, FONT);
+  return { text, x: start ? x : x - w / 2, y: cy - FONT / 2, w, h: FONT };
+};
+
+/** Labels and notes shown together must stay on the canvas and clear of each other and of the nodes. */
+function clear(boxes, nodes, width, where) {
+  boxes.forEach((a, i) => {
+    if (a.x < 0 || a.x + a.w > width) throw new Error(`diagram: ${where}: "${a.text}" runs off the canvas`);
+    const hit = [...boxes.slice(i + 1), ...nodes].find((b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h);
+    if (hit) throw new Error(`diagram: ${where}: "${a.text}" overlaps "${hit.text}"`);
+  });
+}
+
 /** Arrowhead with its point at (x, y), pointing along the unit vector (ux, uy). */
 function tip(x, y, ux, uy) {
   const bx = x - ux * 11;
@@ -205,6 +220,7 @@ function renderSequence({ title, actors, steps }, id) {
   // Each note also gets an opaque patch outside its step group, so a faded note never shows the lifeline through it.
   const masks = [];
   const noteAt = (cx, cy, text) => {
+    if (textWidth(text, FONT) + 24 > GAP * 2 - 20) throw new Error(`diagram: note too long: ${text}`);
     const w = Math.min(Math.max(textWidth(text, FONT) + 24, 110), GAP * 2 - 20);
     const left = Math.min(Math.max(cx - w / 2, 4), width - 4 - w); // keep notes on the first/last actor inside the canvas
     masks.push(`<rect class="dg-mask" x="${r1(left)}" y="${cy - 14}" width="${r1(w)}" height="${NOTE_H}" rx="6"/>`);
@@ -225,6 +241,9 @@ function renderSequence({ title, actors, steps }, id) {
     }
     const x1 = x[s.from];
     const x2 = x[s.to];
+    if (textWidth(s.text, FONT) > Math.abs(x2 - x1) - 12) {
+      throw new Error(`diagram: label too long for the gap between ${s.from} and ${s.to}: ${s.text}`);
+    }
     const dir = Math.sign(x2 - x1);
     const burst = s.tone === 'danger' ? `<circle class="dg-burst" cx="${x2}" cy="${cy}" r="10"/>` : '';
     return (
@@ -283,12 +302,14 @@ function renderScene({ title, nodes, rows, cols, steps }, id) {
     return `<line class="sc-edge" x1="${r1(x1)}" y1="${r1(y1)}" x2="${r1(x2)}" y2="${r1(y2)}"/>`;
   });
 
-  const flow = (f) => {
+  const flow = (f, boxes) => {
     const [x1, y1, x2, y2] = ends(at[f.from], at[f.to]);
     const len = Math.hypot(x2 - x1, y2 - y1);
     const ux = (x2 - x1) / len;
     const uy = (y2 - y1) / len;
-    if (Math.abs(uy) < 0.01 && textWidth(f.text, FONT) > Math.abs(x2 - x1) + 12) {
+    const flat = Math.abs(uy) < 0.01;
+    const upright = !flat && Math.abs(ux) < 0.01;
+    if (flat && textWidth(f.text, FONT) > Math.abs(x2 - x1) + 12) {
       throw new Error(`diagram: label too long for the gap between ${f.from} and ${f.to}: ${f.text}`);
     }
     const heavy = f.op === '=>';
@@ -296,12 +317,13 @@ function renderScene({ title, nodes, rows, cols, steps }, id) {
     const mx = (x1 + x2) / 2;
     const my = (y1 + y2) / 2;
     // Horizontal: label above the line. Vertical: label to the right. Diagonal: on the line, with a halo.
-    const label =
-      Math.abs(uy) < 0.01
-        ? `<text class="dg-label" x="${r1(mx)}" y="${r1(my - 9)}">`
-        : Math.abs(ux) < 0.01
-          ? `<text class="dg-label is-side" x="${r1(mx + 10)}" y="${r1(my)}">`
-          : `<text class="dg-label is-mid" x="${r1(mx)}" y="${r1(my)}">`;
+    // A horizontal label sits on its baseline at my - 9, so its box is centered about 13px above the line.
+    const label = flat
+      ? `<text class="dg-label" x="${r1(mx)}" y="${r1(my - 9)}">`
+      : upright
+        ? `<text class="dg-label is-side" x="${r1(mx + 10)}" y="${r1(my)}">`
+        : `<text class="dg-label is-mid" x="${r1(mx)}" y="${r1(my)}">`;
+    boxes.push(flat ? span(f.text, mx, my - 13) : span(f.text, upright ? mx + 10 : mx, my, upright));
     const n = heavy ? 5 : 3;
     const dur = heavy ? 1.2 : 1.8;
     const dots = Array.from(
@@ -316,15 +338,17 @@ function renderScene({ title, nodes, rows, cols, steps }, id) {
   };
 
   // Notes sit below nodes in the last row and above every other node.
-  const noteFor = (it) => {
+  const noteFor = (it, boxes) => {
     const n = at[it.at];
     const w = Math.max(textWidth(it.text, FONT) + 24, 80);
     const x = Math.min(Math.max(n.x - w / 2, 4), width - 4 - w);
     const below = rows > 1 && n.r === rows - 1;
     const y = below ? n.y + NODE_H / 2 + NOTE_GAP : n.y - NODE_H / 2 - NOTE_GAP - NOTE_H;
+    boxes.push({ text: it.text, x, y, w, h: NOTE_H });
     return `<g class="sc-note${it.tone ? ` is-${it.tone}` : ''}">${note(x, y, w, it.text)}</g>`;
   };
 
+  const nodeBoxes = nodes.map((n) => ({ text: n.name, x: at[n.id].x - NODE_W / 2, y: at[n.id].y - NODE_H / 2, w: NODE_W, h: NODE_H }));
   const body = steps.map((s) => {
     // Nodes this step touches are redrawn on top of the dimmed base; a danger flow or note turns its node red.
     const hot = new Map();
@@ -333,7 +357,10 @@ function renderScene({ title, nodes, rows, cols, steps }, id) {
       if (it.tone === 'danger') hot.set(it.kind === 'flow' ? it.to : it.at, true);
     }
     const lit = [...hot].map(([nid, danger]) => box(at[nid], `dg-actor is-on${danger ? ' is-danger' : ''}`)).join('');
-    return `<g class="dg-step">${lit}${s.items.map((it) => (it.kind === 'flow' ? flow(it) : noteFor(it))).join('')}</g>`;
+    const boxes = [];
+    const items = s.items.map((it) => (it.kind === 'flow' ? flow(it, boxes) : noteFor(it, boxes))).join('');
+    clear(boxes, nodeBoxes, width, `step "${s.label}"`);
+    return `<g class="dg-step">${lit}${items}</g>`;
   });
 
   const base = `<g class="sc-base">${edges.join('')}${nodes.map((n) => box(at[n.id], 'dg-actor')).join('')}</g>`;

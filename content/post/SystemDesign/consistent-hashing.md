@@ -20,7 +20,7 @@ tags: ["System Design", "Consistent Hashing", "Rendezvous Hashing", "Guava", "Ca
 
 ```diagram
 title: 少了一台 Redis，資料庫就倒了
-row: APP 應用程式 | R 10 台 Redis | DB 資料庫
+row: R 10 台 Redis | APP 應用程式 | DB 資料庫
 row: T 1,000 個租戶 | I 3 台 instance | .
 step: 平常：命中率 98%
   講座詳情頁的快取分散在 10 台獨立的 Redis，用 hash(key) % 10 決定每個 key 放在哪一台。尖峰每秒 5 萬次讀取，命中率 98%，資料庫只承受每秒 1,000 次查詢。

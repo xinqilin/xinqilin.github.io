@@ -72,6 +72,14 @@ export function readingMinutes(body = '') {
 /** Rough plain text for the search index. */
 export function plainText(body = '') {
   return body
+    // A diagram keeps its title, step labels and narration; its layout syntax is not prose.
+    .replace(/^```diagram\n([\s\S]*?)^```$/gm, (_, src: string) =>
+      src
+        .split('\n')
+        .filter((l) => /^(\s|title:|step:)/.test(l))
+        .map((l) => l.replace(/^(title|step):/, ''))
+        .join('\n'),
+    )
     .replace(/```[^\n]*\n/g, '')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')

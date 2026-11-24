@@ -34,7 +34,8 @@ note R1: 我升級？
 note R2: 還是我升級？
 step: 網路分割，兩個 primary
   如果網路剛好分割，兩邊各自選出一台 primary，兩邊都接受寫入，資料就分岔了。這叫 split brain。
-R1 -> R2: 網路分割 [danger]
+A1 -> R1: 寫入 [danger]
+A3 -> R2: 寫入 [danger]
 note R1: 我是 primary [danger]
 note R2: 我也是 primary [danger]
 step: 設定要一致
