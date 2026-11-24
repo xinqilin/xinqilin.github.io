@@ -19,6 +19,31 @@ tags: ["System Design", "Rate Limiting", "Token Bucket", "Redis", "Spring", "Sec
 - 登入 API 每分鐘收到數萬次嘗試，帳號密碼來自其他網站外洩的資料（credential stuffing）
 - 簡訊驗證碼 API 被大量呼叫，發送到國外的付費號碼，一個晚上燒掉幾萬元的簡訊費
 
+```diagram
+title: 一個呼叫者拖垮所有人
+row: BOT 搶票程式 | API 講座平台 | SMS 簡訊服務
+row: PT 合作夥伴 | U 真人使用者 | ATK 攻擊者
+step: 搶票程式
+  熱門講座開放報名的瞬間，有人用程式每秒送出上千個報名請求，名額在 2 秒內被搶光，真人使用者連頁面都還沒載入。
+BOT => API: 每秒上千個報名 [danger]
+note API: 2 秒內名額搶光 [danger]
+note U: 頁面還沒載入 [danger]
+step: 合作夥伴的 bug
+  一個合作夥伴的系統有 bug，在迴圈裡不斷呼叫查詢 API，每秒 5,000 個請求，拖慢了所有人。
+PT => API: 迴圈呼叫 5,000 RPS [danger]
+U -> API: 查詢講座
+note U: 所有人都變慢 [danger]
+step: 撞庫攻擊
+  登入 API 每分鐘收到數萬次嘗試，帳號密碼來自其他網站外洩的資料。
+ATK => API: 每分鐘數萬次登入 [danger]
+note ATK: 拿外洩的帳號密碼
+step: 簡訊費被燒光
+  簡訊驗證碼 API 被大量呼叫，驗證碼發送到國外的付費號碼，一個晚上燒掉幾萬元的簡訊費。
+ATK => API: 大量索取驗證碼 [danger]
+API => SMS: 發到國外付費號碼 [danger]
+note SMS: 一晚燒掉幾萬元 [danger]
+```
+
 [上一篇](/post/systemdesign/circuit-breaker-bulkhead/)的 circuit breaker 與 bulkhead 保護的是「我呼叫的下游」。這篇要保護的是自己：**限制每個呼叫者能用掉多少資源**，讓一個呼叫者的行為不會影響其他人。
 
 ## 最簡單的做法與它的極限

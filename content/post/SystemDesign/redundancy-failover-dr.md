@@ -21,6 +21,32 @@ tags: ["System Design", "High Availability", "Failover", "Disaster Recovery", "M
 
 第 1 件事，負載平衡器把流量轉到其他 3 台就解決了（[Load Balancing 篇](/post/systemdesign/load-balancing/)）。第 2 件事讓所有東西同時消失。第 3、4 件事更麻煩：機器都好好的，但**資料錯了**，而 replica 在幾毫秒內就忠實地複製了同一個錯誤。
 
+```diagram
+title: 一個可用區裡的講座平台
+row: LB 負載平衡器 | APP 4 台應用伺服器 | P MySQL primary
+row: BK 備份 | RD Redis | R MySQL replica
+step: 一台硬碟壞了
+  一台應用伺服器的硬碟壞了。負載平衡器把流量轉給其他 3 台，使用者幾乎感覺不到。
+LB => APP: 轉給其他 3 台 [ok]
+note APP: 一台硬碟壞了
+step: 整個可用區停電
+  所有機器都在同一個可用區。停電時，應用伺服器、primary、replica、Redis 同時消失，沒有任何一台能接手。
+note APP: 停電 [danger]
+note P: 停電 [danger]
+note RD: 停電 [danger]
+note R: 停電 [danger]
+step: 少了 WHERE 的 DELETE
+  工程師在正式環境執行了少了 WHERE 的 DELETE FROM registration。機器都好好的，但資料錯了，而 replica 在幾毫秒內就忠實地複製了同一個錯誤。
+APP -> P: 整表 DELETE [danger]
+P -> R: 幾毫秒內照樣複製 [danger]
+note R: 一樣被刪光 [danger]
+step: 資料庫被加密，備份被刪
+  攻擊者取得管理員帳號，加密了資料庫，也刪除了備份。可用性的手段在這裡都幫不上忙，只有攻擊者碰不到的備份能救。
+note P: 被加密 [danger]
+note R: 也被加密 [danger]
+note BK: 備份被刪除 [danger]
+```
+
 前兩件事是**可用性**的問題，靠備援與故障轉移解決；後兩件事是**資料正確性**的問題，只有備份能救。這篇把兩者分開談。
 
 ## 最簡單的做法與它的極限
