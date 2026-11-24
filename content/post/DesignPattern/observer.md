@@ -6,7 +6,6 @@ draft: false
 tags: ["DesignPattern", "Behavioral", "Observer"]
 description: "Observer 模式定義一對多依賴關係，Subject 狀態變更時自動通知所有訂閱者；Spring @EventListener 是現代首選實作。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/architecture/observer/
 ---

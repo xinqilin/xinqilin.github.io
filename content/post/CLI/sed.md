@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2019-01-18T10:23:31+08:00
 draft: false
 tags: ["Linux", "Sed", "Stream Editor", "Text Processing", "Regular Expression", "Shell", "Unix"]
-description: "深入解析 sed 流編輯器的完整用法，包含文本替換、行操作、正規表達式與實戰應用場景"
+description: "sed 串流編輯器的完整用法：位址定界，替換、刪除、插入等核心命令，BRE 與 ERE 正規表達式、保持空間（Hold Space），以及設定檔修改、日誌分析、資料格式轉換等實戰範例。"
 categories: ["CLI"]
-disableComments: false
 aliases:
   - /post/Tools/Sed/
 

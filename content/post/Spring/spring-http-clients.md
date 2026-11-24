@@ -6,7 +6,6 @@ draft: false
 tags: ["Spring", "RestTemplate", "HTTP Client", "WebClient", "REST API", "Microservices", "Error Handling", "Testing", "Performance"]
 description: "深入解析 Spring RestTemplate 的完整使用方法，包含配置優化、錯誤處理、攔截器、測試策略與現代化替代方案"
 categories: ["Spring"]
-disableComments: false
 aliases:
   - /post/Backend/RestTemplate/
   - /post/backend/spring-http-clients/

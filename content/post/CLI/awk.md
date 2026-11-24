@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2019-04-06T23:18:56+08:00
 draft: false
 tags: ["Linux", "AWK", "Text Processing", "Data Analysis", "Pattern Scanning", "Shell", "Unix"]
-description: "深入解析 AWK 程式語言的完整用法，包含模式匹配、資料處理、內建變數與實戰應用場景"
+description: "AWK 文字處理完整用法：欄位與分隔符、內建變數、模式比對、控制結構、字串與數學函數、陣列，並說明 macOS 與 Linux（gawk）的相容性差異，最後以日誌分析與資料統計示範實戰。"
 categories: ["CLI"]
-disableComments: false
 aliases:
   - /post/Tools/Awk/
 

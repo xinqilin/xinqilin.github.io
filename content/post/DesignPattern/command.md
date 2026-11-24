@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T22:37:50+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "Command"]
-description: "命令模式：將請求封裝為物件，讓呼叫者與接收者解耦，並支援 undo/redo、排隊與日誌記錄。"
+description: "命令模式把請求封裝成物件，讓呼叫者與接收者解耦，支援 undo／redo、排隊與日誌。附 Java 範例、Callable 與 CQRS CommandBus 案例，以及用 lambda 取代無狀態的命令類別。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/Command/
   - /post/architecture/command/

@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2023-01-05T23:18:48+08:00
 draft: false
 tags: ["Java", "JPA", "Hibernate", "Enum", "ORM", "Database", "Spring", "MySQL"]
-description: "深入探討 JPA 中 Enum 型別的各種映射策略、自訂轉換器、效能優化與最佳實踐"
+description: "JPA 的 Enum 欄位該存名稱還是序號？本文比較 @Enumerated 的 STRING 與 ORDINAL、自訂 AttributeConverter 與通用轉換器，並涵蓋狀態歷史追蹤、索引與查詢最佳化、測試策略與踩坑紀錄。"
 categories: ["Database"]
-disableComments: false
 aliases:
   - /post/Backend/ORMEnumType/
   - /post/backend/jpa-enum-mapping/

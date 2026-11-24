@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2022-09-28T21:19:26+08:00
 draft: false
 tags: ["Algorithm", "LinkedList", "Recursion", "Java", "Pointer"]
-description: "深入探討鏈表反轉的多種實作方式，包含迭代、遞歸方法以及區間反轉等進階應用"
+description: "鏈表反轉的迭代與遞迴兩種寫法，附指標移動圖解與複雜度分析；進階涵蓋反轉前 N 個節點、指定區間（LeetCode 92）、K 個一組反轉（LeetCode 25），以及虛擬頭節點等實作技巧。"
 categories: ["Algorithm"]
-disableComments: false
 aliases:
   - /post/Algorithm/ReverseLinkedList/
 

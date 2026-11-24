@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T22:37:58+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "State"]
-description: "State 模式將狀態相關行為封裝成獨立類別，消除大型 if-else/switch，物件轉換狀態時行為自動切換。"
+description: "State 模式把各狀態的行為封裝成獨立類別，消除龐大的 if-else 與 switch。附 Java 範例，並比較 enum 加抽象方法、Spring Statemachine 與 sealed interface 的適用情境。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/State/
   - /post/architecture/state/

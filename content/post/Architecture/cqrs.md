@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-05-16T21:18:11+08:00
 draft: false
 tags: ["Architecture", "CQRS", "Command Query Responsibility Segregation", "Event Sourcing", "Microservices", "Domain-Driven Design", "Spring Boot", "Enterprise Architecture", "Scalability", "Performance", "Event-Driven Architecture", "Eventual Consistency", "Read Write Separation"]
-description: "深入探討 CQRS 架構模式的完整實作指南，包含命令與查詢職責分離、事件驅動架構、最終一致性與企業級應用實踐"
+description: "CQRS 把寫入（Command）與讀取（Query）拆成不同模型，各自最佳化。本文以 Spring Boot 實作，涵蓋事件溯源、用 Outbox 確保事務一致性、最終一致性的使用者體驗問題，以及何時不該使用 CQRS。"
 categories: ["Architecture"]
-disableComments: false
 aliases:
   - /post/Architecture/CQRS/
 

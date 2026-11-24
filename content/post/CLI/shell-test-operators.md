@@ -6,7 +6,6 @@ draft: false
 tags: ["Shell", "Bash", "File System", "Scripting"]
 description: "本文提供 Shell Script 中常用的檔案、目錄及字串測試表達式，包含語法說明與實用範例，幫助您更有效地撰寫腳本。"
 categories: ["CLI"]
-disableComments: false
 aliases:
   - /post/Tools/FileExpress/
 

@@ -6,7 +6,6 @@ draft: false
 tags: ["Docker", "Dockerfile", "Multi-stage Build", "Selenium", "Node.js", "DevOps", "Cross-platform"]
 description: "使用 Dockerfile 建構跨 linux/amd64 與 linux/arm64 的 Selenium 多架構映像，處理 NVM 路徑設定與多階段建構"
 categories: ["Container"]
-disableComments: false
 aliases:
   - /post/DevOps/Dockerfile-docker_in_docker/
 

@@ -6,7 +6,6 @@ draft: false
 tags: ["Docker", "MySQL", "DevOps", "Database", "Containerization"]
 description: "本指南詳細介紹如何使用 Docker 容器化部署 MySQL 資料庫，包含常用啟動指令、資料持久化、字元集設定及連接方式，助您快速建立開發與測試環境。"
 categories: ["Container"]
-disableComments: false
 aliases:
   - /post/DevOps/Docker-MySQL/
   - /post/devops/mysql/

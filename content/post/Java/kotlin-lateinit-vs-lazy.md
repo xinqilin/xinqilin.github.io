@@ -6,7 +6,6 @@ draft: false
 tags: ["Kotlin", "lateinit", "lazy", "Property Initialization", "Android", "Spring Boot", "Dependency Injection", "Performance", "Memory Management", "Best Practices", "Enterprise", "Thread Safety", "Reflection", "Testing"]
 description: "深入探討 Kotlin lateinit 關鍵字的完整實作指南，包含延遲初始化機制、與 lazy 的比較、企業級應用場景、效能優化與最佳實踐"
 categories: ["Java"]
-disableComments: false
 aliases:
   - /post/Backend/lateinit/
   - /post/backend/kotlin-lateinit-vs-lazy/

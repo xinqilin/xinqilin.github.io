@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2022-01-16T22:35:54+08:00
 draft: false
 tags: ["macos", "homebrew", "zsh", "shell", "environment"]
-description: "macOS 開發環境設定：Homebrew 安裝、zsh 設定、PATH 管理、常用工具安裝清單"
+description: "macOS 開發環境設定筆記：Homebrew 安裝、用 SDKMAN 管理 OpenJDK、Maven 與 Gradle 版本、用 NVM 管理 Node.js 版本，以及 zsh、PATH 設定與 chmod 等常用指令速查。"
 categories: ["Linux"]
-disableComments: false
 aliases:
   - /post/Others/Env/
   - /post/tools/env/

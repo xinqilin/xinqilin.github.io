@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2022-10-29T00:10:56+08:00
 draft: false
 tags: ["Ubuntu", "Linux", "System Administration", "Package Management", "Docker", "Server", "Command Line"]
-description: "深入解析 Ubuntu 系統的完整使用方法，包含安裝配置、套件管理、系統維護與 Docker 容器化應用"
+description: "Ubuntu 伺服器從安裝到維運：系統更新與時區設定、APT 套件管理、Docker 安裝、使用者與權限、服務與日誌管理、網路與防火牆、SSH 與安全加固，以及效能調整與備份還原。"
 categories: ["Linux"]
-disableComments: false
 aliases:
   - /post/Tools/Ubuntu/
 

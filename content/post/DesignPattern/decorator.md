@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T12:16:24+08:00
 draft: false
 tags: ["DesignPattern", "Structural", "Decorator"]
-description: "Decorator 模式在不修改原始類別的前提下，透過包裝物件動態疊加行為，避免繼承導致的類別爆炸。"
+description: "Decorator 模式包裝物件以動態疊加行為，不必修改原類別，也避免繼承造成類別爆炸。附 Java 範例、java.io 串流與 HttpServletRequestWrapper 案例，以及用 Function 組合的函數式寫法。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/Decorator/
   - /post/architecture/decorator/

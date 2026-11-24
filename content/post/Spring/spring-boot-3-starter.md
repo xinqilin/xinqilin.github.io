@@ -6,7 +6,6 @@ draft: false
 tags: ["Project Setup", "Configuration", "Development", "Best Practices", "Spring Boot", "Docker", "DevOps", "Microservices", "CI/CD", "Production", "Architecture", "Infrastructure", "Environment", "Deployment"]
 description: "完整的 Side Project 企業級專案配置指南，包含現代化開發環境設定、專案結構規劃、容器化部署、監控系統與 CI/CD 流程的最佳實踐"
 categories: ["Spring"]
-disableComments: false
 aliases:
   - /post/Backend/SideProjectConfig/
   - /post/backend/spring-boot-3-starter/

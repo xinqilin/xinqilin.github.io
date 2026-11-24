@@ -6,7 +6,6 @@ draft: false
 tags: ["Git", "GitHub", "SSH", "PAT", "Authentication"]
 description: "GitHub SSH 金鑰設定、Classic vs Fine-grained PAT 比較，以及 SSH vs HTTPS 選型指南"
 categories: ["Git"]
-disableComments: false
 aliases:
   - /post/Others/Github-ssh/
   - /post/tools/github-ssh/

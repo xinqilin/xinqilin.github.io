@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-11-29T22:24:03+08:00
 draft: false
 tags: ["Algorithm", "Graph Theory", "Union Find", "DFS", "BFS", "Enterprise", "Java"]
-description: "LeetCode 721 帳號合併：Union-Find 解法詳解，以及圖論建模的思路對比"
+description: "LeetCode 721 帳戶合併：把同一人的多個 email 視為圖的連通分量，用 Union-Find 合併後輸出，再與 DFS／BFS 圖論解法比較複雜度與適用情境，最後整理 Union-Find 的其他應用題。"
 categories: ["Algorithm"]
-disableComments: false
 aliases:
   - /post/Algorithm/GraphAccountMerge/
 

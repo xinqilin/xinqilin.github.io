@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2022-03-17T22:50:11+08:00
 draft: false
 tags: ["Code Smells", "Code Quality", "Refactoring", "Clean Code", "Software Architecture", "Best Practices", "Technical Debt", "Software Maintenance", "Code Review", "Design Patterns", "SOLID Principles", "Java", "Enterprise Development"]
-description: "深入探討代碼壞味道的完整識別與重構指南，包含常見壞味道類型、識別方法、重構技巧、預防策略與企業級代碼品質改善最佳實踐"
+description: "程式碼壞味道（Code Smells）不會讓功能出錯，卻會讓程式越改越難改。本文整理 Fowler 的 22 種壞味道速查與對應的重構手法，以及 SonarQube、SpotBugs 規則與程式碼品質監控方式。"
 categories: ["Architecture"]
-disableComments: false
 aliases:
   - /post/Architecture/BadSmell/
 

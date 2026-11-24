@@ -6,7 +6,6 @@ draft: false
 tags: ["DesignPattern", "Behavioral", "Memento"]
 description: "Memento 模式以快照記錄物件狀態，在不暴露內部結構的前提下支援 undo/redo，Java record 是現代的輕量實作。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/Memento/
   - /post/architecture/memento/

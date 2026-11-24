@@ -6,7 +6,6 @@ draft: false
 tags: ["Java", "Spring", "Swagger", "OpenAPI", "API", "Documentation", "SpringBoot", "REST"]
 description: "深入探討 Swagger/OpenAPI 在 Spring Boot 中的完整應用，包含進階配置、安全整合、自動化測試與最佳實踐"
 categories: ["Spring"]
-disableComments: false
 aliases:
   - /post/Backend/Swagger2/
   - /post/backend/springdoc-openapi/

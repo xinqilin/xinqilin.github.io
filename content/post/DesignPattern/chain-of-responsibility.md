@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T22:37:08+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "ChainOfResponsibility"]
-description: "責任鏈模式：將請求沿處理者鏈傳遞，讓多個物件都有機會處理請求，避免發送者與接收者的強耦合。"
+description: "責任鏈模式讓請求沿處理者鏈傳遞，每個處理者自行決定處理或往下傳，避免發送者與接收者耦合。附 Java 範例、Servlet Filter、Spring 攔截器與 ClassLoader 案例，以及用函式組合取代繼承式鏈。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/ChainOfResponsibility/
   - /post/architecture/chainofresponsibility/

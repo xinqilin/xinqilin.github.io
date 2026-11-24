@@ -6,7 +6,6 @@ draft: false
 tags: ["Java", "Algorithm", "Sorting", "Divide and Conquer", "Enterprise", "Performance"]
 description: "深入解析 Merge Sort：穩定排序證明、in-place 成本、外部排序應用，以及 Java Arrays.sort() 底層 Timsort 的關聯"
 categories: ["Algorithm"]
-disableComments: false
 aliases:
   - /post/Algorithm/MergeSort/
 

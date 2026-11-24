@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T12:12:36+08:00
 draft: false
 tags: ["DesignPattern", "Structural", "Adapter"]
-description: "Adapter 模式將不相容的介面轉換為客戶端期望的介面，常用於整合第三方 SDK 與遺留系統。"
+description: "Adapter 模式把不相容的介面轉成客戶端期望的介面，常用於整合第三方 SDK 與舊系統。附 Java 範例、InputStreamReader 與 HandlerAdapter 案例，以及用 lambda 充當輕量轉接。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/Adapter/
   - /post/architecture/adapter/

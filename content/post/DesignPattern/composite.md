@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T12:15:31+08:00
 draft: false
 tags: ["DesignPattern", "Structural", "Composite"]
-description: "Composite 模式讓客戶端以一致方式處理單個物件與物件組合，適合樹狀結構如目錄、組織圖、UI 元件。"
+description: "Composite 模式讓客戶端用同一介面操作單一物件與組合物件，適合目錄、組織圖、UI 元件等樹狀結構。附 Java 範例、AWT 與 Spring Security 案例，以及 sealed interface 的現代寫法。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/architecture/composite/
 ---

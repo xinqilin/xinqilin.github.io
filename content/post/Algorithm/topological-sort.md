@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-12-26T12:53:14+08:00
 draft: false
 tags: ["Algorithm", "Graph", "TopologicalSort", "DFS", "BFS", "Java"]
-description: "深入探討拓撲排序演算法原理、實作方式與實際應用，包含 DFS 和 BFS 兩種方法"
+description: "拓撲排序將有向無環圖（DAG）排成線性順序。本文實作 Kahn 演算法（BFS）與 DFS 兩種解法，說明如何偵測環，並以課程安排（LeetCode 207、210）與所有可能的菜譜（LeetCode 2115）示範應用。"
 categories: ["Algorithm"]
-disableComments: false
 aliases:
   - /post/Algorithm/TopologicalSort/
 

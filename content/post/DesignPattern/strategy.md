@@ -6,7 +6,6 @@ draft: false
 tags: ["DesignPattern", "Behavioral", "Strategy"]
 description: "策略模式：定義一族可互換的演算法並各自封裝，讓演算法的變化獨立於使用它的客戶端，現代 Java 以 lambda 直接實現。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/Strategy/
   - /post/architecture/strategy/

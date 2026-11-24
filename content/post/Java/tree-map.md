@@ -6,7 +6,6 @@ draft: false
 tags: ["Java", "TreeMap", "NavigableMap", "Red-Black Tree", "Data Structure", "Sorting", "SortedMap", "Binary Search Tree", "Performance", "Algorithms", "Collections", "Enterprise", "Best Practices", "Thread Safety", "Concurrency"]
 description: "深入探討 Java TreeMap 的完整實作指南，包含紅黑樹內部結構、NavigableMap 介面、排序機制、效能分析與企業級應用最佳實踐"
 categories: ["Java"]
-disableComments: false
 aliases:
   - /post/Backend/TreeMap/
   - /post/backend/tree-map/

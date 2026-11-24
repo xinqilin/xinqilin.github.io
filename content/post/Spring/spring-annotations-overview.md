@@ -6,7 +6,6 @@ draft: false
 tags: ["Java", "Spring", "Annotation", "Spring-Boot", "Configuration", "Web", "Data", "Security"]
 description: "全面整理 Spring Framework 中的重要註解，包含核心容器、Web、資料存取、安全、測試等各個領域的註解使用指南"
 categories: ["Spring"]
-disableComments: false
 aliases:
   - /post/Backend/SpringAnnotation/
   - /post/backend/spring-annotations-overview/

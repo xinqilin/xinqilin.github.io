@@ -16,10 +16,11 @@
   --code-dim: #7f97b8;
   --radius: 6px;
   --content: 1040px;
-  --head: 'IBM Plex Sans', 'Noto Sans TC', system-ui, sans-serif;
-  --body: 'Noto Sans TC', system-ui, sans-serif;
-  --label: 'IBM Plex Mono', 'Noto Sans TC', ui-monospace, monospace;
-  --mono: 'IBM Plex Mono', 'Noto Sans TC', ui-monospace, monospace;
+  /* IBM Plex is self-hosted (astro.config.mjs `fonts`, Latin only); Chinese uses the OS font. */
+  --head: var(--font-plex-sans);
+  --body: system-ui, -apple-system, 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans CJK TC', sans-serif;
+  --label: var(--font-plex-mono);
+  --mono: var(--font-plex-mono);
   color-scheme: light;
 }
 

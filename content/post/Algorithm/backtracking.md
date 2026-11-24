@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2022-05-10T23:34:53+08:00
 draft: false
 tags: ["Algorithm", "Backtracking", "Recursion"]
-description: "深入探討回溯演算法的原理、實作技巧與經典題型解析"
+description: "回溯演算法用「選擇、遞迴、撤銷」系統性地試遍候選解。本文整理通用模板與時間複雜度，並以子集、全排列、組合總和、回文分割等 LeetCode 題型示範剪枝與去重技巧。"
 categories: ["Algorithm"]
-disableComments: false
 aliases:
   - /post/Algorithm/Backtracking/
 

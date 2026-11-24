@@ -6,7 +6,6 @@ draft: false
 tags: ["JWT", "Spring Security", "Authentication", "Java", "Spring Boot", "Security", "REST API", "Token"]
 description: "深入解析 JWT 認證機制在 Spring Boot 中的完整實作，包含 Token 生成、驗證、Filter 配置與安全性最佳實踐"
 categories: ["Security"]
-disableComments: false
 aliases:
   - /post/Backend/JWT/
   - /post/backend/jwt-spring-security/

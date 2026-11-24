@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2022-11-01T21:59:56+08:00
 draft: false
 tags: ["Linux", "Find", "Command Line", "File Search", "System Administration", "Shell", "Unix"]
-description: "深入解析 Linux find 命令的完整用法，包含檔案搜尋、條件過濾、批次操作與實戰應用場景"
+description: "Linux find 命令依檔名、類型、大小、時間、權限與擁有者搜尋檔案，並用 -exec、-ok 批次處理結果、以邏輯運算子組合條件、用 -printf 自訂輸出格式，附大量實用範例。"
 categories: ["CLI"]
-disableComments: false
 aliases:
   - /post/Tools/Find/
 

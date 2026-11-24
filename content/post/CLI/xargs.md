@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2022-11-02T23:05:25+08:00
 draft: false
 tags: ["Linux", "Xargs", "Command Line", "Parallel Processing", "Pipe", "Shell", "Unix"]
-description: "深入解析 xargs 命令的完整用法，包含參數處理、並行執行、管道組合與實戰應用場景"
+description: "xargs 把標準輸入轉成命令參數，解決參數過長的限制。本文說明分組、分隔符、替換字串與 -P 平行執行等選項，搭配 find、grep 的組合用法、安全注意事項與除錯技巧。"
 categories: ["CLI"]
-disableComments: false
 aliases:
   - /post/Tools/Xargs/
 

@@ -3,7 +3,7 @@ title: "Cloudflare Turnstile 實戰：Vue 3 + Spring Boot 雙端整合"
 author: Bill.Lin
 date: 2026-04-28
 draft: false
-description: "Cloudflare Turnstile 雙端整合筆記：Vue 3 widget 兩種寫法、Spring Boot siteverify 手寫對照套件，涵蓋 action 防重放、idempotency_key 重試、hostname 安全鎖與完整 error-codes 速查。"
+description: "Cloudflare Turnstile 的 Vue 3 與 Spring Boot 整合：前端 widget 兩種寫法、後端 siteverify 驗證，以及防重放、安全重試、hostname 鎖定與錯誤碼速查。"
 categories: ["Security"]
 tags: ["Cloudflare", "Turnstile", "Vue", "Spring Boot", "CAPTCHA", "Bot Protection", "Security"]
 ---

@@ -6,7 +6,6 @@ draft: false
 tags: ["DesignPattern", "Behavioral", "Mediator"]
 description: "Mediator 模式透過中介者集中管理物件間通訊，將網狀耦合降為星狀結構，Spring ApplicationEventPublisher 是其典型實踐。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/Mediator/
   - /post/architecture/mediator/

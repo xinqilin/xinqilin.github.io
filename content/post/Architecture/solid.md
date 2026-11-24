@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-07-08T21:20:39+08:00
 draft: false
 tags: ["SOLID", "Design Principles", "OOP", "Software Architecture", "Clean Code", "Best Practices"]
-description: "深入解析 SOLID 五大設計原則，包含單一職責、開閉原則、里氏替換、介面隔離與依賴反轉的理論基礎與實戰應用"
+description: "SOLID 五大設計原則：單一職責、開閉、里氏替換、介面隔離與依賴反轉。每個原則都附違反與重構後的 Java 範例，最後討論對 SOLID 的批評與實務上的踩坑紀錄。"
 categories: ["Architecture"]
-disableComments: false
 aliases:
   - /post/Architecture/SOLID/
 

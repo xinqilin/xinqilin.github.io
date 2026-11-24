@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-11-21T20:11:03+08:00
 draft: false
 tags: ["Algorithm", "Tree", "遞歸", "Java"]
-description: "深入探討二元樹的三種遍歷方式：前序、中序、後序遍歷的原理、實作與應用"
+description: "二元樹前序、中序、後序遍歷的順序與實作，延伸到層序遍歷（BFS）與 O(1) 空間的 Morris 遍歷，並示範如何用前序加中序、中序加後序的遍歷結果重建二元樹。"
 categories: ["Algorithm"]
-disableComments: false
 aliases:
   - /post/Algorithm/TreeTraversal/
 

@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2022-09-26T22:15:44+08:00
 draft: false
 tags: ["Algorithm", "UnionFind", "DisjointSet", "Graph", "Java"]
-description: "深入探討並查集數據結構的原理、優化技巧與實際應用，包含路徑壓縮和按秩合併等優化策略"
+description: "並查集（Union-Find）處理不相交集合的合併與查詢。本文從基本實作出發，加上路徑壓縮、按秩或按大小合併等優化，並套用到朋友圈、島嶼數量、冗餘連接、帳戶合併與 Kruskal 最小生成樹。"
 categories: ["Algorithm"]
-disableComments: false
 aliases:
   - /post/Algorithm/UnionFind/
 

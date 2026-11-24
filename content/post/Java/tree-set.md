@@ -6,7 +6,6 @@ draft: false
 tags: ["Java", "TreeSet", "Data Structure", "Red-Black Tree", "Collections", "Sorting", "NavigableSet", "SortedSet", "Binary Search Tree", "Performance", "Algorithms", "Enterprise", "Best Practices", "Thread Safety", "Concurrency"]
 description: "深入探討 Java TreeSet 的完整實作指南，包含紅黑樹內部結構、NavigableSet 介面、排序機制、效能分析與企業級應用最佳實踐"
 categories: ["Java"]
-disableComments: false
 aliases:
   - /post/Backend/TreeSet/
   - /post/backend/tree-set/

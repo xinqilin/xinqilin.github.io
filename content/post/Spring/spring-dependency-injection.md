@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-07-10T20:27:20+08:00
 draft: false
 tags: ["Java", "Spring", "DI", "IoC", "Autowired", "Constructor", "Best-Practices"]
-description: "深入探討 Spring 依賴注入的各種方式、最佳實踐與常見陷阱，重點說明為何不建議使用 Field Injection"
+description: "比較 Spring 依賴注入的三種方式，說明為何不建議 Field Injection、建構子注入在不可變與測試上的優勢，並涵蓋 Lombok 簡化寫法、限定符與 Profile 注入、循環依賴等常見陷阱。"
 categories: ["Spring"]
-disableComments: false
 aliases:
   - /post/Backend/@Autowired/
   - /post/backend/spring-dependency-injection/

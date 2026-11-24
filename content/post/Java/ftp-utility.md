@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2023-01-05T23:45:46+08:00
 draft: false
 tags: ["Java", "FTP", "FileTransfer", "Spring", "Commons-Net", "Security"]
-description: "完整的 FTP 工具類實作指南，包含連線池管理、安全配置、錯誤處理與最佳實踐"
+description: "用 Apache Commons Net 實作可用於正式環境的 FTP 工具類：連線工廠與設定屬性、上傳下載與檔案同步、安全設定與檔案驗證、健康檢查，以及連線逾時、中文檔名、防火牆等常見問題。"
 categories: ["Java"]
-disableComments: false
 aliases:
   - /post/Backend/FtpUtil/
   - /post/backend/ftp-utility/

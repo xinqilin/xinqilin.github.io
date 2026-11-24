@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T12:15:57+08:00
 draft: false
 tags: ["DesignPattern", "Structural", "Flyweight"]
-description: "Flyweight 模式透過共享內部狀態降低大量相似物件的記憶體開銷，適用於字元渲染、粒子系統等場景。"
+description: "Flyweight 模式共享不變的內部狀態，降低大量相似物件的記憶體開銷，適用於字元渲染、粒子系統等場景。附 Java 範例、Integer 快取與 String.intern 案例，以及用 record 表達內部狀態。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/Flyweight/
   - /post/architecture/flyweight/

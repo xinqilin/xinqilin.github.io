@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-08-08T13:07:45+08:00
 draft: false
 tags: ["QueryDSL", "JPA", "Spring Data", "Database", "Query Builder", "Type Safety", "Criteria API", "Dynamic Query", "Performance"]
-description: "深入解析 QueryDSL 動態查詢框架的完整使用方法，包含配置、查詢建構、效能優化與企業級應用實戰"
+description: "QueryDSL 以產生的 Q 類別撰寫型別安全的 JPA 查詢，編譯期就能發現錯誤。本文涵蓋 Maven／Gradle 設定、Join、子查詢與聚合、Predicate 動態條件、批次更新與刪除，以及效能與測試策略。"
 categories: ["Database"]
-disableComments: false
 aliases:
   - /post/Backend/QueryDSL/
   - /post/backend/querydsl-jpa/

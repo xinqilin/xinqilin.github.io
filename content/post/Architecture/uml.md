@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-07-12T23:33:14+08:00
 draft: false
 tags: ["UML", "Unified Modeling Language", "Software Design", "Architecture", "Class Diagram", "Sequence Diagram", "Use Case Diagram", "Design Patterns", "Object-Oriented Design", "Software Modeling", "Enterprise Architecture", "System Design"]
-description: "深入探討 UML 統一建模語言的完整指南，包含類別圖、序列圖、使用案例圖、設計模式建模與企業級軟體架構建模最佳實踐"
+description: "UML 類別圖的六種關係（依賴、關聯、聚合、組合、實現、繼承）詳解，搭配序列圖、使用案例圖、活動圖、狀態圖範例，以及單例、工廠、觀察者等設計模式的 UML 表示法。"
 categories: ["Architecture"]
-disableComments: false
 aliases:
   - /post/Architecture/UML/
 

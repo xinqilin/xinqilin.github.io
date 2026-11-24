@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T12:18:20+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "TemplateMethod"]
-description: "模板方法模式：在抽象父類定義演算法骨架，子類覆寫特定步驟而不改變整體流程，體現好萊塢原則。"
+description: "模板方法模式在抽象父類別定義演算法骨架，子類別只覆寫特定步驟，體現好萊塢原則。附 Java 範例、HttpServlet 與 Spring AbstractBeanFactory 案例，以及用函式參數取代繼承的寫法。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/DesignPattern/TemplateMethod/
   - /post/architecture/templatemethod/

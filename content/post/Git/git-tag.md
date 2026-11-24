@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2021-03-01T21:16:29+08:00
 draft: false
 tags: ["Git", "Tag", "CI/CD"]
-description: "Git tag 的完整操作指南，包含 annotated tag、CI/CD 部署 tag 與 semver 工作流"
+description: "Git tag 實用指南：annotated 與 lightweight tag 的差異，建立、推送、刪除本機與遠端 tag 的完整流程，依語意化版本排序列出 tag，以及在 CI/CD 中用 tag 標記部署環境。"
 categories: ["Git"]
-disableComments: false
 aliases:
   - /post/Others/Git/
   - /post/tools/git/

@@ -4,9 +4,8 @@ author: Bill.Lin
 date: 2018-08-07T22:38:06+08:00
 draft: false
 tags: ["DesignPattern", "Behavioral", "Visitor"]
-description: "訪問者模式透過雙分派將操作邏輯從物件結構抽離，適合在穩定的元素層級上頻繁新增操作"
+description: "Visitor 模式透過雙分派把操作從物件結構抽離，適合在穩定的元素階層上頻繁新增操作。附 Java 範例、NIO FileVisitor 案例，以及用 sealed interface 加 switch 取代 Visitor 的寫法。"
 categories: ["DesignPattern"]
-disableComments: false
 aliases:
   - /post/architecture/visitor/
 ---
