@@ -20,6 +20,34 @@ tags: ["System Design", "Object Storage", "S3", "Multipart Upload", "AWS SDK", "
 4. 有人把資料庫當檔案櫃，改存成 BLOB：buffer pool 被大檔擠滿，備份從 20 分鐘變成 3 小時，replica 延遲飆高
 5. 資安掃描發現，有人上傳了副檔名是 `.png`、內容其實是 HTML 的「大頭貼」
 
+```diagram
+title: 把上傳的檔案存在應用伺服器上
+row: U 講者與會員 | A 機器 A | DB MySQL
+row: . | B 機器 B | .
+step: A 收到的檔案，B 讀不到
+  Spring Boot 收下檔案、存到 /data/uploads。服務擴展成多台後，請求落在 B 時，B 的硬碟上沒有這個檔案。
+U -> A: 上傳講義
+U -> B: 下載講義 [danger]
+note A: 存到 /data/uploads
+note B: 找不到檔案 [danger]
+step: 一支錄影佔住一條執行緒
+  講者用 50 Mbps 的上行網路傳 5 GB 錄影，要 800 秒，一條 Tomcat 執行緒被佔住 13 分鐘。Tomcat 預設最多 200 條，幾十位講者同時上傳，一般 API 就開始排隊。
+U => A: 5 GB 錄影
+note A: 一條執行緒佔住 13 分鐘 [danger]
+step: 傳到 90% 斷線
+  傳到 90% 時 Wi-Fi 斷了，前面傳的全部作廢，只能從頭再傳一次。
+U -> A: 傳到 90% 斷線 [danger]
+note U: 只能從頭再傳 [danger]
+step: 把資料庫當檔案櫃
+  有人改成把檔案存成 BLOB。大檔擠滿 buffer pool，備份從 20 分鐘變成 3 小時，replica 延遲也飆高。
+A => DB: 檔案存成 BLOB [danger]
+note DB: 備份 20 分鐘 → 3 小時 [danger]
+step: 副檔名是 .png 的 HTML
+  資安掃描發現一張「大頭貼」副檔名是 .png，內容其實是 HTML。只看副檔名就收下，瀏覽器在網站的網域下開啟它時，裡面的 JavaScript 就能讀到網站的 cookie。
+U -> A: 上傳大頭貼 .png
+note A: 內容其實是 HTML [danger]
+```
+
 ## 最簡單的做法與它的極限
 
 [無狀態服務篇](/post/systemdesign/scaling-stateless/)已經給過第一步：檔案放物件儲存（S3），伺服器只發一個 presigned URL，讓瀏覽器直接 `PUT` 上去，檔案的位元組完全不經過應用伺服器。問題 1、2、4 都解決了。

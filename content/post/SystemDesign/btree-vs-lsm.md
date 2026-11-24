@@ -52,6 +52,33 @@ LSM 寫入放大 30 倍：108 MB/s，幾乎全是循序寫入
 
 改用遞增主鍵可以讓插入集中在樹的最右邊，可是「某位會員最近看過的商品」就得靠 `(member_id, viewed_at)` 的次要索引，而次要索引一樣是隨機插入，問題只是換了個地方（見 [Index 篇](/post/systemdesign/index-btree/)）。
 
+```diagram
+title: 寫入量成長 10 倍之後
+row: APP 瀏覽事件 | DB MySQL B+Tree | DISK 磁碟
+row: . | LSM LSM-Tree | .
+step: 原本：每天 1 億筆
+  瀏覽紀錄放在 MySQL 分區表，每天 1 億筆、尖峰每秒約 5,800 筆，單機應付得來。
+APP => DB: 每秒 5,800 筆
+note DB: 單機應付得來 [ok]
+step: 成長到每天 10 億筆
+  推薦功能上線後，瀏覽事件變成每天 10 億筆、尖峰每秒 6 萬筆。每筆約 60 bytes，原始資料每秒只有 3.6 MB。
+APP => DB: 每秒 6 萬筆
+note DB: 原始資料只有 3.6 MB/s
+step: 問題在 B+Tree 的寫法
+  主鍵是 (member_id, viewed_at, product_id)，同一秒的 6 萬筆散在數十萬位會員各自的頁面上。頁面不在記憶體時，每筆都要讀進 16 KB 的頁面、改幾十 bytes、再整頁寫回；最壞情況是每秒 6 萬次隨機讀，加上 983 MB/s 的寫入。
+DB => DISK: 整頁讀出再寫回 [danger]
+note DISK: 最壞每秒 6 萬次隨機讀 [danger]
+step: 換成遞增主鍵？
+  改用遞增主鍵，插入會集中在樹的最右邊；但「某位會員最近看過的商品」得靠 (member_id, viewed_at) 的次要索引，次要索引一樣是隨機插入，問題只是換了個地方。
+APP => DB: 改用遞增主鍵
+note DB: 次要索引一樣隨機插入 [danger]
+step: 把寫入變成循序
+  LSM-Tree 先把寫入收在記憶體，累積後整批循序寫到磁碟。寫入放大 10 到 30 倍，也只是每秒 36 到 108 MB 的循序寫入。
+APP => LSM: 先寫進記憶體 [ok]
+LSM -> DISK: 整批循序寫入 [ok]
+note DISK: 每秒 36–108 MB，循序 [ok]
+```
+
 另一類資料結構從根本上把寫入變成循序：**LSM-Tree**（Log-Structured Merge-Tree）。RocksDB、Cassandra、ScyllaDB、HBase 都屬於這個家族。這篇比較兩者在寫入、讀取、空間上的取捨。
 
 ## 最簡單的做法與它的極限

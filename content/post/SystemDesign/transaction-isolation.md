@@ -21,6 +21,25 @@ tags: ["System Design", "Transaction", "Isolation Level", "MVCC", "MySQL", "Post
 
 QA 壓測後回報三個問題：3,000 個名額卻有 3,012 筆報名；有會員在同一時段報了兩場；主辦方把上限從 3,000 改成 3,500 之後，剩餘名額對不上。程式碼每一行看起來都沒錯，而且全都包在 `@Transactional` 裡。
 
+```diagram
+title: 兩個交易同時搶最後一個名額
+actors: A 交易 A | DB MySQL | B 交易 B
+A -> DB: SELECT remaining
+  會員 101 報名，交易 A 先讀剩餘名額。整段程式都包在 @Transactional 裡。
+DB --> A: 1
+  還剩 1 個名額，Java 判斷可以報名。
+B -> DB: SELECT remaining
+  同一瞬間，會員 102 的交易 B 也讀了剩餘名額。
+DB --> B: 1
+  A 還沒提交，B 讀到的也是 1，同樣判斷可以報名。
+A -> DB: 扣成 0、新增報名 [ok]
+  交易 A 把名額改成 0、新增一筆報名，提交。
+B -> DB: 扣成 0、新增報名 [danger]
+  交易 B 用自己讀到的 1 算出 0，寫回去、新增報名、提交。A 的扣減被覆蓋掉了，這叫 lost update。
+note DB: 兩筆報名，名額只扣一次 [danger]
+  兩人都報名成功，名額卻只少了一個。「同一時段只能報一場」也一樣：同時送出的兩個報名各自查到「還沒報名」，於是各新增一筆。
+```
+
 `@Transactional` 不代表沒有並行問題。交易保證什麼、不保證什麼，取決於隔離等級，以及程式**怎麼讀、怎麼寫**。
 
 ## 最簡單的做法與它的極限

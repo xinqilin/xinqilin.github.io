@@ -21,6 +21,28 @@ tags: ["System Design", "Full-Text Search", "Inverted Index", "BM25", "Elasticse
 
 目前的實作是 `WHERE title LIKE '%微服務%' OR summary LIKE '%微服務%'`。[Index 篇](/post/systemdesign/index-btree/)提過，開頭是萬用字元的 `LIKE` 用不到索引。摘要平均 1 KB，每次搜尋就要比對 20 萬列、約 200 MB 的文字；尖峰每秒 50 次搜尋，等於每秒掃描 10 GB。
 
+```diagram
+title: 用 LIKE 做講座搜尋
+row: U 使用者 | APP 講座搜尋 | DB MySQL
+step: 搜尋框的需求
+  20 萬場講座，每場有標題、講者、摘要與標籤。使用者輸入「微服務」，要找出相關講座、最相關的排前面，還能輸入多個詞、依分類和日期篩選，未公開的講座不能出現。
+U -> APP: 微服務
+note APP: 相關的排前面 [ok]
+step: LIKE 用不到索引
+  目前的實作是 title LIKE '%微服務%' OR summary LIKE '%微服務%'。開頭是萬用字元的 LIKE 用不到索引。
+APP -> DB: LIKE '%微服務%'
+note DB: 開頭是萬用字元，用不到索引 [danger]
+step: 每次掃 200 MB
+  摘要平均 1 KB，每次搜尋都要比對 20 萬列、約 200 MB 的文字。
+APP => DB: 比對 20 萬列
+note DB: 每次掃約 200 MB [danger]
+step: 尖峰每秒掃 10 GB
+  尖峰每秒 50 次搜尋，等於每秒掃描 10 GB。而且 LIKE 沒有排序依據：標題裡出現「微服務」和摘要最後順帶一提，對它來說一樣。
+U => APP: 每秒 50 次搜尋
+APP => DB: 每秒掃 10 GB [danger]
+note APP: 無法依相關度排序 [danger]
+```
+
 ## 最簡單的做法與它的極限
 
 `LIKE` 的問題不只是慢：
